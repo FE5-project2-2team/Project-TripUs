@@ -17,7 +17,6 @@ export const getUsers = async () => {
 export const getOnlineUsers = async () => {
   try {
     const { data } = await axiosInstance.get("/users/online-users");
-    console.log(data);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -30,8 +29,7 @@ export const getOnlineUsers = async () => {
 
 export const getUserInfo = async (id: string) => {
   try {
-    const { data } = await axiosInstance.get(`/user1s/${id}`);
-    console.log(data);
+    const { data } = await axiosInstance.get(`/users/${id}`);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -102,7 +100,6 @@ export const updateUserInfo = async ({ profile, tagList }: UpdatedUserData) => {
   }
   try {
     const { data } = await axiosInstance.put("/settings/update-user", userInfo);
-    console.log(data);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {

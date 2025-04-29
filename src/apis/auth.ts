@@ -6,9 +6,10 @@ interface UserInfo {
   password: string;
   fullName: {
     name: string;
-    Nickname: string;
     age: number;
     gender: string;
+    tel: string;
+    nickname: string;
   };
 }
 
