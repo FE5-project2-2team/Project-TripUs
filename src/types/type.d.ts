@@ -24,3 +24,10 @@ interface Post {
   postId?: string;
   imageToDeletePublicId?: string;
 }
+
+interface NotiType {
+  notificationType: "COMMENT" | "LIKE" | "MESSAGE";
+  notificationTypeId: string;
+  userId: string;
+  postId: string | null;
+}
