@@ -27,7 +27,7 @@ export const loginUser = async (email: string, password: string) => {
     });
     return data;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof Error) {
       console.log(error.message);
     } else {
       console.log("Unknwon Error", error);
@@ -40,7 +40,7 @@ export const logoutUser = async () => {
     const { data } = await axiosInstance.post("/logout");
     console.log(data);
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof Error) {
       console.log(error.message);
     } else {
       console.log("Unknwon Error", error);
@@ -53,7 +53,7 @@ export const fetchAuthUser = async () => {
     const { data } = await axiosInstance.get("/auth-user");
     return data;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof Error) {
       console.log(error.message);
     } else {
       console.log("Unknwon Error", error);
