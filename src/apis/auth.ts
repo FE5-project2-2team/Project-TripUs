@@ -1,18 +1,6 @@
 import { AxiosError } from "axios";
 import { axiosInstance } from "./axios";
 
-interface UserInfo {
-  email: string;
-  password: string;
-  fullName: {
-    name: string;
-    age: number;
-    gender: string;
-    tel: string;
-    nickname: string;
-  };
-}
-
 export const registerUser = async (userInfo: UserInfo) => {
   const { email, fullName, password } = userInfo;
   try {
@@ -31,11 +19,7 @@ export const registerUser = async (userInfo: UserInfo) => {
   }
 };
 
-export const loginUser = async (loginData: {
-  email: string;
-  password: string;
-}) => {
-  const { email, password } = loginData;
+export const loginUser = async (email: string, password: string) => {
   try {
     const { data } = await axiosInstance.post("/login", {
       email,

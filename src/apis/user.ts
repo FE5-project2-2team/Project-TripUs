@@ -86,10 +86,6 @@ export const updateUserPwd = async (newPwd: string) => {
   }
 };
 
-type UpdatedUserData = {
-  profile?: { name: string; age: number; gender: string };
-  tagList?: string[];
-};
 export const updateUserInfo = async ({ profile, tagList }: UpdatedUserData) => {
   const userInfo: { fullName?: string; username?: string } = {};
   if (profile) {
