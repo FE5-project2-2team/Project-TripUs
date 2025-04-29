@@ -1,0 +1,68 @@
+import { axiosInstance } from "./axios";
+
+export const getPosts = async (channelId: string) => {
+  try {
+    const { data } = await axiosInstance.get(`/posts/channel/${channelId}`);
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    } else {
+      console.log("Unknwon Error", error);
+    }
+  }
+};
+
+export const getPostsByAuthor = async (AuthorId: string) => {
+  try {
+    const { data } = await axiosInstance.get(`/posts/author/${AuthorId}`);
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    } else {
+      console.log("Unknwon Error", error);
+    }
+  }
+};
+
+export const createPost = async (post: Post) => {
+  try {
+    const { data } = await axiosInstance.post("/posts/create", post);
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    } else {
+      console.log("Unknwon Error", error);
+    }
+  }
+};
+
+export const updatePost = async (post: Post) => {
+  try {
+    const { data } = await axiosInstance.put("/posts/update", post);
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    } else {
+      console.log("Unknwon Error", error);
+    }
+  }
+};
+
+export const deletePost = async (postId: string) => {
+  try {
+    const { data } = await axiosInstance.delete("/posts/delete", {
+      data: { id: postId },
+    });
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    } else {
+      console.log("Unknwon Error", error);
+    }
+  }
+};
