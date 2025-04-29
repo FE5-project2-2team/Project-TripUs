@@ -28,8 +28,7 @@ export const getPostsByAuthor = async (AuthorId: string) => {
 
 export const createPost = async (post: Post) => {
   try {
-    const { data } = await axiosInstance.post("/posts/create", post);
-    return data;
+    await axiosInstance.post("/posts/create", post);
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
@@ -41,8 +40,7 @@ export const createPost = async (post: Post) => {
 
 export const updatePost = async (post: Post) => {
   try {
-    const { data } = await axiosInstance.put("/posts/update", post);
-    return data;
+    await axiosInstance.put("/posts/update", post);
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
@@ -54,10 +52,9 @@ export const updatePost = async (post: Post) => {
 
 export const deletePost = async (postId: string) => {
   try {
-    const { data } = await axiosInstance.delete("/posts/delete", {
+    await axiosInstance.delete("/posts/delete", {
       data: { id: postId },
     });
-    return data;
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
