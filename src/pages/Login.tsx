@@ -35,8 +35,6 @@ export default function Login() {
       console.error(error);
     }
   };
-
-
   return (
     <>
       <form onSubmit={handleSubmit}>
