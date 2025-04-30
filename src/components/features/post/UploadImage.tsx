@@ -1,6 +1,7 @@
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 export default function UploadImage() {
   const [value, setValue] = useState("");
@@ -11,7 +12,10 @@ export default function UploadImage() {
       .filter((file) => file.type.startsWith("image/"))
       .map((imageFile) => URL.createObjectURL(imageFile));
     if (showImages.length <= 10) {
-      setShowImages((list) => [...list, ...imageUrlList]);
+      setShowImages((list) => {
+        const result = [...list, ...imageUrlList];
+        return result.slice(0, 10);
+      });
       setValue("");
     }
   };
@@ -32,13 +36,22 @@ export default function UploadImage() {
             onChange={addImageHandler}
             value={value}
             className="absolute w-0 h-0"
+            disabled={showImages.length === 10 ? true : false}
           />
           <div className="group flex flex-col justify-center items-center gap-[1px] w-[46px] h-[46px] border border-[#D0D0D0] bg-white rounded-lg cursor-pointer">
             <FontAwesomeIcon
               icon={faCamera}
-              className="text-[#616161] group-hover:text-black"
+              className={twMerge(
+                "text-[#616161]",
+                showImages.length < 10 ? "group-hover:text-black" : null
+              )}
             />
-            <span className="text-xs text-[#616161] group-hover:text-black">
+            <span
+              className={twMerge(
+                "text-xs text-[#616161]",
+                showImages.length < 10 ? "group-hover:text-black" : null
+              )}
+            >
               {showImages.length}/10
             </span>
           </div>

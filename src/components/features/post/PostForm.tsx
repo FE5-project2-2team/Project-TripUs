@@ -2,10 +2,11 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Korean } from "flatpickr/dist/l10n/ko.js";
 import "flatpickr/dist/themes/material_blue.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Flatpickr from "react-flatpickr";
 import { Link } from "react-router";
 import CondList from "./CondList";
+import Contents from "./Contents";
 import LabelSelect from "./LabelSelect";
 import UploadImage from "./UploadImage";
 
@@ -16,6 +17,7 @@ export default function PostForm() {
   const [dateRange, setDateRange] = useState<Date[]>([]);
   const [title, setTitle] = useState("");
   const [condLIst, setCondList] = useState<string[]>([]);
+  const contents = useRef<HTMLDivElement>(null);
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,6 +28,7 @@ export default function PostForm() {
       dateRange,
       isRecruiting: true,
       recruitCondition: condLIst,
+      contents: contents.current?.innerHTML,
     };
     const postData = {
       title: detailData,
@@ -124,14 +127,7 @@ export default function PostForm() {
             className="bg-[#F9F9F9] w-full p-5 rounded-[10px]"
           />
         </div>
-        <div>
-          <label htmlFor="contents" className="input-label-style">
-            내용
-          </label>
-          <div className="bg-[#F9F9F9] w-full h-100 p-5 rounded-[10px] overflow-scroll">
-            <div contentEditable className="focus:outline-0"></div>
-          </div>
-        </div>
+        <Contents ref={contents} />
         <UploadImage />
         <fieldset>
           <legend className="input-label-style">
