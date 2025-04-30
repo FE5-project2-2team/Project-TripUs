@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../apis/axios";
-
-// 닉네임
-// 나이
-// 성별
-// 자기소개
-
-// 버튼) 프로필 이미지 변경
-// 버튼) 회원 정보 수정
+import { useAuthStore } from "../store/authStore";
 
 export default function Profile() {
   const [profile, setProfile] = useState({
@@ -21,18 +14,24 @@ export default function Profile() {
   const fixedImage = "https://i1.daumcdn.net/thumb/C276x260/?fname=https://blog.kakaocdn.net/dn/nvQVV/btrWREfREZ7/Dbo7BWTjM4ZV6lCdkv26lK/img.png" 
 
   const getUser = async () => {
-    const { data } = await axiosInstance.get("/users/680b30b797519341ce9ddfb9");
-    const fullNameParsed = JSON.parse(data.fullName);
-    setProfile({
-      nickname: fullNameParsed.nickname,
-      gender: fullNameParsed.gender,
-      age: fullNameParsed.age,
-      tagList: fullNameParsed.tagList,
-    });
-    console.log(data);
+    try {
+      const { data } = await axiosInstance.get("/users/680b30b797519341ce9ddfb9");
+      const fullNameParsed = JSON.parse(data.fullName);
+      setProfile({
+        nickname: fullNameParsed.nickname,
+        gender: fullNameParsed.gender,
+        age: fullNameParsed.age,
+        tagList: fullNameParsed.tagList,
+      });
+    } catch (error) {
+      console.error("유저 정보를 불러오는 데 실패했습니다:", error);
+    }
   };
 
   const handleUpdate = async () => {
+    const token = useAuthStore.getState().accessToken;
+    console.log("token:", token);
+
     const updatedFullName = JSON.stringify({
       gender: profile.gender,
       age: profile.age,
@@ -40,13 +39,16 @@ export default function Profile() {
       tagList: profile.tagList,
     });
 
+    const userData = {
+      fullName: updatedFullName,
+    };
+
     try {
-      await axiosInstance.put("/settings/update-user", {
-        fullName: updatedFullName,
-      });
+      const response = await axiosInstance.put("/settings/update-user", userData);
+      console.log("업데이트 성공:", response.data);
       alert("프로필이 업데이트 되었습니다!");
     } catch (err) {
-      console.log(err);
+      console.error("업데이트 실패:", err);
       alert("프로필 업데이트 실패");
     }
   };
@@ -79,7 +81,7 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 w-80">
         <label className="block text-sm font-medium">닉네임</label>
         <input
           type="text"
