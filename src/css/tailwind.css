@@ -4,22 +4,31 @@
   .input-label-style {
     display: block;
     font-weight: medium;
-    font-size: 16px;
+    font-size: 20px;
     margin-bottom: 10px;
   }
 
   .input-style {
-    width: 400px;
+    width: 512px;
     border-bottom: 1px solid;
     padding-inline: 10px;
     padding-block: 15px;
   }
 
-  .condition-button-style {
+  .cond-btn,
+  .cond-btn-active {
+    box-sizing: border-box;
     width: 80px;
     text-align: center;
     padding-block: 14px;
-    background-color: #f3f4f6;
     border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    background-color: #f3f4f6;
+  }
+
+  .cond-btn-active {
+    color: #06b796;
+    border: 2px solid #06b796;
   }
 }
