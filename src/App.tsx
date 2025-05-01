@@ -1,4 +1,4 @@
-import { Link, Navigate, Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import ProtectedRoute from "./components/commons/ProtectedRoute";
 import PublicOnlyRoute from "./components/commons/PublicOnlyRoute";
 import RootLayout from "./layouts/RootLayout";
@@ -15,7 +15,6 @@ import Signup from "./pages/Signup";
 export default function App() {
   return (
     <>
-    <Link to="/profile/680b30b797519341ce9ddfb9">프로필</Link>
       <Routes>
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />}>
@@ -24,19 +23,17 @@ export default function App() {
           <Route path="/post/detail/:id" element={<PostDetail />} />
           <Route path="/profile/:id" element={<Profile />} />
 
-          <Route element={<PublicOnlyRoute />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-          </Route>
-
           <Route element={<ProtectedRoute />}>
             <Route path="/postCreate" element={<PostCreate />} />
             <Route path="/message" element={<Message />} />
           </Route>
-
-          <Route path="/404" element={<NotFound />} />
-          <Route path="/*" element={<Navigate to="/404" replace />} />
         </Route>
+        <Route element={<PublicOnlyRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Route>
+        <Route path="/404" element={<NotFound />} />
+        <Route path="/*" element={<Navigate to="/404" replace />} />
       </Routes>
     </>
   );

@@ -30,7 +30,9 @@ export default function Profile() {
 
   const getUser = async () => {
     try {
-      const { data } = await axiosInstance.get("/users/680b30b797519341ce9ddfb9");
+      const { data } = await axiosInstance.get(
+        "/users/680b30b797519341ce9ddfb9"
+      );
       const fullNameParsed = JSON.parse(data.fullName);
 
       const newProfile = ({
@@ -74,7 +76,6 @@ export default function Profile() {
   useEffect(() => {
     getUser();
   }, []);
-
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-10">
