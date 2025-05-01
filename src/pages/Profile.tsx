@@ -11,11 +11,14 @@ export default function Profile() {
   });
 
   // 임시 기본 이미지
-  const fixedImage = "https://i1.daumcdn.net/thumb/C276x260/?fname=https://blog.kakaocdn.net/dn/nvQVV/btrWREfREZ7/Dbo7BWTjM4ZV6lCdkv26lK/img.png" 
+  const fixedImage =
+    "https://i1.daumcdn.net/thumb/C276x260/?fname=https://blog.kakaocdn.net/dn/nvQVV/btrWREfREZ7/Dbo7BWTjM4ZV6lCdkv26lK/img.png";
 
   const getUser = async () => {
     try {
-      const { data } = await axiosInstance.get("/users/680b30b797519341ce9ddfb9");
+      const { data } = await axiosInstance.get(
+        "/users/680b30b797519341ce9ddfb9"
+      );
       const fullNameParsed = JSON.parse(data.fullName);
       setProfile({
         nickname: fullNameParsed.nickname,
@@ -44,7 +47,10 @@ export default function Profile() {
     };
 
     try {
-      const response = await axiosInstance.put("/settings/update-user", userData);
+      const response = await axiosInstance.put(
+        "/settings/update-user",
+        userData
+      );
       console.log("업데이트 성공:", response.data);
       alert("프로필이 업데이트 되었습니다!");
     } catch (err) {
@@ -57,7 +63,6 @@ export default function Profile() {
     getUser();
   }, []);
 
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-10">
       <div className="bg-white p-6 rounded-lg shadow-md w-80">
@@ -67,9 +72,7 @@ export default function Profile() {
           className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
         />
 
-        <button
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-        >
+        <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
           프로필 사진 변경
         </button>
 
