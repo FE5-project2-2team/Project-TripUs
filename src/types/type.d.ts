@@ -18,7 +18,7 @@ interface UpdatedUserData {
 }
 
 interface Post {
-  title: string;
+  title: PostData;
   image: File | null;
   channelId: string;
   postId?: string;
@@ -30,4 +30,15 @@ interface NotiType {
   notificationTypeId: string;
   userId: string;
   postId: string | null;
+}
+
+interface PostData {
+  title: string;
+  memberLimit: number;
+  memberList: string[];
+  location: string;
+  dateRange: Date[];
+  isRecruiting: boolean;
+  recruitCondition: string[];
+  contents: string;
 }

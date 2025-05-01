@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuthStore } from "../store/authStore";
 import { loginUser } from "../apis/auth";
+import { useAuthStore } from "../store/authStore";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function Login() {
       console.log("서버응답", data);
 
       if (data?.token) {
-        login(data.token);
+        login(data.token, data.user._id);
         alert("로그인 성공");
         navigate("/");
       } else {
