@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router";
-import RootLayout from "./layouts/RootLayout";
 import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -9,6 +8,7 @@ import PostCreate from "./pages/PostCreate";
 import PostDetail from "./pages/PostDetail";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
+import RootLayout from "./layouts/rootlayout";
 
 export default function App() {
   return (

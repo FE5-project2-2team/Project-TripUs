@@ -46,7 +46,6 @@ export default function Signup() {
     passwordConfirm: "",
     fullName: {
       name: "",
-      //gender: "",
       birth: "",
       tel: "",
     },
@@ -74,6 +73,18 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (
+      !form.email.trim() ||
+      !form.password.trim() ||
+      !form.passwordConfirm.trim() ||
+      !form.fullName.name.trim() ||
+      !form.fullName.birth.trim() ||
+      !form.fullName.tel.trim()
+    ) {
+      alert("모든 항목을 입력해주세요.");
+      return;
+    }
+
     if (form.password !== form.passwordConfirm) {
       alert("비밀번호가 일치하지 않습니다!");
       return;
@@ -100,7 +111,6 @@ export default function Signup() {
       password: form.password,
       fullName: {
         name: form.fullName.name,
-        // birth: birthstr,
         tel: form.fullName.tel,
         gender,
         age,
@@ -122,12 +132,16 @@ export default function Signup() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className="w-[460px] mx-auto mt-10 flex flex-col gap-[26px] text-[#616161]"
+      >
         <input
           name="name"
           placeholder="이름"
           value={form.fullName.name}
           onChange={handleChange}
+          className="w-[460px] h-[60px] border border-[#616161] rounded-[10px] px-4 text-[16px] placeholder-[#616161]"
         />
         <input
           name="birth"
@@ -135,39 +149,48 @@ export default function Signup() {
           maxLength={7}
           value={form.fullName.birth}
           onChange={handleChange}
+          className="w-[460px] h-[60px] border border-[#616161] rounded-[10px] px-4 text-[16px] placeholder-[#616161]"
         />
-        {/* <input
-          name="gender"
-          placeholder="성별"
-          value={form.fullName.gender}
-          onChange={handleChange}
-        /> */}
         <input
           name="tel"
           placeholder="전화번호"
           value={form.fullName.tel}
           onChange={handleChange}
+          className="w-[460px] h-[60px] border border-[#616161] rounded-[10px] px-4 text-[16px] placeholder-[#616161]"
         />
         <input
           name="email"
           placeholder="이메일"
           value={form.email}
           onChange={handleChange}
+          className="w-[460px] h-[60px] border border-[#616161] rounded-[10px] px-4 text-[16px] placeholder-[#616161]"
         />
         <input
           name="password"
           placeholder="비밀번호"
           value={form.password}
           onChange={handleChange}
+          className="w-[460px] h-[60px] border border-[#616161] rounded-[10px] px-4 text-[16px] placeholder-[#616161]"
         />
         <input
           name="passwordConfirm"
           placeholder="비밀번호 확인"
           value={form.passwordConfirm}
           onChange={handleChange}
+          className="w-[460px] h-[60px] border border-[#616161] rounded-[10px] px-4 text-[16px] placeholder-[#616161]"
         />
-        <button type="submit">회원가입</button>
-        <button type="button">취소</button>
+        <button
+          type="submit"
+          className="w-[460px] h-[60px] bg-[#06B796] text-white text-[20px] rounded-[10px] font-semibold"
+        >
+          회원가입
+        </button>
+        <button
+          type="button"
+          className="w-[460px] h-[60px] bg-white text-[#06B796] border border-[#06B796] text-[20px] rounded-[10px] font-semibold"
+        >
+          취소
+        </button>
       </form>
     </>
   );
