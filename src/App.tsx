@@ -1,7 +1,7 @@
-import { Navigate, Route, Routes } from "react-router";
+import { Link, Navigate, Route, Routes } from "react-router";
 import ProtectedRoute from "./components/commons/ProtectedRoute";
 import PublicOnlyRoute from "./components/commons/PublicOnlyRoute";
-import RootLayout from "./layouts/rootlayout";
+import RootLayout from "./layouts/RootLayout";
 import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -15,6 +15,7 @@ import Signup from "./pages/Signup";
 export default function App() {
   return (
     <>
+    <Link to="/profile/680b30b797519341ce9ddfb9">프로필</Link>
       <Routes>
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />}>
