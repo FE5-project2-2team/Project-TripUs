@@ -87,7 +87,12 @@ export default function PostForm() {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(channel);
     const encodedImages = await encodeImages(ImageListRef.current);
+    if (contents.current!.innerText.length >= 1000) {
+      alert("글자 수가 1000자 이상입니다");
+      return;
+    }
     if (
       title === "" ||
       location === "" ||
@@ -99,6 +104,7 @@ export default function PostForm() {
       alert("입력 정보가 부족합니다");
       return;
     }
+
     const detailData: PostData = {
       title,
       memberLimit: Number(member),
@@ -116,7 +122,6 @@ export default function PostForm() {
       image: ImageListRef.current[0] || null,
       channelId: channel,
     };
-    console.log(postData.title);
     const postId = await createPost(postData);
     navigate(`/post/detail/${postId}`);
   };
@@ -207,10 +212,10 @@ export default function PostForm() {
             <InputBtn
               type="radio"
               onChange={radioBtnHandler}
-              value="성별무관"
+              value="성별 무관"
               name="gender"
             >
-              성별무관
+              성별 무관
             </InputBtn>
             <InputBtn
               type="radio"
