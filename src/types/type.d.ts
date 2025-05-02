@@ -13,10 +13,13 @@ interface User {
 }
 
 interface Profile {
+  name: string;
+  tel: string;
   nickname: string;
   gender: string;
   age: number;
   tagList: string[];
+  image: string;
 }
 
 interface UpdatedUserData {

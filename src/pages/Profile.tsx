@@ -1,24 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
+import profileCircle from "../assets/images/profileImg_circle.svg"
 import { axiosInstance } from "../apis/axios";
 import { useAuthStore } from "../store/authStore";
+import { getUserInfo, uploadPhoto } from "../apis/user";
 
 export default function Profile() {
-  // 임시 기본 이미지
-  const fixedImage = "https://i1.daumcdn.net/thumb/C276x260/?fname=https://blog.kakaocdn.net/dn/nvQVV/btrWREfREZ7/Dbo7BWTjM4ZV6lCdkv26lK/img.png" 
-
+  const userId = useAuthStore((state) => state.userId);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [image, setImage] = useState(profileCircle);
   const [profile, setProfile] = useState<Profile>({
+    name: "",
+    tel: "",
     nickname: "",
     gender: "",
     age: 0,
     tagList: [],
+    image: ""
+  });
+  const [editProfile, setEditProfile] = useState<Profile>({
+    name: "",
+    tel: "",
+    nickname: "",
+    gender: "",
+    age: 0,
+    tagList: [],
+    image: profileCircle
   });
 
-  const [editProfile, setEditProfile] = useState<Profile>({
-    nickname: "",
-    gender: "",
-    age: 0,
-    tagList: [],
-  });
+  const getUserData = useCallback(async () => {
+    const { image, fullName } = await getUserInfo(userId!);
+    const parsed = JSON.parse(fullName);
+    if (image) setImage(image || profileCircle);
+    setProfile(parsed);
+    setEditProfile(parsed);
+  }, [userId]);
+
+  useEffect(() => {
+    getUserData();
+  }, [getUserData]);
 
   // 태그 삭제
   const handleRemoveTag = (indexToRemove: number) => {
@@ -28,44 +48,22 @@ export default function Profile() {
     }));
   };
 
-  const getUser = async () => {
-    try {
-      const { data } = await axiosInstance.get(
-        "/users/680b30b797519341ce9ddfb9"
-      );
-      const fullNameParsed = JSON.parse(data.fullName);
-
-      const newProfile = ({
-        nickname: fullNameParsed.nickname,
-        gender: fullNameParsed.gender,
-        age: fullNameParsed.age,
-        tagList: fullNameParsed.tagList,
-      });
-
-      setProfile(newProfile);
-      setEditProfile(newProfile);
-    } catch (error) {
-      console.error("유저 정보를 불러오는 데 실패했습니다:", error);
-    }
-  };
-
   const handleUpdate = async () => {
-    const token = useAuthStore.getState().accessToken;
-    console.log("token:", token);
-
     const updatedFullName = JSON.stringify({
-      gender: editProfile.gender,
-      age: editProfile.age,
+      ...profile,
       nickname: editProfile.nickname,
       tagList: editProfile.tagList,
     });
 
     try {
+      const updatedImage = editProfile.image;
       const response = await axiosInstance.put("/settings/update-user", {
         fullName: updatedFullName,
+        image: updatedImage,
       });
       console.log("업데이트 성공:", response.data);
       setProfile(editProfile);
+      setIsModalOpen(false);
       alert("프로필이 업데이트 되었습니다!");
     } catch (err) {
       console.error("업데이트 실패:", err);
@@ -73,113 +71,165 @@ export default function Profile() {
     }
   };
 
-  useEffect(() => {
-    getUser();
-  }, []);
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
+    try {
+      const result = await uploadPhoto(false, file);
+      if (!result || !result.image) {
+        throw new Error("서버 응답에 image 필드가 없습니다.");
+      }
+      const uploadedImageUrl = result.image;
+      setImage(uploadedImageUrl);
+      setEditProfile((prev) => ({
+        ...prev,
+        image: uploadedImageUrl,
+      }));
+    } catch (err) {
+      console.error("사진 업로드 실패:", err);
+      alert("프로필 사진 업로드에 실패했습니다.");
+    }
+  };
+
+  const handleModalOpen = () => setIsModalOpen(true);
+  const handleModalClose = () => {
+    setEditProfile(profile);
+    setIsModalOpen(false);
+  }
+  
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-10">
-      <button
-        className="mt-4 bg-[#06B796] text-white px-4 py-2 rounded mb-10"
-      >
-        회원정보 수정
-      </button>
-
-      {/* 흰칸 내부 */}
-      <div className="bg-white p-6 rounded-lg shadow-md w-[1062px]">
-        <div className="flex flex-col items-center justify-center">
-          <img
-            src={fixedImage}
-            alt="프로필 이미지"
-            className="w-[160px] h-[160px] rounded-full mx-auto object-cover"
-          />
-
-          <button
-            className="my-4 bg-blue-500 text-white px-4 py-2 rounded"
+    <div className="flex flex-col items-center min-h-screen py-[40px]">
+      <div className="w-[1062px]">
+        <div className="flex items-center justify-between mb-[50px]">
+          <div className="flex">
+            <div className="icon icon-goBackArrow"></div>
+            <h2 className="text-[20px] text-[#333333]">마이페이지 & 리뷰</h2>
+          </div>
+          <button  
+            onClick={handleModalOpen}
+            className="inline-flex items-center justify-center w-[160px] h-[40px] text-[18px] text-white bg-[#06b796] px-[27px] py-[7px] rounded-[8px]"
           >
-            프로필 사진 변경
+            회원정보 수정
           </button>
         </div>
-
-        <div className="text-center space-y-2">
-          <p>성별: {profile.gender}</p>
-          <p>나이: {profile.age}</p>
-          <p>닉네임: {profile.nickname}</p>
-          {/* 태그 뱃지*/}
-          <div className="flex justify-center gap-2 mb-2">
-            {profile.tagList.map((tag, index) => (
-              <span
-                key={index}
-                className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm"
-              >
-                {tag}
-              </span>
-            ))}
+        {/* 프로필 영역 */}
+        <div className="flex flex-col justify-center w-[1062px]">
+          <div className="h-[auto] text-center space-y-[14px]">
+            <img
+              src={image}
+              alt="프로필 이미지"
+              className="w-[160px] h-[160px] rounded-full mx-auto mb-[20px] object-cover"
+            />
+            {/* 유저 프로필 정보 */}
+            <p className="text-[18px] font-medium">{profile.nickname}({profile.name})님</p> 
+            <div className="flex justify-center gap-x-[3px]">
+              <p className="text-[16px]">{profile.age}</p>
+              <p className="text-[16px]">{profile.gender}</p>
+            </div>
+            {/* 태그 뱃지*/}
+            <div className="flex flex-wrap justify-center gap-2 m-0 px-[50px]">
+              {profile.tagList.map((tag, index) => (
+                <span
+                  key={index} 
+                  className="inline-flex items-center justify-center w-[auto] h-[35px] bg-[#F3F4F6] text-[#06b796] px-[12px] py-[4px] rounded-[8px]"
+                >
+                  {tag}
+                </span> 
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* 수정 영역 */}
-      <div className="mt-4 w-80">
-        <label className="block text-sm font-medium">닉네임</label>
-        <input
-          type="text"
-          value={editProfile.nickname}
-          onChange={(e) => setEditProfile({ ...editProfile, nickname: e.target.value })}
-          className="border rounded w-full px-2 py-1"
-        />
+      {/* 수정 모달 */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white/60">
+          <div className="w-[524px] rounded-[15px] bg-white pt-[30px] shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+            <h2 className="flex justify-center text-[24px] font-medium">프로필 편집</h2>
+            <div className="pt-[30px]">
+              <img
+                src={image}
+                alt="프로필 이미지"
+                className="w-[160px] h-[160px] rounded-full mx-auto object-cover"
+              />
 
-        <label className="block text-sm font-medium mt-2">자기소개 키워드</label>
-        <input
-          type="text"
-          placeholder="태그를 입력 후 Enter"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && e.nativeEvent.isComposing === false && e.currentTarget.value.trim() !== "") {
-              e.preventDefault();
-              // 태그 리스트 추가 
-              setEditProfile({
-                ...editProfile,
-                tagList: [...editProfile.tagList, e.currentTarget.value.trim()],
-              });
+              <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+              <div className="flex justify-center gap-2 mt-[15px]">
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="bg-white text-[#06B796] border border-[#06B796] rounded-[8px] px-4 py-2"
+                >
+                  프로필 이미지 변경
+                </button>
+                <button
+                  className="bg-white text-[#06B796] border border-[#06B796] rounded-[8px] px-4 py-2"
+                >
+                  기본 이미지로 변경
+                </button>
+              </div>
+            </div>
+            {/* 닉네임 수정란 */}
+            <div className="flex flex-col items-center pt-[20px] pb-[10px]">
+              <div>
+                <label className="block text-[16px] text-[#333333]">닉네임</label>
+                <input
+                  type="text"
+                  value={editProfile.nickname}
+                  onChange={(e) => setEditProfile({ ...editProfile, nickname: e.target.value })}
+                  className="text-[16px] text-[#333333] rounded-[10px] w-[340px] h-[49px] px-[13px] py-[15px] mt-[10px] border border-[#616161]"
+                />
+                <p className="text-[#333333] text-[11px] mt-[5px]"
+                  >
+                    *2자 이상 10자 이내의 한글, 영문, 숫자 입력 가능합니다.
+                </p>
+              </div>
+              {/* 자기소개 키워드 입력란 */}
+              <div>
+                <label className="block text-[16px] text-[#333333]">자기소개 키워드</label>
+                <input
+                  type="text"
+                  placeholder="태그 입력 후 Enter"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.nativeEvent.isComposing && e.currentTarget.value.trim()) {
+                      setEditProfile({
+                        ...editProfile,
+                        tagList: [...editProfile.tagList, e.currentTarget.value.trim()],
+                      });
+                      e.currentTarget.value = '';
+                    }
+                  }}
+                  className="text-[16px] text-[#333333] rounded-[10px] w-[340px] h-[49px] px-[13px] py-[15px] mt-[10px] border border-[#616161]"
+                />
+              </div>
 
-              e.currentTarget.value = "";
-            }
-          }}
-          className="border rounded w-full px-2 py-1"
-        />
-
-        {/* 뱃지로 보여주기 */}
-        <div className="flex gap-2 mb-2">
-          {editProfile.tagList.map((tag, index) => (
-            <span
-              key={index}
-              className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm flex items-center"
-            >
-              {tag}
-              <button
-                onClick={() => handleRemoveTag(index)}
-                className="ml-1 text-red-500 hover:text-red-700"
+              <div className="flex flex-wrap justify-center gap-2 px-[40px] py-[20px]">
+                {editProfile.tagList.map((tag, idx) => (
+                  <span key={idx} className="w-[auto] h-[30px] bg-[#F3F4F6] text-[#06B796] p-[6px] rounded-[8px] text-[16px] flex items-center">
+                    {tag}
+                    <button onClick={() => handleRemoveTag(idx)} className="ml-[10px] text-[#06B796] hover:text-neutral-700">x</button>
+                  </span>
+                ))}
+              </div>
+            </div>
+            {/* 확인 / 취소 버튼 */}
+            <div className="flex justify-center space-x-[20px] mb-[30px]">
+              <button 
+                onClick={handleUpdate} 
+                className="W-[106px] h-[46px] px-[65px] py-[12px] text-[16px] font-bold bg-[#06B796] text-white rounded-[10px]"
               >
-                x
+                확인
               </button>
-            </span>
-          ))}
+              <button 
+                onClick={handleModalClose} 
+                className="W-[106px] h-[46px] px-[65px] py-[12px] text-[16px] font-bold bg-white text-[#06B796] rounded-[10px] border"
+              >
+                취소
+              </button>
+            </div>
+          </div>
         </div>
-
-        <button
-          onClick={handleUpdate}
-          className="mt-4 bg-[#06B796] text-white px-4 py-2 rounded"
-        >
-          확인
-        </button>
-
-        <button
-          onClick={() => setEditProfile(profile)}
-          className="mt-4 ml-4 bg-white text-[#06B796] outline-1 outline-offset-0 outline-[#06B796] px-4 py-2 rounded"
-        >
-          취소
-        </button>
-      </div>
+      )}
     </div>
   );
 }

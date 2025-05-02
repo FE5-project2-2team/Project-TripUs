@@ -39,19 +39,33 @@ export const getUserInfo = async (id: string) => {
   }
 };
 
-export const uploadPhoto = async (isCover: boolean, image: BinaryType) => {
+// export const uploadPhoto = async (isCover: boolean, image: BinaryType) => {
+//   try {
+//     const { data } = await axiosInstance.post("/users/upload-photo", {
+//       isCover,
+//       image,
+//     });
+//     return data;
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.log(error.message);
+//     } else {
+//       console.log("Unknwon Error", error);
+//     }
+//   }
+// };
+export const uploadPhoto = async (isCover: boolean, image: File) => {
   try {
-    const { data } = await axiosInstance.post("/users/upload-photo", {
-      isCover,
-      image,
+    const formData = new FormData();
+    formData.append("isCover", String(isCover));
+    formData.append("image", image);
+
+    const { data } = await axiosInstance.post("/users/upload-photo", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
     return data;
   } catch (error) {
-    if (error instanceof Error) {
-      console.log(error.message);
-    } else {
-      console.log("Unknwon Error", error);
-    }
+    console.error("Upload error:", error);
   }
 };
 
