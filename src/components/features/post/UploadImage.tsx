@@ -4,10 +4,12 @@ import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 export default function UploadImage({
-  handler,
+  removeImageHandler,
+  addImageHandler,
   showImages,
 }: {
-  handler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  removeImageHandler: (image: string) => void;
+  addImageHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   showImages: string[];
 }) {
   const [value, setValue] = useState("");
@@ -21,7 +23,8 @@ export default function UploadImage({
               key={index}
               src={image}
               alt={image}
-              className="h-[46px] max-w-22"
+              className="h-[46px] max-w-22 cursor-pointer hover:brightness-90"
+              onClick={() => removeImageHandler(image)}
             />
           ))}
         <label htmlFor="inputFile" className="flex items-center">
@@ -31,7 +34,7 @@ export default function UploadImage({
             multiple
             accept="image/jpg, image/png, image/jpeg, image/gif"
             onChange={(e) => {
-              handler(e);
+              addImageHandler(e);
               setValue("");
             }}
             value={value}

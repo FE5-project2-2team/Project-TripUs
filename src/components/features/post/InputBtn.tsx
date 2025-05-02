@@ -12,6 +12,7 @@ export default function InputBtn(props: InputProps) {
         id={value}
         value={value}
         ref={inputRef}
+        key={value}
         {...rest}
       />
       <span

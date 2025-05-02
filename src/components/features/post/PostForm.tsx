@@ -31,7 +31,7 @@ export default function PostForm() {
     ageRange: [],
   });
   const contents = useRef<HTMLDivElement>(null);
-  const thumbnailRef = useRef<File | null>(null);
+  const ImageListRef = useRef<File[]>([]);
 
   const selectChangeHandler = (value: string, id: string) => {
     if (id === "selectChannel") {
@@ -42,11 +42,9 @@ export default function PostForm() {
   };
 
   const addImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const imageFiles = e.target.files;
-    if (showImages.length === 0) {
-      thumbnailRef.current = imageFiles![0];
-    }
-    const imageUrlList = [...imageFiles!]
+    const imageFiles = e.target.files!;
+    ImageListRef.current = [...ImageListRef.current, ...imageFiles];
+    const imageUrlList = [...imageFiles]
       .filter((file) => file.type.startsWith("image/"))
       .map((imageFile) => URL.createObjectURL(imageFile));
     if (showImages.length <= 10) {
@@ -55,6 +53,24 @@ export default function PostForm() {
         return result.slice(0, 10);
       });
     }
+  };
+
+  const encodeImages = (
+    images: File[]
+  ): Promise<(string | ArrayBuffer | null)[]> => {
+    const promises = images.map((image) => {
+      return new Promise<string | ArrayBuffer | null>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(image);
+      });
+    });
+    return Promise.all(promises);
+  };
+
+  const removeImageHandler = (image: string) => {
+    setShowImages((images) => images.filter((img) => image !== img));
   };
 
   const radioBtnHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,6 +87,7 @@ export default function PostForm() {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const encodedImages = await encodeImages(ImageListRef.current);
     if (
       title === "" ||
       location === "" ||
@@ -90,14 +107,16 @@ export default function PostForm() {
       location,
       dateRange,
       isRecruiting: true,
+      images: encodedImages,
       recruitCondition: condition,
       contents: contents.current!.innerHTML,
     };
     const postData = {
       title: JSON.stringify(detailData),
-      image: thumbnailRef.current || null,
+      image: ImageListRef.current[0] || null,
       channelId: channel,
     };
+    console.log(postData.title);
     const postId = await createPost(postData);
     navigate(`/post/detail/${postId}`);
   };
@@ -176,7 +195,11 @@ export default function PostForm() {
           />
         </div>
         <Contents ref={contents} />
-        <UploadImage handler={addImageHandler} showImages={showImages} />
+        <UploadImage
+          removeImageHandler={removeImageHandler}
+          addImageHandler={addImageHandler}
+          showImages={showImages}
+        />
         <div>
           <span className="post-input-title mb-4">동행조건</span>
           <fieldset className="mb-[30px]">
