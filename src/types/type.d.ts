@@ -16,3 +16,18 @@ interface UpdatedUserData {
   profile?: Partial<User>;
   tagList?: string[];
 }
+
+interface Post {
+  title: string;
+  image: File | null;
+  channelId: string;
+  postId?: string;
+  imageToDeletePublicId?: string;
+}
+
+interface NotiType {
+  notificationType: "COMMENT" | "LIKE" | "MESSAGE";
+  notificationTypeId: string;
+  userId: string;
+  postId: string | null;
+}

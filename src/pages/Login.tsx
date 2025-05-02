@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import { loginUser } from "../apis/auth";
 import { useAuthStore } from "../store/authStore";
 import SignupLogo from "../assets/images/Signup_logo.svg";
 import sprite from "../assets/images/sprite.png";
-import { loginUser } from "../apis/auth";
+
 
 export default function Login() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function Login() {
       console.log("서버응답", data);
 
       if (data?.token) {
-        login(data.token);
+        login(data.token, data.user._id);
         alert("로그인 성공");
         navigate("/");
       } else {
