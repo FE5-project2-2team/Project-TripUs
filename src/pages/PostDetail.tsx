@@ -40,7 +40,13 @@ export default function PostDetail() {
             </span>
             <span className="text-[28px] font-medium">{postInfo?.title}</span>
           </h2>
-          <img src={postData.image ?? undefined} alt="" />
+          {postInfo?.images.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              className="w-266 h-125 object-contain"
+            />
+          ))}
         </div>
         <div className="flex flex-col gap-[30px] w-266 ">
           <div>

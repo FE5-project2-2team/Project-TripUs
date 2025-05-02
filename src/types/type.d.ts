@@ -41,6 +41,7 @@ interface PostData {
   isRecruiting: boolean;
   recruitCondition: RecruitCondition;
   contents: string;
+  images: string[];
 }
 
 type RecruitCondition = {
