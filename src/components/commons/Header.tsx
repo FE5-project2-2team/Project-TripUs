@@ -47,6 +47,7 @@ export default function Header() {
       <div className="flex items-center gap-[30px]">
         {isLoggedIn ? (
           <>
+            <Link to={"/postCreate"}>게시글 작성</Link>
             <Link to={"/message"}>
               <FontAwesomeIcon icon={faComments} className="text-xl" />
             </Link>

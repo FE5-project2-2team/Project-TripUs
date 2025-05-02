@@ -22,7 +22,6 @@ export default function PostForm() {
   const [location, setLocation] = useState("");
   const [dateRange, setDateRange] = useState<Date[]>([]);
   const [title, setTitle] = useState("");
-  const contents = useRef<HTMLDivElement>(null);
   const [showImages, setShowImages] = useState<string[]>([]);
   const [condition, setCondition] = useState<{
     gender: string;
@@ -31,6 +30,7 @@ export default function PostForm() {
     gender: "",
     ageRange: [],
   });
+  const contents = useRef<HTMLDivElement>(null);
   const thumbnailRef = useRef<File | null>(null);
 
   const selectChangeHandler = (value: string, id: string) => {
@@ -77,8 +77,7 @@ export default function PostForm() {
       dateRange.length === 0 ||
       condition.gender === "" ||
       condition.ageRange.length === 0 ||
-      contents.current!.innerHTML ===
-        `<div contenteditable="true" class="focus:outline-0"></div>`
+      contents.current!.innerText.trim() === ""
     ) {
       alert("입력 정보가 부족합니다");
       return;
@@ -136,7 +135,7 @@ export default function PostForm() {
             type="text"
             placeholder="지역 입력"
             onChange={(e) => setLocation(e.target.value)}
-            className="input-style"
+            className="input-style placeholder:text-[#CDCDCD]"
           />
         </div>
         <div>
@@ -145,7 +144,7 @@ export default function PostForm() {
           </label>
           <Flatpickr
             id="date"
-            className="input-style"
+            className="input-style placeholder:text-[#CDCDCD]"
             options={{
               mode: "range",
               dateFormat: "Y-m-d",
@@ -172,7 +171,7 @@ export default function PostForm() {
             placeholder="제목을 입력해 주세요"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="bg-[#F9F9F9] w-full p-5 rounded-[10px]"
+            className="bg-[#F9F9F9] w-full p-5 rounded-[10px] placeholder:text-[#CDCDCD]"
           />
         </div>
         <Contents ref={contents} />
