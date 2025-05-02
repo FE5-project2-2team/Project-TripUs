@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @layer components {
-  .post-input-title {
+  .post-sub-title {
     display: block;
     font-weight: medium;
     font-size: 20px;

@@ -1,8 +1,21 @@
 import { axiosInstance, formDataInstance } from "./axios";
 
-export const getPosts = async (channelId: string) => {
+export const getPostsByChannelId = async (channelId: string) => {
   try {
     const { data } = await axiosInstance.get(`/posts/channel/${channelId}`);
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    } else {
+      console.log("Unknwon Error", error);
+    }
+  }
+};
+
+export const getPostById = async (postId: string) => {
+  try {
+    const { data } = await axiosInstance.get(`/posts/${postId}`);
     return data;
   } catch (error) {
     if (error instanceof Error) {
@@ -26,7 +39,7 @@ export const getPostsByAuthor = async (AuthorId: string) => {
   }
 };
 
-export const createPost = async (post: Post) => {
+export const createPost = async (post: PostUpdateData) => {
   try {
     const { data } = await formDataInstance.post("/posts/create", post);
     return data._id;
@@ -39,7 +52,7 @@ export const createPost = async (post: Post) => {
   }
 };
 
-export const updatePost = async (post: Post) => {
+export const updatePost = async (post: PostUpdateData) => {
   try {
     await axiosInstance.put("/posts/update", post);
   } catch (error) {

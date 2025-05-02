@@ -24,7 +24,7 @@ interface NotiType {
   postId: string | null;
 }
 
-interface Post {
+interface PostUpdateData {
   title: string;
   image: File | null;
   channelId: string;
@@ -47,3 +47,35 @@ type RecruitCondition = {
   gender: string;
   ageRange: string[];
 };
+
+interface Post {
+  likes: Like[];
+  comments: Comment[];
+  _id: string;
+  image?: string;
+  imagePublicId?: string;
+  title: string;
+  channel: Channel;
+  author: UserData;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface UserData {
+  coverImage: string;
+  image: string;
+  role: string;
+  isOnline: boolean;
+  posts: Post[];
+  likes: Like[];
+  comments: string[];
+  followers: [];
+  following: [];
+  notifications: Notification[];
+  messages: Message[];
+  _id: string;
+  fullName: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+}
