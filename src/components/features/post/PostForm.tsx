@@ -86,6 +86,7 @@ export default function PostForm() {
       title,
       memberLimit: Number(member),
       memberList: [userId!],
+      applicantList: [],
       location,
       dateRange,
       isRecruiting: true,
@@ -115,7 +116,7 @@ export default function PostForm() {
         </LabelSelect>
         <LabelSelect
           value={member}
-          name="모집 인원"
+          name="인원"
           id="recruitMember"
           handler={selectChangeHandler}
         >
@@ -183,7 +184,7 @@ export default function PostForm() {
             <InputBtn
               type="radio"
               onChange={radioBtnHandler}
-              value="all genders"
+              value="성별무관"
               name="gender"
             >
               성별무관
@@ -191,7 +192,7 @@ export default function PostForm() {
             <InputBtn
               type="radio"
               onChange={radioBtnHandler}
-              value="male"
+              value="남성"
               name="gender"
             >
               남성
@@ -199,7 +200,7 @@ export default function PostForm() {
             <InputBtn
               type="radio"
               onChange={radioBtnHandler}
-              value="female"
+              value="여성"
               name="gender"
             >
               여성
@@ -207,14 +208,15 @@ export default function PostForm() {
           </fieldset>
           <fieldset>
             <legend className="mb-[10px]">나이 (다중 선택 가능)</legend>
-            {["20", "30", "40", "50", "60"].map((age, index) => (
+            {["20대", "30대", "40대", "50대", "60대"].map((age, index) => (
               <InputBtn
                 type="checkbox"
                 onChange={checkBoxHandler}
                 value={age}
                 name="ageRange"
               >
-                {age}대{index === 4 && "+"}
+                {age}
+                {index === 4 && "+"}
               </InputBtn>
             ))}
           </fieldset>

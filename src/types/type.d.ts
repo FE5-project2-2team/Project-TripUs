@@ -36,9 +36,11 @@ interface PostData {
   title: string;
   memberLimit: number;
   memberList: string[];
+  applicantList: string[];
   location: string;
   dateRange: Date[];
   isRecruiting: boolean;
+  images: string[];
   recruitCondition: RecruitCondition;
   contents: string;
 }
