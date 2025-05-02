@@ -1,5 +1,5 @@
-@import "./tailwind.css";
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+@import "./tailwind.css";
 
 body {
   color: #333;
@@ -40,3 +40,4 @@ body {
 .secondButton {
   @apply w-[460px] h-[60px] bg-white hover:bg-[#F0F9F7] text-[#06B796] border border-[#06B796] text-[20px] rounded-[10px] font-semibold transition-colors;
 }
+

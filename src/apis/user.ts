@@ -1,4 +1,3 @@
-import { AxiosError } from "axios";
 import { axiosInstance } from "./axios";
 
 export const getUsers = async () => {
@@ -6,7 +5,7 @@ export const getUsers = async () => {
     const { data } = await axiosInstance.get("/users/get-users");
     return data;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof Error) {
       console.log(error.message);
     } else {
       console.log("Unknwon Error", error);
@@ -19,7 +18,7 @@ export const getOnlineUsers = async () => {
     const { data } = await axiosInstance.get("/users/online-users");
     return data;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof Error) {
       console.log(error.message);
     } else {
       console.log("Unknwon Error", error);
@@ -32,7 +31,7 @@ export const getUserInfo = async (id: string) => {
     const { data } = await axiosInstance.get(`/users/${id}`);
     return data;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof Error) {
       console.log(error.message);
     } else {
       console.log("Unknwon Error", error);
@@ -48,7 +47,7 @@ export const uploadPhoto = async (isCover: boolean, image: BinaryType) => {
     });
     return data;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof Error) {
       console.log(error.message);
     } else {
       console.log("Unknwon Error", error);
@@ -63,7 +62,7 @@ export const deletePhoto = async (isCover: boolean) => {
     });
     return data;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof Error) {
       console.log(error.message);
     } else {
       console.log("Unknwon Error", error);
@@ -78,7 +77,7 @@ export const updateUserPwd = async (newPwd: string) => {
     });
     return data;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof Error) {
       console.log(error.message);
     } else {
       console.log("Unknwon Error", error);
@@ -98,7 +97,7 @@ export const updateUserInfo = async ({ profile, tagList }: UpdatedUserData) => {
     const { data } = await axiosInstance.put("/settings/update-user", userInfo);
     return data;
   } catch (error) {
-    if (error instanceof AxiosError) {
+    if (error instanceof Error) {
       console.log(error.message);
     } else {
       console.log("Unknwon Error", error);
