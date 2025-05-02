@@ -2,8 +2,18 @@ import axios from "axios";
 import { APIUrl } from "../constants/apis";
 import { useAuthStore } from "../store/authStore";
 
+const token = useAuthStore.getState().accessToken;
+
 export const axiosInstance = axios.create({
   baseURL: APIUrl,
+});
+
+export const formDataInstance = axios.create({
+  baseURL: APIUrl,
+  headers: {
+    "Content-Type": "multipart/form-data",
+    Authorization: `Bearer ${token}`,
+  },
 });
 
 axiosInstance.interceptors.request.use((config) => {

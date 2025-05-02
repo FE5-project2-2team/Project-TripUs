@@ -5,7 +5,7 @@ export default function Contents({
 }) {
   return (
     <div>
-      <label htmlFor="contents" className="input-label-style">
+      <label htmlFor="contents" className="post-input-title">
         내용
       </label>
       <div

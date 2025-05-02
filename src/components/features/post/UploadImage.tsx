@@ -3,29 +3,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-export default function UploadImage() {
+export default function UploadImage({
+  handler,
+  showImages,
+}: {
+  handler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  showImages: string[];
+}) {
   const [value, setValue] = useState("");
-  const [showImages, setShowImages] = useState<string[]>([]);
-  const addImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const imageFiles = e.target.files;
-    const imageUrlList = [...imageFiles!]
-      .filter((file) => file.type.startsWith("image/"))
-      .map((imageFile) => URL.createObjectURL(imageFile));
-    if (showImages.length <= 10) {
-      setShowImages((list) => {
-        const result = [...list, ...imageUrlList];
-        return result.slice(0, 10);
-      });
-      setValue("");
-    }
-  };
   return (
     <div>
-      <span className="input-label-style">사진</span>
+      <span className="post-input-title">사진</span>
       <div className="flex bg-[#F9F9F9] py-2 px-[10px] gap-5">
         {showImages &&
-          showImages.map((image) => (
-            <img src={image} alt={image} className="h-[46px] max-w-22" />
+          showImages.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={image}
+              className="h-[46px] max-w-22"
+            />
           ))}
         <label htmlFor="inputFile" className="flex items-center">
           <input
@@ -33,7 +30,10 @@ export default function UploadImage() {
             type="file"
             multiple
             accept="image/jpg, image/png, image/jpeg, image/gif"
-            onChange={addImageHandler}
+            onChange={(e) => {
+              handler(e);
+              setValue("");
+            }}
             value={value}
             className="absolute w-0 h-0"
             disabled={showImages.length === 10 ? true : false}

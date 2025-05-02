@@ -17,19 +17,19 @@ interface UpdatedUserData {
   tagList?: string[];
 }
 
-interface Post {
-  title: PostData;
-  image: File | null;
-  channelId: string;
-  postId?: string;
-  imageToDeletePublicId?: string;
-}
-
 interface NotiType {
   notificationType: "COMMENT" | "LIKE" | "MESSAGE";
   notificationTypeId: string;
   userId: string;
   postId: string | null;
+}
+
+interface Post {
+  title: string;
+  image: File | null;
+  channelId: string;
+  postId?: string;
+  imageToDeletePublicId?: string;
 }
 
 interface PostData {
@@ -39,6 +39,11 @@ interface PostData {
   location: string;
   dateRange: Date[];
   isRecruiting: boolean;
-  recruitCondition: string[];
+  recruitCondition: RecruitCondition;
   contents: string;
 }
+
+type RecruitCondition = {
+  gender: string;
+  ageRange: string[];
+};

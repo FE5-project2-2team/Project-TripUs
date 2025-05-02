@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @layer components {
-  .input-label-style {
+  .post-input-title {
     display: block;
     font-weight: medium;
     font-size: 20px;
@@ -10,25 +10,24 @@
 
   .input-style {
     width: 512px;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #cdcdcd;
     padding-inline: 10px;
     padding-block: 15px;
   }
 
-  .cond-btn,
-  .cond-btn-active {
-    box-sizing: border-box;
+  .input-style:placeholder {
+    color: #cdcdcd;
+  }
+
+  .cond-btn {
+    display: inline-block;
     width: 80px;
     text-align: center;
     padding-block: 14px;
+    margin-right: 16px;
     border-radius: 8px;
     cursor: pointer;
     border: 2px solid transparent;
     background-color: #f3f4f6;
-  }
-
-  .cond-btn-active {
-    color: #06b796;
-    border: 2px solid #06b796;
   }
 }

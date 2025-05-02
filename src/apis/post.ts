@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axios";
+import { axiosInstance, formDataInstance } from "./axios";
 
 export const getPosts = async (channelId: string) => {
   try {
@@ -28,7 +28,8 @@ export const getPostsByAuthor = async (AuthorId: string) => {
 
 export const createPost = async (post: Post) => {
   try {
-    await axiosInstance.post("/posts/create", post);
+    const { data } = await formDataInstance.post("/posts/create", post);
+    return data._id;
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
