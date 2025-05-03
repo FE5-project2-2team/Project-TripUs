@@ -1,7 +1,7 @@
 export default function PostDetail() {
-  return (
-    <>
-      <h1>PostDetail Component</h1>
-    </>
-  );
+	return (
+		<>
+			<h1>PostDetail Component</h1>
+		</>
+	);
 }
