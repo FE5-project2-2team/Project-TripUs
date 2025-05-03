@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { loginUser } from "../apis/auth";
 import { useAuthStore } from "../store/authStore";
+import SignupLogo from "../assets/images/Signup_logo.svg";
+import sprite from "../assets/images/sprite.png";
+
 
 export default function Login() {
   const navigate = useNavigate();
@@ -10,6 +13,11 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [hoveredField, setHoveredField] = useState<string | null>(null);
+
+  const handleSignupClick = () => {
+    navigate("/signup");
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,20 +45,69 @@ export default function Login() {
   };
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <input
-          name="email"
-          placeholder="이메일"
-          value={form.email}
-          onChange={handleChange}
+      <form
+        onSubmit={handleSubmit}
+        className="w-[460px] mx-auto mt-10 flex flex-col gap-[26px] text-[#333333]"
+      >
+        <img
+          src={SignupLogo}
+          alt="TripUs 로고"
+          className="w-[278px] h-[106px] mx-auto mt-[223px] mb-[26px]"
         />
-        <input
-          name="password"
-          placeholder="비밀번호"
-          value={form.password}
-          onChange={handleChange}
-        />
-        <button type="submit">로그인</button>
+        <div
+          className="relative group"
+          onMouseEnter={() => setHoveredField("email")}
+          onMouseLeave={() => setHoveredField(null)}
+        >
+          <div
+            className="iconProps"
+            style={{
+              backgroundImage: `url(${sprite})`,
+              backgroundPosition:
+                hoveredField === "email" ? "-117px -265px " : "-117px -239px",
+            }}
+          ></div>
+          <input
+            name="email"
+            placeholder="이메일"
+            value={form.email}
+            onChange={handleChange}
+            className="inputProps"
+          />
+        </div>
+        <div
+          className="relative group"
+          onMouseEnter={() => setHoveredField("password")}
+          onMouseLeave={() => setHoveredField(null)}
+        >
+          <div
+            className="iconProps"
+            style={{
+              backgroundImage: `url(${sprite})`,
+              backgroundPosition:
+                hoveredField === "password"
+                  ? "-150px -264px "
+                  : "-150px -238px",
+            }}
+          ></div>
+          <input
+            name="password"
+            placeholder="비밀번호"
+            value={form.password}
+            onChange={handleChange}
+            className="inputProps"
+          />
+        </div>
+        <button type="submit" className="firstButton">
+          로그인
+        </button>
+        <button
+          type="button"
+          onClick={handleSignupClick}
+          className="secondButton"
+        >
+          회원가입
+        </button>
       </form>
     </>
   );
