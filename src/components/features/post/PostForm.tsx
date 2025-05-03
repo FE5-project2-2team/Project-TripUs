@@ -87,7 +87,6 @@ export default function PostForm() {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(channel);
     const encodedImages = await encodeImages(ImageListRef.current);
     if (contents.current!.innerText.length >= 1000) {
       alert("글자 수가 1000자 이상입니다");
@@ -117,12 +116,13 @@ export default function PostForm() {
       recruitCondition: condition,
       contents: contents.current!.innerHTML,
     };
-    const postData = {
-      title: JSON.stringify(detailData),
-      image: ImageListRef.current[0] || null,
-      channelId: channel,
-    };
-    const postId = await createPost(postData);
+    
+    const formData = new FormData();
+    formData.append("title", JSON.stringify(detailData))
+    formData.append("image", ImageListRef.current[0] || null)
+    formData.append("channelId",channel)
+
+    const postId = await createPost(formData);
     navigate(`/post/detail/${postId}`);
   };
 

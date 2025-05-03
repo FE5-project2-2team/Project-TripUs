@@ -17,13 +17,6 @@ interface UpdatedUserData {
   tagList?: string[];
 }
 
-interface NotiType {
-  notificationType: "COMMENT" | "LIKE" | "MESSAGE";
-  notificationTypeId: string;
-  userId: string;
-  postId: string | null;
-}
-
 interface Post {
   title: string;
   image: File | null;
@@ -45,7 +38,20 @@ interface PostData {
   contents: string;
 }
 
-type RecruitCondition = {
-  gender: string;
-  ageRange: string[];
-};
+interface NotiType {
+  notificationType: "COMMENT" | "LIKE" | "MESSAGE";
+  notificationTypeId: string;
+  userId: string;
+  postId: string | null;
+}
+
+interface PostData {
+  title : string,
+  memberLimit : number,
+  memberList : string[],
+  location : string,
+  dateRange : Date[],
+  isRecruiting: boolean,
+  recruitCondition: string[],
+  contents: string,
+}
