@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useClickAway } from "react-use";
-import { twMerge } from "tailwind-merge";
 import { getUserInfo } from "../../apis/user";
 import headerLogo from "../../assets/images/logo_header.svg";
 import profileCircle from "../../assets/images/profileImg_circle.svg";
@@ -29,39 +28,44 @@ export default function Header() {
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
 	const getUserData = useCallback(async () => {
-		const { image, fullName } = await getUserInfo(userId!);
-		const { nickname } = JSON.parse(fullName);
-		if (image) setImage(image);
-		setNickname(nickname);
+		if (!userId) return;
+		try {
+			const { image, fullName } = await getUserInfo(userId);
+			const { nickname } = JSON.parse(fullName);
+			if (image) setImage(image);
+			setNickname(nickname);
+		} catch (error) {
+			console.error(error);
+		}
 	}, [userId]);
-
+	console.log("rendering");
 	const signOut = () => {
 		navigate("/");
 		logout();
 		setModalOpen(false);
 	};
+
 	const goToMyPage = () => {
 		navigate(`/profile/${userId}`);
 		setModalOpen(false);
 	};
+
 	const setDarkMode = () => {
 		setModalOpen(false);
 	};
 
 	useEffect(() => {
-		if (!isLoggedIn) return;
-		getUserData();
-	}, [isLoggedIn, getUserData]);
+		if (isLoggedIn && userId) {
+			getUserData();
+		}
+	}, [isLoggedIn, userId, getUserData]);
 
 	useClickAway(modalRef, () => {
 		setModalOpen(false);
 	});
+
 	return (
-		<div
-			className={twMerge(
-				"flex justify-between h-[70px] px-5 border-b border-[#CACACA]"
-			)}
-		>
+		<div className="flex justify-between h-[70px] px-5 border-b border-[#CACACA]">
 			<Link to={"/"} className="flex items-center">
 				<img src={headerLogo} alt="로고" />
 			</Link>
@@ -77,7 +81,6 @@ export default function Header() {
 						onClick={() => {
 							if (!modalOpen) setModalOpen(true);
 						}}
-						disabled={modalOpen}
 						className="flex items-center cursor-pointer"
 					>
 						<img
