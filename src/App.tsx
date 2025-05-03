@@ -19,8 +19,6 @@ export default function App() {
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />}>
             <Route path="channel/:channelName" index element={<Channel />} />
-            {/* Home안에 Channel 넣어야할듯 */}
-            {/* channel에 path 추가함 */}
           </Route>
           <Route path="/post/detail/:id" element={<PostDetail />} />
           <Route path="/profile/:id" element={<Profile />} />
