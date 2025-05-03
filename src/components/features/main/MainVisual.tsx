@@ -192,7 +192,7 @@ export default function MainVisual() {
         ))}
       </Swiper>
       {/* 컨트롤러 */}
-      <div className="absolute bottom-[24px] left-[40px] right-[40px] flex items-center gap-4 text-white text-sm z-10">
+      <div className="absolute bottom-[24px] left-[40px] right-[40px] flex items-center gap-2 text-white text-sm z-10">
         <button
           className="custom-prev-button w-6 h-6 cursor-pointer"
           style={{
@@ -231,7 +231,7 @@ export default function MainVisual() {
             backgroundImage: `url(${spriteImage})`,
             backgroundSize: "367.5px 570px",
             backgroundRepeat: "no-repeat",
-            backgroundPosition: autoplaying ? "-92px -21px" : "-129px -20px",
+            backgroundPosition: autoplaying ? "-91px -20px" : "-127px -20px",
           }}
           aria-label={autoplaying ? "정지" : "재생"}
         ></button>
