@@ -60,7 +60,6 @@ export default function MainVisual() {
   const [activeIndex, setActiveIndex] = useState(0); //현재 슬라이드 인덱스
   const [fillPercent, setFillPercent] = useState(0); // 진행률0~100
   const [startTime, setStartTime] = useState<number | null>(null); //애니메이션 시작 시간
-  // const [initialElapsed, setInitialElapsed] = useState(0); //정지되기 전까지 경과된 시간 저장
 
   // 슬라이드 하나당 재생 시간 5초
   const DURATION = 5000;
@@ -84,13 +83,7 @@ export default function MainVisual() {
     const update = (now: number) => {
       const elapsed = now - start + elapsedStart;
       const percent = Math.min(100, (elapsed / DURATION) * 100);
-      console.log(
-        "animateProgress → 경과 시간(ms):",
-        elapsed.toFixed(2),
-        "→ 진행률:",
-        percent.toFixed(2),
-        "%"
-      );
+
       setFillPercent(percent);
       if (percent < 100) {
         animationFrameRef.current = requestAnimationFrame(update);
@@ -105,36 +98,36 @@ export default function MainVisual() {
     if (animationFrameRef.current)
       cancelAnimationFrame(animationFrameRef.current);
 
-    // 문제
-    // elapsed 값을 setInitialElapsed로 저장했지만
-    // useState의 비동기 특성상,
-    // resumeAutoplay 함수 실행 시 이전 값이 아닌 초기 값(0)이 사용될 가능성이 있음
     if (startTime !== null) {
       const now = performance.now();
-      const elapsed = now - startTime;
-      // 이 값이 즉시 반영 안되는거 같음
-      // setInitialElapsed((prev) => prev + elapsed);
-      initialElapsedRef.current = elapsed;
-      console.log("정지 시점 → 누적 경과 시간:", initialElapsedRef.current);
+      let elapsed = now - startTime;
+
+      // 경과 시간이 음수로 나오는 경우를 방지
+      if (elapsed < 0) elapsed = 0;
+
+      // 첫 번째 정지 후, 두 번째 정지 시점에서 누적된 경과 시간을 계산
+      if (initialElapsedRef.current === 0) {
+        initialElapsedRef.current = elapsed; // 첫 번째 정지 시점에서만 초기화
+      } else {
+        // 두 번째 정지 이후에는 첫 번째 정지 이후의 시간만 반영
+        initialElapsedRef.current += elapsed;
+      }
     }
-    setStartTime(null);
+
+    // startTime을 null로 설정하지 않고, 다음 재생 시점에서 사용할 시간을 그대로 유지합니다.
+    setStartTime(performance.now());
   }, [startTime]);
 
   // 재생 재개 처리
   const resumeAutoplay = useCallback(() => {
     const now = performance.now();
-    // const remaining = Math.max(0, DURATION - initialElapsed);
+    // 첫 번째 정지에서 저장된 경과 시간만큼 계산된 남은 시간
     const remaining = Math.max(0, DURATION - initialElapsedRef.current);
 
-    // 문제
-    // initialElapsed 상태값이 이 시점에 아직 업데이트 되지 않았을 수 있음
-    // 해결 : useRef로 elapsed 값을 관리하거나
-    // stop 시 elapsed 값을 바로 저장할 수 있도록 분리 저장 필요
-    console.log("재생 시작 → 남은 시간:", remaining);
-    setStartTime(now);
+    setStartTime(now); // 재생 시작 시간을 새로 설정
     isResumingRef.current = true;
-    animateProgress(now, initialElapsedRef.current);
-    startSlideTimer(remaining);
+    animateProgress(now, initialElapsedRef.current); // 초기화 시 누적 경과 시간을 그대로 사용
+    startSlideTimer(remaining); // 남은 시간만큼 타이머 설정
   }, [animateProgress, startSlideTimer]);
 
   // 토글 핸들러
@@ -165,7 +158,7 @@ export default function MainVisual() {
     setStartTime(now);
     animateProgress(now, 0);
 
-    // ✅ autoplaying이 true일 때만 실행되게 하면서
+    // autoplaying이 true일 때만 실행되게 하면서
     // resumeAutoplay와 중복 호출되지 않도록 startSlideTimer 호출 제거
     if (initialElapsedRef.current === 0) {
       startSlideTimer(DURATION);
@@ -246,7 +239,7 @@ export default function MainVisual() {
         <div className="flex-1 h-[4px] bg-white/40 ml-4 relative overflow-hidden">
           <div
             className="h-[2px] bg-white/80 transition-none absolute top-1/2 -translate-y-1/2"
-            style={{ width: `${fillPercent}%` }}
+            style={{ width: `${fillPercent}% ` }}
           />
         </div>
       </div>
