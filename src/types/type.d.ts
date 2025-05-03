@@ -41,3 +41,14 @@ interface NotiType {
   userId: string;
   postId: string | null;
 }
+
+interface PostData {
+  title : string,
+  memberLimit : number,
+  memberList : string[],
+  location : string,
+  dateRange : Date[],
+  isRecruiting: boolean,
+  recruitCondition: string[],
+  contents: string,
+}
