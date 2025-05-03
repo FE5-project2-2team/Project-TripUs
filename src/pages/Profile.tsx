@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback, useRef } from "react";
+import spriteImage from "../assets/images/spriteImages.png";
 import profileCircle from "../assets/images/profileImg_circle.svg"
 import { axiosInstance } from "../apis/axios";
 import { useAuthStore } from "../store/authStore";
-import { getUserInfo, uploadPhoto } from "../apis/user";
+import { getUserInfo, uploadPhoto, deletePhoto } from "../apis/user";
 
 export default function Profile() {
   const userId = useAuthStore((state) => state.userId);
@@ -76,12 +77,12 @@ export default function Profile() {
     if (!file) return;
 
     try {
-      const result = await uploadPhoto(false, file);
+      const result = await uploadPhoto(file);
       if (!result || !result.image) {
         throw new Error("서버 응답에 image 필드가 없습니다.");
       }
       const uploadedImageUrl = result.image;
-      setImage(uploadedImageUrl);
+      setImage(uploadedImageUrl || profileCircle);
       setEditProfile((prev) => ({
         ...prev,
         image: uploadedImageUrl,
@@ -91,6 +92,33 @@ export default function Profile() {
       alert("프로필 사진 업로드에 실패했습니다.");
     }
   };
+  
+  // const handleResetImage = () => {
+  //   setImage(profileCircle);
+  //   setEditProfile((prev) => ({
+  //     ...prev,
+  //     image: profileCircle,
+  //   }));
+  // }
+  const handleResetImage = async () => {
+    try {
+      // 프로필 이미지를 삭제하여 기본 이미지로 변경
+      const response = await deletePhoto(false); // false는 커버 이미지가 아닌 경우로 설정
+      if (response) {
+        // 삭제 성공 시, 이미지 상태를 기본 이미지로 설정
+        setImage(profileCircle);
+        setEditProfile((prev) => ({
+          ...prev,
+          image: profileCircle,
+        }));
+        alert("기본 이미지로 변경되었습니다.");
+      }
+    } catch (err) {
+      console.error("기본 이미지로 변경 실패:", err);
+      alert("기본 이미지로 변경에 실패했습니다.");
+    }
+  };
+  
 
   const handleModalOpen = () => setIsModalOpen(true);
   const handleModalClose = () => {
@@ -103,7 +131,17 @@ export default function Profile() {
       <div className="w-[1062px]">
         <div className="flex items-center justify-between mb-[50px]">
           <div className="flex">
-            <div className="icon icon-goBackArrow"></div>
+            <button
+              className="w-[30px] h-[30px] mr-[10px] bg-no-repeat"
+              style={{
+                backgroundImage: `url(${spriteImage})`,
+                backgroundPosition: "-166px -148px",
+                backgroundSize: "367.5px 570px",
+                backgroundRepeat: "no-repeat",
+              }}
+              aria-label="Previous Slide"
+            >
+            </button>
             <h2 className="text-[20px] text-[#333333]">마이페이지 & 리뷰</h2>
           </div>
           <button  
@@ -163,6 +201,7 @@ export default function Profile() {
                   프로필 이미지 변경
                 </button>
                 <button
+                  onClick={handleResetImage}
                   className="bg-white text-[#06B796] border border-[#06B796] rounded-[8px] px-4 py-2"
                 >
                   기본 이미지로 변경
