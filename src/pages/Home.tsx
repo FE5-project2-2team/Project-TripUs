@@ -3,20 +3,20 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Outlet, useNavigate, useParams } from "react-router";
 import { getChannels } from "../apis/channel";
-//import Channel from "./Channel";
+import MainVisual from "../components/features/main/MainVisual";
 
-//홈 이미지 배너
-function Image() {
-  return (
-    <div className="object-contain mt-[20px] w-[1000px] h-[440px] ">
-      <img
-        src="/src/assets/images/willremove/HomeImg1.jpg"
-        alt="이미지"
-        className="w-[1000px] h-[440px]"
-      />
-    </div>
-  );
-}
+// //홈 이미지 배너
+// function Image() {
+//   return (
+//     <div className="object-contain mt-[20px] w-[1000px] h-[440px] ">
+//       <img
+//         src="/src/assets/images/willremove/HomeImg1.jpg"
+//         alt="이미지"
+//         className="w-[1000px] h-[440px]"
+//       />
+//     </div>
+//   );
+// }
 
 //채널 목록
 function ChannelList() {
@@ -238,7 +238,8 @@ export default function Home() {
         {/* 본문 */}
         <div className="flex flex-col items-center w-[1132px] h-[1166px]">
           {/* 슬라이드 이미지 */}
-          {Image()}
+          {/* {Image()} */}
+          <MainVisual />
           {/* 배너+검색 */}
           <div className="w-full max-w-[1000px] flex justify-between mt-8 ">
             {/* 배너 */}

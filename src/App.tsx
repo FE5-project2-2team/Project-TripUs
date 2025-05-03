@@ -13,28 +13,28 @@ import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 
 export default function App() {
-  return (
-    <>
-      <Routes>
-        <Route element={<RootLayout />}>
-          <Route path="/" element={<Home />}>
-            <Route path="channel/:channelName" index element={<Channel />} />
-          </Route>
-          <Route path="/post/detail/:id" element={<PostDetail />} />
-          <Route path="/profile/:id" element={<Profile />} />
+	return (
+		<>
+			<Routes>
+				<Route element={<RootLayout />}>
+					<Route path="/" element={<Home />}>
+						<Route path="channel/:channelName" index element={<Channel />} />
+					</Route>
+					<Route path="/post/detail/:id" element={<PostDetail />} />
+					<Route path="/profile/:id" element={<Profile />} />
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="/postCreate" element={<PostCreate />} />
-            <Route path="/message" element={<Message />} />
-          </Route>
-        </Route>
-        <Route element={<PublicOnlyRoute />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Route>
-        <Route path="/404" element={<NotFound />} />
-        <Route path="/*" element={<Navigate to="/404" replace />} />
-      </Routes>
-    </>
-  );
+					<Route element={<ProtectedRoute />}>
+						<Route path="/postCreate" element={<PostCreate />} />
+						<Route path="/message" element={<Message />} />
+					</Route>
+				</Route>
+				<Route element={<PublicOnlyRoute />}>
+					<Route path="/login" element={<Login />} />
+					<Route path="/signup" element={<Signup />} />
+				</Route>
+				<Route path="/404" element={<NotFound />} />
+				<Route path="/*" element={<Navigate to="/404" replace />} />
+			</Routes>
+		</>
+	);
 }
