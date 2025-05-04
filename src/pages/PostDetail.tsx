@@ -1,26 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getPostById } from "../apis/post";
-import profileCircle from "../assets/images/profileImg_circle.svg";
+import CommentsList from "../components/features/postDetail/CommentsList";
+import PostTitle from "../components/features/postDetail/PostTitle";
+import TravelInfo from "../components/features/postDetail/TravelInfo";
+import UserInfo from "../components/features/user/UserInfo";
 
 export default function PostDetail() {
 	const { id } = useParams();
 	const [postData, setPostData] = useState<Post | null>(null);
-	let postInfo: PostData | null = null;
-	let authorInfo: User | null = null;
 
 	const getData = useCallback(async () => {
 		const postData = await getPostById(id!);
 		setPostData(postData);
 	}, [id]);
-
-	const formatData = (date: Date) => {
-		const month = date.getMonth().toString();
-		const day = date.getDate().toString();
-		return `${date.getFullYear()}-${month.length === 1 ? `0${month}` : month}-${
-			day.length === 1 ? `0${day}` : day
-		}`;
-	};
 
 	useEffect(() => {
 		if (!id) return;
@@ -28,55 +21,20 @@ export default function PostDetail() {
 	}, [id, getData]);
 
 	if (postData) {
-		authorInfo = JSON.parse(postData.author.fullName);
-		postInfo = JSON.parse(postData.title);
-
+		const authorInfo: Profile = JSON.parse(postData.author.fullName);
+		const postInfo: PostData = JSON.parse(postData.title);
 		return (
 			<main className="flex flex-col justify-center items-center mt-[49px]">
-				<div className="mb-9">
-					<h2 className="flex justify-center items-center mb-[14px]">
-						<span className="mr-4 text-xl text-[#06B796] px-3 bg-[#F3F4F6] py-[5.5px] rounded-lg">
-							{postInfo?.isRecruiting ? "모집중" : "모집완료"}
-						</span>
-						<span className="text-[28px] font-medium">{postInfo?.title}</span>
-					</h2>
+				<PostTitle isRecruiting={postInfo.isRecruiting} title={postInfo.title}>
 					<img src={postData.image ?? undefined} alt="" />
-				</div>
+				</PostTitle>
 				<div className="flex flex-col gap-[30px] w-266 ">
-					<div>
-						<span className="post-sub-title">여행 소개</span>
-						<span>{postInfo?.contents}</span>
-					</div>
-					<div>
-						<span className="post-sub-title">여행 일정</span>
-						<div className="py-5 px-4 bg-[#F9F9F9] rounded-[15px] text-[#616161]">
-							<span className="block">
-								{postInfo?.dateRange
-									.map((date) => formatData(new Date(date)))
-									.join(" - ")}
-							</span>
-							<span>{postInfo?.location}</span>
-						</div>
-					</div>
-					<div>
-						<span className="post-sub-title">캡틴</span>
-						<div className="flex gap-[10px]">
-							<img
-								className="w-[50px] h-[50px] rounded-full"
-								src={postData.author.image || profileCircle}
-								alt="프로필 이미지"
-							/>
-							<div>
-								<span className="block font-medium">
-									{authorInfo?.nickname}
-								</span>
-								<div className="flex gap-2 text-[#616161]">
-									<span>{Math.floor(authorInfo!.age / 10) * 10}대</span>
-									<span>{authorInfo?.gender}</span>
-								</div>
-							</div>
-						</div>
-					</div>
+					<TravelInfo
+						contents={postInfo.contents}
+						dateRange={postInfo.dateRange}
+						location={postInfo.location}
+					/>
+					<UserInfo authorInfo={authorInfo} userId={postData.author._id} />
 					<div>
 						<span className="post-sub-title">참여 멤버</span>
 					</div>
@@ -84,16 +42,21 @@ export default function PostDetail() {
 						<span className="post-sub-title">동행 조건 사항</span>
 						<div>
 							<span className="text-[#616161] mr-[10px]">성별</span>
-							<span>{postInfo?.recruitCondition.gender}</span>
+							<span>{postInfo.recruitCondition.gender}</span>
 						</div>
 						<div>
 							<span className="text-[#616161] mr-[10px]">나이</span>
-							{postInfo?.recruitCondition.ageRange.join(", ")}
+							{postInfo.recruitCondition.ageRange.join(", ")}
 						</div>
 					</div>
-					<div>
-						<span className="post-sub-title">댓글</span>
+					<div className="self-center px-[30px] py-[10px] border-[1px] border-[#CDCDCD] rounded-[15px]">
+						{postData.likes.length}
 					</div>
+					<CommentsList
+						commentsList={postData.comments}
+						postId={id as string}
+						authorId={postData.author._id}
+					/>
 				</div>
 			</main>
 		);

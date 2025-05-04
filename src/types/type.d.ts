@@ -54,7 +54,7 @@ type RecruitCondition = {
 
 interface Post {
 	likes: Like[];
-	comments: Comment[];
+	comments: CommentData[];
 	_id: string;
 	image?: string;
 	imagePublicId?: string;
@@ -99,13 +99,11 @@ interface NotiType {
 	postId: string | null;
 }
 
-interface PostData {
-	title: string;
-	memberLimit: number;
-	memberList: string[];
-	location: string;
-	dateRange: Date[];
-	isRecruiting: boolean;
-	recruitCondition: string[];
-	contents: string;
+interface CommentData {
+	_id: string;
+	comment: string;
+	author: UserData;
+	post: string;
+	createdAt: string;
+	updatedAt: string;
 }
