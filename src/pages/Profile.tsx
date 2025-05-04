@@ -66,6 +66,7 @@ export default function Profile() {
 			console.log("업데이트 성공:", response.data);
 			setProfile(editProfile);
 			setIsModalOpen(false);
+
 			alert("프로필이 업데이트 되었습니다!");
 		} catch (err) {
 			console.error("업데이트 실패:", err);
