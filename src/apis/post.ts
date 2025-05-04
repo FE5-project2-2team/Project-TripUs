@@ -34,8 +34,14 @@ export const createPost = async (post: FormData) => {
 			}
 		});
 		return data._id;
+	} catch (error) {
+		if (error instanceof Error) {
+			console.log(error.message);
+		} else {
+			console.log("Unknwon Error", error);
+		}
 	}
-}
+};
 
 export const updatePost = async (post: Post) => {
 	try {
