@@ -18,7 +18,7 @@ export default function App() {
 			<Routes>
 				<Route element={<RootLayout />}>
 					<Route path="/" element={<Home />}>
-						<Route index element={<Channel />} />
+						<Route path="channel/:channelName" index element={<Channel />} />
 					</Route>
 					<Route path="/post/detail/:id" element={<PostDetail />} />
 					<Route path="/profile/:id" element={<Profile />} />

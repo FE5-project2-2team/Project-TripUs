@@ -46,4 +46,20 @@ export const logoutUser = async () => {
 			console.log("Unknwon Error", error);
 		}
 	}
+<<<<<<< HEAD
+=======
+};
+
+export const fetchAuthUser = async () => {
+	try {
+		const { data } = await axiosInstance.get("/auth-user");
+		return data;
+	} catch (error) {
+		if (error instanceof Error) {
+			console.log(error.message);
+		} else {
+			console.log("Unknwon Error", error);
+		}
+	}
+>>>>>>> main
 };

@@ -25,6 +25,13 @@ interface Post {
 	imageToDeletePublicId?: string;
 }
 
+interface NotiType {
+	notificationType: "COMMENT" | "LIKE" | "MESSAGE";
+	notificationTypeId: string;
+	userId: string;
+	postId: string | null;
+}
+
 interface PostData {
 	title: string;
 	memberLimit: number;
@@ -43,15 +50,4 @@ interface NotiType {
 	notificationTypeId: string;
 	userId: string;
 	postId: string | null;
-}
-
-interface PostData {
-	title: string;
-	memberLimit: number;
-	memberList: string[];
-	location: string;
-	dateRange: Date[];
-	isRecruiting: boolean;
-	recruitCondition: string[];
-	contents: string;
 }
