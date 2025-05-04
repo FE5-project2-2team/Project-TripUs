@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { createPost } from "../apis/post";
@@ -28,12 +29,21 @@ export function usePostForm() {
 	const contents = useRef<HTMLDivElement>(null);
 	const ImageListRef = useRef<File[]>([]);
 
-	const addImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const addImageHandler = async (
+		e: React.ChangeEvent<HTMLInputElement>
+	): Promise<void> => {
 		const imageFiles = e.target.files!;
 		ImageListRef.current = [...ImageListRef.current, ...imageFiles];
-		const imageUrlList = [...imageFiles]
-			.filter((file) => file.type.startsWith("image/"))
-			.map((imageFile) => URL.createObjectURL(imageFile));
+		const imageList = [...imageFiles].filter((file) =>
+			file.type.startsWith("image/")
+		);
+		const imageUrlList: string[] = [];
+		for (const image of imageList) {
+			const url = await uploadImage(image);
+			if (url) {
+				imageUrlList.push(url);
+			}
+		}
 		if (showImages.length <= 10) {
 			setShowImages((list) => {
 				const result = [...list, ...imageUrlList];
@@ -42,18 +52,19 @@ export function usePostForm() {
 		}
 	};
 
-	const encodeImages = (
-		images: File[]
-	): Promise<(string | ArrayBuffer | null)[]> => {
-		const promises = images.map((image) => {
-			return new Promise<string | ArrayBuffer | null>((resolve, reject) => {
-				const reader = new FileReader();
-				reader.onload = () => resolve(reader.result);
-				reader.onerror = () => reject(reader.error);
-				reader.readAsDataURL(image);
-			});
-		});
-		return Promise.all(promises);
+	const uploadImage = async (imageFile: File) => {
+		const formData = new FormData();
+		formData.append("file", imageFile);
+		formData.append("upload_preset", "postImages");
+		try {
+			const { data } = await axios.post(
+				"https://api.cloudinary.com/v1_1/dopw7udhj/image/upload",
+				formData
+			);
+			return data.secure_url as string;
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const removeImageHandler = (image: string) => {
@@ -95,8 +106,6 @@ export function usePostForm() {
 	const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		try {
-			const encodedImages = await encodeImages(ImageListRef.current);
-
 			if (!isFormVaild()) {
 				alert("입력 정보가 부족하거나 글자 수가 1000자를 초과하였습니다.");
 				return;
@@ -109,7 +118,6 @@ export function usePostForm() {
 				location: values.location,
 				dateRange,
 				isRecruiting: true,
-				images: encodedImages,
 				recruitCondition: condition,
 				contents: contents.current!.innerHTML
 			};

@@ -2,6 +2,7 @@ import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
+import CustomImage from "./CustomImage";
 
 export default function UploadImage({
 	removeImageHandler,
@@ -9,34 +10,43 @@ export default function UploadImage({
 	showImages
 }: {
 	removeImageHandler: (image: string) => void;
-	addImageHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	addImageHandler: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
 	showImages: string[];
 }) {
 	const [value, setValue] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+
+	const ChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		setIsLoading(true);
+		await addImageHandler(e);
+		setIsLoading(false);
+		setValue("");
+	};
+
 	return (
 		<div>
 			<span className="post-input-title">사진</span>
 			<div className="flex bg-[#F9F9F9] py-2 px-[10px] gap-5">
 				{showImages &&
-					showImages.map((image, index) => (
-						<img
-							key={index}
-							src={image}
-							alt={image}
-							className="h-[46px] max-w-22 cursor-pointer hover:brightness-90"
+					showImages.map((image) => (
+						<CustomImage
+							key={image}
+							image={image}
 							onClick={() => removeImageHandler(image)}
 						/>
 					))}
+				{isLoading && (
+					<div className="flex items-center justify-center w-[46px] h-[46px]">
+						<div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-600" />
+					</div>
+				)}
 				<label htmlFor="inputFile" className="flex items-center">
 					<input
 						id="inputFile"
 						type="file"
 						multiple
 						accept="image/jpg, image/png, image/jpeg, image/gif"
-						onChange={(e) => {
-							addImageHandler(e);
-							setValue("");
-						}}
+						onChange={ChangeHandler}
 						value={value}
 						className="absolute w-0 h-0"
 						disabled={showImages.length === 10 ? true : false}
@@ -63,6 +73,3 @@ export default function UploadImage({
 		</div>
 	);
 }
-
-// image to base64 인코딩
-// firebase

@@ -46,8 +46,6 @@ export const logoutUser = async () => {
 			console.log("Unknwon Error", error);
 		}
 	}
-<<<<<<< HEAD
-=======
 };
 
 export const fetchAuthUser = async () => {
@@ -61,5 +59,4 @@ export const fetchAuthUser = async () => {
 			console.log("Unknwon Error", error);
 		}
 	}
->>>>>>> main
 };

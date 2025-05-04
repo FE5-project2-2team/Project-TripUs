@@ -40,7 +40,6 @@ interface PostData {
 	location: string;
 	dateRange: Date[];
 	isRecruiting: boolean;
-	images: (string | ArrayBuffer | null)[];
 	recruitCondition: RecruitCondition;
 	contents: string;
 }
