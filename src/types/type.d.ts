@@ -12,6 +12,16 @@ interface User {
 	nickname: string;
 }
 
+interface Profile {
+	name: string;
+	tel: string;
+	nickname: string;
+	gender: string;
+	age: number;
+	tagList: string[];
+	image: string;
+}
+
 interface UpdatedUserData {
 	profile?: Partial<User>;
 	tagList?: string[];
