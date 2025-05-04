@@ -1,4 +1,5 @@
 @import "tailwindcss";
+<<<<<<< HEAD
 
 @layer components {
   .post-sub-title {
@@ -31,3 +32,5 @@
     background-color: #f3f4f6;
   }
 }
+=======
+>>>>>>> main

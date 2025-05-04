@@ -14,226 +14,226 @@ import LabelSelect from "./LabelSelect";
 import UploadImage from "./UploadImage";
 
 export default function PostForm() {
-  const navigate = useNavigate();
-  const userId = useAuthStore((state) => state.userId);
+	const navigate = useNavigate();
+	const userId = useAuthStore((state) => state.userId);
 
-  const [channel, setChannel] = useState(CHANNELS.RECRUITMENT);
-  const [member, setMember] = useState("2");
-  const [location, setLocation] = useState("");
-  const [dateRange, setDateRange] = useState<Date[]>([]);
-  const [title, setTitle] = useState("");
-  const [showImages, setShowImages] = useState<string[]>([]);
-  const [condition, setCondition] = useState<{
-    gender: string;
-    ageRange: string[];
-  }>({
-    gender: "",
-    ageRange: [],
-  });
-  const contents = useRef<HTMLDivElement>(null);
-  const thumbnailRef = useRef<File | null>(null);
+	const [channel, setChannel] = useState(CHANNELS.RECRUITMENT);
+	const [member, setMember] = useState("2");
+	const [location, setLocation] = useState("");
+	const [dateRange, setDateRange] = useState<Date[]>([]);
+	const [title, setTitle] = useState("");
+	const [showImages, setShowImages] = useState<string[]>([]);
+	const [condition, setCondition] = useState<{
+		gender: string;
+		ageRange: string[];
+	}>({
+		gender: "",
+		ageRange: []
+	});
+	const contents = useRef<HTMLDivElement>(null);
+	const thumbnailRef = useRef<File | null>(null);
 
-  const selectChangeHandler = (value: string, id: string) => {
-    if (id === "selectChannel") {
-      setChannel(value);
-    } else {
-      setMember(value);
-    }
-  };
+	const selectChangeHandler = (value: string, id: string) => {
+		if (id === "selectChannel") {
+			setChannel(value);
+		} else {
+			setMember(value);
+		}
+	};
 
-  const addImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const imageFiles = e.target.files;
-    if (showImages.length === 0) {
-      thumbnailRef.current = imageFiles![0];
-    }
-    const imageUrlList = [...imageFiles!]
-      .filter((file) => file.type.startsWith("image/"))
-      .map((imageFile) => URL.createObjectURL(imageFile));
-    if (showImages.length <= 10) {
-      setShowImages((list) => {
-        const result = [...list, ...imageUrlList];
-        return result.slice(0, 10);
-      });
-    }
-  };
+	const addImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const imageFiles = e.target.files;
+		if (showImages.length === 0) {
+			thumbnailRef.current = imageFiles![0];
+		}
+		const imageUrlList = [...imageFiles!]
+			.filter((file) => file.type.startsWith("image/"))
+			.map((imageFile) => URL.createObjectURL(imageFile));
+		if (showImages.length <= 10) {
+			setShowImages((list) => {
+				const result = [...list, ...imageUrlList];
+				return result.slice(0, 10);
+			});
+		}
+	};
 
-  const radioBtnHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCondition((cond) => ({ ...cond, gender: e.target.value }));
-  };
-  const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCondition((cond) => ({
-      ...cond,
-      ageRange: cond.ageRange.find((age) => age === e.target.value)
-        ? cond.ageRange.filter((age) => age !== e.target.value)
-        : [...cond.ageRange, e.target.value],
-    }));
-  };
+	const radioBtnHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setCondition((cond) => ({ ...cond, gender: e.target.value }));
+	};
+	const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setCondition((cond) => ({
+			...cond,
+			ageRange: cond.ageRange.find((age) => age === e.target.value)
+				? cond.ageRange.filter((age) => age !== e.target.value)
+				: [...cond.ageRange, e.target.value]
+		}));
+	};
 
-  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (
-      title === "" ||
-      location === "" ||
-      dateRange.length === 0 ||
-      condition.gender === "" ||
-      condition.ageRange.length === 0 ||
-      contents.current!.innerText.trim() === ""
-    ) {
-      alert("입력 정보가 부족합니다");
-      return;
-    }
-    const detailData: PostData = {
-      title,
-      memberLimit: Number(member),
-      memberList: [userId!],
-      location,
-      dateRange,
-      isRecruiting: true,
-      recruitCondition: condition,
-      contents: contents.current!.innerHTML,
-    };
-    const postData = {
-      title: JSON.stringify(detailData),
-      image: thumbnailRef.current || null,
-      channelId: channel,
-    };
-    const postId = await createPost(postData);
-    navigate(`/post/detail/${postId}`);
-  };
+	const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		if (
+			title === "" ||
+			location === "" ||
+			dateRange.length === 0 ||
+			condition.gender === "" ||
+			condition.ageRange.length === 0 ||
+			contents.current!.innerText.trim() === ""
+		) {
+			alert("입력 정보가 부족합니다");
+			return;
+		}
+		const detailData: PostData = {
+			title,
+			memberLimit: Number(member),
+			memberList: [userId!],
+			location,
+			dateRange,
+			isRecruiting: true,
+			recruitCondition: condition,
+			contents: contents.current!.innerHTML
+		};
+		const postData = {
+			title: JSON.stringify(detailData),
+			image: thumbnailRef.current || null,
+			channelId: channel
+		};
+		const postId = await createPost(postData);
+		navigate(`/post/detail/${postId}`);
+	};
 
-  return (
-    <form className="mt-10" onSubmit={(e) => submitHandler(e)} action="">
-      <div className="grid grid-cols-2 gap-15">
-        <LabelSelect
-          value={channel}
-          name="게시판 선택"
-          id="selectChannel"
-          handler={selectChangeHandler}
-        >
-          <option value={CHANNELS.RECRUITMENT}>동행원 모집</option>
-          <option value={CHANNELS.REVIEW}>여행 후기글</option>
-        </LabelSelect>
-        <LabelSelect
-          value={member}
-          name="모집 인원"
-          id="recruitMember"
-          handler={selectChangeHandler}
-        >
-          {Array.from({ length: 9 }, (_, idx) => idx + 2).map((num) => (
-            <option key={num} value={num}>
-              {num}
-            </option>
-          ))}
-        </LabelSelect>
-        <div>
-          <label htmlFor="location" className="post-input-title">
-            지역 입력
-          </label>
-          <input
-            value={location}
-            id="location"
-            type="text"
-            placeholder="지역 입력"
-            onChange={(e) => setLocation(e.target.value)}
-            className="input-style placeholder:text-[#CDCDCD]"
-          />
-        </div>
-        <div>
-          <label htmlFor="date" className="post-input-title">
-            일정 선택
-          </label>
-          <Flatpickr
-            id="date"
-            className="input-style placeholder:text-[#CDCDCD]"
-            options={{
-              mode: "range",
-              dateFormat: "Y-m-d",
-              closeOnSelect: false,
-              locale: Korean,
-            }}
-            value={dateRange}
-            onChange={(selctedDates: Date[]) => {
-              if (selctedDates.length === 2) setDateRange(selctedDates);
-            }}
-            placeholder="일정 선택"
-          />
-        </div>
-      </div>
+	return (
+		<form className="mt-10" onSubmit={(e) => submitHandler(e)} action="">
+			<div className="grid grid-cols-2 gap-15">
+				<LabelSelect
+					value={channel}
+					name="게시판 선택"
+					id="selectChannel"
+					handler={selectChangeHandler}
+				>
+					<option value={CHANNELS.RECRUITMENT}>동행원 모집</option>
+					<option value={CHANNELS.REVIEW}>여행 후기글</option>
+				</LabelSelect>
+				<LabelSelect
+					value={member}
+					name="모집 인원"
+					id="recruitMember"
+					handler={selectChangeHandler}
+				>
+					{Array.from({ length: 9 }, (_, idx) => idx + 2).map((num) => (
+						<option key={num} value={num}>
+							{num}
+						</option>
+					))}
+				</LabelSelect>
+				<div>
+					<label htmlFor="location" className="post-input-title">
+						지역 입력
+					</label>
+					<input
+						value={location}
+						id="location"
+						type="text"
+						placeholder="지역 입력"
+						onChange={(e) => setLocation(e.target.value)}
+						className="input-style placeholder:text-[#CDCDCD]"
+					/>
+				</div>
+				<div>
+					<label htmlFor="date" className="post-input-title">
+						일정 선택
+					</label>
+					<Flatpickr
+						id="date"
+						className="input-style placeholder:text-[#CDCDCD]"
+						options={{
+							mode: "range",
+							dateFormat: "Y-m-d",
+							closeOnSelect: false,
+							locale: Korean
+						}}
+						value={dateRange}
+						onChange={(selctedDates: Date[]) => {
+							if (selctedDates.length === 2) setDateRange(selctedDates);
+						}}
+						placeholder="일정 선택"
+					/>
+				</div>
+			</div>
 
-      <div className="flex flex-col gap-10 my-13">
-        <div>
-          <label htmlFor="title" className="post-input-title">
-            제목
-          </label>
-          <input
-            id="title"
-            type="text"
-            placeholder="제목을 입력해 주세요"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="bg-[#F9F9F9] w-full p-5 rounded-[10px] placeholder:text-[#CDCDCD]"
-          />
-        </div>
-        <Contents ref={contents} />
-        <UploadImage handler={addImageHandler} showImages={showImages} />
-        <div>
-          <span className="post-input-title mb-4">동행조건</span>
-          <fieldset className="mb-[30px]">
-            <legend className="mb-[10px]">성별 (단일 선택)</legend>
-            <InputBtn
-              type="radio"
-              onChange={radioBtnHandler}
-              value="all genders"
-              name="gender"
-            >
-              성별무관
-            </InputBtn>
-            <InputBtn
-              type="radio"
-              onChange={radioBtnHandler}
-              value="male"
-              name="gender"
-            >
-              남성
-            </InputBtn>
-            <InputBtn
-              type="radio"
-              onChange={radioBtnHandler}
-              value="female"
-              name="gender"
-            >
-              여성
-            </InputBtn>
-          </fieldset>
-          <fieldset>
-            <legend className="mb-[10px]">나이 (다중 선택 가능)</legend>
-            {["20", "30", "40", "50", "60"].map((age, index) => (
-              <InputBtn
-                type="checkbox"
-                onChange={checkBoxHandler}
-                value={age}
-                name="ageRange"
-              >
-                {age}대{index === 4 && "+"}
-              </InputBtn>
-            ))}
-          </fieldset>
-        </div>
-      </div>
-      <div className="flex items-center justify-between mb-10">
-        <Link to={"/"}>
-          <div className="flex justify-center items-center gap-4">
-            <FontAwesomeIcon icon={faArrowLeft} />
-            <span className="text-xl">나가기</span>
-          </div>
-        </Link>
-        <button
-          type="submit"
-          className="bg-[#06b796] text-white px-[50px] py-[18px] rounded-[10px] text-xl hover:bg-[#038383] hover:cursor-pointer"
-        >
-          등록하기
-        </button>
-      </div>
-    </form>
-  );
+			<div className="flex flex-col gap-10 my-13">
+				<div>
+					<label htmlFor="title" className="post-input-title">
+						제목
+					</label>
+					<input
+						id="title"
+						type="text"
+						placeholder="제목을 입력해 주세요"
+						value={title}
+						onChange={(e) => setTitle(e.target.value)}
+						className="bg-[#F9F9F9] w-full p-5 rounded-[10px] placeholder:text-[#CDCDCD]"
+					/>
+				</div>
+				<Contents ref={contents} />
+				<UploadImage handler={addImageHandler} showImages={showImages} />
+				<div>
+					<span className="post-input-title mb-4">동행조건</span>
+					<fieldset className="mb-[30px]">
+						<legend className="mb-[10px]">성별 (단일 선택)</legend>
+						<InputBtn
+							type="radio"
+							onChange={radioBtnHandler}
+							value="all genders"
+							name="gender"
+						>
+							성별무관
+						</InputBtn>
+						<InputBtn
+							type="radio"
+							onChange={radioBtnHandler}
+							value="male"
+							name="gender"
+						>
+							남성
+						</InputBtn>
+						<InputBtn
+							type="radio"
+							onChange={radioBtnHandler}
+							value="female"
+							name="gender"
+						>
+							여성
+						</InputBtn>
+					</fieldset>
+					<fieldset>
+						<legend className="mb-[10px]">나이 (다중 선택 가능)</legend>
+						{["20", "30", "40", "50", "60"].map((age, index) => (
+							<InputBtn
+								type="checkbox"
+								onChange={checkBoxHandler}
+								value={age}
+								name="ageRange"
+							>
+								{age}대{index === 4 && "+"}
+							</InputBtn>
+						))}
+					</fieldset>
+				</div>
+			</div>
+			<div className="flex items-center justify-between mb-10">
+				<Link to={"/"}>
+					<div className="flex justify-center items-center gap-4">
+						<FontAwesomeIcon icon={faArrowLeft} />
+						<span className="text-xl">나가기</span>
+					</div>
+				</Link>
+				<button
+					type="submit"
+					className="bg-[#06b796] text-white px-[50px] py-[18px] rounded-[10px] text-xl hover:bg-[#038383] hover:cursor-pointer"
+				>
+					등록하기
+				</button>
+			</div>
+		</form>
+	);
 }

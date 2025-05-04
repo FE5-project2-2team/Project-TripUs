@@ -1,4 +1,0 @@
-export const CHANNELS = {
-  RECRUITMENT: "681034285e1cfa1c37000059",
-  REVIEW: "6813881c189ddd72351cd0a4",
-};

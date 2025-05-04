@@ -1,7 +1,7 @@
 export default function Message() {
-  return (
-    <>
-      <h1>Message Component</h1>
-    </>
-  );
+	return (
+		<>
+			<h1>Message Component</h1>
+		</>
+	);
 }
