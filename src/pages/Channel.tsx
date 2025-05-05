@@ -122,6 +122,7 @@ export default function Channel() {
 			fetchPostInfo();
 		}
 	}, [decodedChannelName]);
+	//
 	return (
 		<div className="w-full max-w-[1000px] grid grid-cols-3 mx-auto gap-[50px] mt-[20px]">
 			{posts.map((post) => (

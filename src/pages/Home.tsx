@@ -2,7 +2,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Outlet } from "react-router";
 import MainVisual from "../components/features/main/MainVisual";
-import ChannelList from "../components/features/home/channelList";
+import ChannelList from "../components/features/home/ChannelList";
 import PostSearch from "../components/features/home/PostSearch";
 import FilterAndSort from "../components/features/home/FilterAndSort";
 import AddPostButt from "../components/features/home/AddPostButt";
@@ -13,13 +13,13 @@ export default function Home() {
 		<>
 			<div className="flex items-center">
 				{/* 본문 */}
-				<div className="flex flex-col items-center w-[1132px] h-[1166px]">
+				<div className="flex flex-col items-center w-[1132px] h-[1176px]">
 					{/* 슬라이드 이미지 */}
 					<div className="mt-[20px]">
 						<MainVisual />
 					</div>
 					{/* 배너+검색 */}
-					<div className="w-full max-w-[1000px] flex justify-between mt-8 ">
+					<div className="w-full max-w-[1092px] flex justify-between mt-[22px] ">
 						{/* 배너 */}
 						<ChannelList />
 						{/* 동행글 검색창*/}

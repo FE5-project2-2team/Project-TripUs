@@ -5,89 +5,88 @@ export default function FilterAndSort() {
 	const [sort, setSort] = useState("최신순");
 	const [sortToggle, setSortToggle] = useState(false);
 	return (
-		<div className="w-[1000px] h-[80px] flex items-center mt-7">
-			<div className="w-[1000px] h-7 flex items-center justify-between relative">
+		<div className="w-[1096px] h-[76px] flex items-center mt-7">
+			<div className="w-full h-[24px] flex items-center justify-between relative">
 				{/* 왼쪽: 필터 버튼 */}
-				<div className="relative">
-					<button
-						className="flex items-center text-[20px] cursor-pointer"
-						onClick={() => setIsFilterOpen(true)}
-					>
-						<div
-							className="w-[28px] h-[28px] gap-[5px] bg-no-repeat"
-							style={{
-								backgroundImage: "url('/src/assets/images/sprite-images.png')",
-								backgroundSize: "245px 380px",
-								backgroundPosition: "-42.3px -43.7px"
-							}}
-						/>
-						필터
-					</button>
+				<button
+					className="flex gap-[5px] w-[66px] h-[24px] relative cursor-pointer"
+					onClick={() => setIsFilterOpen(true)}
+				>
+					<div
+						className="flex w-6 h-6 bg-no-repeat"
+						style={{
+							backgroundImage: "url('/src/assets/images/spriteImages.png')",
+							backgroundSize: "245px 380px",
+							backgroundPosition: "-13.6px -43.3px"
+						}}
+					/>
+					<span className="flex items-center text-[20px]">필터</span>
+				</button>
 
-					{/* 필터모달 */}
-					{isFilterOpen && (
-						<>
-							<div className="fixed inset-0 bg-[#000] opacity-[40%] z-30" />
-							<div className="p-[30px] fixed rounded-[15px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[524px] h-[414px] drop-shadow bg-[#fff] border border-[#616161] z-50">
-								<div className="w-[464px] h-[29px] flex items-center justify-between">
-									<span className="text-[24px] font-bold">필터</span>
-									<button
-										onClick={() => setIsFilterOpen(false)}
-										className="flex cursor-pointer"
-									>
-										x
-									</button>
-								</div>
-								<span className=" block text-[18px] mt-[20px]">성별</span>
-								<div className="w-[178px] h-[46px] mt-[10px] flex items-center gap-[16px]">
-									<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
-										남성
-									</button>
-									<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
-										여성
-									</button>
-								</div>
-
-								<span className=" block text-[18px] mt-[20px]">나이</span>
-								<div className="w-[465px] h-[46px] mt-[10px] flex items-center gap-[16px]">
-									<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
-										20대
-									</button>
-									<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
-										30대
-									</button>
-									<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
-										40대
-									</button>
-									<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
-										50대
-									</button>
-									<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
-										60대+
-									</button>
-								</div>
+				{/* 필터모달 */}
+				{isFilterOpen && (
+					<>
+						<div className="fixed inset-0 bg-[#000] opacity-[40%] z-30" />
+						<div className="p-[30px] fixed rounded-[15px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[524px] h-[414px] drop-shadow bg-[#fff] border border-[#616161] z-50">
+							<div className="w-[464px] h-[29px] flex items-center justify-between">
+								<span className="text-[24px] font-bold">필터</span>
+								<button
+									onClick={() => setIsFilterOpen(false)}
+									className="flex cursor-pointer"
+								>
+									x
+								</button>
 							</div>
-						</>
-					)}
-				</div>
+							<span className=" block text-[18px] mt-[20px]">성별</span>
+							<div className="w-[178px] h-[46px] mt-[10px] flex items-center gap-[16px]">
+								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+									남성
+								</button>
+								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+									여성
+								</button>
+							</div>
+
+							<span className=" block text-[18px] mt-[20px]">나이</span>
+							<div className="w-[465px] h-[46px] mt-[10px] flex items-center gap-[16px]">
+								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+									20대
+								</button>
+								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+									30대
+								</button>
+								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+									40대
+								</button>
+								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+									50대
+								</button>
+								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+									60대+
+								</button>
+							</div>
+						</div>
+					</>
+				)}
 
 				{/* 오른쪽: 정렬 버튼 */}
-				<div className="relative">
+				<div className="flex items-center">
 					<button
 						onClick={() => setSortToggle((sort) => !sort)}
-						className="flex items-center gap-[5px] text-[20px]"
+						className="flex items-center w-[80px] h-[24px] relative cursor-pointer"
 					>
-						{sort}
+						<span className="text-[20px] leading-none align-middle mb-[20px] relative">
+							{sort}
+						</span>
 						<div
-							className="w-[13px] h-[7px] bg-no-repeat"
+							className=" w-[24px] h-[24px] bg-no-repeat align-middle relative"
 							style={{
-								backgroundImage: "url('/src/assets/images/sprite-images.png')",
+								backgroundImage: "url('/src/assets/images/spriteImages.png')",
 								backgroundSize: "245px 380px",
-								backgroundPosition: "-64.3px -105.3px"
+								backgroundPosition: "-65px -50px"
 							}}
 						/>
 					</button>
-
 					{/* 정렬 툴팁 */}
 					{sortToggle && (
 						<div className="absolute w-[142px] h-[98px] drop-shadow bg-white rounded-[10px] z-50">

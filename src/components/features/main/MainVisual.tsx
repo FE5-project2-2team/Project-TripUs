@@ -151,7 +151,7 @@ export default function MainVisual() {
 	}, [activeIndex]);
 
 	return (
-		<div className="w-[1000px] h-[440px] rounded-[15px] overflow-hidden relative">
+		<div className="w-[1092px] h-[440px] rounded-[10px] overflow-hidden relative">
 			<Swiper
 				ref={swiperRef}
 				modules={[Autoplay, Pagination, Navigation]}
@@ -168,7 +168,7 @@ export default function MainVisual() {
 								alt={slide.alt}
 								className="w-full h-full object-cover"
 							/>
-							<div className="absolute bottom-[78px] left-[40px] text-white z-10">
+							<div className="absolute bottom-[84px] left-[40px] text-white z-10">
 								<h2 className="text-[40px] font-bold">{slide.description}</h2>
 								<p className="text-[28px] font-bold">{slide.title}</p>
 							</div>
@@ -177,7 +177,7 @@ export default function MainVisual() {
 				))}
 			</Swiper>
 			{/* 컨트롤러 */}
-			<div className="absolute bottom-[24px] left-[40px] right-[40px] flex items-center gap-4 text-white text-sm z-10">
+			<div className="absolute bottom-[30px] left-[40px] right-[40px] flex items-center gap-4 text-white text-sm z-10">
 				<button
 					className="custom-prev-button w-6 h-6 cursor-pointer"
 					style={{
@@ -191,7 +191,7 @@ export default function MainVisual() {
 				>
 					{/* 이전버튼 */}
 				</button>
-				<span className="w-[50px] text-center">
+				<span className="w-[48px] text-center">
 					{`0${activeIndex + 1}`}{" "}
 					<span className="text-white/60"> / 0{slides.length}</span>
 				</span>
@@ -211,7 +211,7 @@ export default function MainVisual() {
 				{/* 정지/재생 */}
 				<button
 					onClick={toggleAutoPlay}
-					className="w-[32px] h-[32px] transform scale-80 cursor-pointer"
+					className="w-[32px] h-[32px] cursor-pointer"
 					style={{
 						backgroundImage: `url(${spriteImage})`,
 						backgroundSize: "367.5px 570px",
@@ -221,7 +221,7 @@ export default function MainVisual() {
 					aria-label={autoplaying ? "정지" : "재생"}
 				></button>
 				{/* 프로그래스바 */}
-				<div className="flex-1 h-[4px] bg-white/40 ml-4 relative overflow-hidden">
+				<div className="flex-1 h-[4px] bg-white/40 ml-3 relative overflow-hidden">
 					<div
 						className="h-[2px] bg-white/80 transition-none absolute top-1/2 -translate-y-1/2"
 						style={{ width: `${fillPercent}%` }}

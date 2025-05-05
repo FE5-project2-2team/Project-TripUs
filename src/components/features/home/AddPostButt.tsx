@@ -5,13 +5,13 @@ export default function AddPostButt() {
 				게시글 추가
 			</span>
 			<button>
-				<div className="w-[80px] h-[80px] rounded-full flex items-center justify-center bg-[#06B796] cursor-pointer">
+				<div className="w-[60px] h-[60px] rounded-full flex items-center justify-center bg-[#06B796] cursor-pointer">
 					<div
 						className="w-[35px] h-[35px] bg-no-repeat"
 						style={{
-							backgroundImage: "url('/src/assets/images/sprite-images.png')",
+							backgroundImage: "url('/src/assets/images/spriteImages.png')",
 							backgroundSize: "245px 380px",
-							backgroundPosition: "-24.3px -171.3px"
+							backgroundPosition: "-24px -171px"
 						}}
 					/>
 				</div>
