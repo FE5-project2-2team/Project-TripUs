@@ -1,6 +1,6 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Outlet } from "react-router";
+import { Link, Outlet } from "react-router";
 import MainVisual from "../components/features/main/MainVisual";
 import ChannelList from "../components/features/home/ChannelList";
 import PostSearch from "../components/features/home/PostSearch";
@@ -12,13 +12,13 @@ export default function Home() {
 		<>
 			<div className="flex items-center">
 				{/* 본문 */}
-				<div className="flex flex-col items-center w-[1132px] h-[1166px]">
+				<div className="flex flex-col items-center w-full min-w-[1100px] h-[1166px] px-[20px]">
 					{/* 슬라이드 이미지 */}
 					<div className="mt-[20px]">
 						<MainVisual />
 					</div>
 					{/* 배너+검색 */}
-					<div className="w-full max-w-[1000px] flex justify-between mt-8 ">
+					<div className="w-full flex justify-between mt-[20px] ">
 						{/* 배너 */}
 						<ChannelList />
 						{/* 동행글 검색창*/}
@@ -30,8 +30,10 @@ export default function Home() {
 					<div className="overflow-y-auto overflow-x-hidden h-[600px] w-full">
 						<Outlet />
 					</div>
-					{/* 게시글 추가 버튼 */}
-					<AddPostButt />
+					<Link to={"/postCreate"}>
+						{/* 게시글 추가 버튼 */}
+						<AddPostButt />
+					</Link>
 				</div>
 
 				{/* 유저사이드바 <div>검색, 사용자 정렬</div>*/}

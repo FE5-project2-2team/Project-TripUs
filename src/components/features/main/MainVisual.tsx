@@ -55,6 +55,9 @@ export default function MainVisual() {
 	const initialElapsedRef = useRef(0);
 	const isResumingRef = useRef(false);
 
+	// 리사이즈 ref
+	const containerRef = useRef<HTMLDivElement>(null);
+
 	// 상태 관리
 	const [autoplaying, setAutoPlaying] = useState(true); //자동 재생 여부
 	const [activeIndex, setActiveIndex] = useState(0); //현재 슬라이드 인덱스
@@ -72,7 +75,6 @@ export default function MainVisual() {
 	// 일정 시간 후 슬라이드 전환을 위한 타이머 설정
 	const startSlideTimer = useCallback(
 		(delay: number) => {
-			console.log("startSlideTimer → 남은 시간(ms):", delay);
 			timeoutRef.current = setTimeout(goToNextSlide, delay);
 		},
 		[goToNextSlide]
@@ -165,82 +167,110 @@ export default function MainVisual() {
 		}
 	}, [activeIndex, autoplaying, animateProgress, startSlideTimer]);
 
+	// 리사이즈
+	useEffect(() => {
+		if (!containerRef.current) return;
+
+		let resizeTimeout: ReturnType<typeof setTimeout>;
+
+		const observer = new ResizeObserver(() => {
+			if (resizeTimeout) clearTimeout(resizeTimeout);
+
+			resizeTimeout = setTimeout(() => {
+				console.log("📏 리사이즈 후 Swiper update 실행");
+				swiperRef.current?.swiper.update();
+			}, 300);
+		});
+
+		observer.observe(containerRef.current);
+
+		return () => {
+			if (resizeTimeout) clearTimeout(resizeTimeout);
+			observer.disconnect();
+		};
+	}, []);
+
 	return (
-		<div className="w-[1000px] h-[440px] rounded-[15px] overflow-hidden relative">
-			<Swiper
-				ref={swiperRef}
-				modules={[Autoplay, Pagination, Navigation]}
-				autoplay={false}
-				loop
-				onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-				className="w-full h-full"
+		<div className="w-[calc(100vw-308px)] min-w-[1100px] px-[20px] overflow-hidden relative">
+			<div
+				ref={containerRef}
+				className="aspect-[2.5/1] w-full rounded-[10px] overflow-hidden transition-all duration-300"
 			>
-				{slides.map((slide, idx) => (
-					<SwiperSlide key={idx}>
-						<div className="relative w-full h-full">
-							<img
-								src={slide.image}
-								alt={slide.alt}
-								className="w-full h-full object-cover"
-							/>
-							<div className="absolute bottom-[78px] left-[40px] text-white z-10">
-								<h2 className="text-[40px] font-bold">{slide.description}</h2>
-								<p className="text-[28px] font-bold">{slide.title}</p>
+				<Swiper
+					ref={swiperRef}
+					modules={[Autoplay, Pagination, Navigation]}
+					autoplay={false}
+					loop
+					onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+					className="w-full h-full rounded-[10px]"
+				>
+					{slides.map((slide, idx) => (
+						<SwiperSlide key={idx}>
+							<div className="relative w-full h-full">
+								<img
+									src={slide.image}
+									alt={slide.alt}
+									className="w-full h-full object-cover object-center"
+								/>
+								<div className="absolute bottom-[78px] left-[40px] text-white z-10">
+									<h2 className="text-[40px] font-bold">{slide.description}</h2>
+									<p className="text-[28px] font-bold">{slide.title}</p>
+								</div>
 							</div>
-						</div>
-					</SwiperSlide>
-				))}
-			</Swiper>
-			{/* 컨트롤러 */}
-			<div className="absolute bottom-[24px] left-[40px] right-[40px] flex items-center gap-2 text-white text-sm z-10">
-				<button
-					className="custom-prev-button w-6 h-6 cursor-pointer"
-					style={{
-						backgroundImage: `url(${spriteImage})`,
-						backgroundPosition: "-27px -24px",
-						backgroundSize: "367.5px 570px",
-						backgroundRepeat: "no-repeat"
-					}}
-					aria-label="Previous Slide"
-					onClick={() => swiperRef.current?.swiper.slidePrev()}
-				>
-					{/* 이전버튼 */}
-				</button>
-				<span className="w-[50px] text-center">
-					{`0${activeIndex + 1}`}{" "}
-					<span className="text-white/60"> / 0{slides.length}</span>
-				</span>
-				<button
-					onClick={() => swiperRef.current?.swiper.slideNext()}
-					className="custom-next-button w-6 h-6 cursor-pointer"
-					aria-label="Next Slide"
-					style={{
-						backgroundImage: `url(${spriteImage})`,
-						backgroundPosition: "-61px -24px",
-						backgroundSize: "367.5px 570px",
-						backgroundRepeat: "no-repeat"
-					}}
-				>
-					{/* 다음버튼 */}
-				</button>
-				{/* 정지/재생 */}
-				<button
-					onClick={toggleAutoPlay}
-					className="w-[32px] h-[32px] transform scale-80 cursor-pointer"
-					style={{
-						backgroundImage: `url(${spriteImage})`,
-						backgroundSize: "367.5px 570px",
-						backgroundRepeat: "no-repeat",
-						backgroundPosition: autoplaying ? "-91px -20px" : "-127px -20px"
-					}}
-					aria-label={autoplaying ? "정지" : "재생"}
-				></button>
-				{/* 프로그래스바 */}
-				<div className="flex-1 h-[4px] bg-white/40 ml-4 relative overflow-hidden">
-					<div
-						className="h-[2px] bg-white/80 transition-none absolute top-1/2 -translate-y-1/2"
-						style={{ width: `${fillPercent}% ` }}
-					/>
+						</SwiperSlide>
+					))}
+				</Swiper>
+				{/* 컨트롤러 */}
+				<div className="absolute bottom-[24px] left-[60px] right-[100px] flex items-center gap-2 text-white text-sm z-10">
+					<button
+						className="custom-prev-button w-6 h-6 cursor-pointer"
+						style={{
+							backgroundImage: `url(${spriteImage})`,
+							backgroundPosition: "-27px -24px",
+							backgroundSize: "367.5px 570px",
+							backgroundRepeat: "no-repeat"
+						}}
+						aria-label="Previous Slide"
+						onClick={() => swiperRef.current?.swiper.slidePrev()}
+					>
+						{/* 이전버튼 */}
+					</button>
+					<span className="w-[50px] text-center">
+						{`0${activeIndex + 1}`}{" "}
+						<span className="text-white/60"> / 0{slides.length}</span>
+					</span>
+					<button
+						onClick={() => swiperRef.current?.swiper.slideNext()}
+						className="custom-next-button w-6 h-6 cursor-pointer"
+						aria-label="Next Slide"
+						style={{
+							backgroundImage: `url(${spriteImage})`,
+							backgroundPosition: "-61px -24px",
+							backgroundSize: "367.5px 570px",
+							backgroundRepeat: "no-repeat"
+						}}
+					>
+						{/* 다음버튼 */}
+					</button>
+					{/* 정지/재생 */}
+					<button
+						onClick={toggleAutoPlay}
+						className="w-[32px] h-[32px] transform scale-80 cursor-pointer"
+						style={{
+							backgroundImage: `url(${spriteImage})`,
+							backgroundSize: "367.5px 570px",
+							backgroundRepeat: "no-repeat",
+							backgroundPosition: autoplaying ? "-91px -20px" : "-127px -20px"
+						}}
+						aria-label={autoplaying ? "정지" : "재생"}
+					></button>
+					{/* 프로그래스바 */}
+					<div className="flex-1 h-[4px] bg-white/40 ml-4 relative overflow-hidden">
+						<div
+							className="h-[2px] bg-white/80 transition-none absolute top-1/2 -translate-y-1/2"
+							style={{ width: `${fillPercent}% ` }}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
