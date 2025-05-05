@@ -3,7 +3,7 @@
 @layer components {
 	.post-sub-title {
 		display: block;
-		font-weight: medium;
+		font-weight: 500;
 		font-size: 18px;
 		margin-bottom: 10px;
 	}
@@ -15,7 +15,7 @@
 		padding-block: 15px;
 	}
 
-	.input-style:placeholder {
+	.input-style::placeholder {
 		color: #cdcdcd;
 	}
 
@@ -29,5 +29,12 @@
 		cursor: pointer;
 		border: 2px solid transparent;
 		background-color: #f3f4f6;
+	}
+
+	.sprite {
+		background-image: url("/images/spriteImages.png");
+		background-repeat: no-repeat;
+		background-size: 245px 380px;
+		display: inline-block;
 	}
 }

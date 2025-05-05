@@ -14,14 +14,16 @@ export default function UserInfo({
 }) {
 	const { image, nickname, age, gender } = authorInfo;
 	return (
-		<Link to={`profile/${userId}`}>
+		<div>
 			<span className="post-sub-title">캡틴</span>
 			<div className="flex gap-[10px]">
-				<img
-					className="w-[50px] h-[50px] rounded-full"
-					src={image || profileCircle}
-					alt="프로필 이미지"
-				/>
+				<Link to={`profile/${userId}`}>
+					<img
+						className="w-[50px] h-[50px] rounded-full"
+						src={image || profileCircle}
+						alt="프로필 이미지"
+					/>
+				</Link>
 				<div>
 					<span className="block font-medium">{nickname}</span>
 					<div className="flex gap-2 text-[#616161]">
@@ -30,6 +32,6 @@ export default function UserInfo({
 					</div>
 				</div>
 			</div>
-		</Link>
+		</div>
 	);
 }

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { createComment, deleteComment } from "../../../apis/comment";
-import Button from "../../commons/Button";
 import CommentItem from "./CommentItem";
 
 export default function CommentsList({
@@ -33,6 +32,7 @@ export default function CommentsList({
 			<ul className="border-t border-[#CDCDCD] mt-4">
 				{list.map((comment) => (
 					<CommentItem
+						key={comment._id}
 						comment={comment}
 						authorId={authorId}
 						deleteCommentHandler={deleteCommentHandler}
@@ -48,7 +48,6 @@ export default function CommentsList({
 					onChange={(e) => setValue(e.target.value)}
 				/>
 			</form>
-			<Button className="w-full mt-4 mb-8">동행 신청하기</Button>
 		</div>
 	);
 }

@@ -1,17 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getPostById } from "../apis/post";
+import Button from "../components/commons/Button";
 import CommentsList from "../components/features/postDetail/CommentsList";
+import Likes from "../components/features/postDetail/Likes";
 import PostTitle from "../components/features/postDetail/PostTitle";
 import TravelInfo from "../components/features/postDetail/TravelInfo";
 import UserInfo from "../components/features/user/UserInfo";
+import { useAuthStore } from "../store/authStore";
 
 export default function PostDetail() {
 	const { id } = useParams();
-	const [postData, setPostData] = useState<Post | null>(null);
+	const userId = useAuthStore((state) => state.userId);
+	const [postData, setPostData] = useState<PostData | null>(null);
 
 	const getData = useCallback(async () => {
-		const postData = await getPostById(id!);
+		const postData: PostData = await getPostById(id!);
 		setPostData(postData);
 	}, [id]);
 
@@ -22,7 +26,8 @@ export default function PostDetail() {
 
 	if (postData) {
 		const authorInfo: Profile = JSON.parse(postData.author.fullName);
-		const postInfo: PostData = JSON.parse(postData.title);
+		const postInfo: PostDetail = JSON.parse(postData.title);
+		const isAuthor = userId === postData.author._id;
 		return (
 			<main className="flex flex-col justify-center items-center mt-[49px]">
 				<PostTitle isRecruiting={postInfo.isRecruiting} title={postInfo.title}>
@@ -49,14 +54,15 @@ export default function PostDetail() {
 							{postInfo.recruitCondition.ageRange.join(", ")}
 						</div>
 					</div>
-					<div className="self-center px-[30px] py-[10px] border-[1px] border-[#CDCDCD] rounded-[15px]">
-						{postData.likes.length}
-					</div>
+					<Likes likesList={postData.likes} postId={postData._id} />
 					<CommentsList
 						commentsList={postData.comments}
 						postId={id as string}
 						authorId={postData.author._id}
 					/>
+					{!isAuthor && (
+						<Button className="w-full mt-4 mb-8">동행 신청하기</Button>
+					)}
 				</div>
 			</main>
 		);
