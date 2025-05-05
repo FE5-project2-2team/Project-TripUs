@@ -1,29 +1,13 @@
 import { axiosInstance } from "./axios";
 
 export const getChannels = async () => {
-	try {
-		const { data } = await axiosInstance.get("/channels");
-		return data;
-	} catch (error) {
-		if (error instanceof Error) {
-			console.log(error.message);
-		} else {
-			console.log("Unknwon Error", error);
-		}
-	}
+	const { data } = await axiosInstance.get("/channels");
+	return data;
 };
 
 export const getChannelInfo = async (name: string) => {
-	try {
-		const { data } = await axiosInstance.get(`/channels/${name}`);
-		return data;
-	} catch (error) {
-		if (error instanceof Error) {
-			console.log(error.message);
-		} else {
-			console.log("Unknwon Error", error);
-		}
-	}
+	const { data } = await axiosInstance.get(`/channels/${name}`);
+	return data;
 };
 
 export const createChannel = async (
@@ -31,36 +15,20 @@ export const createChannel = async (
 	description: string,
 	name: string
 ) => {
-	try {
-		if (role !== "SuperAdmin") {
-			throw Error("Not Authorized");
-		}
-		const { data } = await axiosInstance.post("/channels/create", {
-			authRequired: true,
-			description,
-			name
-		});
-		return data;
-	} catch (error) {
-		if (error instanceof Error) {
-			console.log(error.message);
-		} else {
-			console.log("Unknwon Error", error);
-		}
+	if (role !== "SuperAdmin") {
+		throw Error("Not Authorized");
 	}
+	const { data } = await axiosInstance.post("/channels/create", {
+		authRequired: true,
+		description,
+		name
+	});
+	return data;
 };
 
 export const deleteChannel = async (id: string) => {
-	try {
-		const { data } = await axiosInstance.delete("/channels/delete", {
-			data: { id }
-		});
-		return data;
-	} catch (error) {
-		if (error instanceof Error) {
-			console.log(error.message);
-		} else {
-			console.log("Unknwon Error", error);
-		}
-	}
+	const { data } = await axiosInstance.delete("/channels/delete", {
+		data: { id }
+	});
+	return data;
 };

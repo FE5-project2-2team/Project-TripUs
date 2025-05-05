@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getChannelInfo } from "../apis/channel";
 import { useParams } from "react-router";
+import { getChannelInfo } from "../apis/channel";
 import { getPosts } from "../apis/post";
 
 //채널 정보 가져오기

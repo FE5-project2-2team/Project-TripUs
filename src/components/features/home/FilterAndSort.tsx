@@ -5,7 +5,7 @@ export default function FilterAndSort() {
 	const [sort, setSort] = useState("최신순");
 	const [sortToggle, setSortToggle] = useState(false);
 	return (
-		<div className="w-[1096px] h-[76px] flex items-center mt-7">
+		<div className="w-full h-[76px] flex items-center mt-7">
 			<div className="w-full h-[24px] flex items-center justify-between relative">
 				{/* 왼쪽: 필터 버튼 */}
 				<button
