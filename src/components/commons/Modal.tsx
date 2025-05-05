@@ -3,7 +3,7 @@ export default function Modal({
 	ref
 }: {
 	children: React.ReactNode;
-	ref: React.RefObject<null>;
+	ref: React.RefObject<HTMLDivElement | null>;
 }) {
 	return (
 		<div

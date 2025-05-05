@@ -38,7 +38,6 @@ export default function Header() {
 			console.error(error);
 		}
 	}, [userId]);
-	console.log("rendering");
 	const signOut = () => {
 		navigate("/");
 		logout();
@@ -70,7 +69,7 @@ export default function Header() {
 				<img src={headerLogo} alt="로고" />
 			</Link>
 			{isLoggedIn ? (
-				<div className="flex items-center gap-[30px] relative">
+				<div className="flex items-center gap-[40px] relative">
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
@@ -84,7 +83,7 @@ export default function Header() {
 						className="flex items-center cursor-pointer"
 					>
 						<img
-							className="w-[50px] h-[50px] mr-[6px] rounded-full"
+							className="w-[50px] h-[50px] mr-[10px] rounded-full"
 							src={image}
 							alt="프로필 이미지"
 						/>
