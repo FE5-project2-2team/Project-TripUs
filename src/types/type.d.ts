@@ -14,15 +14,15 @@ interface User {
 
 interface Profile {
 	name: string;
+	age: number;
+	gender: string;
 	tel: string;
 	nickname: string;
-	gender: string;
-	age: number;
 	tagList: string[];
 	image: string;
 }
 
-interface UpdatedUserData {
+interface UserUpdateData {
 	profile?: Partial<User>;
 	tagList?: string[];
 }
@@ -42,22 +42,12 @@ interface PostDetail {
 	location: string;
 	dateRange: Date[];
 	isRecruiting: boolean;
-	recruitCondition: RecruitCondition;
+	recruitCondition: {
+		gender: string;
+		ageRange: string[];
+	};
 	contents: string;
 	images: string[];
-}
-
-type RecruitCondition = {
-	gender: string;
-	ageRange: string[];
-};
-
-interface Post {
-	title: string;
-	image: File | null;
-	channelId: string;
-	postId?: string;
-	imageToDeletePublicId?: string;
 }
 
 interface NotiType {
