@@ -6,6 +6,7 @@ import ChannelList from "../components/features/home/channelList";
 import PostSearch from "../components/features/home/PostSearch";
 import FilterAndSort from "../components/features/home/FilterAndSort";
 import AddPostButt from "../components/features/home/AddPostButt";
+import UserList from "../components/features/home/UserList";
 
 export default function Home() {
 	return (
@@ -36,11 +37,11 @@ export default function Home() {
 
 				{/* 유저사이드바 <div>검색, 사용자 정렬</div>*/}
 				<div className="flex flex-col w-[308px] h-[1166px] px-4.5 py-6 border-l border-[#CACACA]">
-					<span className="justify-start font-bold text-lg mt-6">사용자</span>
+					<span className="justify-start font-bold text-lg">사용자</span>
 					{/* 사용자 검색창*/}
 					<label
 						htmlFor="search"
-						className="w-[255px] h-[40px] p-2 mt-4.5 border-b border-[#CACACA] bg-[#FFF] flex items-center"
+						className="w-[272px] h-[40px] p-2 mt-[18px] border-b border-[#CACACA] bg-[#FFF] flex items-center"
 					>
 						<input
 							id="usersearch"
@@ -54,7 +55,9 @@ export default function Home() {
 					</label>
 					<div>
 						{/* 사용자 목록 */}
-						<div className="w-[270px] h-[70px]"></div>
+						<div className="w-[268px] h-full">
+							<UserList />
+						</div>
 					</div>
 				</div>
 			</div>
