@@ -3,8 +3,6 @@ import { registerUser } from "../apis/auth";
 import { useNavigate } from "react-router";
 import SignupLogo from "../assets/images/Signup_logo.svg";
 import sprite from "../assets/images/sprite.png";
-import SignupLogo from "../assets/images/Signup_logo.svg";
-import sprite from "../assets/images/sprite.png";
 
 function getGender(ssno: string) {
 	const regex = /^(\d{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[1-4]$/;
