@@ -1,11 +1,44 @@
-@import "./tailwind.css";
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+@import "./tailwind.css";
 
 body {
-  color: #333;
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
+	color: #333;
+	font-family: "Noto Sans KR", sans-serif;
+	font-optical-sizing: auto;
+	font-style: normal;
+}
+
+.inputProps {
+	@apply pl-[54px] w-full h-[60px] border border-[#616161] rounded-[10px]
+    text-[16px] text-[#333333] placeholder-[#616161]
+    focus:outline-none focus:border-[#06B796]
+    group-hover:border-[#06B796] group-hover:placeholder-[#06B796]
+    placeholder:transition-colors;
+}
+
+.iconProps {
+	@apply absolute left-4 top-1/2 -translate-y-1/2 w-[24px] h-[24px] bg-no-repeat;
+}
+
+.inputBirth {
+	@apply pl-[54px] w-[226px] h-[60px] mr-[18px] border border-[#616161] rounded-[10px] 
+    text-[16px] placeholder-[#616161] 
+    focus:outline-none focus:border-[#06B796] 
+    group-hover:border-[#06B796] 
+    placeholder:transition-colors group-hover:placeholder-[#06B796];
+}
+
+.inputGender {
+	@apply w-[50px] h-[60px] ml-[18px] border border-[#616161] rounded-[10px] 
+    text-center text-[16px] focus:outline-none focus:border-[#06B796];
+}
+
+.firstButton {
+	@apply w-[460px] h-[60px] bg-[#06B796] hover:bg-[#04A183] text-white text-[20px] rounded-[10px] font-semibold transition-colors;
+}
+
+.secondButton {
+	@apply w-[460px] h-[60px] bg-white hover:bg-[#F0F9F7] text-[#06B796] border border-[#06B796] text-[20px] rounded-[10px] font-semibold transition-colors;
 }
 
 .inputProps {
