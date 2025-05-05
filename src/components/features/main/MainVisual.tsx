@@ -7,12 +7,12 @@ import spriteImage from "../../../assets/images/spriteImages.png";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import type { Swiper as SwiperClass } from "swiper"; // ✅ 타입 import
+import type { Swiper as SwiperClass } from "swiper";
 
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const slides = [
 	{
@@ -47,185 +47,230 @@ const slides = [
 ];
 
 export default function MainVisual() {
-	const swiperRef = useRef<{ swiper: SwiperClass } | null>(null); // ✅ 타입 지정
+	const swiperRef = useRef<{ swiper: SwiperClass } | null>(null);
 
-	const [autoplaying, setAutoPlaying] = useState(true);
-	const [activeIndex, setActiveIndex] = useState(0);
+	// 슬라이드 자동 전환과 애니메이션 제어를 위한 ref
+	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const animationFrameRef = useRef<number | null>(null);
+	const initialElapsedRef = useRef(0);
+	const isResumingRef = useRef(false);
 
-	// 진행바
-	const [fillPercent, setFillPercent] = useState(0); // 현재 진행률 (%)
-	const [startTime, setStartTime] = useState<number | null>(null); // 애니메이션 시작 시간
-	const [animationFrame, setAnimationFrame] = useState<number | null>(null);
+	// 리사이즈 ref
+	const containerRef = useRef<HTMLDivElement>(null);
 
-	//전체 진행 시간
+	// 상태 관리
+	const [autoplaying, setAutoPlaying] = useState(true); //자동 재생 여부
+	const [activeIndex, setActiveIndex] = useState(0); //현재 슬라이드 인덱스
+	const [fillPercent, setFillPercent] = useState(0); // 진행률0~100
+	const [startTime, setStartTime] = useState<number | null>(null); //애니메이션 시작 시간
+
+	// 슬라이드 하나당 재생 시간 5초
 	const DURATION = 5000;
 
-	// 남은 시간
-	const [remainingTime, setRemainingTime] = useState<number>(DURATION);
+	// 다음 슬라이드로 전환하는 함수
+	const goToNextSlide = useCallback(() => {
+		swiperRef.current?.swiper.slideNext();
+	}, []);
 
-	const prevIndexRef = useRef(activeIndex);
-	// const prevIndex = prevIndexRef.current;
+	// 일정 시간 후 슬라이드 전환을 위한 타이머 설정
+	const startSlideTimer = useCallback(
+		(delay: number) => {
+			timeoutRef.current = setTimeout(goToNextSlide, delay);
+		},
+		[goToNextSlide]
+	);
 
-	useEffect(() => {
-		prevIndexRef.current = activeIndex;
-	}, [activeIndex]);
-
-	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-	const goToNextSlide = () => {
-		if (!swiperRef.current) return;
-		swiperRef.current.swiper.slideNext();
-	};
-
-	const startSlideTimer = (delay: number) => {
-		timeoutRef.current = setTimeout(() => {
-			goToNextSlide();
-		}, delay);
-	};
-
-	const animateProgress = (
-		start: number,
-		initialPercent: number,
-		duration: number
-	) => {
+	// 프로그래스바 애니메이션 처리
+	const animateProgress = useCallback((start: number, elapsedStart: number) => {
 		const update = (now: number) => {
-			const elapsed = now - start;
-			const newPercent = Math.min(
-				100,
-				initialPercent + (elapsed / duration) * (100 - initialPercent)
-			);
-			setFillPercent(newPercent);
-			if (newPercent < 100) {
-				const rafId = requestAnimationFrame(update);
-				setAnimationFrame(rafId);
-			} else {
-				setRemainingTime(DURATION); // 다음 재생에 대비
+			const elapsed = now - start + elapsedStart;
+			const percent = Math.min(100, (elapsed / DURATION) * 100);
+
+			setFillPercent(percent);
+			if (percent < 100) {
+				animationFrameRef.current = requestAnimationFrame(update);
 			}
 		};
-		const rafId = requestAnimationFrame(update);
-		setAnimationFrame(rafId);
-	};
+		animationFrameRef.current = requestAnimationFrame(update);
+	}, []);
 
-	// slide stop
-	const toggleAutoPlay = () => {
+	// 일시 정지 처리
+	const stopAutoplay = useCallback(() => {
+		if (timeoutRef.current) clearTimeout(timeoutRef.current);
+		if (animationFrameRef.current)
+			cancelAnimationFrame(animationFrameRef.current);
+
+		if (startTime !== null) {
+			const now = performance.now();
+			let elapsed = now - startTime;
+
+			// 경과 시간이 음수로 나오는 경우를 방지
+			if (elapsed < 0) elapsed = 0;
+
+			// 첫 번째 정지 후, 두 번째 정지 시점에서 누적된 경과 시간을 계산
+			if (initialElapsedRef.current === 0) {
+				initialElapsedRef.current = elapsed; // 첫 번째 정지 시점에서만 초기화
+			} else {
+				// 두 번째 정지 이후에는 첫 번째 정지 이후의 시간만 반영
+				initialElapsedRef.current += elapsed;
+			}
+		}
+
+		// startTime을 null로 설정하지 않고, 다음 재생 시점에서 사용할 시간을 그대로 유지합니다.
+		setStartTime(performance.now());
+	}, [startTime]);
+
+	// 재생 재개 처리
+	const resumeAutoplay = useCallback(() => {
+		const now = performance.now();
+		// 첫 번째 정지에서 저장된 경과 시간만큼 계산된 남은 시간
+		const remaining = Math.max(0, DURATION - initialElapsedRef.current);
+
+		setStartTime(now); // 재생 시작 시간을 새로 설정
+		isResumingRef.current = true;
+		animateProgress(now, initialElapsedRef.current); // 초기화 시 누적 경과 시간을 그대로 사용
+		startSlideTimer(remaining); // 남은 시간만큼 타이머 설정
+	}, [animateProgress, startSlideTimer]);
+
+	// 토글 핸들러
+	const toggleAutoPlay = useCallback(() => {
 		if (autoplaying) {
-			if (timeoutRef.current) {
-				clearInterval(timeoutRef.current);
-				timeoutRef.current = null;
-			}
-
-			if (animationFrame) {
-				cancelAnimationFrame(animationFrame);
-				setAnimationFrame(null);
-
-				if (startTime !== null) {
-					// const now = performance.now();
-					// const elapsed = now - startTime;
-					const timeLeft = Math.max(DURATION * (1 - fillPercent / 100), 0);
-					setRemainingTime(timeLeft);
-				}
-			}
+			stopAutoplay();
 		} else {
-			const now = performance.now();
-			setStartTime(now);
-			animateProgress(now, fillPercent, remainingTime);
-			startSlideTimer(remainingTime);
+			resumeAutoplay();
 		}
+		setAutoPlaying((prev) => !prev);
+	}, [autoplaying, stopAutoplay, resumeAutoplay]);
 
-		setAutoPlaying(!autoplaying);
-	};
-
+	// 슬라이드 변경되었을 때 초기화
 	useEffect(() => {
-		if (timeoutRef.current) {
-			clearTimeout(timeoutRef.current);
-			timeoutRef.current = null;
+		if (!autoplaying) return;
+		if (isResumingRef.current) {
+			isResumingRef.current = false;
+			return;
 		}
+		if (timeoutRef.current) clearTimeout(timeoutRef.current);
+		if (animationFrameRef.current)
+			cancelAnimationFrame(animationFrameRef.current);
 
-		if (autoplaying) {
-			setFillPercent(0);
-			const now = performance.now();
-			setStartTime(now);
-			animateProgress(now, 0, DURATION);
+		setFillPercent(0);
+		initialElapsedRef.current = 0;
+
+		const now = performance.now();
+		setStartTime(now);
+		animateProgress(now, 0);
+
+		// autoplaying이 true일 때만 실행되게 하면서
+		// resumeAutoplay와 중복 호출되지 않도록 startSlideTimer 호출 제거
+		if (initialElapsedRef.current === 0) {
 			startSlideTimer(DURATION);
 		}
-	}, [activeIndex]);
+	}, [activeIndex, autoplaying, animateProgress, startSlideTimer]);
+
+	// 리사이즈
+	useEffect(() => {
+		if (!containerRef.current) return;
+
+		let resizeTimeout: ReturnType<typeof setTimeout>;
+
+		const observer = new ResizeObserver(() => {
+			if (resizeTimeout) clearTimeout(resizeTimeout);
+
+			resizeTimeout = setTimeout(() => {
+				console.log("📏 리사이즈 후 Swiper update 실행");
+				swiperRef.current?.swiper.update();
+			}, 300);
+		});
+
+		observer.observe(containerRef.current);
+
+		return () => {
+			if (resizeTimeout) clearTimeout(resizeTimeout);
+			observer.disconnect();
+		};
+	}, []);
 
 	return (
-		<div className="w-[1000px] h-[440px] rounded-[15px] overflow-hidden relative">
-			<Swiper
-				ref={swiperRef}
-				modules={[Autoplay, Pagination, Navigation]}
-				autoplay={false}
-				loop
-				onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-				className="w-full h-full"
+		<div className="w-[calc(100vw-308px)] min-w-[1100px] px-[20px] overflow-hidden relative">
+			<div
+				ref={containerRef}
+				className="aspect-[2.5/1] w-full rounded-[10px] overflow-hidden transition-all duration-300"
 			>
-				{slides.map((slide, idx) => (
-					<SwiperSlide key={idx}>
-						<div className="relative w-full h-full">
-							<img
-								src={slide.image}
-								alt={slide.alt}
-								className="w-full h-full object-cover"
-							/>
-							<div className="absolute bottom-[78px] left-[40px] text-white z-10">
-								<h2 className="text-[40px] font-bold">{slide.description}</h2>
-								<p className="text-[28px] font-bold">{slide.title}</p>
+				<Swiper
+					ref={swiperRef}
+					modules={[Autoplay, Pagination, Navigation]}
+					autoplay={false}
+					loop
+					onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+					className="w-full h-full rounded-[10px]"
+				>
+					{slides.map((slide, idx) => (
+						<SwiperSlide key={idx}>
+							<div className="relative w-full h-full">
+								<img
+									src={slide.image}
+									alt={slide.alt}
+									className="w-full h-full object-cover object-center"
+								/>
+								<div className="absolute bottom-[78px] left-[40px] text-white z-10">
+									<h2 className="text-[40px] font-bold">{slide.description}</h2>
+									<p className="text-[28px] font-bold">{slide.title}</p>
+								</div>
 							</div>
-						</div>
-					</SwiperSlide>
-				))}
-			</Swiper>
-			{/* 컨트롤러 */}
-			<div className="absolute bottom-[24px] left-[40px] right-[40px] flex items-center gap-4 text-white text-sm z-10">
-				<button
-					className="custom-prev-button w-6 h-6 cursor-pointer"
-					style={{
-						backgroundImage: `url(${spriteImage})`,
-						backgroundPosition: "-27px -24px",
-						backgroundSize: "367.5px 570px",
-						backgroundRepeat: "no-repeat"
-					}}
-					aria-label="Previous Slide"
-					onClick={() => swiperRef.current?.swiper.slidePrev()}
-				>
-					{/* 이전버튼 */}
-				</button>
-				<span className="w-[50px] text-center">
-					{`0${activeIndex + 1}`}{" "}
-					<span className="text-white/60"> / 0{slides.length}</span>
-				</span>
-				<button
-					onClick={() => swiperRef.current?.swiper.slideNext()}
-					className="custom-next-button w-6 h-6 cursor-pointer"
-					aria-label="Next Slide"
-					style={{
-						backgroundImage: `url(${spriteImage})`,
-						backgroundPosition: "-61px -24px",
-						backgroundSize: "367.5px 570px",
-						backgroundRepeat: "no-repeat"
-					}}
-				>
-					{/* 다음버튼 */}
-				</button>
-				{/* 정지/재생 */}
-				<button
-					onClick={toggleAutoPlay}
-					className="w-[32px] h-[32px] transform scale-80 cursor-pointer"
-					style={{
-						backgroundImage: `url(${spriteImage})`,
-						backgroundSize: "367.5px 570px",
-						backgroundRepeat: "no-repeat",
-						backgroundPosition: autoplaying ? "-92px -21px" : "-129px -20px"
-					}}
-					aria-label={autoplaying ? "정지" : "재생"}
-				></button>
-				{/* 프로그래스바 */}
-				<div className="flex-1 h-[4px] bg-white/40 ml-4 relative overflow-hidden">
-					<div
-						className="h-[2px] bg-white/80 transition-none absolute top-1/2 -translate-y-1/2"
-						style={{ width: `${fillPercent}%` }}
-					/>
+						</SwiperSlide>
+					))}
+				</Swiper>
+				{/* 컨트롤러 */}
+				<div className="absolute bottom-[24px] left-[60px] right-[100px] flex items-center gap-2 text-white text-sm z-10">
+					<button
+						className="custom-prev-button w-6 h-6 cursor-pointer"
+						style={{
+							backgroundImage: `url(${spriteImage})`,
+							backgroundPosition: "-27px -24px",
+							backgroundSize: "367.5px 570px",
+							backgroundRepeat: "no-repeat"
+						}}
+						aria-label="Previous Slide"
+						onClick={() => swiperRef.current?.swiper.slidePrev()}
+					>
+						{/* 이전버튼 */}
+					</button>
+					<span className="w-[50px] text-center">
+						{`0${activeIndex + 1}`}{" "}
+						<span className="text-white/60"> / 0{slides.length}</span>
+					</span>
+					<button
+						onClick={() => swiperRef.current?.swiper.slideNext()}
+						className="custom-next-button w-6 h-6 cursor-pointer"
+						aria-label="Next Slide"
+						style={{
+							backgroundImage: `url(${spriteImage})`,
+							backgroundPosition: "-61px -24px",
+							backgroundSize: "367.5px 570px",
+							backgroundRepeat: "no-repeat"
+						}}
+					>
+						{/* 다음버튼 */}
+					</button>
+					{/* 정지/재생 */}
+					<button
+						onClick={toggleAutoPlay}
+						className="w-[32px] h-[32px] transform scale-80 cursor-pointer"
+						style={{
+							backgroundImage: `url(${spriteImage})`,
+							backgroundSize: "367.5px 570px",
+							backgroundRepeat: "no-repeat",
+							backgroundPosition: autoplaying ? "-91px -20px" : "-127px -20px"
+						}}
+						aria-label={autoplaying ? "정지" : "재생"}
+					></button>
+					{/* 프로그래스바 */}
+					<div className="flex-1 h-[4px] bg-white/40 ml-4 relative overflow-hidden">
+						<div
+							className="h-[2px] bg-white/80 transition-none absolute top-1/2 -translate-y-1/2"
+							style={{ width: `${fillPercent}% ` }}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
