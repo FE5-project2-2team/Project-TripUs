@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router";
 import ProtectedRoute from "./components/commons/ProtectedRoute";
 import PublicOnlyRoute from "./components/commons/PublicOnlyRoute";
-import RootLayout from "./layouts/RootLayout";
+import RootLayout from "./layouts/rootlayout";
 import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -18,7 +18,7 @@ export default function App() {
 			<Routes>
 				<Route element={<RootLayout />}>
 					<Route path="/" element={<Home />}>
-						<Route index element={<Channel />} />
+						<Route path="channel/:channelName" index element={<Channel />} />
 					</Route>
 					<Route path="/post/detail/:id" element={<PostDetail />} />
 					<Route path="/profile/:id" element={<Profile />} />
