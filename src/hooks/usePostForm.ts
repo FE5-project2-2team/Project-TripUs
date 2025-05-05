@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useRef, useState } from "react";
+import ReactQuill from "react-quill-new";
 import { useNavigate } from "react-router";
 import { createPost } from "../apis/post";
 import { CHANNELS } from "../constants/posts";
@@ -26,7 +27,7 @@ export function usePostForm() {
 		gender: "",
 		ageRange: []
 	});
-	const contents = useRef<HTMLDivElement>(null);
+	const contents = useRef<ReactQuill | null>(null);
 	const ImageListRef = useRef<File[]>([]);
 
 	const addImageHandler = async (
@@ -97,9 +98,7 @@ export function usePostForm() {
 			values.location &&
 			dateRange.length === 2 &&
 			condition.gender &&
-			condition.ageRange.length > 0 &&
-			contents.current!.innerText.trim().length > 0 &&
-			contents.current!.innerText.length < 1000
+			condition.ageRange.length > 0
 		);
 	};
 
@@ -119,7 +118,7 @@ export function usePostForm() {
 				dateRange,
 				isRecruiting: true,
 				recruitCondition: condition,
-				contents: contents.current!.innerHTML
+				contents: contents.current?.getEditorContents() as string
 			};
 
 			const formData = new FormData();

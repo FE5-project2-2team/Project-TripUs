@@ -1,28 +1,29 @@
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+import ReactQuill from "react-quill-new";
 import { twMerge } from "tailwind-merge";
 import CustomImage from "./CustomImage";
 
 export default function UploadImage({
+	contentsRef,
 	removeImageHandler,
 	addImageHandler,
 	showImages
 }: {
+	contentsRef: React.RefObject<ReactQuill | null>;
 	removeImageHandler: (image: string) => void;
 	addImageHandler: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
 	showImages: string[];
 }) {
 	const [value, setValue] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-
 	const ChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		setIsLoading(true);
 		await addImageHandler(e);
 		setIsLoading(false);
 		setValue("");
 	};
-
 	return (
 		<div>
 			<span className="post-input-title">사진</span>
@@ -30,9 +31,10 @@ export default function UploadImage({
 				{showImages &&
 					showImages.map((image) => (
 						<CustomImage
+							contentsRef={contentsRef}
 							key={image}
 							image={image}
-							onClick={() => removeImageHandler(image)}
+							removeImageHandler={removeImageHandler}
 						/>
 					))}
 				{isLoading && (

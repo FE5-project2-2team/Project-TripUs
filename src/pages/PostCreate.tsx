@@ -38,8 +38,9 @@ export default function PostCreate() {
 					/>
 					<div className="flex flex-col gap-10 my-13">
 						<InputTitle title={inputs.title} />
-						<Contents ref={contents} />
+						<Contents contentsInputs={inputs.contents} contentsRef={contents} />
 						<UploadImage
+							contentsRef={contents}
 							removeImageHandler={removeImageHandler}
 							addImageHandler={addImageHandler}
 							showImages={showImages}
