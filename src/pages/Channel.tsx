@@ -121,20 +121,20 @@ export default function Channel() {
 
 			fetchPostInfo();
 		}
-	}, [decodedChannelName]);
+	}, [channelName, decodedChannelName]);
 	//
 	return (
-		<div className="w-full max-w-[1000px] grid grid-cols-3 mx-auto gap-[50px] mt-[20px]">
+		<div className="w-full max-w-[1000px] grid grid-cols-3 mx-auto gap-[50px] mt-[20px] relative">
 			{posts.map((post) => (
 				//포스트 카드
 				<div
 					key={post._id}
-					className="w-[300px] h-[462px] rounded-[15px] border border-[#D9D9D9]"
+					className="w-[328px] min-h-[450px] rounded-[15px] border border-[#D9D9D9] flex flex-col overflow-hidden"
 				>
 					<div className="relative">
 						<img
 							src={post.image}
-							className="w-[300px] h-[200px] rounded-[15px] z-10"
+							className="w-full h-[200px] rounded-t-[15px] object-cover z-10"
 						/>
 						{channelName === "crews" ? (
 							post.title.isRecruiting === true ? (
@@ -154,63 +154,67 @@ export default function Channel() {
 							)
 						)}
 					</div>
-					<div className="p-[15px] flex flex-col gap-[15px]">
-						{/* 사용자 이미지,이름,닉네임 */}
-						<div className="flex flex-row items-center w-[115px] h-[36px]">
-							<img
-								src={post.author.image}
-								alt="사용자이미지"
-								className="w-[36px] h-[36px] rounded-full"
-							/>
-							<p className="text-[16px]">
-								{JSON.parse(post.author.fullName).nickname}
-								{JSON.parse(post.author.fullName).name}
-							</p>
-						</div>
-						{/* 게시글 제목, 내용 */}
-						<div className="w-[270px] h-[64px] flex flex-col">
-							<p className="text-[16px] font-bold">
-								게시글 제목: {post.title.title}
-							</p>
-							<p className="mt-[7px] text-[14px] overflow-hidden text-ellipsis whitespace-nowrap">
-								{post.title.contents}
-							</p>
-						</div>
-						{/* 여행지, 크루원수,날짜*/}
-						<div className="w-[142px] h-[68px]">
-							<p>여행지:{post.title.location}</p>
-							<p>
-								크루원수: {post.title.memberList.length} /{" "}
-								{post.title.memberLimit}
-							</p>
-							<p className="text-[14px]">
-								{`${new Date(post.title.dateRange[0])
-									.getFullYear()
-									.toString()
-									.slice(2)}.${(
-									new Date(post.title.dateRange[0]).getMonth() + 1
-								)
-									.toString()
-									.padStart(2, "0")}.${new Date(post.title.dateRange[0])
-									.getDate()
-									.toString()
-									.padStart(2, "0")}`}{" "}
-								~
-								{`${new Date(post.title.dateRange[1])
-									.getFullYear()
-									.toString()
-									.slice(2)}.${(
-									new Date(post.title.dateRange[1]).getMonth() + 1
-								)
-									.toString()
-									.padStart(2, "0")}.${new Date(post.title.dateRange[1])
-									.getDate()
-									.toString()
-									.padStart(2, "0")}`}
-							</p>
+					<div className="flex flex-col justify-between flex-grow p-[16px]">
+						<div className="space-y-4">
+							{/* 사용자 이미지,이름,닉네임 */}
+							<div className="flex flex-row items-center w-[115px] h-[36px]">
+								<img
+									src={post.author.image}
+									alt="사용자이미지"
+									className="w-[36px] h-[36px] rounded-full"
+								/>
+								<div className="text-[16px] ml-[8px]">
+									<p className="font-bold">
+										{JSON.parse(post.author.fullName).nickname}
+									</p>
+									<p>{JSON.parse(post.author.fullName).name}</p>
+								</div>
+							</div>
+							{/* 게시글 제목, 내용 */}
+							<div className="w-[270px] h-[64px] flex flex-col">
+								<p className="text-[16px] font-bold">
+									게시글 제목: {post.title.title}
+								</p>
+								<p className="mt-[7px] text-[14px] overflow-hidden text-ellipsis whitespace-nowrap">
+									{post.title.contents}
+								</p>
+							</div>
+							{/* 여행지, 크루원수,날짜*/}
+							<div className="w-[142px] h-[70px] text-[14px]">
+								<p>여행지:{post.title.location}</p>
+								<p>
+									크루원수: {post.title.memberList.length} /{" "}
+									{post.title.memberLimit}
+								</p>
+								<p>
+									{`${new Date(post.title.dateRange[0])
+										.getFullYear()
+										.toString()
+										.slice(2)}.${(
+										new Date(post.title.dateRange[0]).getMonth() + 1
+									)
+										.toString()
+										.padStart(2, "0")}.${new Date(post.title.dateRange[0])
+										.getDate()
+										.toString()
+										.padStart(2, "0")}`}{" "}
+									~
+									{`${new Date(post.title.dateRange[1])
+										.getFullYear()
+										.toString()
+										.slice(2)}.${(
+										new Date(post.title.dateRange[1]).getMonth() + 1
+									)
+										.toString()
+										.padStart(2, "0")}.${new Date(post.title.dateRange[1])
+										.getDate()
+										.toString()
+										.padStart(2, "0")}`}
+								</p>
+							</div>
 						</div>
 						{/* 나이,성별 */}
-						<p>
+						<p className="text-[14px] mt-4">
 							#{JSON.parse(post.author.fullName).gender} #
 							{Math.floor(JSON.parse(post.author.fullName).age / 10) * 10}대
 						</p>

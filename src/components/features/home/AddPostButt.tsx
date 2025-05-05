@@ -1,6 +1,10 @@
 export default function AddPostButt() {
 	return (
-		<div className="fixed bottom-[16px] right-[324px] flex items-center group z-50">
+		<div
+			className={
+				"fixed bottom-[15px] right-[324px] flex items-center group z-50"
+			}
+		>
 			<span className="mr-4 items-center text-[#06B796] text-xl opacity-0 group-hover:opacity-100">
 				게시글 추가
 			</span>

@@ -1,26 +1,35 @@
 import { useState } from "react";
-
 export default function FilterAndSort() {
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const [sort, setSort] = useState("최신순");
 	const [sortToggle, setSortToggle] = useState(false);
+	const [isChecked, setIsChecked] = useState(false);
+	const [selectFilter, setSelectFilter] = useState<string[]>([]);
+	const filtering = ["남성", "여성", "20대", "30대", "40대", "50대", "60대+"];
+	const filterfunc = (filter: string) => {
+		if (filter in selectFilter) return;
+		else setSelectFilter([...selectFilter, filter]);
+	};
+	const resetfunc = () => {
+		setSelectFilter([]);
+	};
 	return (
-		<div className="w-full h-[76px] flex items-center mt-7">
-			<div className="w-full h-[24px] flex items-center justify-between relative">
+		<div className="w-full h-[76px] mt-7">
+			<div className="w-full h-[24px] flex items-end justify-between relative">
 				{/* 왼쪽: 필터 버튼 */}
 				<button
-					className="flex gap-[5px] w-[66px] h-[24px] relative cursor-pointer"
+					className="flex items-center gap-[4px] h-[24px] relative cursor-pointer"
 					onClick={() => setIsFilterOpen(true)}
 				>
 					<div
-						className="flex w-6 h-6 bg-no-repeat"
+						className="flex w-6 h-6 bg-no-repeat bg-center"
 						style={{
 							backgroundImage: "url('/src/assets/images/spriteImages.png')",
 							backgroundSize: "245px 380px",
-							backgroundPosition: "-13.6px -43.3px"
+							backgroundPosition: "-14px -40px"
 						}}
 					/>
-					<span className="flex items-center text-[20px]">필터</span>
+					<span className="text-[20px] leading-[24px]">필터</span>
 				</button>
 
 				{/* 필터모달 */}
@@ -32,37 +41,127 @@ export default function FilterAndSort() {
 								<span className="text-[24px] font-bold">필터</span>
 								<button
 									onClick={() => setIsFilterOpen(false)}
-									className="flex cursor-pointer"
-								>
-									x
-								</button>
+									className="w-[24px] h-[24px] flex cursor-pointer"
+									style={{
+										backgroundImage:
+											"url('/src/assets/images/spriteImages.png')",
+										backgroundSize: "245px 380px",
+										backgroundPosition: "-66px -102px"
+									}}
+								></button>
 							</div>
 							<span className=" block text-[18px] mt-[20px]">성별</span>
 							<div className="w-[178px] h-[46px] mt-[10px] flex items-center gap-[16px]">
-								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+								<button
+									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
+									onClick={() => {
+										filterfunc("남성");
+									}}
+								>
 									남성
 								</button>
-								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+								<button
+									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
+									onClick={() => {
+										filterfunc("여성");
+									}}
+								>
 									여성
 								</button>
 							</div>
 
 							<span className=" block text-[18px] mt-[20px]">나이</span>
 							<div className="w-[465px] h-[46px] mt-[10px] flex items-center gap-[16px]">
-								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+								<button
+									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
+									onClick={() => {
+										filterfunc("20대");
+									}}
+								>
 									20대
 								</button>
-								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+								<button
+									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
+									onClick={() => {
+										filterfunc("30대");
+									}}
+								>
 									30대
 								</button>
-								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+								<button
+									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
+									onClick={() => {
+										filterfunc("40대");
+									}}
+								>
 									40대
 								</button>
-								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+								<button
+									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
+									onClick={() => {
+										filterfunc("50대");
+									}}
+								>
 									50대
 								</button>
-								<button className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6]">
+								<button
+									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
+									onClick={() => {
+										filterfunc("60대+");
+									}}
+								>
 									60대+
+								</button>
+							</div>
+							{/* 모집중만 보기*/}
+							<label className="flex items-center cursor-pointer gap-[2px] mt-[30px]">
+								<input
+									type="checkbox"
+									checked={isChecked}
+									onChange={() => setIsChecked(!isChecked)}
+									className="hidden"
+								/>
+								<div className="w-6 h-6 flex items-center justify-center border border-[#A1A7BD] bg-[#06B796]">
+									{isChecked ? (
+										<div
+											className="w-4 h-4 bg-no-repeat bg-center"
+											style={{
+												backgroundImage:
+													"url('/src/assets/images/spriteImages.png')",
+												backgroundSize: "245px 380px",
+												backgroundPosition: "-17px -100px"
+											}}
+										/>
+									) : null}
+								</div>
+								<span className="ml-[2px] text-[16px]">모집중만 보기</span>
+							</label>
+
+							<div className=" mt-[30px] flex justify-between items-center ">
+								{/* 초기화 */}
+								<button
+									className="flex items-center h-[25px] gap-[0.5px] cursor-pointer"
+									onClick={() => resetfunc()}
+								>
+									<div
+										className="w-6 h-6"
+										style={{
+											backgroundImage:
+												"url('/src/assets/images/spriteImages.png')",
+											backgroundSize: "245px 380px",
+											backgroundPosition: "-38px -96px"
+										}}
+									/>
+									<span className="text-[18px] font-bold text-[#06B796]">
+										초기화
+									</span>
+								</button>
+								{/* 적용하기 */}
+								<button
+									className="flex items-center justify-center w-[107px] h-[45px] rounded-[10px] bg-[#06B796] text-[#F3F4F6] text-[18px] font-bold cursor-pointer"
+									onClick={() => setIsFilterOpen(false)}
+								>
+									적용하기
 								</button>
 							</div>
 						</div>
@@ -70,26 +169,24 @@ export default function FilterAndSort() {
 				)}
 
 				{/* 오른쪽: 정렬 버튼 */}
-				<div className="flex items-center">
+				<div className="flex items-center relative">
 					<button
 						onClick={() => setSortToggle((sort) => !sort)}
-						className="flex items-center w-[80px] h-[24px] relative cursor-pointer"
+						className="flex items-center gap-[4px] h-[24px] cursor-pointer relative"
 					>
-						<span className="text-[20px] leading-none align-middle mb-[20px] relative">
-							{sort}
-						</span>
+						<span className="text-[20px] leading-[24px]">{sort}</span>
 						<div
-							className=" w-[24px] h-[24px] bg-no-repeat align-middle relative"
+							className=" w-[24px] h-[24px] bg-no-repeat bg-center"
 							style={{
 								backgroundImage: "url('/src/assets/images/spriteImages.png')",
 								backgroundSize: "245px 380px",
-								backgroundPosition: "-65px -50px"
+								backgroundPosition: "-65px -40px"
 							}}
 						/>
 					</button>
 					{/* 정렬 툴팁 */}
 					{sortToggle && (
-						<div className="absolute w-[142px] h-[98px] drop-shadow bg-white rounded-[10px] z-50">
+						<div className="absolute top-full left-0 w-[142px] h-[98px] drop-shadow bg-white rounded-[10px] z-50">
 							{["최신순", "인기순"].map((option) => (
 								<button
 									key={option}
@@ -106,6 +203,27 @@ export default function FilterAndSort() {
 						</div>
 					)}
 				</div>
+			</div>
+			<div className="w-full h-[36px] mt-[16px] flex items-center gap-[16px]">
+				{selectFilter.map((arr) => (
+					<button
+						key={arr}
+						className="min-w-[100px] h-[36px] bg-[#F3F4F6] border border-[#06B796] rounded-[14px] flex items-center justify-center cursor-pointer"
+						onClick={() => {
+							setSelectFilter(selectFilter.filter((item) => item !== arr));
+						}}
+					>
+						<span className="h-[36px] text-[18px] text-[#06B796]">{arr}</span>
+						<div
+							className="w-[22px] h-[22px]"
+							style={{
+								backgroundImage: "url('/src/assets/images/spriteImages.png')",
+								backgroundSize: "245px 380px",
+								backgroundPosition: "-53px -127px"
+							}}
+						/>
+					</button>
+				))}
 			</div>
 		</div>
 	);

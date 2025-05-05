@@ -29,15 +29,13 @@ export default function Home() {
 					{/* 필터,정렬 */}
 					<FilterAndSort />
 					{/* 게시글들 */}
-					<div className="overflow-y-auto overflow-x-hidden h-[600px] w-full">
+					<div className="overflow-y-auto overflow-x-hidden h-[600px] w-full ">
 						<Outlet />
+						<Link to={"/postCreate"}>
+							<AddPostButt />
+						</Link>
 					</div>
-					<Link to={"/postCreate"}>
-						{/* 게시글 추가 버튼 */}
-						<AddPostButt />
-					</Link>
 				</div>
-
 				{/* 유저사이드바 <div>검색, 사용자 정렬</div>*/}
 				<div className="flex flex-col w-[308px] h-[1166px] px-4.5 py-6 border-l border-[#CACACA]">
 					<span className="justify-start font-bold text-lg">사용자</span>
