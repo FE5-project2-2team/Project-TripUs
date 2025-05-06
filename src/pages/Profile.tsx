@@ -1,13 +1,19 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import profileCircle from "../assets/images/profileImg_circle.svg";
 import { axiosInstance } from "../apis/axios";
-import { useAuthStore } from "../store/authStore";
 import { getUserInfo, uploadPhoto } from "../apis/user";
+import profileCircle from "../assets/images/profileImg_circle.svg";
 import spriteImage from "../assets/images/spriteImages.png";
+import { useAuthStore } from "../store/authStore";
 
 export default function Profile() {
 	const navigate = useNavigate();
+	// const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+	// useEffect(() => {
+	// 	if (!isLoggedIn) {
+	// 	navigate("/login");
+	// 	}
+	// }, [isLoggedIn, navigate])
 	const userId = useAuthStore((state) => state.userId);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +25,7 @@ export default function Profile() {
 		gender: "",
 		age: 0,
 		tagList: [],
-		image: ""
+		image: profileCircle,
 	});
 	const [editProfile, setEditProfile] = useState<Profile>({
 		name: "",
@@ -28,7 +34,7 @@ export default function Profile() {
 		gender: "",
 		age: 0,
 		tagList: [],
-		image: ""
+		image: profileCircle,
 	});
 
 	const getUserData = useCallback(async () => {
@@ -42,6 +48,24 @@ export default function Profile() {
 	useEffect(() => {
 		getUserData();
 	}, [getUserData]);
+
+	// 태그 추가
+	const handleInputTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key !== "Enter" || e.nativeEvent.isComposing) return;
+		const value = e.currentTarget.value.trim();
+		if (!value) return;
+		if (editProfile.tagList.includes(value)) {
+		  alert("이미 추가된 태그입니다.");
+		  e.currentTarget.value = "";
+		  return;
+		}
+		setEditProfile((prev) => ({
+		  ...prev,
+		  tagList: [...prev.tagList, value]
+		}));
+		e.currentTarget.value = "";
+	  };
+	  
 
 	// 태그 삭제
 	const handleRemoveTag = (indexToRemove: number) => {
@@ -57,7 +81,11 @@ export default function Profile() {
 			nickname: editProfile.nickname,
 			tagList: editProfile.tagList
 		});
-
+		const nicknameRegex = /^[가-힣a-zA-Z0-9]{2,10}$/;
+		if (!nicknameRegex.test(editProfile.nickname)) {
+			alert("닉네임은 2자 이상 10자 이하의 한글, 영문, 숫자만 가능합니다.");
+			return;
+		};
 		try {
 			const response = await axiosInstance.put("/settings/update-user", {
 				fullName: updatedFullName,
@@ -138,7 +166,7 @@ export default function Profile() {
 							className="mr-[8px] w-[30px] h-[30px] cursor-pointer"
 							style={{
 								backgroundImage: `url(${spriteImage})`,
-								backgroundPosition: "-167px -148px",
+								backgroundPosition: "-135px -147px",
 								backgroundSize: "367.5px 570px",
 								backgroundRepeat: "no-repeat"
 							}}
@@ -249,20 +277,7 @@ export default function Profile() {
 								<input
 									type="text"
 									placeholder="태그 입력 후 Enter"
-									onKeyDown={(e) => {
-										const value = e.currentTarget.value.trim();
-										if (
-											e.key === "Enter" &&
-											!e.nativeEvent.isComposing &&
-											value
-										) {
-											setEditProfile({
-												...editProfile,
-												tagList: [...(editProfile.tagList ?? []), value]
-											});
-											e.currentTarget.value = "";
-										}
-									}}
+									onKeyDown={handleInputTag}
 									className="text-[16px] text-[#333333] rounded-[10px] w-[340px] h-[49px] px-[13px] py-[15px] mt-[10px] border border-[#616161]"
 								/>
 							</div>
