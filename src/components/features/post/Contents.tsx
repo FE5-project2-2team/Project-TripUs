@@ -1,22 +1,43 @@
+import ImageResize from "quill-image-resize-module-plus";
+import ReactQuill, { Quill } from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
+import { usePostForm } from "../../../hooks/usePostForm";
+
+const Size = Quill.import("formats/size") as { whitelist: string[] };
+Size.whitelist = ["small", "normal", "large", "huge"];
+Quill.register("formats/size", Size, true);
+
+Quill.register("modules/imageResize", ImageResize);
 export default function Contents({
-	ref
+	contentsRef
 }: {
-	ref: React.RefObject<HTMLDivElement | null>;
+	contentsRef: React.RefObject<ReactQuill | null>;
 }) {
+	const { handlers: ImageHandler } = usePostForm();
 	return (
 		<div>
 			<label htmlFor="contents" className="post-input-title">
 				내용
 			</label>
-			<div className="bg-[#F9F9F9] w-full h-100 p-5 rounded-[10px] overflow-scroll">
-				<div
-					ref={ref}
-					contentEditable
-					className={
-						"cursor-text focus:outline-0 empty:before:content-['내용을\\00a0입력해\\00a0주세요\\00a0(1000자\\00a0이내)'] empty:before:text-[#CDCDCD]"
-					}
-				></div>
-			</div>
+			<ReactQuill
+				ref={contentsRef}
+				theme="snow"
+				placeholder="내용을 입력해 주세요 (1000자 이내)"
+				className="h-125 mb-[30px]"
+				modules={{
+					toolbar: {
+						container: [
+							[{ size: ["small", false, "large", "huge"] }],
+							["bold", "italic", "underline", "strike"],
+							["link", "image"]
+						],
+						handlers: {
+							image: ImageHandler
+						}
+					},
+					imageResize: {}
+				}}
+			/>
 		</div>
 	);
 }

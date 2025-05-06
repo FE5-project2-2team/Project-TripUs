@@ -46,8 +46,8 @@ interface PostDetail {
 		gender: string;
 		ageRange: string[];
 	};
-	contents: string;
-	images: string[];
+	description: string;
+	contents: Delta | undefined;
 }
 
 interface NotiType {

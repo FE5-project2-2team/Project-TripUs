@@ -5,6 +5,12 @@
 		display: block;
 		font-weight: 500;
 		font-size: 18px;
+	}
+
+	.post-input-title {
+		display: block;
+		font-weight: medium;
+		font-size: 20px;
 		margin-bottom: 10px;
 	}
 
