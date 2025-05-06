@@ -5,6 +5,8 @@ import { useNavigate } from "react-router";
 import { createPost } from "../apis/post";
 import { CHANNELS } from "../constants/posts";
 import { useAuthStore } from "../store/authStore";
+import urlToFile from "../utils/urlToFile";
+import { validateForm } from "../utils/validators";
 import { useInput } from "./useInput";
 
 export function usePostForm() {
@@ -19,7 +21,6 @@ export function usePostForm() {
 	});
 
 	const [dateRange, setDateRange] = useState<Date[]>([]);
-	const [showImages, setShowImages] = useState<string[]>([]);
 	const [condition, setCondition] = useState<{
 		gender: string;
 		ageRange: string[];
@@ -27,49 +28,40 @@ export function usePostForm() {
 		gender: "",
 		ageRange: []
 	});
+
 	const contents = useRef<ReactQuill | null>(null);
-	const ImageListRef = useRef<File[]>([]);
 
-	const addImageHandler = async (
-		e: React.ChangeEvent<HTMLInputElement>
-	): Promise<void> => {
-		const imageFiles = e.target.files!;
-		ImageListRef.current = [...ImageListRef.current, ...imageFiles];
-		const imageList = [...imageFiles].filter((file) =>
-			file.type.startsWith("image/")
-		);
-		const imageUrlList: string[] = [];
-		for (const image of imageList) {
-			const url = await uploadImage(image);
-			if (url) {
-				imageUrlList.push(url);
+	const onDateChange = (selctedDates: Date[]) => {
+		if (selctedDates.length === 2) setDateRange(selctedDates);
+	};
+
+	const ImageHandler = async () => {
+		if (!contents.current) return;
+
+		const quillInstance = contents.current.getEditor();
+		const input = document.createElement("input");
+		input.setAttribute("type", "file");
+		input.setAttribute("accept", "image/*");
+		input.click();
+
+		input.onchange = async () => {
+			const file = input.files?.[0] as File;
+			const formData = new FormData();
+			formData.append("file", file);
+			formData.append("upload_preset", "postImages");
+
+			try {
+				const { data } = await axios.post(
+					"https://api.cloudinary.com/v1_1/dopw7udhj/image/upload",
+					formData
+				);
+				const range = quillInstance.getSelection(true);
+				quillInstance.insertEmbed(range.index, "image", data.secure_url);
+				quillInstance.setSelection(range.index + 1);
+			} catch (error) {
+				console.error(error);
 			}
-		}
-		if (showImages.length <= 10) {
-			setShowImages((list) => {
-				const result = [...list, ...imageUrlList];
-				return result.slice(0, 10);
-			});
-		}
-	};
-
-	const uploadImage = async (imageFile: File) => {
-		const formData = new FormData();
-		formData.append("file", imageFile);
-		formData.append("upload_preset", "postImages");
-		try {
-			const { data } = await axios.post(
-				"https://api.cloudinary.com/v1_1/dopw7udhj/image/upload",
-				formData
-			);
-			return data.secure_url as string;
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	const removeImageHandler = (image: string) => {
-		setShowImages((images) => images.filter((img) => image !== img));
+		};
 	};
 
 	const conditionHandler = (
@@ -88,25 +80,20 @@ export function usePostForm() {
 		);
 	};
 
-	const onDateChange = (selctedDates: Date[]) => {
-		if (selctedDates.length === 2) setDateRange(selctedDates);
-	};
-
-	const isFormVaild = () => {
-		return (
-			values.title &&
-			values.location &&
-			dateRange.length === 2 &&
-			condition.gender &&
-			condition.ageRange.length > 0
-		);
-	};
-
 	const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		try {
-			if (!isFormVaild()) {
-				alert("입력 정보가 부족하거나 글자 수가 1000자를 초과하였습니다.");
+			const imageFile = await urlToFile(contents);
+			const validationData = {
+				title: values.title,
+				location: values.location,
+				dateRange,
+				condition,
+				contents
+			};
+			const alertMessage = validateForm(validationData);
+			if (alertMessage) {
+				alert(alertMessage);
 				return;
 			}
 			const detailData: PostData = {
@@ -118,13 +105,16 @@ export function usePostForm() {
 				dateRange,
 				isRecruiting: true,
 				recruitCondition: condition,
-				contents: contents.current?.getEditorContents() as string
+				description: contents.current
+					?.getEditor()
+					.editor.getText(0, 20) as string,
+				contents: contents.current?.getEditor().getContents()
 			};
 
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(detailData));
-			formData.append("image", ImageListRef.current[0] || null);
 			formData.append("channelId", values.channel);
+			if (imageFile) formData.append("image", imageFile);
 
 			const postId = await createPost(formData);
 			navigate(`/post/detail/${postId}`);
@@ -137,13 +127,11 @@ export function usePostForm() {
 		inputs,
 		dateRange,
 		contents,
-		showImages,
 		handlers: {
-			addImageHandler,
-			removeImageHandler,
 			conditionHandler,
 			onDateChange,
-			submitHandler
+			submitHandler,
+			ImageHandler
 		}
 	};
 }

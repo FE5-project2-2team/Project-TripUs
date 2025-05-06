@@ -51,7 +51,8 @@ interface PostData {
 	dateRange: Date[];
 	isRecruiting: boolean;
 	recruitCondition: RecruitCondition;
-	contents: string;
+	description: string;
+	contents: Delta | undefined;
 }
 
 interface NotiType {

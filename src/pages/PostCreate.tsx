@@ -6,7 +6,6 @@ import ConditionList from "../components/features/post/ConditionList";
 import Contents from "../components/features/post/Contents";
 import InfoForm from "../components/features/post/InfoForm";
 import InputTitle from "../components/features/post/InputTitle";
-import UploadImage from "../components/features/post/UploadImage";
 import { usePostForm } from "../hooks/usePostForm";
 
 export default function PostCreate() {
@@ -14,14 +13,7 @@ export default function PostCreate() {
 		inputs,
 		dateRange,
 		contents,
-		showImages,
-		handlers: {
-			addImageHandler,
-			removeImageHandler,
-			conditionHandler,
-			onDateChange,
-			submitHandler
-		}
+		handlers: { conditionHandler, onDateChange, submitHandler }
 	} = usePostForm();
 	return (
 		<div className="flex justify-center items-center">
@@ -38,13 +30,7 @@ export default function PostCreate() {
 					/>
 					<div className="flex flex-col gap-10 my-13">
 						<InputTitle title={inputs.title} />
-						<Contents contentsInputs={inputs.contents} contentsRef={contents} />
-						<UploadImage
-							contentsRef={contents}
-							removeImageHandler={removeImageHandler}
-							addImageHandler={addImageHandler}
-							showImages={showImages}
-						/>
+						<Contents contentsRef={contents} />
 						<ConditionList conditionHandler={conditionHandler} />
 					</div>
 					<div className="flex items-center justify-between mb-10">
