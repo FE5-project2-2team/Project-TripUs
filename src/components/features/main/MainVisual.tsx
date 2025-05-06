@@ -177,7 +177,6 @@ export default function MainVisual() {
 			if (resizeTimeout) clearTimeout(resizeTimeout);
 
 			resizeTimeout = setTimeout(() => {
-				console.log("📏 리사이즈 후 Swiper update 실행");
 				swiperRef.current?.swiper.update();
 			}, 300);
 		});
@@ -197,6 +196,9 @@ export default function MainVisual() {
 				className="aspect-[2.5/1] w-full rounded-[10px] overflow-hidden transition-all duration-300"
 			>
 				<Swiper
+					onSwiper={(swiper) => {
+						swiperRef.current = { swiper };
+					}}
 					ref={swiperRef}
 					modules={[Autoplay, Pagination, Navigation]}
 					autoplay={false}
