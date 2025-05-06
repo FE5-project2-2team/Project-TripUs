@@ -50,7 +50,7 @@ export default function Likes({
 			)}
 		>
 			<Icon
-				position={likes.likeId ? "bg-[-158px_-127px]" : "bg-[-134px_-127px]"}
+				position={likes.likeId ? "70.222% 35.359%" : "59.556% 35.359%"}
 				size="22px"
 			/>
 			<span className="text-lg leading-4 ml-2">{likes.number}</span>

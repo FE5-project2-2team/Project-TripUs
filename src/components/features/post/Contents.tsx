@@ -1,7 +1,7 @@
+import axios from "axios";
 import ImageResize from "quill-image-resize-module-plus";
 import ReactQuill, { Quill } from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { usePostForm } from "../../../hooks/usePostForm";
 
 const Size = Quill.import("formats/size") as { whitelist: string[] };
 Size.whitelist = ["small", "normal", "large", "huge"];
@@ -13,7 +13,34 @@ export default function Contents({
 }: {
 	contentsRef: React.RefObject<ReactQuill | null>;
 }) {
-	const { handlers: ImageHandler } = usePostForm();
+	const ImageHandler = async () => {
+		if (!contentsRef.current) return;
+
+		const quillInstance = contentsRef.current.getEditor();
+		const input = document.createElement("input");
+		input.setAttribute("type", "file");
+		input.setAttribute("accept", "image/*");
+		input.click();
+
+		input.onchange = async () => {
+			const file = input.files?.[0] as File;
+			const formData = new FormData();
+			formData.append("file", file);
+			formData.append("upload_preset", "postImages");
+
+			try {
+				const { data } = await axios.post(
+					"https://api.cloudinary.com/v1_1/dopw7udhj/image/upload",
+					formData
+				);
+				const range = quillInstance.getSelection(true);
+				quillInstance.insertEmbed(range.index, "image", data.secure_url);
+				quillInstance.setSelection(range.index + 1);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+	};
 	return (
 		<div>
 			<label htmlFor="contents" className="post-input-title">

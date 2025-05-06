@@ -12,7 +12,6 @@ import headerLogo from "../../assets/images/logo_header.svg";
 import profileCircle from "../../assets/images/profileImg_circle.svg";
 import { useAuthStore } from "../../store/authStore";
 import Button from "./Button";
-import Icon from "./Icon";
 import Modal from "./Modal";
 import ModalItem from "./ModalItem";
 
@@ -71,6 +70,7 @@ export default function Header() {
 			{isLoggedIn ? (
 				<div className="flex items-center gap-[40px] relative">
 					<Link to={"/postCreate"}>게시글 작성</Link>
+					<Link to={`/post/detail/6819ad092e2afb0263c95b93`}>게시글 이동</Link>
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
@@ -91,27 +91,31 @@ export default function Header() {
 						<span>{nickname}</span>
 						<FontAwesomeIcon icon={faAngleDown} className="ml-[5px]" />
 					</button>
+
 					{modalOpen && (
 						<Modal ref={modalRef}>
-							<ModalItem clickHandler={goToMyPage}>
-								<Icon
-									position="bg-[-20px_-290px] group-hover:bg-[-20px_-316px]"
-									size="22px"
-								/>
+							<ModalItem
+								clickHandler={goToMyPage}
+								position="8.969% 81.006%"
+								hoverPosition="8.969% 88.268%"
+								size="22px"
+							>
 								마이페이지
 							</ModalItem>
-							<ModalItem clickHandler={setDarkMode}>
-								<Icon
-									position="bg-[-52px_-290px] group-hover:bg-[-52px_-316px]"
-									size="22px"
-								/>
+							<ModalItem
+								clickHandler={setDarkMode}
+								position="23.318% 81.006%"
+								hoverPosition="23.318% 88.268%"
+								size="22px"
+							>
 								다크모드
 							</ModalItem>
-							<ModalItem clickHandler={signOut}>
-								<Icon
-									position="bg-[-84px_-290px] group-hover:bg-[-84px_-316px]"
-									size="22px"
-								/>
+							<ModalItem
+								clickHandler={signOut}
+								position="37.778% 80.833%"
+								hoverPosition="37.778% 88.056%"
+								size="22px"
+							>
 								로그아웃
 							</ModalItem>
 						</Modal>

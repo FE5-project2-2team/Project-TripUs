@@ -1,11 +1,9 @@
 export default function PostTitle({
 	isRecruiting,
-	title,
-	children
+	title
 }: {
 	isRecruiting: boolean | undefined;
 	title: string | undefined;
-	children: React.ReactNode;
 }) {
 	return (
 		<div className="mb-9">
@@ -15,7 +13,6 @@ export default function PostTitle({
 				</span>
 				<span className="text-[28px] font-medium">{title}</span>
 			</h2>
-			{children}
 		</div>
 	);
 }

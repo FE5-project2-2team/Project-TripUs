@@ -30,9 +30,10 @@ export default function PostDetail() {
 		const isAuthor = userId === postData.author._id;
 		return (
 			<main className="flex flex-col justify-center items-center mt-[49px]">
-				<PostTitle isRecruiting={postInfo.isRecruiting} title={postInfo.title}>
-					<img src={postData.image ?? undefined} alt="" />
-				</PostTitle>
+				<PostTitle
+					isRecruiting={postInfo.isRecruiting}
+					title={postInfo.title}
+				/>
 				<div className="flex flex-col gap-[30px] w-266 ">
 					<TravelInfo
 						contents={postInfo.contents}
@@ -60,9 +61,7 @@ export default function PostDetail() {
 						postId={id as string}
 						authorId={postData.author._id}
 					/>
-					{!isAuthor && (
-						<Button className="w-full mt-4 mb-8">동행 신청하기</Button>
-					)}
+					{!isAuthor && <Button className="w-full mb-8">동행 신청하기</Button>}
 				</div>
 			</main>
 		);
