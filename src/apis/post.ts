@@ -10,8 +10,13 @@ export const getPostsByAuthor = async (AuthorId: string) => {
 	return data;
 };
 
-export const createPost = async (post: Post) => {
-	await axiosInstance.post("/posts/create", post);
+export const createPost = async (post: FormData) => {
+	const { data } = await axiosInstance.post("/posts/create", post, {
+		headers: {
+			"Content-Type": "multipart/form-data"
+		}
+	});
+	return data._id;
 };
 
 export const updatePost = async (post: Post) => {
