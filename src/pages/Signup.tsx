@@ -3,6 +3,7 @@ import { registerUser } from "../apis/auth";
 import { useNavigate } from "react-router";
 import SignupLogo from "../assets/images/Signup_logo.svg";
 import sprite from "../assets/images/sprite.png";
+import Button from "../components/commons/Button";
 
 function getGender(ssno: string) {
 	const regex = /^(\d{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[1-4]$/;
@@ -78,61 +79,68 @@ export default function Signup() {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
+		const { email, password, passwordConfirm, fullName } = form;
+
 		if (
-			!form.email.trim() ||
-			!form.password.trim() ||
-			!form.passwordConfirm.trim() ||
-			!form.fullName.name.trim() ||
-			!form.fullName.birth.trim() ||
-			!form.fullName.gender.trim() ||
-			!form.fullName.tel.trim()
+			!email.trim() ||
+			!password.trim() ||
+			!passwordConfirm.trim() ||
+			!fullName.name.trim() ||
+			!fullName.birth.trim() ||
+			!fullName.gender.trim() ||
+			!fullName.tel.trim()
 		) {
 			alert("모든 항목을 입력해주세요.");
 			return;
 		}
 
-		if (form.password !== form.passwordConfirm) {
+		if (password !== passwordConfirm) {
 			alert("비밀번호가 일치하지 않습니다!");
 			return;
 		}
 
-		const ssno = form.fullName.birth + form.fullName.gender;
-		const genderResult = getGender(ssno);
+		try {
+			const ssno = fullName.birth + fullName.gender;
+			const genderResult = getGender(ssno);
 
-		if (genderResult === "Error") {
-			alert("올바른 주민등록번호 형식이 아닙니다.");
-			return;
-		}
-
-		const gender = genderResult;
-		const birthstr = ssno.substring(0, 6);
-		const genderCode = ssno.charAt(6);
-		const birthFull =
-			parseInt(genderCode, 10) <= 2 ? `19${birthstr}` : `20${birthstr}`;
-		const age = calculateAge(birthFull);
-		const nickname = `크루${Math.floor(Math.random() * 1000 + 1)}`;
-
-		const userInfo: UserInfo = {
-			email: form.email,
-			password: form.password,
-			fullName: {
-				name: form.fullName.name,
-				tel: form.fullName.tel,
-				gender,
-				age,
-				nickname
+			if (genderResult === "Error") {
+				alert("올바른 주민등록번호 형식이 아닙니다.");
+				return;
 			}
-		};
 
-		console.log("회원 가입 요청 데이터", userInfo);
+			const gender = genderResult;
+			const birthstr = ssno.substring(0, 6);
+			const genderCode = ssno.charAt(6);
+			const birthFull =
+				parseInt(genderCode, 10) <= 2 ? `19${birthstr}` : `20${birthstr}`;
+			const age = calculateAge(birthFull);
+			const nickname = `크루${Math.floor(Math.random() * 1000 + 1)}`;
 
-		const user = await registerUser(userInfo);
+			const userInfo: UserInfo = {
+				email,
+				password,
+				fullName: {
+					name: fullName.name,
+					tel: fullName.tel,
+					gender,
+					age,
+					nickname
+				}
+			};
 
-		if (user) {
-			alert("회원가입 성공!");
-			navigate("/login");
-		} else {
-			alert("회원가입 실패");
+			console.log("회원 가입 요청 데이터", userInfo);
+
+			const user = await registerUser(userInfo);
+
+			if (user) {
+				alert("회원가입 성공!");
+				navigate("/login");
+			} else {
+				alert("회원가입 실패");
+			}
+		} catch (error) {
+			console.error("회원가입 중 오류 발생:", error);
+			alert("회원가입 중 오류가 발생했습니다.");
 		}
 	};
 
@@ -145,7 +153,8 @@ export default function Signup() {
 				<img
 					src={SignupLogo}
 					alt="TripUs 로고"
-					className="w-[278px] h-[106px] mx-auto mt-[60px] mb-[26px]"
+					className="w-[278px] h-[106px] mx-auto mt-[60px] mb-[26px] cursor-pointer"
+					onClick={() => navigate("/")}
 				/>
 				<div
 					className="relative group"
@@ -295,16 +304,17 @@ export default function Signup() {
 						className="inputProps"
 					/>
 				</div>
-				<button type="submit" className="firstButton">
+				<Button type="submit" className="w-full">
 					회원가입
-				</button>
-				<button
+				</Button>
+				<Button
 					type="button"
 					onClick={() => navigate("/")}
-					className="secondButton"
+					reverse
+					className="w-full border-[1px]"
 				>
 					취소
-				</button>
+				</Button>
 			</form>
 		</>
 	);
