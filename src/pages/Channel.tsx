@@ -1,14 +1,45 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useCallback, useEffect, useState } from "react";
+import { useOutletContext, useParams } from "react-router";
 import { getChannelInfo } from "../apis/channel";
 import { getPosts } from "../apis/post";
 
 //채널 정보 가져오기
 //채널별 게시글 보여주기
+type ContextType = {
+	sort: string;
+	selectFilter: string[];
+};
 export default function Channel() {
+	const { sort, selectFilter } = useOutletContext<ContextType>();
 	const { channelName } = useParams();
 	const decodedChannelName = decodeURIComponent(channelName || "");
 	const [posts, setPosts] = useState<Post[]>([]);
+	const [filteredPosts, setFilteredPosts] = useState<Post[]>(posts);
+	const SortPosts = useCallback((sort: string, targetPosts: Post[]) => {
+		if (sort === "최신순") {
+			return [...targetPosts].sort(
+				(a, b) =>
+					new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+			);
+		} else {
+			return [...targetPosts].sort((a, b) => b.likes.length - a.likes.length);
+		}
+	}, []);
+	const FilterPosts = useCallback(
+		(filterArr: string[]) => {
+			if (!filterArr?.length) return posts;
+			return posts.filter((post) => {
+				const condition = post.title.recruitCondition;
+				if (!condition) return false;
+				return filterArr.every(
+					(filt) =>
+						condition.gender === filt ||
+						(condition.ageRange && condition.ageRange.includes(filt))
+				);
+			});
+		},
+		[posts]
+	);
 	interface Like {
 		id: string;
 		user: string;
@@ -65,6 +96,10 @@ export default function Channel() {
 	//   age: number;
 	//   nickname: string;
 	// }
+	interface RecruitCondition {
+		gender: string;
+		ageRange: string[];
+	}
 	interface PostData {
 		title: string;
 		memberLimit: number;
@@ -72,7 +107,8 @@ export default function Channel() {
 		location: string;
 		dateRange: Date[];
 		isRecruiting: boolean;
-		recruitCondition: string[];
+		recruitCondition: RecruitCondition;
+		description: string;
 		contents: string;
 	}
 	interface Post {
@@ -123,9 +159,20 @@ export default function Channel() {
 		}
 	}, [channelName, decodedChannelName]);
 	//
+	useEffect(() => {
+		if (posts.length === 0) return;
+		console.log("selectFilter:", selectFilter);
+		const filtered = FilterPosts(selectFilter);
+		console.log("Filtered posts:", filtered);
+		const sorted = SortPosts(sort, filtered);
+		console.log("Sorted posts:", sorted);
+
+		setFilteredPosts(sorted);
+	}, [posts, selectFilter, sort, FilterPosts, SortPosts]);
+
 	return (
 		<div className="w-full max-w-[1000px] grid grid-cols-3 mx-auto gap-[50px] mt-[20px] relative">
-			{posts.map((post) => (
+			{filteredPosts.map((post) => (
 				//포스트 카드
 				<div
 					key={post._id}
@@ -176,7 +223,7 @@ export default function Channel() {
 									게시글 제목: {post.title.title}
 								</p>
 								<p className="mt-[7px] text-[14px] overflow-hidden text-ellipsis whitespace-nowrap">
-									{post.title.contents}
+									{post.title.description}
 								</p>
 							</div>
 							{/* 여행지, 크루원수,날짜*/}
@@ -215,8 +262,10 @@ export default function Channel() {
 						</div>
 						{/* 나이,성별 */}
 						<p className="text-[14px] mt-4">
-							#{JSON.parse(post.author.fullName).gender} #
-							{Math.floor(JSON.parse(post.author.fullName).age / 10) * 10}대
+							#{post.title.recruitCondition.gender}
+							{post.title.recruitCondition.ageRange.map((age) => (
+								<span key={age}>#{age}</span>
+							))}
 						</p>
 					</div>
 				</div>

@@ -8,8 +8,11 @@ import FilterAndSort from "../components/features/home/FilterAndSort";
 import PostSearch from "../components/features/home/PostSearch";
 import MainVisual from "../components/features/main/MainVisual";
 import UserList from "../components/features/home/UserList";
+import { useState } from "react";
 
 export default function Home() {
+	const [sort, setSort] = useState("최신순");
+	const [selectFilter, setSelectFilter] = useState<string[]>([]);
 	return (
 		<>
 			<div className="flex items-center">
@@ -27,10 +30,15 @@ export default function Home() {
 						<PostSearch />
 					</div>
 					{/* 필터,정렬 */}
-					<FilterAndSort />
+					<FilterAndSort
+						sort={sort}
+						setSort={setSort}
+						selectFilter={selectFilter}
+						setSelectFilter={setSelectFilter}
+					/>
 					{/* 게시글들 */}
 					<div className="overflow-y-auto overflow-x-hidden h-[600px] w-full ">
-						<Outlet />
+						<Outlet context={{ sort, selectFilter }} />
 						<Link to={"/postCreate"}>
 							<AddPostButt />
 						</Link>

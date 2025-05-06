@@ -1,18 +1,36 @@
-import { useState } from "react";
-export default function FilterAndSort() {
+import { useEffect, useState } from "react";
+export default function FilterAndSort({
+	sort,
+	setSort,
+	selectFilter,
+	setSelectFilter
+}: {
+	sort: string;
+	setSort: React.Dispatch<React.SetStateAction<string>>;
+	selectFilter: string[];
+	setSelectFilter: React.Dispatch<React.SetStateAction<string[]>>;
+}) {
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
-	const [sort, setSort] = useState("최신순");
+	// const [sort, setSort] = useState("최신순");
 	const [sortToggle, setSortToggle] = useState(false);
 	const [isChecked, setIsChecked] = useState(false);
-	const [selectFilter, setSelectFilter] = useState<string[]>([]);
-	const filtering = ["남성", "여성", "20대", "30대", "40대", "50대", "60대+"];
-	const filterfunc = (filter: string) => {
-		if (filter in selectFilter) return;
-		else setSelectFilter([...selectFilter, filter]);
+	const [tempFilter, setTempFilter] = useState<string[]>([]);
+	// const [selectFilter, setSelectFilter] = useState<string[]>([]);
+	const tempFilterFunc = (filter: string) => {
+		if (tempFilter.includes(filter))
+			setTempFilter(tempFilter.filter((item) => item !== filter));
+		else setTempFilter([...tempFilter, filter]);
 	};
 	const resetfunc = () => {
 		setSelectFilter([]);
+		setTempFilter([]);
 	};
+	useEffect(() => {
+		console.log("Before:", tempFilter);
+		console.log("After:", tempFilter);
+		console.log("Before:", selectFilter);
+		console.log("After:", selectFilter);
+	});
 	return (
 		<div className="w-full h-[76px] mt-7">
 			<div className="w-full h-[24px] flex items-end justify-between relative">
@@ -40,7 +58,10 @@ export default function FilterAndSort() {
 							<div className="w-[464px] h-[29px] flex items-center justify-between">
 								<span className="text-[24px] font-bold">필터</span>
 								<button
-									onClick={() => setIsFilterOpen(false)}
+									onClick={() => {
+										setIsFilterOpen(false);
+										setTempFilter([]);
+									}}
 									className="w-[24px] h-[24px] flex cursor-pointer"
 									style={{
 										backgroundImage:
@@ -51,11 +72,19 @@ export default function FilterAndSort() {
 								></button>
 							</div>
 							<span className=" block text-[18px] mt-[20px]">성별</span>
-							<div className="w-[178px] h-[46px] mt-[10px] flex items-center gap-[16px]">
+							<div className="min-w-[178px] h-[46px] mt-[10px] flex items-center gap-[16px]">
 								<button
 									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
 									onClick={() => {
-										filterfunc("남성");
+										tempFilterFunc("성별 무관");
+									}}
+								>
+									성별 무관
+								</button>
+								<button
+									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
+									onClick={() => {
+										tempFilterFunc("남성");
 									}}
 								>
 									남성
@@ -63,7 +92,7 @@ export default function FilterAndSort() {
 								<button
 									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
 									onClick={() => {
-										filterfunc("여성");
+										tempFilterFunc("여성");
 									}}
 								>
 									여성
@@ -75,7 +104,7 @@ export default function FilterAndSort() {
 								<button
 									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
 									onClick={() => {
-										filterfunc("20대");
+										tempFilterFunc("20대");
 									}}
 								>
 									20대
@@ -83,7 +112,7 @@ export default function FilterAndSort() {
 								<button
 									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
 									onClick={() => {
-										filterfunc("30대");
+										tempFilterFunc("30대");
 									}}
 								>
 									30대
@@ -91,7 +120,7 @@ export default function FilterAndSort() {
 								<button
 									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
 									onClick={() => {
-										filterfunc("40대");
+										tempFilterFunc("40대");
 									}}
 								>
 									40대
@@ -99,7 +128,7 @@ export default function FilterAndSort() {
 								<button
 									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
 									onClick={() => {
-										filterfunc("50대");
+										tempFilterFunc("50대");
 									}}
 								>
 									50대
@@ -107,7 +136,7 @@ export default function FilterAndSort() {
 								<button
 									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
 									onClick={() => {
-										filterfunc("60대+");
+										tempFilterFunc("60대+");
 									}}
 								>
 									60대+
@@ -141,7 +170,10 @@ export default function FilterAndSort() {
 								{/* 초기화 */}
 								<button
 									className="flex items-center h-[25px] gap-[0.5px] cursor-pointer"
-									onClick={() => resetfunc()}
+									onClick={() => {
+										resetfunc();
+										setIsFilterOpen(false);
+									}}
 								>
 									<div
 										className="w-6 h-6"
@@ -159,7 +191,13 @@ export default function FilterAndSort() {
 								{/* 적용하기 */}
 								<button
 									className="flex items-center justify-center w-[107px] h-[45px] rounded-[10px] bg-[#06B796] text-[#F3F4F6] text-[18px] font-bold cursor-pointer"
-									onClick={() => setIsFilterOpen(false)}
+									onClick={() => {
+										setIsFilterOpen(false);
+										setSelectFilter((prev) =>
+											Array.from(new Set([...prev, ...tempFilter]))
+										);
+										setTempFilter([]);
+									}}
 								>
 									적용하기
 								</button>
@@ -204,16 +242,17 @@ export default function FilterAndSort() {
 					)}
 				</div>
 			</div>
+			{/* 필터링 박스들 */}
 			<div className="w-full h-[36px] mt-[16px] flex items-center gap-[16px]">
-				{selectFilter.map((arr) => (
+				{selectFilter.map((filt) => (
 					<button
-						key={arr}
+						key={filt}
 						className="min-w-[100px] h-[36px] bg-[#F3F4F6] border border-[#06B796] rounded-[14px] flex items-center justify-center cursor-pointer"
 						onClick={() => {
-							setSelectFilter(selectFilter.filter((item) => item !== arr));
+							setSelectFilter(selectFilter.filter((item) => item !== filt));
 						}}
 					>
-						<span className="h-[36px] text-[18px] text-[#06B796]">{arr}</span>
+						<span className="h-[36px] text-[18px] text-[#06B796]">{filt}</span>
 						<div
 							className="w-[22px] h-[22px]"
 							style={{
