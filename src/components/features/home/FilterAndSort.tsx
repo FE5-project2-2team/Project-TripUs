@@ -1,19 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 export default function FilterAndSort({
 	sort,
 	setSort,
 	selectFilter,
-	setSelectFilter
+	setSelectFilter,
+	isChecked,
+	setIsChecked
 }: {
 	sort: string;
 	setSort: React.Dispatch<React.SetStateAction<string>>;
 	selectFilter: string[];
 	setSelectFilter: React.Dispatch<React.SetStateAction<string[]>>;
+	isChecked: boolean;
+	setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	// const [sort, setSort] = useState("최신순");
 	const [sortToggle, setSortToggle] = useState(false);
-	const [isChecked, setIsChecked] = useState(false);
+	// const [isChecked, setIsChecked] = useState(false);
 	const [tempFilter, setTempFilter] = useState<string[]>([]);
 	// const [selectFilter, setSelectFilter] = useState<string[]>([]);
 	const tempFilterFunc = (filter: string) => {
@@ -21,16 +25,12 @@ export default function FilterAndSort({
 			setTempFilter(tempFilter.filter((item) => item !== filter));
 		else setTempFilter([...tempFilter, filter]);
 	};
+
 	const resetfunc = () => {
 		setSelectFilter([]);
 		setTempFilter([]);
 	};
-	useEffect(() => {
-		console.log("Before:", tempFilter);
-		console.log("After:", tempFilter);
-		console.log("Before:", selectFilter);
-		console.log("After:", selectFilter);
-	});
+
 	return (
 		<div className="w-full h-[76px] mt-7">
 			<div className="w-full h-[24px] flex items-end justify-between relative">

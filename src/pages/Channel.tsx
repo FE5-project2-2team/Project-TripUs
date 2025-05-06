@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useOutletContext, useParams } from "react-router";
+import { useNavigate, useOutletContext, useParams } from "react-router";
 import { getChannelInfo } from "../apis/channel";
 import { getPosts } from "../apis/post";
 
@@ -8,13 +8,16 @@ import { getPosts } from "../apis/post";
 type ContextType = {
 	sort: string;
 	selectFilter: string[];
+	isChecked: boolean;
 };
 export default function Channel() {
-	const { sort, selectFilter } = useOutletContext<ContextType>();
+	const { sort, selectFilter, isChecked } = useOutletContext<ContextType>();
 	const { channelName } = useParams();
 	const decodedChannelName = decodeURIComponent(channelName || "");
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [filteredPosts, setFilteredPosts] = useState<Post[]>(posts);
+	const navigate = useNavigate();
+
 	const SortPosts = useCallback((sort: string, targetPosts: Post[]) => {
 		if (sort === "최신순") {
 			return [...targetPosts].sort(
@@ -27,19 +30,28 @@ export default function Channel() {
 	}, []);
 	const FilterPosts = useCallback(
 		(filterArr: string[]) => {
-			if (!filterArr?.length) return posts;
-			return posts.filter((post) => {
-				const condition = post.title.recruitCondition;
-				if (!condition) return false;
-				return filterArr.every(
-					(filt) =>
-						condition.gender === filt ||
-						(condition.ageRange && condition.ageRange.includes(filt))
-				);
-			});
+			let filtered = posts;
+
+			if (filterArr?.length) {
+				filtered = filtered.filter((post) => {
+					const condition = post.title.recruitCondition;
+					if (!condition) return false;
+					return filterArr.every(
+						(filt) =>
+							condition.gender === filt ||
+							(condition.ageRange && condition.ageRange.includes(filt))
+					);
+				});
+			}
+
+			if (isChecked) {
+				filtered = filtered.filter((post) => post.title.isRecruiting);
+			}
+			return filtered;
 		},
-		[posts]
+		[posts, isChecked]
 	);
+	//
 	interface Like {
 		id: string;
 		user: string;
@@ -161,12 +173,8 @@ export default function Channel() {
 	//
 	useEffect(() => {
 		if (posts.length === 0) return;
-		console.log("selectFilter:", selectFilter);
 		const filtered = FilterPosts(selectFilter);
-		console.log("Filtered posts:", filtered);
 		const sorted = SortPosts(sort, filtered);
-		console.log("Sorted posts:", sorted);
-
 		setFilteredPosts(sorted);
 	}, [posts, selectFilter, sort, FilterPosts, SortPosts]);
 
@@ -174,11 +182,15 @@ export default function Channel() {
 		<div className="w-full max-w-[1000px] grid grid-cols-3 mx-auto gap-[50px] mt-[20px] relative">
 			{filteredPosts.map((post) => (
 				//포스트 카드
+
 				<div
 					key={post._id}
 					className="w-[328px] min-h-[450px] rounded-[15px] border border-[#D9D9D9] flex flex-col overflow-hidden"
 				>
-					<div className="relative">
+					<div
+						className="relative"
+						onClick={() => navigate(`/posts/${post._id}`)}
+					>
 						<img
 							src={post.image}
 							className="w-full h-[200px] rounded-t-[15px] object-cover z-10"
