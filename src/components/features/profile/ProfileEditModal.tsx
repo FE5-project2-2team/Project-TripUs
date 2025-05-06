@@ -1,0 +1,185 @@
+import { useRef } from "react";
+import profileCircle from "../../../assets/images/profileImg_circle.svg"
+import { uploadPhoto } from "../../../apis/user";
+import Button from "../../commons/Button";
+
+interface Props {
+  editProfile: Profile;
+  setEditProfile: React.Dispatch<React.SetStateAction<Profile>>;
+  image: string;
+  setImage: (url: string) => void;
+  onClose: () => void;
+  onUpdate: () => void;
+}
+
+export default function ProfileEditModal({
+  editProfile,
+  setEditProfile,
+  image,
+  setImage,
+  onClose,
+  onUpdate,
+}: Props) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const result = await uploadPhoto(file);
+      if (!result?.image) throw new Error("서버 응답에 image 없음");
+      setImage(result.image);
+      setEditProfile((prev) => ({ ...prev, image: result.image }));
+    } catch (err) {
+      console.error("사진 업로드 실패:", err);
+      alert("프로필 사진 업로드 실패");
+    }
+  };
+
+  const handleResetToDefaultImage = async () => {
+    try {
+      const response = await fetch(profileCircle);
+      const blob = await response.blob();
+      const defaultImageFile = new File([blob], "default-profile.svg", {
+        type: blob.type,
+      });
+
+      const result = await uploadPhoto(defaultImageFile);
+      if (!result?.image) throw new Error("기본 이미지 업로드 실패");
+
+      setImage(result.image);
+      setEditProfile((prev) => ({ ...prev, image: result.image }));
+    } catch (err) {
+      console.error("기본 이미지 변경 실패:", err);
+      alert("기본 이미지로 변경 실패");
+    }
+  };
+
+  const handleInputTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter" || e.nativeEvent.isComposing) return;
+    const value = e.currentTarget.value.trim();
+    if (!value) return;
+    if (editProfile.tagList?.includes(value)) {
+      alert("이미 추가된 태그입니다.");
+      e.currentTarget.value = "";
+      return;
+    }
+    setEditProfile((prev) => ({
+      ...prev,
+      tagList: [...prev.tagList ?? [], value],
+    }));
+    e.currentTarget.value = "";
+  };
+
+  const handleRemoveTag = (index: number) => {
+    setEditProfile((prev) => ({
+      ...prev,
+      tagList: prev.tagList.filter((_, i) => i !== index),
+    }));
+  };
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-white/60 z-50">
+      <div className="w-[524px] rounded-[15px] bg-white pt-[30px] pb-[24px] shadow-lg">
+        <h2 className="flex justify-center text-[24px] font-medium">프로필 편집</h2>
+        <div className="pt-[30px]">
+          <img
+            src={image}
+            alt="프로필 이미지"
+            className="w-[160px] h-[160px] rounded-full mx-auto object-cover"
+          />
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+          <div className="flex justify-center">
+            <div className="flex justify-center gap-2 mt-[15px] w-[340px]">
+              <Button
+                onClick={() => fileInputRef.current?.click()}
+                reverse
+                className="h-[44px] rounded-[8px] px-4 py-2 font-normal text-[16px]"
+              >
+                프로필 이미지 변경
+              </Button>
+              <Button
+                onClick={handleResetToDefaultImage}
+                reverse
+                className="h-[44px] rounded-[8px] px-4 py-2 font-normal text-[16px]"
+              >
+                기본 이미지로 변경
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* 닉네임 수정 */}
+        <div className="flex flex-col items-center pt-[20px] pb-[10px]">
+          <label className="block text-[16px] text-[#333333]">닉네임</label>
+          <input
+            type="text"
+            value={editProfile.nickname}
+            onChange={(e) =>
+              setEditProfile({ ...editProfile, nickname: e.target.value })
+            }
+            className="text-[16px] text-[#333333] rounded-[10px] w-[340px] h-[49px] px-[13px] mt-[10px] border border-[#616161]"
+          />
+          <p className="text-[#333333] text-[11px] mt-[5px]">
+            *2자 이상 10자 이내의 한글, 영문, 숫자 입력 가능
+          </p>
+        </div>
+
+        {/* 태그 입력 */}
+        <div className="flex flex-col items-center">
+          <label className="block text-[16px] text-[#333333]">자기소개 키워드</label>
+          <input
+            type="text"
+            onKeyDown={handleInputTag}
+            placeholder="입력 후 Enter"
+            className="text-[16px] text-[#333333] rounded-[10px] w-[340px] h-[49px] px-[13px] mt-[10px] border border-[#616161]"
+          />
+          <div className="flex flex-wrap justify-center gap-[10px] mt-[10px] w-[340px]">
+            {editProfile.tagList?.map((tag, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-1 px-3 py-1 bg-[#F3F4F6] text-[#06b796] rounded-[8px]"
+              >
+                {tag}
+                <button
+                  onClick={() => handleRemoveTag(i)}
+                  className="text-sm text-gray-500 hover:text-red-500"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 버튼 */}
+        <div className="flex justify-center gap-[20px] mt-6">
+          <Button 
+            onClick={onUpdate}
+            className="w-[160px] h-[46px] px-[65px] py-[12px] rounded-[10px] text-[16px]"
+          >
+            저장
+          </Button>
+
+          <Button 
+            onClick={onClose} 
+            reverse
+            className="w-[160px] h-[46px] px-[60px] py-[12px] rounded-[10px] text-[16px]"
+          >
+            취소
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

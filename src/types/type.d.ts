@@ -19,7 +19,6 @@ interface Profile {
 	gender: string;
 	age: number;
 	tagList: string[];
-	image: string;
 }
 
 interface UpdatedUserData {
