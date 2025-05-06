@@ -1,10 +1,10 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import profileCircle from "../assets/images/profileImg_circle.svg";
 import { axiosInstance } from "../apis/axios";
-import { useAuthStore } from "../store/authStore";
 import { getUserInfo, uploadPhoto } from "../apis/user";
+import profileCircle from "../assets/images/profileImg_circle.svg";
 import spriteImage from "../assets/images/spriteImages.png";
+import { useAuthStore } from "../store/authStore";
 
 export default function Profile() {
 	const navigate = useNavigate();
