@@ -36,18 +36,20 @@ export default function CommentItem({
 				<span className="text-[#616161] text-sm mb-[2px]">
 					{comment.comment}
 				</span>
-				<span className="text-[#616161] text-[10px]">
-					{`${formatDate(date)} ${formatTime(date)}`}
-				</span>
+				<div>
+					<span className="text-[#616161] text-[10px]">
+						{`${formatDate(date)} ${formatTime(date)}`}
+					</span>
+					{userId === comment.author._id && (
+						<span
+							onClick={() => deleteCommentHandler(comment._id)}
+							className="text-[12px] text-[#616161] hover:text-black ml-3 cursor-pointer self-end"
+						>
+							삭제
+						</span>
+					)}
+				</div>
 			</div>
-			{userId === comment.author._id && (
-				<span
-					onClick={() => deleteCommentHandler(comment._id)}
-					className="text-[12px] text-[#616161] ml-3 cursor-pointer self-end"
-				>
-					삭제
-				</span>
-			)}
 		</li>
 	);
 }
