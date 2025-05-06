@@ -1,11 +1,11 @@
 interface ProfileViewProps {
-  profile: Profile;
-  image: string;
+	profile: Profile;
+	image: string;
 }
 
-export default function ProfileView ({ profile, image }: ProfileViewProps) {
-    return (
-        <div className="flex flex-col justify-center w-[1062px]">
+export default function ProfileView({ profile, image }: ProfileViewProps) {
+	return (
+		<div className="flex flex-col justify-center w-[1062px]">
 			<div className="h-[auto] text-center space-y-[14px]">
 				<img
 					src={image}
@@ -33,5 +33,5 @@ export default function ProfileView ({ profile, image }: ProfileViewProps) {
 				</div>
 			</div>
 		</div>
-    );
+	);
 }

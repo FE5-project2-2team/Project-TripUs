@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+// import { useNavigate } from "react-router";
 import { axiosInstance } from "../apis/axios";
 import { getUserInfo } from "../apis/user";
 import profileCircle from "../assets/images/profileImg_circle.svg";
@@ -9,6 +10,7 @@ import ProfileView from "../components/features/profile/ProfileView";
 import ProfileEditModal from "../components/features/profile/ProfileEditModal";
 
 export default function Profile() {
+	// const navigate = useNavigate();
 	// const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 	// useEffect(() => {
 	// 	if (!isLoggedIn) {
@@ -24,27 +26,27 @@ export default function Profile() {
 		nickname: "",
 		gender: "",
 		age: 0,
-		tagList: [],
+		tagList: []
 		// image: profileCircle,
 	});
-	const [editProfile, setEditProfile] = useState<Profile>({...profile});
+	const [editProfile, setEditProfile] = useState<Profile>({ ...profile });
 
 	useEffect(() => {
 		const getUserData = async () => {
-		  const { image, fullName } = await getUserInfo(userId!);
-		  const parsed = JSON.parse(fullName);
-		  if (image) setImage(image || profileCircle);
-		  setProfile(parsed);
-		  setEditProfile(parsed);
+			const { image, fullName } = await getUserInfo(userId!);
+			const parsed = JSON.parse(fullName);
+			if (image) setImage(image || profileCircle);
+			setProfile(parsed);
+			setEditProfile(parsed);
 		};
-	  
+
 		getUserData();
-	  }, [userId]);
-	  
-	  const handleEditClick = () => {
-		setEditProfile(profile); 
+	}, [userId]);
+
+	const handleEditClick = () => {
+		setEditProfile(profile);
 		setIsModalOpen(true);
-	  };
+	};
 
 	const handleUpdate = async () => {
 		const updatedFullName = JSON.stringify({
@@ -56,7 +58,7 @@ export default function Profile() {
 		if (!nicknameRegex.test(editProfile.nickname)) {
 			alert("닉네임은 2자 이상 10자 이하의 한글, 영문, 숫자만 가능합니다.");
 			return;
-		};
+		}
 		try {
 			const response = await axiosInstance.put("/settings/update-user", {
 				fullName: updatedFullName,
@@ -75,22 +77,19 @@ export default function Profile() {
 	return (
 		<div className="flex flex-col items-center min-h-screen py-[40px]">
 			<div className="w-[1062px]">
-			<div className="min-h-screen bg-gray-100">
-				<ProfileHeader onEditClick={handleEditClick}/>
-				<ProfileView 
-					profile={profile}  
-					image={image}
-				/>
-				{isModalOpen && (
-					<ProfileEditModal
-						image={image}
-						setImage={setImage}
-						editProfile={editProfile}
-						setEditProfile={setEditProfile}
-						onUpdate={handleUpdate}
-						onClose={() => setIsModalOpen(false)}
-					/>
-				)}
+				<div className="min-h-screen bg-white">
+					<ProfileHeader onEditClick={handleEditClick} />
+					<ProfileView profile={profile} image={image} />
+					{isModalOpen && (
+						<ProfileEditModal
+							image={image}
+							setImage={setImage}
+							editProfile={editProfile}
+							setEditProfile={setEditProfile}
+							onUpdate={handleUpdate}
+							onClose={() => setIsModalOpen(false)}
+						/>
+					)}
 				</div>
 			</div>
 		</div>
