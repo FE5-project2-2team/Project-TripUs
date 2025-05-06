@@ -1,6 +1,5 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { Link, Outlet } from "react-router";
 import AddPostButt from "../components/features/home/AddPostButt";
 import ChannelList from "../components/features/home/ChannelList";
