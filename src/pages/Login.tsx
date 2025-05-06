@@ -4,6 +4,7 @@ import { loginUser } from "../apis/auth";
 import { useAuthStore } from "../store/authStore";
 import SignupLogo from "../assets/images/Signup_logo.svg";
 import sprite from "../assets/images/sprite.png";
+import Button from "../components/commons/Button";
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -51,7 +52,8 @@ export default function Login() {
 				<img
 					src={SignupLogo}
 					alt="TripUs 로고"
-					className="w-[278px] h-[106px] mx-auto mt-[223px] mb-[26px]"
+					className="w-[278px] h-[106px] mx-auto mt-[223px] mb-[26px] cursor-pointer"
+					onClick={() => navigate("/")}
 				/>
 				<div
 					className="relative group"
@@ -95,16 +97,17 @@ export default function Login() {
 						className="inputProps"
 					/>
 				</div>
-				<button type="submit" className="firstButton">
+				<Button type="submit" className="w-full">
 					로그인
-				</button>
-				<button
+				</Button>
+				<Button
 					type="button"
 					onClick={handleSignupClick}
-					className="secondButton"
+					reverse
+					className="w-full border-[1px]"
 				>
 					회원가입
-				</button>
+				</Button>
 			</form>
 		</>
 	);
