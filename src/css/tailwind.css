@@ -1,9 +1,16 @@
 @import "tailwindcss";
 
 @layer components {
+	.post-sub-title {
+		display: block;
+		font-weight: 500;
+		font-size: 18px;
+		margin-bottom: 16px;
+	}
+
 	.post-input-title {
 		display: block;
-		font-weight: medium;
+		font-weight: 500;
 		font-size: 20px;
 		margin-bottom: 10px;
 	}
@@ -15,7 +22,7 @@
 		padding-block: 15px;
 	}
 
-	.input-style:placeholder {
+	.input-style::placeholder {
 		color: #cdcdcd;
 	}
 
