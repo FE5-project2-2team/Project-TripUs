@@ -62,10 +62,9 @@ export default function Login() {
 				>
 					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
 						<Icon
+							size="24px"
 							position={
-								hoveredField === "email"
-									? "bg-[-117px_-265px]"
-									: "bg-[-117px_-239px]"
+								hoveredField === "email" ? "-117px -265px" : "-117px -239px"
 							}
 						/>
 					</div>
@@ -84,10 +83,9 @@ export default function Login() {
 				>
 					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
 						<Icon
+							size="24px"
 							position={
-								hoveredField === "password"
-									? "bg-[-150px_-264px]"
-									: "bg-[-150px_-238px]"
+								hoveredField === "password" ? "-150px -264px" : "-150px -238px"
 							}
 						/>
 					</div>

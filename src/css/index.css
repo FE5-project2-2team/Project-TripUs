@@ -34,14 +34,6 @@ body {
     text-center text-[16px] focus:outline-none focus:border-[#06B796];
 }
 
-.firstButton {
-	@apply w-[460px] h-[60px] bg-[#06B796] hover:bg-[#04A183] text-white text-[20px] rounded-[10px] font-semibold transition-colors;
-}
-
-.secondButton {
-	@apply w-[460px] h-[60px] bg-white hover:bg-[#F0F9F7] text-[#06B796] border border-[#06B796] text-[20px] rounded-[10px] font-semibold transition-colors;
-}
-
 .ql-container {
 	@apply text-base rounded-b-[10px] bg-[#F9F9F9] border-0! w-[1084px];
 }
