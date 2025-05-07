@@ -13,10 +13,11 @@ export default function Button(props: ButtonProps) {
 			className={twMerge(
 				"flex justify-center items-center h-15 text-xl rounded-[10px] py-[17.5px] text-center font-bold cursor-pointer box-border",
 				reverse
-					? "bg-white text-[#06b796] border-2 border-[#06b796]"
-					: "bg-[#06b796] text-white",
+					? "bg-white text-[#06b796] border-2 border-[#06b796] hover:bg-[#06B796] hover:text-white"
+					: "bg-[#06b796] text-white hover:bg-[#038383]",
 				className
 			)}
+			{...rest}
 		>
 			{children}
 		</button>
