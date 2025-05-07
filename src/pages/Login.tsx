@@ -3,8 +3,8 @@ import { useNavigate } from "react-router";
 import { loginUser } from "../apis/auth";
 import { useAuthStore } from "../store/authStore";
 import SignupLogo from "../assets/images/Signup_logo.svg";
-import sprite from "../assets/images/sprite.png";
 import Button from "../components/commons/Button";
+import Icon from "../components/commons/Icon";
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -60,14 +60,15 @@ export default function Login() {
 					onMouseEnter={() => setHoveredField("email")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "email" ? "-117px -265px " : "-117px -239px"
-						}}
-					></div>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							position={
+								hoveredField === "email"
+									? "bg-[-117px_-265px]"
+									: "bg-[-117px_-239px]"
+							}
+						/>
+					</div>
 					<input
 						name="email"
 						placeholder="이메일"
@@ -81,16 +82,18 @@ export default function Login() {
 					onMouseEnter={() => setHoveredField("password")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "password" ? "-150px -264px " : "-150px -238px"
-						}}
-					></div>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							position={
+								hoveredField === "password"
+									? "bg-[-150px_-264px]"
+									: "bg-[-150px_-238px]"
+							}
+						/>
+					</div>
 					<input
 						name="password"
+						type="password"
 						placeholder="비밀번호"
 						value={form.password}
 						onChange={handleChange}
