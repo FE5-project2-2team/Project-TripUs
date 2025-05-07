@@ -2,8 +2,8 @@ import { useState } from "react";
 import { registerUser } from "../apis/auth";
 import { useNavigate } from "react-router";
 import SignupLogo from "../assets/images/Signup_logo.svg";
-import sprite from "../assets/images/sprite.png";
 import Button from "../components/commons/Button";
+import Icon from "../components/commons/Icon";
 
 function getGender(ssno: string) {
 	const regex = /^(\d{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[1-4]$/;
@@ -161,14 +161,15 @@ export default function Signup() {
 					onMouseEnter={() => setHoveredField("name")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "name" ? "-21px -264px " : "-21px -238px"
-						}}
-					/>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							position={
+								hoveredField === "name"
+									? "bg-[-19px_-265px]"
+									: "bg-[-19px_-239px]"
+							}
+						/>
+					</div>
 					<input
 						name="name"
 						placeholder="이름"
@@ -183,14 +184,15 @@ export default function Signup() {
 					onMouseEnter={() => setHoveredField("birth")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "birth" ? "-53px -264px " : "-53px -238px"
-						}}
-					/>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							position={
+								hoveredField === "birth"
+									? "bg-[-53px_-264px]"
+									: "bg-[-53px_-238px]"
+							}
+						/>
+					</div>
 					<input
 						name="birth"
 						placeholder="생년월일/성별"
@@ -223,14 +225,15 @@ export default function Signup() {
 					onMouseEnter={() => setHoveredField("tel")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "tel" ? "-85px -266px " : "-85px -240px"
-						}}
-					/>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							position={
+								hoveredField === "tel"
+									? "bg-[-85px_-266px]"
+									: "bg-[-85px_-240px]"
+							}
+						/>
+					</div>
 					<input
 						name="tel"
 						placeholder="전화번호"
@@ -244,14 +247,15 @@ export default function Signup() {
 					onMouseEnter={() => setHoveredField("email")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "email" ? "-117px -265px " : "-117px -239px"
-						}}
-					/>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							position={
+								hoveredField === "email"
+									? "bg-[-117px_-265px]"
+									: "bg-[-117px_-239px]"
+							}
+						/>
+					</div>
 					<input
 						name="email"
 						placeholder="이메일"
@@ -265,16 +269,18 @@ export default function Signup() {
 					onMouseEnter={() => setHoveredField("password")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "password" ? "-150px -264px " : "-150px -238px"
-						}}
-					/>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							position={
+								hoveredField === "password"
+									? "bg-[-150px_-264px]"
+									: "bg-[-150px_-238px]"
+							}
+						/>
+					</div>
 					<input
 						name="password"
+						type="password"
 						placeholder="비밀번호"
 						value={form.password}
 						onChange={handleChange}
@@ -286,18 +292,18 @@ export default function Signup() {
 					onMouseEnter={() => setHoveredField("passwordConfirm")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							position={
 								hoveredField === "passwordConfirm"
-									? "-150px -264px "
-									: "-150px -238px"
-						}}
-					/>
+									? "bg-[-150px_-264px]"
+									: "bg-[-150px_-238px]"
+							}
+						/>
+					</div>
 					<input
 						name="passwordConfirm"
+						type="password"
 						placeholder="비밀번호 확인"
 						value={form.passwordConfirm}
 						onChange={handleChange}
