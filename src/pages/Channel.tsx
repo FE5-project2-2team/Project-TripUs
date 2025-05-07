@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getChannelInfo } from "../apis/channel";
 import { useParams } from "react-router";
+import { getChannelInfo } from "../apis/channel";
 import { getPosts } from "../apis/post";
 
 //채널 정보 가져오기
@@ -121,7 +121,7 @@ export default function Channel() {
 
 			fetchPostInfo();
 		}
-	}, [decodedChannelName]);
+	}, [decodedChannelName, channelName]);
 
 	return (
 		<div className="w-full max-w-[1000px] grid grid-cols-3 mx-auto gap-[50px] mt-[20px]">

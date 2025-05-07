@@ -47,7 +47,7 @@ export default function Login() {
 		<>
 			<form
 				onSubmit={handleSubmit}
-				className="w-[460px] mx-auto mt-10 flex flex-col gap-[26px] text-[#333333]"
+				className="w-[460px] mx-auto flex flex-col gap-[26px] text-[#333333]"
 			>
 				<img
 					src={SignupLogo}

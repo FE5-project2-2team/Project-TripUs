@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { registerUser } from "../apis/auth";
 import { useNavigate } from "react-router";
+import { registerUser } from "../apis/auth";
 import SignupLogo from "../assets/images/Signup_logo.svg";
 import sprite from "../assets/images/sprite.png";
 
@@ -140,12 +140,12 @@ export default function Signup() {
 		<>
 			<form
 				onSubmit={handleSubmit}
-				className="w-[460px] mx-auto mt-10 flex flex-col gap-[26px] text-[#333333]"
+				className="w-[460px] mx-auto flex flex-col gap-[26px] text-[#333333]"
 			>
 				<img
 					src={SignupLogo}
 					alt="TripUs 로고"
-					className="w-[278px] h-[106px] mx-auto mt-[114px] mb-[26px]"
+					className="w-[278px] h-[106px] mx-auto mt-[60px] mb-[26px]"
 				/>
 				<div
 					className="relative group"
