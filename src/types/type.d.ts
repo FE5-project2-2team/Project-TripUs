@@ -19,7 +19,6 @@ interface Profile {
 	tel: string;
 	nickname: string;
 	tagList: string[];
-	image: string;
 }
 
 interface UserUpdateData {

@@ -9,6 +9,7 @@ export default function Button(props: ButtonProps) {
 	const { children, className, reverse, ...rest } = props;
 	return (
 		<button
+			{...rest}
 			className={twMerge(
 				"flex justify-center items-center h-15 text-xl rounded-[10px] py-[17.5px] text-center font-bold cursor-pointer box-border",
 				reverse
