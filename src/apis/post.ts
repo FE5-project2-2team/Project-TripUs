@@ -24,7 +24,7 @@ export const createPost = async (post: FormData) => {
 	return data._id;
 };
 
-export const updatePost = async (post: PostUpdateData) => {
+export const updatePost = async (post: FormData) => {
 	await axiosInstance.put("/posts/update", post, {
 		headers: {
 			"Content-Type": "multipart/form-data"

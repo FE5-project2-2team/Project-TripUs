@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import ReactQuill from "react-quill-new";
 import { useNavigate } from "react-router";
-import { createPost } from "../apis/post";
+import { createPost, updatePost } from "../apis/post";
 import { CHANNELS } from "../constants/posts";
 import { useAuthStore } from "../store/authStore";
 import urlToFile from "../utils/urlToFile";
@@ -12,7 +12,7 @@ export function usePostForm() {
 	const navigate = useNavigate();
 	const userId = useAuthStore((state) => state.userId);
 
-	const { inputs, values } = useInput({
+	const { inputs, values, setValues } = useInput({
 		title: "",
 		location: "",
 		channel: CHANNELS.RECRUITMENT,
@@ -50,7 +50,10 @@ export function usePostForm() {
 		);
 	};
 
-	const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+	const submitHandler = async (
+		e: React.FormEvent<HTMLFormElement>,
+		postId?: string
+	) => {
 		e.preventDefault();
 		try {
 			const imageFile = await urlToFile(contents);
@@ -86,12 +89,38 @@ export function usePostForm() {
 			formData.append("channelId", values.channel);
 			if (imageFile) formData.append("image", imageFile);
 
-			const postId = await createPost(formData);
-			navigate(`/post/detail/${postId}`);
+			if (postId) {
+				formData.append("postId", postId);
+				await updatePost(formData);
+				navigate(`/post/detail/${postId}`);
+			} else {
+				const postId = await createPost(formData);
+				navigate(`/post/detail/${postId}`);
+			}
 		} catch (error) {
 			console.error(error);
 		}
 	};
+
+	const updateInputs = useCallback(
+		(postData: PostData) => {
+			const postInfo: PostDetail = JSON.parse(postData.title);
+			const date = postInfo.dateRange.map((date) => new Date(date));
+			setValues({
+				title: postInfo.title,
+				location: postInfo.location,
+				channel: postData.channel._id,
+				member: postInfo.memberLimit.toString()
+			});
+			setDateRange(date);
+			contents.current?.getEditor().setContents(postInfo.contents);
+			setCondition({
+				gender: postInfo.recruitCondition.gender,
+				ageRange: postInfo.recruitCondition.ageRange
+			});
+		},
+		[setValues]
+	);
 
 	return {
 		inputs,
@@ -100,7 +129,8 @@ export function usePostForm() {
 		handlers: {
 			conditionHandler,
 			onDateChange,
-			submitHandler
+			submitHandler,
+			updateInputs
 		}
 	};
 }
