@@ -5,17 +5,31 @@ export const getPosts = async (channelId: string) => {
 	return data;
 };
 
+export const getPostById = async (postId: string) => {
+	const { data } = await axiosInstance.get(`/posts/${postId}`);
+	return data;
+};
+
 export const getPostsByAuthor = async (AuthorId: string) => {
 	const { data } = await axiosInstance.get(`/posts/author/${AuthorId}`);
 	return data;
 };
 
-export const createPost = async (post: Post) => {
-	await axiosInstance.post("/posts/create", post);
+export const createPost = async (post: FormData) => {
+	const { data } = await axiosInstance.post("/posts/create", post, {
+		headers: {
+			"Content-Type": "multipart/form-data"
+		}
+	});
+	return data._id;
 };
 
-export const updatePost = async (post: Post) => {
-	await axiosInstance.put("/posts/update", post);
+export const updatePost = async (post: PostUpdateData) => {
+	await axiosInstance.put("/posts/update", post, {
+		headers: {
+			"Content-Type": "multipart/form-data"
+		}
+	});
 };
 
 export const deletePost = async (postId: string) => {

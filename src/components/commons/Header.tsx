@@ -12,7 +12,6 @@ import headerLogo from "../../assets/images/logo_header.svg";
 import profileCircle from "../../assets/images/profileImg_circle.svg";
 import { useAuthStore } from "../../store/authStore";
 import Button from "./Button";
-import Icon from "./Icon";
 import Modal from "./Modal";
 import ModalItem from "./ModalItem";
 
@@ -70,6 +69,8 @@ export default function Header() {
 			</Link>
 			{isLoggedIn ? (
 				<div className="flex items-center gap-[40px] relative">
+					<Link to={"/postCreate"}>게시글 작성</Link>
+					<Link to={`/post/detail/681b23993e936b0bb07c072d`}>게시글 이동</Link>
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
@@ -90,18 +91,31 @@ export default function Header() {
 						<span>{nickname}</span>
 						<FontAwesomeIcon icon={faAngleDown} className="ml-[5px]" />
 					</button>
+
 					{modalOpen && (
 						<Modal ref={modalRef}>
-							<ModalItem clickHandler={goToMyPage}>
-								<Icon position="bg-[-20px_-290px] group-hover:bg-[-20px_-316px]" />
+							<ModalItem
+								clickHandler={goToMyPage}
+								position="8.969% 81.006%"
+								hoverPosition="8.969% 88.268%"
+								size="22px"
+							>
 								마이페이지
 							</ModalItem>
-							<ModalItem clickHandler={setDarkMode}>
-								<Icon position="bg-[-52px_-290px] group-hover:bg-[-52px_-316px]" />
+							<ModalItem
+								clickHandler={setDarkMode}
+								position="23.318% 81.006%"
+								hoverPosition="23.318% 88.268%"
+								size="22px"
+							>
 								다크모드
 							</ModalItem>
-							<ModalItem clickHandler={signOut}>
-								<Icon position="bg-[-84px_-290px] group-hover:bg-[-84px_-316px]" />
+							<ModalItem
+								clickHandler={signOut}
+								position="37.778% 80.833%"
+								hoverPosition="37.778% 88.056%"
+								size="22px"
+							>
 								로그아웃
 							</ModalItem>
 						</Modal>
@@ -112,15 +126,13 @@ export default function Header() {
 					<Link to={"/login"}>
 						<Button
 							reverse
-							className="w-[78px] h-[45px] text-[18px] border-transparent hover:border-[#06B796]"
+							className="w-[78px] h-[45px] text-[18px] border-transparent hover:border-[#06B796] hover:bg-white hover:text-[#06b796]"
 						>
 							로그인
 						</Button>
 					</Link>
 					<Link to={"/signup"}>
-						<Button className="w-25 h-[45px] text-[18px] hover:bg-[#038383]">
-							회원 가입
-						</Button>
+						<Button className="w-25 h-[45px] text-[18px]">회원 가입</Button>
 					</Link>
 				</div>
 			)}

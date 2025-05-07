@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
 @import "./tailwind.css";
+@import "./icons.css";
 
 body {
 	color: #333;
@@ -31,4 +32,16 @@ body {
 .inputGender {
 	@apply w-[50px] h-[60px] ml-[18px] border border-[#616161] rounded-[10px] 
     text-center text-[16px] focus:outline-none focus:border-[#06B796];
+}
+
+.ql-container {
+	@apply text-base rounded-b-[10px] bg-[#F9F9F9] border-0! w-[1084px];
+}
+
+.ql-toolbar {
+	@apply rounded-t-[10px] bg-[#F9F9F9] border-0! border-b-[1px]! border-b-[#eee]!;
+}
+
+.ql-editor.ql-blank::before {
+	@apply text-[#CDCDCD] not-italic;
 }
