@@ -61,3 +61,28 @@ interface NotiType {
 	userId: string;
 	postId: string | null;
 }
+
+interface UserInChannel {
+	posts: Post[];
+	//likes:Like[];
+	_id: string;
+	fullName: User;
+	username: string | null;
+	image: string;
+	imagePublicId: string;
+}
+interface PostInChannel {
+	_id: string;
+	image: string;
+	title: PostData;
+	channel: Channel; //id필요한거면 channelId로 대체
+	author: UserInChannel; //
+	createdAt: string; //
+}
+interface Channel {
+	_id: string;
+	name: string;
+	description: string;
+	authRequired: boolean;
+	posts: string[];
+}

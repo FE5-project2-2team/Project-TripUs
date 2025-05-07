@@ -69,16 +69,16 @@ export default function Channel() {
 		updatedAt: string;
 		__v: number;
 	}
-	interface Channel {
-		_id: string;
-		name: string;
-		description: string;
-		authRequired: boolean;
-		posts: string[];
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	}
+	// interface Channel {
+	// 	_id: string;
+	// 	name: string;
+	// 	description: string;
+	// 	authRequired: boolean;
+	// 	posts: string[];
+	// 	createdAt: string;
+	// 	updatedAt: string;
+	// 	__v: number;
+	// }
 	interface User {
 		coverImage: string;
 		image: string;
@@ -91,7 +91,7 @@ export default function Channel() {
 		comments: string[];
 		followers: string[]; //
 		following: string[]; //
-		notifications: Notification[];
+		notifications: Notification[]; //
 		messages: [];
 		_id: string;
 		fullName: string;
@@ -101,28 +101,28 @@ export default function Channel() {
 		__v: number;
 		username: string | null;
 	}
-	// interface FullName {
+	// interface FullName { User
 	//   name: string;
 	//   tel: string;
 	//   gender: "여자" | "남자";
 	//   age: number;
 	//   nickname: string;
 	// }
-	interface RecruitCondition {
-		gender: string;
-		ageRange: string[];
-	}
-	interface PostData {
-		title: string;
-		memberLimit: number;
-		memberList: string[];
-		location: string;
-		dateRange: Date[];
-		isRecruiting: boolean;
-		recruitCondition: RecruitCondition;
-		description: string;
-		contents: string;
-	}
+	// interface RecruitCondition {
+	// 	gender: string;
+	// 	ageRange: string[];
+	// }
+	// interface PostData {
+	// 	title: string;
+	// 	memberLimit: number;
+	// 	memberList: string[];
+	// 	location: string;
+	// 	dateRange: Date[];
+	// 	isRecruiting: boolean;
+	// 	recruitCondition: RecruitCondition;
+	// 	description: string;
+	// 	contents: string;
+	// }
 	interface Post {
 		likes: Like[];
 		comments: Comment[];
@@ -131,8 +131,8 @@ export default function Channel() {
 		imagePublicId: string;
 		title: PostData;
 		channel: Channel;
-		author: User;
-		createdAt: string;
+		author: User; //
+		createdAt: string; //
 		updatedAt: string;
 		__v: number;
 	}
@@ -179,18 +179,16 @@ export default function Channel() {
 	}, [posts, selectFilter, sort, FilterPosts, SortPosts]);
 
 	return (
-		<div className="w-full max-w-[1000px] grid grid-cols-3 mx-auto gap-[50px] mt-[20px] relative">
+		<div className="w-full grid grid-cols-3 gap-[20px] mt-[20px] relative">
 			{filteredPosts.map((post) => (
 				//포스트 카드
 
 				<div
 					key={post._id}
-					className="w-[328px] min-h-[450px] rounded-[15px] border border-[#D9D9D9] flex flex-col overflow-hidden"
+					className="w-[328px] min-h-[450px] rounded-[15px] border border-[#D9D9D9] flex flex-col overflow-hidden cursor-pointer"
+					onClick={() => navigate(`/posts/${post._id}`)}
 				>
-					<div
-						className="relative"
-						onClick={() => navigate(`/posts/${post._id}`)}
-					>
+					<div className="relative">
 						<img
 							src={post.image}
 							className="w-full h-[200px] rounded-t-[15px] object-cover z-10"
@@ -234,13 +232,13 @@ export default function Channel() {
 								<p className="text-[16px] font-bold">
 									게시글 제목: {post.title.title}
 								</p>
-								<p className="mt-[7px] text-[14px] overflow-hidden text-ellipsis whitespace-nowrap">
+								<p className="mt-[7px] min-h-[38px] text-[14px] overflow-hidden text-ellipsis whitespace-nowrap">
 									{post.title.description}
 								</p>
 							</div>
 							{/* 여행지, 크루원수,날짜*/}
 							<div className="w-[142px] h-[70px] text-[14px]">
-								<p>여행지:{post.title.location}</p>
+								<p>여행지: {post.title.location}</p>
 								<p>
 									크루원수: {post.title.memberList.length} /{" "}
 									{post.title.memberLimit}
@@ -273,10 +271,12 @@ export default function Channel() {
 							</div>
 						</div>
 						{/* 나이,성별 */}
-						<p className="text-[14px] mt-4">
+						<p className="text-[14px] flex mt-4 gap-4">
 							#{post.title.recruitCondition.gender}
 							{post.title.recruitCondition.ageRange.map((age) => (
-								<span key={age}>#{age}</span>
+								<span key={age} className="min-w-[35px] h-[19px]">
+									#{age}
+								</span>
 							))}
 						</p>
 					</div>

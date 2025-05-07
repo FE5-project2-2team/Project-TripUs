@@ -20,6 +20,18 @@ export default function FilterAndSort({
 	// const [isChecked, setIsChecked] = useState(false);
 	const [tempFilter, setTempFilter] = useState<string[]>([]);
 	// const [selectFilter, setSelectFilter] = useState<string[]>([]);
+	const genderArr = ["성별 무관", "남성", "여성"];
+	const ageArr = ["20대", "30대", "40대", "50대", "60대+"];
+
+	const toggleFilter = (butt: string) => {
+		// if (tempFilter.includes(butt)) {
+		// 	setTempFilter(tempFilter.filter((value) => value !== butt));
+		// } else {
+		// 	setTempFilter([...tempFilter, butt]);
+		// }
+		tempFilterFunc(butt);
+	};
+
 	const tempFilterFunc = (filter: string) => {
 		if (tempFilter.includes(filter))
 			setTempFilter(tempFilter.filter((item) => item !== filter));
@@ -73,74 +85,35 @@ export default function FilterAndSort({
 							</div>
 							<span className=" block text-[18px] mt-[20px]">성별</span>
 							<div className="min-w-[178px] h-[46px] mt-[10px] flex items-center gap-[16px]">
-								<button
-									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
-									onClick={() => {
-										tempFilterFunc("성별 무관");
-									}}
-								>
-									성별 무관
-								</button>
-								<button
-									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
-									onClick={() => {
-										tempFilterFunc("남성");
-									}}
-								>
-									남성
-								</button>
-								<button
-									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
-									onClick={() => {
-										tempFilterFunc("여성");
-									}}
-								>
-									여성
-								</button>
+								{genderArr.map((butt) => (
+									<button
+										key={butt}
+										onClick={() => toggleFilter(butt)}
+										className={`w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer
+										transition ${tempFilter.includes(butt) ? "border border-[#06B796] text-[#06B796]" : "text-[#616161]"}
+										`}
+									>
+										{butt}
+									</button>
+								))}
 							</div>
 
 							<span className=" block text-[18px] mt-[20px]">나이</span>
 							<div className="w-[465px] h-[46px] mt-[10px] flex items-center gap-[16px]">
-								<button
-									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
-									onClick={() => {
-										tempFilterFunc("20대");
-									}}
-								>
-									20대
-								</button>
-								<button
-									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
-									onClick={() => {
-										tempFilterFunc("30대");
-									}}
-								>
-									30대
-								</button>
-								<button
-									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
-									onClick={() => {
-										tempFilterFunc("40대");
-									}}
-								>
-									40대
-								</button>
-								<button
-									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
-									onClick={() => {
-										tempFilterFunc("50대");
-									}}
-								>
-									50대
-								</button>
-								<button
-									className="w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer"
-									onClick={() => {
-										tempFilterFunc("60대+");
-									}}
-								>
-									60대+
-								</button>
+								{ageArr.map((butt) => (
+									<button
+										key={butt}
+										onClick={() => {
+											// tempFilterFunc(butt);
+											toggleFilter(butt);
+										}}
+										className={`w-[80px] h-[46px] text-[16px] rounded-[8px] bg-[#F3F4F6] cursor-pointer
+										${tempFilter.includes(butt) ? "border border-[#06B796] text-[#06B796]" : "text-[#616161]"}
+										`}
+									>
+										{butt}
+									</button>
+								))}
 							</div>
 							{/* 모집중만 보기*/}
 							<label className="flex items-center cursor-pointer gap-[2px] mt-[30px]">

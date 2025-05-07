@@ -2,92 +2,92 @@ import { useEffect, useState } from "react";
 import { getUsers } from "../../../apis/user";
 
 export default function UserList() {
-	const [userList, setUserList] = useState<User[]>([]);
-	interface Like {
-		id: string;
-		user: string;
-		post: string;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	}
-	interface Comment {
-		_id: string;
-		comment: string;
-		author: User;
-		post: string;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	}
-	interface Channel {
-		_id: string;
-		name: string;
-		description: string;
-		authRequired: boolean;
-		posts: string[];
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	}
-	interface User {
-		role: string;
-		emailVerified: boolean;
-		banned: boolean;
-		isOnline: boolean;
-		posts: Post[];
-		likes: Like[];
-		comments: string[];
-		followers: string[]; //
-		following: string[]; //
-		notifications: Notification[];
-		messages: [];
-		_id: string;
-		fullName: string | FullName;
-		email: string;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-		username: string | null;
-		image: string;
-		imagePublicId: string;
-	}
-	interface FullName {
-		name: string;
-		tel: string;
-		gender: "여자" | "남자";
-		age: number;
-		nickname: string;
-	}
-	interface PostData {
-		title: string;
-		memberLimit: number;
-		memberList: string[];
-		location: string;
-		dateRange: Date[];
-		isRecruiting: boolean;
-		recruitCondition: string[];
-		contents: string;
-	}
-	interface Post {
-		likes: Like[];
-		comments: Comment[];
-		_id: string;
-		image: string; //optional
-		imagePublicId: string;
-		title: PostData;
-		channel: Channel;
-		author: User;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	}
+	const [userList, setUserList] = useState<UserInChannel[]>([]);
+	// interface Like {
+	// 	id: string;
+	// 	user: string;
+	// 	post: string;
+	// 	createdAt: string;
+	// 	updatedAt: string;
+	// 	__v: number;
+	// }
+	// interface Comment {
+	// 	_id: string;
+	// 	comment: string;
+	// 	author: User;
+	// 	post: string;
+	// 	createdAt: string;
+	// 	updatedAt: string;
+	// 	__v: number;
+	// }
+	// interface Channel {
+	// 	_id: string;
+	// 	name: string;
+	// 	description: string;
+	// 	authRequired: boolean;
+	// 	posts: string[];
+	// 	createdAt: string;
+	// 	updatedAt: string;
+	// 	__v: number;
+	// }추가완료
+	// interface User {
+	// 	role: string;
+	// 	emailVerified: boolean;
+	// 	banned: boolean;
+	// 	isOnline: boolean;
+	// 	posts: Post[];
+	// 	likes: Like[];
+	// 	comments: string[];
+	// 	followers: string[]; //
+	// 	following: string[]; //
+	// 	notifications: Notification[];
+	// 	messages: [];
+	// 	_id: string;
+	// 	fullName: string | FullName;
+	// 	email: string;
+	// 	createdAt: string;
+	// 	updatedAt: string;
+	// 	__v: number;
+	// 	username: string | null;
+	// 	image: string;
+	// 	imagePublicId: string;
+	// }
+	// interface FullName {//user
+	// 	name: string;
+	// 	tel: string;
+	// 	gender: "여자" | "남자";
+	// 	age: number;
+	// 	nickname: string;
+	// }
+	// interface PostData {
+	// 	title: string;
+	// 	memberLimit: number;
+	// 	memberList: string[];
+	// 	location: string;
+	// 	dateRange: Date[];
+	// 	isRecruiting: boolean;
+	// 	recruitCondition: string[];
+	// 	contents: string;
+	//}
+	// interface Post {
+	// 	likes: Like[];
+	// 	comments: Comment[];
+	// 	_id: string;//postId
+	// 	image: string; //File|null
+	// 	imagePublicId: string;
+	// 	title: PostData;
+	// 	channel: Channel;
+	// 	author: User;
+	// 	createdAt: string;
+	// 	updatedAt: string;
+	// 	__v: number;
+	// }
 	useEffect(() => {
 		const fetchUsers = async () => {
 			try {
 				const userUpdate = await getUsers();
-				const parsedUser = userUpdate.map((user: User) => {
-					let parsedFullName: FullName;
+				const parsedUser = userUpdate.map((user: UserInChannel) => {
+					let parsedFullName: User;
 					if (typeof user.fullName === "string") {
 						try {
 							parsedFullName = JSON.parse(user.fullName);
@@ -96,7 +96,7 @@ export default function UserList() {
 							parsedFullName = {
 								name: user.fullName,
 								tel: "",
-								gender: "남자",
+								gender: "남성",
 								age: 0,
 								nickname: ""
 							};
@@ -131,11 +131,11 @@ export default function UserList() {
 							/>
 							<div className="flex flex-col w-[87px] h-[44px] ml-[12px]">
 								<div className="text-[16px] w-[87px] h-[19px]">
-									{(user.fullName as FullName).name}
+									{(user.fullName as User).name}
 								</div>
 								<div className="text-[14px] w-full h-[17px] mt-[8px]">
-									{(user.fullName as FullName).gender}{" "}
-									{Math.floor((user.fullName as FullName).age / 10) * 10}대
+									{(user.fullName as User).gender}{" "}
+									{Math.floor((user.fullName as User).age / 10) * 10}대
 								</div>
 							</div>
 						</div>
