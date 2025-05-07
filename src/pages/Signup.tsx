@@ -163,10 +163,9 @@ export default function Signup() {
 				>
 					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
 						<Icon
+							size="24px"
 							position={
-								hoveredField === "name"
-									? "bg-[-19px_-265px]"
-									: "bg-[-19px_-239px]"
+								hoveredField === "name" ? "-21px -265px" : "-21px -239px"
 							}
 						/>
 					</div>
@@ -186,10 +185,9 @@ export default function Signup() {
 				>
 					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
 						<Icon
+							size="24px"
 							position={
-								hoveredField === "birth"
-									? "bg-[-53px_-264px]"
-									: "bg-[-53px_-238px]"
+								hoveredField === "birth" ? "-53px -264px" : "-53px -238px"
 							}
 						/>
 					</div>
@@ -227,10 +225,9 @@ export default function Signup() {
 				>
 					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
 						<Icon
+							size="24px"
 							position={
-								hoveredField === "tel"
-									? "bg-[-85px_-266px]"
-									: "bg-[-85px_-240px]"
+								hoveredField === "tel" ? "-85px -266px" : "-85px -240px"
 							}
 						/>
 					</div>
@@ -249,10 +246,9 @@ export default function Signup() {
 				>
 					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
 						<Icon
+							size="24px"
 							position={
-								hoveredField === "email"
-									? "bg-[-117px_-265px]"
-									: "bg-[-117px_-239px]"
+								hoveredField === "email" ? "-117px -265px" : "-117px -239px"
 							}
 						/>
 					</div>
@@ -271,10 +267,9 @@ export default function Signup() {
 				>
 					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
 						<Icon
+							size="24px"
 							position={
-								hoveredField === "password"
-									? "bg-[-150px_-264px]"
-									: "bg-[-150px_-238px]"
+								hoveredField === "password" ? "-150px -264px" : "-150px -238px"
 							}
 						/>
 					</div>
@@ -294,10 +289,11 @@ export default function Signup() {
 				>
 					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
 						<Icon
+							size="24px"
 							position={
 								hoveredField === "passwordConfirm"
-									? "bg-[-150px_-264px]"
-									: "bg-[-150px_-238px]"
+									? "-150px -264px"
+									: "-150px -238px"
 							}
 						/>
 					</div>

@@ -3,7 +3,8 @@ import { useNavigate } from "react-router";
 import { loginUser } from "../apis/auth";
 import { useAuthStore } from "../store/authStore";
 import SignupLogo from "../assets/images/Signup_logo.svg";
-import sprite from "../assets/images/sprite.png";
+import Button from "../components/commons/Button";
+import Icon from "../components/commons/Icon";
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -51,21 +52,22 @@ export default function Login() {
 				<img
 					src={SignupLogo}
 					alt="TripUs 로고"
-					className="w-[278px] h-[106px] mx-auto mt-[223px] mb-[26px]"
+					className="w-[278px] h-[106px] mx-auto mt-[223px] mb-[26px] cursor-pointer"
+					onClick={() => navigate("/")}
 				/>
 				<div
 					className="relative group"
 					onMouseEnter={() => setHoveredField("email")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "email" ? "-117px -265px " : "-117px -239px"
-						}}
-					></div>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							size="24px"
+							position={
+								hoveredField === "email" ? "-117px -265px" : "-117px -239px"
+							}
+						/>
+					</div>
 					<input
 						name="email"
 						placeholder="이메일"
@@ -79,32 +81,34 @@ export default function Login() {
 					onMouseEnter={() => setHoveredField("password")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "password" ? "-150px -264px " : "-150px -238px"
-						}}
-					></div>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							size="24px"
+							position={
+								hoveredField === "password" ? "-150px -264px" : "-150px -238px"
+							}
+						/>
+					</div>
 					<input
 						name="password"
+						type="password"
 						placeholder="비밀번호"
 						value={form.password}
 						onChange={handleChange}
 						className="inputProps"
 					/>
 				</div>
-				<button type="submit" className="firstButton">
+				<Button type="submit" className="w-full">
 					로그인
-				</button>
-				<button
+				</Button>
+				<Button
 					type="button"
 					onClick={handleSignupClick}
-					className="secondButton"
+					reverse
+					className="w-full border-[1px]"
 				>
 					회원가입
-				</button>
+				</Button>
 			</form>
 		</>
 	);
