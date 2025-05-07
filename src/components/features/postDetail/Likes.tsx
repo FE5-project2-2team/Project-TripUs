@@ -27,18 +27,22 @@ export default function Likes({
 			navigate("/login");
 			return;
 		}
-		if (likes.likeId) {
-			await deleteLike(likes.likeId);
-			setLikes((likes) => ({
-				number: likes.number - 1,
-				likeId: ""
-			}));
-		} else {
-			const myLike: LikeData = await createLike(postId);
-			setLikes((likes) => ({
-				number: likes.number + 1,
-				likeId: myLike._id
-			}));
+		try {
+			if (likes.likeId) {
+				await deleteLike(likes.likeId);
+				setLikes((likes) => ({
+					number: likes.number - 1,
+					likeId: ""
+				}));
+			} else {
+				const myLike: LikeData = await createLike(postId);
+				setLikes((likes) => ({
+					number: likes.number + 1,
+					likeId: myLike._id
+				}));
+			}
+		} catch (error) {
+			console.error(error);
 		}
 	};
 	return (

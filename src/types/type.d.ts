@@ -29,8 +29,8 @@ interface UserUpdateData {
 
 interface PostUpdateData {
 	title: string;
-	image: File | null;
-	channelId: string;
+	image?: File | null;
+	channelId?: string;
 	postId?: string;
 	imageToDeletePublicId?: string;
 }

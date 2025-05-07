@@ -4,8 +4,8 @@ export default function Icon({
 	hoverPosition,
 	hovered
 }: {
-	size: string;
-	position: string;
+	size?: string | undefined;
+	position?: string | undefined;
 	hovered?: boolean;
 	hoverPosition?: string;
 }) {

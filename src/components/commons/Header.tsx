@@ -70,7 +70,7 @@ export default function Header() {
 			{isLoggedIn ? (
 				<div className="flex items-center gap-[40px] relative">
 					<Link to={"/postCreate"}>게시글 작성</Link>
-					<Link to={`/post/detail/6819ad092e2afb0263c95b93`}>게시글 이동</Link>
+					<Link to={`/post/detail/681b23993e936b0bb07c072d`}>게시글 이동</Link>
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
@@ -126,15 +126,13 @@ export default function Header() {
 					<Link to={"/login"}>
 						<Button
 							reverse
-							className="w-[78px] h-[45px] text-[18px] border-transparent hover:border-[#06B796]"
+							className="w-[78px] h-[45px] text-[18px] border-transparent hover:border-[#06B796] hover:bg-white hover:text-[#06b796]"
 						>
 							로그인
 						</Button>
 					</Link>
 					<Link to={"/signup"}>
-						<Button className="w-25 h-[45px] text-[18px] hover:bg-[#038383]">
-							회원 가입
-						</Button>
+						<Button className="w-25 h-[45px] text-[18px]">회원 가입</Button>
 					</Link>
 				</div>
 			)}

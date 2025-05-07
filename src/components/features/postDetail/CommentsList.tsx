@@ -15,9 +15,13 @@ export default function CommentsList({
 	const [list, setList] = useState([...commentsList]);
 	const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const newComment = await createComment(postId, value);
-		setList((list) => [...list, newComment]);
-		setValue("");
+		try {
+			const newComment = await createComment(postId, value);
+			setList((list) => [...list, newComment]);
+			setValue("");
+		} catch (error) {
+			console.error(error);
+		}
 	};
 	const deleteCommentHandler = async (commentId: string) => {
 		await deleteComment(commentId);

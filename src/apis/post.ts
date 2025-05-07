@@ -25,7 +25,11 @@ export const createPost = async (post: FormData) => {
 };
 
 export const updatePost = async (post: PostUpdateData) => {
-	await axiosInstance.put("/posts/update", post);
+	await axiosInstance.put("/posts/update", post, {
+		headers: {
+			"Content-Type": "multipart/form-data"
+		}
+	});
 };
 
 export const deletePost = async (postId: string) => {

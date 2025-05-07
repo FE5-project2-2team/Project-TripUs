@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { getPostById } from "../apis/post";
+import { getPostById, updatePost } from "../apis/post";
 import Button from "../components/commons/Button";
+import ApplyMembers from "../components/features/postDetail/ApplyMembers";
 import CommentsList from "../components/features/postDetail/CommentsList";
 import Likes from "../components/features/postDetail/Likes";
 import PostTitle from "../components/features/postDetail/PostTitle";
@@ -13,10 +14,35 @@ export default function PostDetail() {
 	const { id } = useParams();
 	const userId = useAuthStore((state) => state.userId);
 	const [postData, setPostData] = useState<PostData | null>(null);
+	const [isApplied, setIsApplied] = useState(false);
+
+	const applyAccompany = async () => {
+		if (!postData) return;
+		const postInfo: PostDetail = JSON.parse(postData.title);
+		const updateData = {
+			title: JSON.stringify({
+				...postInfo,
+				applicantList: postInfo.applicantList.push(userId!)
+			}),
+			postId: id
+		};
+
+		try {
+			const data = await updatePost(updateData);
+			console.log(data);
+			setIsApplied(true);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	const getData = useCallback(async () => {
-		const postData: PostData = await getPostById(id!);
-		setPostData(postData);
+		try {
+			const postData: PostData = await getPostById(id!);
+			setPostData(postData);
+		} catch (error) {
+			console.error(error);
+		}
 	}, [id]);
 
 	useEffect(() => {
@@ -30,11 +56,14 @@ export default function PostDetail() {
 		const isAuthor = userId === postData.author._id;
 		return (
 			<main className="flex flex-col justify-center items-center mt-[49px]">
-				<PostTitle
-					isRecruiting={postInfo.isRecruiting}
-					title={postInfo.title}
-				/>
 				<div className="flex flex-col gap-[30px] w-266 ">
+					<PostTitle
+						isAuthor={isAuthor}
+						isRecruiting={postInfo.isRecruiting}
+						title={postInfo.title}
+						postId={postData._id}
+						postData={postData}
+					/>
 					<TravelInfo
 						contents={postInfo.contents}
 						dateRange={postInfo.dateRange}
@@ -55,13 +84,22 @@ export default function PostDetail() {
 							{postInfo.recruitCondition.ageRange.join(", ")}
 						</div>
 					</div>
+					<ApplyMembers />
 					<Likes likesList={postData.likes} postId={postData._id} />
 					<CommentsList
 						commentsList={postData.comments}
 						postId={id as string}
 						authorId={postData.author._id}
 					/>
-					{!isAuthor && <Button className="w-full mb-8">동행 신청하기</Button>}
+					{!isAuthor && userId && (
+						<Button
+							onClick={applyAccompany}
+							className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
+							disabled={isApplied}
+						>
+							동행 신청하기
+						</Button>
+					)}
 				</div>
 			</main>
 		);
