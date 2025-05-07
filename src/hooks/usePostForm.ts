@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useRef, useState } from "react";
 import ReactQuill from "react-quill-new";
 import { useNavigate } from "react-router";
@@ -35,35 +34,6 @@ export function usePostForm() {
 		if (selctedDates.length === 2) setDateRange(selctedDates);
 	};
 
-	const ImageHandler = async () => {
-		if (!contents.current) return;
-
-		const quillInstance = contents.current.getEditor();
-		const input = document.createElement("input");
-		input.setAttribute("type", "file");
-		input.setAttribute("accept", "image/*");
-		input.click();
-
-		input.onchange = async () => {
-			const file = input.files?.[0] as File;
-			const formData = new FormData();
-			formData.append("file", file);
-			formData.append("upload_preset", "postImages");
-
-			try {
-				const { data } = await axios.post(
-					"https://api.cloudinary.com/v1_1/dopw7udhj/image/upload",
-					formData
-				);
-				const range = quillInstance.getSelection(true);
-				quillInstance.insertEmbed(range.index, "image", data.secure_url);
-				quillInstance.setSelection(range.index + 1);
-			} catch (error) {
-				console.error(error);
-			}
-		};
-	};
-
 	const conditionHandler = (
 		e: React.ChangeEvent<HTMLInputElement>,
 		type: string
@@ -96,7 +66,7 @@ export function usePostForm() {
 				alert(alertMessage);
 				return;
 			}
-			const detailData: PostData = {
+			const detailData: PostDetail = {
 				title: values.title,
 				memberLimit: Number(values.member),
 				memberList: [userId!],
@@ -130,8 +100,7 @@ export function usePostForm() {
 		handlers: {
 			conditionHandler,
 			onDateChange,
-			submitHandler,
-			ImageHandler
+			submitHandler
 		}
 	};
 }
