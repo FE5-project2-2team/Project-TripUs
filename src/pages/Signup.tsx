@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { registerUser } from "../apis/auth";
 import { useNavigate } from "react-router";
+import { registerUser } from "../apis/auth";
 import SignupLogo from "../assets/images/Signup_logo.svg";
 import sprite from "../assets/images/sprite.png";
 
