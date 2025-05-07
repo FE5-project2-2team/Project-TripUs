@@ -306,6 +306,7 @@ export default function Signup() {
 						className="inputProps"
 					/>
 				</div>
+
 				<Button type="submit" className="w-full">
 					회원가입
 				</Button>
