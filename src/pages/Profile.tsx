@@ -15,9 +15,9 @@ export default function Profile() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 	useEffect(() => {
 		if (!isLoggedIn) {
-		navigate("/login");
+			navigate("/login");
 		}
-	}, [isLoggedIn, navigate])
+	}, [isLoggedIn, navigate]);
 	const userId = useAuthStore((state) => state.userId);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [image, setImage] = useState(profileCircle);

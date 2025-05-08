@@ -21,6 +21,19 @@ interface Profile {
 	tagList: string[];
 }
 
+type ProfilePost = {
+	_id: string;
+	image: string;
+	title: string;
+	channel: {
+		_id: string;
+		name: string;
+	};
+	author: {
+		_id: string;
+	};
+};
+
 interface UserUpdateData {
 	profile?: Partial<User>;
 	tagList?: string[];
@@ -38,6 +51,7 @@ interface PostDetail {
 	title: string;
 	memberLimit: number;
 	memberList: string[];
+	applicantList: string[];
 	location: string;
 	dateRange: Date[];
 	isRecruiting: boolean;
