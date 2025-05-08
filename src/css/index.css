@@ -25,21 +25,13 @@ body {
 	@apply pl-[54px] w-[226px] h-[60px] mr-[18px] border border-[#616161] rounded-[10px] 
     text-[16px] placeholder-[#616161] 
     focus:outline-none focus:border-[#06B796] 
-    group-hover:border-[#06B796] 
-    placeholder:transition-colors group-hover:placeholder-[#06B796];
+    group-hover:border-[#06B796] group-hover:placeholder-[#06B796]
+    placeholder:transition-colors;
 }
 
 .inputGender {
 	@apply w-[50px] h-[60px] ml-[18px] border border-[#616161] rounded-[10px] 
     text-center text-[16px] focus:outline-none focus:border-[#06B796];
-}
-
-.firstButton {
-	@apply w-[460px] h-[60px] bg-[#06B796] hover:bg-[#04A183] text-white text-[20px] rounded-[10px] font-semibold transition-colors;
-}
-
-.secondButton {
-	@apply w-[460px] h-[60px] bg-white hover:bg-[#F0F9F7] text-[#06B796] border border-[#06B796] text-[20px] rounded-[10px] font-semibold transition-colors;
 }
 
 .ql-container {
