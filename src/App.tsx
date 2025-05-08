@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router";
 import ProtectedRoute from "./components/commons/ProtectedRoute";
 import PublicOnlyRoute from "./components/commons/PublicOnlyRoute";
-import RootLayout from "./layouts/RootLayout";
+import RootLayout from "./layouts/Rootlayout";
 import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -25,7 +25,7 @@ export default function App() {
 
 					<Route element={<ProtectedRoute />}>
 						<Route path="/postCreate" element={<PostCreate />} />
-						<Route path="/message" element={<Message />} />
+						<Route path="/message/:userId?" element={<Message />} />
 					</Route>
 				</Route>
 				<Route element={<PublicOnlyRoute />}>
