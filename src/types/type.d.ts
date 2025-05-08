@@ -157,3 +157,49 @@ interface MessageData {
 	createdAt: string;
 	updatedAt: string;
 }
+
+interface UserHomeData {
+	coverImage: string;
+	image: string;
+	role: string;
+	isOnline: boolean;
+	posts: PostData[];
+	likes: LikeData[];
+	comments: string[];
+	notifications: Notification[];
+	messages: Message[];
+	_id: string;
+	fullName: string | User;
+	email: string;
+	createdAt: string;
+	updatedAt: string;
+}
+interface PostHomeData {
+	likes: Like[];
+	comments: CommentData[];
+	_id: string;
+	image?: string;
+	imagePublicId?: string;
+	title: PostTitleData;
+	channel: ChannelData;
+	author: UserHomeData;
+	createdAt: string;
+	updatedAt: string;
+}
+
+interface PostTitleData {
+	title: string;
+	memberLimit: number;
+	memberList: string[];
+	location: string;
+	dateRange: Date[];
+	isRecruiting: boolean;
+	recruitCondition: RecruitCondition;
+	description: string;
+	contents: string;
+}
+
+interface RecruitCondition {
+	gender: string;
+	ageRange: string[];
+}
