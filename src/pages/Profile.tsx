@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { axiosInstance } from "../apis/axios";
 import { getUserInfo } from "../apis/user";
 import profileCircle from "../assets/images/profileImg_circle.svg";
@@ -8,15 +8,16 @@ import { useAuthStore } from "../store/authStore";
 import ProfileHeader from "../components/features/profile/ProfileHeader";
 import ProfileView from "../components/features/profile/ProfileView";
 import ProfileEditModal from "../components/features/profile/ProfileEditModal";
+import ProfileChannelTab from "../components/features/profile/ProfileChannelTab";
 
 export default function Profile() {
-	// const navigate = useNavigate();
-	// const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-	// useEffect(() => {
-	// 	if (!isLoggedIn) {
-	// 	navigate("/login");
-	// 	}
-	// }, [isLoggedIn, navigate])
+	const navigate = useNavigate();
+	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+	useEffect(() => {
+		if (!isLoggedIn) {
+			navigate("/login");
+		}
+	}, [isLoggedIn, navigate]);
 	const userId = useAuthStore((state) => state.userId);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [image, setImage] = useState(profileCircle);
@@ -77,7 +78,7 @@ export default function Profile() {
 	return (
 		<div className="flex flex-col items-center min-h-screen py-[40px]">
 			<div className="w-[1062px]">
-				<div className="min-h-screen bg-white">
+				<div className="">
 					<ProfileHeader onEditClick={handleEditClick} />
 					<ProfileView profile={profile} image={image} />
 					{isModalOpen && (
@@ -90,6 +91,9 @@ export default function Profile() {
 							onClose={() => setIsModalOpen(false)}
 						/>
 					)}
+				</div>
+				<div className="">
+					{userId && <ProfileChannelTab userId={userId} />}
 				</div>
 			</div>
 		</div>

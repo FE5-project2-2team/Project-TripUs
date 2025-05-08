@@ -41,7 +41,6 @@ export default function Contents({
 			}
 		};
 	};
-
 	return (
 		<div>
 			<label htmlFor="contents" className="post-input-title">
