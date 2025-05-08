@@ -1,18 +1,19 @@
 import { Link } from "react-router";
 import profileCircle from "../../../assets/images/profileImg_circle.svg";
 export default function UserInfo({
+	image,
 	authorInfo,
 	userId
 }: {
+	image: string;
 	authorInfo: {
-		image: string;
 		nickname: string;
 		age: number;
 		gender: string;
 	};
 	userId: string;
 }) {
-	const { image, nickname, age, gender } = authorInfo;
+	const { nickname, age, gender } = authorInfo;
 	return (
 		<div>
 			<span className="post-sub-title">캡틴</span>

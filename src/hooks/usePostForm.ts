@@ -56,6 +56,7 @@ export function usePostForm() {
 	) => {
 		e.preventDefault();
 		try {
+			console.log(e);
 			const imageFile = await urlToFile(contents);
 			const validationData = {
 				title: values.title,
