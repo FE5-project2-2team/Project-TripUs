@@ -72,14 +72,14 @@ const CrewTab = ({
 								onClick={() => navigate(`/post/detail/${post._id}`)}
 							>
 								{/* 상단 영역 */}
-								<div className="relative inline-block">
+								<div className="relative block">
 									<p className="absolute top-0 right-0 flex items-center justify-center w-[56px] h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#06B796]">
 										후기
 									</p>
 									<img
 										src={post.image ? post.image : postThumbnail}
 										alt="Post Thumbnail"
-										className="rounded-t-[10px] h-[180px]"
+										className="rounded-t-[10px] h-[180px] w-full object-cover"
 									/>
 								</div>
 								{/* 하단 영역 */}
