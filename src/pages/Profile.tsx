@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useParams } from "react-router";
+// import { useNavigate, useParams } from "react-router";
 import { axiosInstance } from "../apis/axios";
 import { getUserInfo } from "../apis/user";
 import profileCircle from "../assets/images/profileImg_circle.svg";
@@ -11,14 +12,18 @@ import ProfileEditModal from "../components/features/profile/ProfileEditModal";
 import ProfileChannelTab from "../components/features/profile/ProfileChannelTab";
 
 export default function Profile() {
-	const navigate = useNavigate();
-	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-	useEffect(() => {
-		if (!isLoggedIn) {
-			navigate("/login");
-		}
-	}, [isLoggedIn, navigate]);
-	const userId = useAuthStore((state) => state.userId);
+	// const navigate = useNavigate();
+	// const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+	const { id: paramsId } = useParams();
+	const myUserId = useAuthStore((state) => state.userId);
+	const viewingUserId = paramsId || myUserId;
+
+	// useEffect(() => {
+	// 	if (!isLoggedIn) {
+	// 		navigate("/login");
+	// 	}
+	// }, [isLoggedIn, navigate]);
+
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [image, setImage] = useState(profileCircle);
 	const [profile, setProfile] = useState<Profile>({
@@ -28,21 +33,24 @@ export default function Profile() {
 		gender: "",
 		age: 0,
 		tagList: []
-		// image: profileCircle,
 	});
 	const [editProfile, setEditProfile] = useState<Profile>({ ...profile });
 
 	useEffect(() => {
 		const getUserData = async () => {
-			const { image, fullName } = await getUserInfo(userId!);
+			const { image, fullName } = await getUserInfo(viewingUserId!);
 			const parsed = JSON.parse(fullName);
 			if (image) setImage(image || profileCircle);
 			setProfile(parsed);
 			setEditProfile(parsed);
 		};
 
-		getUserData();
-	}, [userId]);
+		if (viewingUserId) {
+			getUserData();
+		}
+	}, [viewingUserId]);
+
+	const isMyPage = viewingUserId === myUserId;
 
 	const handleEditClick = () => {
 		setEditProfile(profile);
@@ -78,10 +86,23 @@ export default function Profile() {
 	return (
 		<div className="flex flex-col items-center min-h-screen py-[40px]">
 			<div className="w-[1062px]">
-				<div className="">
-					<ProfileHeader onEditClick={handleEditClick} />
+				<div>
+					{isMyPage && (
+						<ProfileHeader
+							onEditClick={handleEditClick}
+							isMyPage={true}
+							userId={myUserId}
+						/>
+					)}
+					{!isMyPage && (
+						<ProfileHeader
+							onEditClick={handleEditClick}
+							isMyPage={false}
+							userId={viewingUserId}
+						/>
+					)}
 					<ProfileView profile={profile} image={image} />
-					{isModalOpen && (
+					{isMyPage && isModalOpen && (
 						<ProfileEditModal
 							image={image}
 							setImage={setImage}
@@ -92,8 +113,10 @@ export default function Profile() {
 						/>
 					)}
 				</div>
-				<div className="">
-					{userId && <ProfileChannelTab userId={userId} />}
+				<div>
+					{viewingUserId && (
+						<ProfileChannelTab userId={viewingUserId} isMyPage={isMyPage} />
+					)}
 				</div>
 			</div>
 		</div>

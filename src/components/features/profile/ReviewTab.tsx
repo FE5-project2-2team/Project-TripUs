@@ -5,8 +5,13 @@ import postThumbnail from "../../../assets/images/primaryImage2.png";
 import { formatDateRange } from "../../../utils/date";
 import { Link } from "react-router";
 
-
-const ReviewTab = ({ authorId }: { authorId: string }) => {
+const ReviewTab = ({
+	authorId,
+	isMyPage
+}: {
+	authorId: string;
+	isMyPage: boolean;
+}) => {
 	const [posts, setPosts] = useState<ProfilePost[]>([]);
 	const navigate = useNavigate();
 
@@ -29,30 +34,32 @@ const ReviewTab = ({ authorId }: { authorId: string }) => {
 				후기 게시글: (게시글 개수)
 			</h1>
 			<div className="grid grid-cols-3 gap-x-[40px] gap-y-[30px]">
-				<div
-					className="flex flex-col items-center justify-center border border-[#06B796] rounded-[15px]"
-					style={{ boxShadow: "0px 2px 4px 0px rgba(0, 0, 0, 0.16)" }}
-				>
-					<Link to={"/postCreate"}>
-						<button>
-							<div className="w-[80px] h-[80px] rounded-full flex items-center justify-center cursor-pointer bg-[#06b796] hover:bg-[#038383]">
-								<div
-									className="w-[35px] h-[35px] bg-no-repeat"
-									style={{
-										backgroundImage:
-											"url('/src/assets/images/spriteImages.png')",
-										backgroundSize: "245px 380px",
-										backgroundPosition: "-24.3px -171.3px"
-									}}
-									aria-label="Add Post Button"
-								/>
-							</div>
-						</button>
-					</Link>
-					<p className="font-bold text-[16px] text-[#06B796] mt-[34px]">
-						새 후기를 남겨주세요.
-					</p>
-				</div>
+				{isMyPage && (
+					<div
+						className="flex flex-col items-center justify-center w-[328px] h-[398px] border border-[#06B796] rounded-[15px]"
+						style={{ boxShadow: "0px 2px 4px 0px rgba(0, 0, 0, 0.16)" }}
+					>
+						<Link to={"/postCreate"}>
+							<button>
+								<div className="w-[80px] h-[80px] rounded-full flex items-center justify-center cursor-pointer bg-[#06b796] hover:bg-[#038383]">
+									<div
+										className="w-[35px] h-[35px] bg-no-repeat"
+										style={{
+											backgroundImage:
+												"url('/src/assets/images/spriteImages.png')",
+											backgroundSize: "245px 380px",
+											backgroundPosition: "-24.3px -171.3px"
+										}}
+										aria-label="Add Post Button"
+									/>
+								</div>
+							</button>
+						</Link>
+						<p className="font-bold text-[16px] text-[#06B796] mt-[34px]">
+							새 후기를 남겨주세요.
+						</p>
+					</div>
+				)}
 				{posts
 					.filter((post) => post.channel.name === "review")
 					.map((post) => {
@@ -92,7 +99,8 @@ const ReviewTab = ({ authorId }: { authorId: string }) => {
 											<div
 												className="w-[18px] h-[18px] mr-[4px] bg-no-repeat"
 												style={{
-													backgroundImage: "url('/src/assets/images/spriteImages.png')",
+													backgroundImage:
+														"url('/src/assets/images/spriteImages.png')",
 													backgroundSize: "245px 380px",
 													backgroundPosition: "-12px -74px"
 												}}
@@ -106,7 +114,8 @@ const ReviewTab = ({ authorId }: { authorId: string }) => {
 											<div
 												className="w-[18px] h-[18px] mr-[4px] bg-no-repeat"
 												style={{
-													backgroundImage: "url('/src/assets/images/spriteImages.png')",
+													backgroundImage:
+														"url('/src/assets/images/spriteImages.png')",
 													backgroundSize: "245px 380px",
 													backgroundPosition: "-35px -74px"
 												}}
@@ -123,7 +132,8 @@ const ReviewTab = ({ authorId }: { authorId: string }) => {
 											<div
 												className="w-[18px] h-[18px] mr-[4px] bg-no-repeat"
 												style={{
-													backgroundImage: "url('/src/assets/images/spriteImages.png')",
+													backgroundImage:
+														"url('/src/assets/images/spriteImages.png')",
 													backgroundSize: "245px 380px",
 													backgroundPosition: "-58px -74px"
 												}}
