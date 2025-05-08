@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router";
 import { getChannelInfo } from "../apis/channel";
 import { getPosts } from "../apis/post";
+import Icon from "../components/commons/Icon";
 
 //채널 정보 가져오기
 //채널별 게시글 보여주기
@@ -83,9 +84,9 @@ export default function Channel() {
 			const fetchPostInfo = async () => {
 				try {
 					const channelData = await getChannelInfo(decodedChannelName); //url에 나와있는 채널이름가지고 데이터 불러오기(URL속 채널이름 바뀔때마다)
-					// console.log(data);
+					console.log(channelData);
 					const channelId = channelData._id;
-					// console.log(channelId);
+					//console.log(channelId);
 					const postData = await getPosts(channelId);
 					const parsedPosts = postData.map((post: PostData) => {
 						let parsedTitle = post.title;
@@ -128,7 +129,7 @@ export default function Channel() {
 				<div
 					key={post._id}
 					className="w-[328px] min-h-[450px] rounded-[15px] border border-[#D9D9D9] flex flex-col overflow-hidden cursor-pointer"
-					onClick={() => navigate(`/posts/${post._id}`)}
+					onClick={() => navigate(`/post/detail/${post._id}`)}
 				>
 					<div className="relative">
 						<img
@@ -170,7 +171,7 @@ export default function Channel() {
 								</div>
 							</div>
 							{/* 게시글 제목, 내용 */}
-							<div className="w-[270px] h-[64px] flex flex-col">
+							<div className="w-[296px] h-[65px] flex flex-col">
 								<p className="text-[16px] font-bold">
 									게시글 제목: {post.title.title}
 								</p>
@@ -180,12 +181,16 @@ export default function Channel() {
 							</div>
 							{/* 여행지, 크루원수,날짜*/}
 							<div className="w-[142px] h-[70px] text-[14px]">
-								<p>여행지: {post.title.location}</p>
-								<p>
-									크루원수: {post.title.memberList.length} /{" "}
-									{post.title.memberLimit}
+								<p className="flex gap-1">
+									<Icon position="5.447% 19.352%" size="18px" />
+									{post.title.location}
 								</p>
-								<p>
+								<p className="flex gap-[4px]">
+									<Icon position="15.52% 19.671%" size="18px" />
+									{post.title.memberList.length} / {post.title.memberLimit}
+								</p>
+								<p className="flex gap-1">
+									<Icon position="25.835% 20.058%" size="18px" />
 									{`${new Date(post.title.dateRange[0])
 										.getFullYear()
 										.toString()

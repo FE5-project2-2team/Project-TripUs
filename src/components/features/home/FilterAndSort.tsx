@@ -1,5 +1,8 @@
 import { useState } from "react";
 import Icon from "../../commons/Icon";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 export default function FilterAndSort({
 	sort,
 	setSort,
@@ -113,9 +116,12 @@ export default function FilterAndSort({
 									onChange={() => setIsChecked(!isChecked)}
 									className="hidden"
 								/>
-								<div className="w-6 h-6 flex items-center justify-center border border-[#A1A7BD] bg-[#06B796]">
+								<div className="w-6 h-6 flex items-center justify-center border border-[#A1A7BD] bg-[#FFFFFF]">
 									{isChecked ? (
-										<Icon position="7.296% 28.108%" size="16px" />
+										<FontAwesomeIcon
+											icon={faCheck}
+											className="w-[24px] h-[24px]"
+										/>
 									) : null}
 								</div>
 								<span className="ml-[2px] text-[16px]">모집중만 보기</span>

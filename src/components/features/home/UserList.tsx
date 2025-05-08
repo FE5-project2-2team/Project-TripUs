@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { getUsers } from "../../../apis/user";
+// import { useNavigate } from "react-router";
 
 export default function UserList({ userSearch }: { userSearch: string }) {
 	const [userList, setUserList] = useState<UserHomeData[]>([]);
+	// const navigate = useNavigate();
 	const [filteredUser, setFilteredUser] = useState<UserHomeData[]>([]);
 	const SearchFunc = useCallback((word: string, list: UserHomeData[]) => {
 		let userName = "";
@@ -68,7 +70,8 @@ export default function UserList({ userSearch }: { userSearch: string }) {
 							<img
 								src={user.image}
 								alt="사용자이미지"
-								className="w-[50px] h-[50px] rounded-full"
+								className="w-[50px] h-[50px] rounded-full cursor-pointer"
+								// onClick={() => navigate(`/profile/${user._id}`)}
 							/>
 							<div className="flex flex-col w-[87px] h-[44px] ml-[12px]">
 								<div className="text-[16px] w-[87px] h-[19px]">
