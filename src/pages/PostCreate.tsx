@@ -6,6 +6,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import ReactQuill from "react-quill-new";
 import { Link, useNavigate } from "react-router";
 import { createPost } from "../apis/post";
+import { getUserInfo } from "../apis/user";
 import ConditionList from "../components/features/post/ConditionList";
 import Contents from "../components/features/post/Contents";
 import InfoForm from "../components/features/post/InfoForm";
@@ -34,30 +35,35 @@ export default function PostCreate() {
 	});
 
 	const submitHandler = async (data: FormValues) => {
-		const detailData: PostDetail = {
-			title: data.title,
-			memberLimit: Number(data.member),
-			memberList: [userId],
-			applicantList: [],
-			location: data.location,
-			dateRange: data.dateRange,
-			isRecruiting: true,
-			recruitCondition: data.condition,
-			description: contents.current
-				?.getEditor()
-				.editor.getText(0, 20) as string,
-			contents: contents.current?.getEditor().getContents()
-		};
+		try {
+			const userData: UserData = await getUserInfo(userId);
+			const detailData: PostDetail = {
+				title: data.title,
+				memberLimit: Number(data.member),
+				memberList: [userData],
+				applicantList: [],
+				location: data.location,
+				dateRange: data.dateRange,
+				isRecruiting: true,
+				recruitCondition: data.condition,
+				description: contents.current
+					?.getEditor()
+					.editor.getText(0, 20) as string,
+				contents: contents.current?.getEditor().getContents()
+			};
 
-		const formData = new FormData();
-		formData.append("title", JSON.stringify(detailData));
-		formData.append("channelId", data.channel);
+			const formData = new FormData();
+			formData.append("title", JSON.stringify(detailData));
+			formData.append("channelId", data.channel);
 
-		const imageFile = await urlToFile(contents);
-		if (imageFile) formData.append("image", imageFile);
+			const imageFile = await urlToFile(contents);
+			if (imageFile) formData.append("image", imageFile);
 
-		const postId = await createPost(formData);
-		navigate(`/post/detail/${postId}`);
+			const postId = await createPost(formData);
+			navigate(`/post/detail/${postId}`);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const contents = useRef<ReactQuill | null>(null);

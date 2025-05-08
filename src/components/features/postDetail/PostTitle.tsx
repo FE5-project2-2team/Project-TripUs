@@ -23,7 +23,7 @@ export default function PostTitle({
 	const [modalOpen, setModalOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
-	const modifyPostHandler = async () => {
+	const modifyPostHandler = () => {
 		navigate(`/post/edit/${postId}`, {
 			state: {
 				postData
@@ -32,8 +32,12 @@ export default function PostTitle({
 	};
 
 	const deletePostHandler = async () => {
-		await deletePost(postId);
-		navigate("/");
+		try {
+			await deletePost(postId);
+			navigate("/");
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	useClickAway(modalRef, () => {

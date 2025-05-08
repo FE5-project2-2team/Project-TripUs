@@ -69,8 +69,6 @@ export default function Header() {
 			</Link>
 			{isLoggedIn ? (
 				<div className="flex items-center gap-[40px] relative">
-					<Link to={"/postCreate"}>게시글 작성</Link>
-					<Link to={`/post/detail/681b353191a50d258cbbfd76`}>게시글 이동</Link>
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
@@ -84,7 +82,7 @@ export default function Header() {
 						className="flex items-center cursor-pointer"
 					>
 						<img
-							className="w-[50px] h-[50px] mr-[10px] rounded-full"
+							className="w-[50px] h-[50px] mr-[10px] rounded-full object-cover"
 							src={image}
 							alt="프로필 이미지"
 						/>
