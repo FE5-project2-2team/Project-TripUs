@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Icon from "../../commons/Icon";
 export default function FilterAndSort({
 	sort,
 	setSort,
@@ -51,14 +52,7 @@ export default function FilterAndSort({
 					className="flex items-center gap-[4px] h-[24px] relative cursor-pointer"
 					onClick={() => setIsFilterOpen(true)}
 				>
-					<div
-						className="flex w-6 h-6 bg-no-repeat bg-center"
-						style={{
-							backgroundImage: "url('/src/assets/images/spriteImages.png')",
-							backgroundSize: "245px 380px",
-							backgroundPosition: "-14px -40px"
-						}}
-					/>
+					<Icon position="6.092% 11.015%" size="24px" />
 					<span className="text-[20px] leading-[24px]">필터</span>
 				</button>
 
@@ -75,13 +69,9 @@ export default function FilterAndSort({
 										setTempFilter([]);
 									}}
 									className="w-[24px] h-[24px] flex cursor-pointer"
-									style={{
-										backgroundImage:
-											"url('/src/assets/images/spriteImages.png')",
-										backgroundSize: "245px 380px",
-										backgroundPosition: "-66px -102px"
-									}}
-								></button>
+								>
+									<Icon position="28.571% 27.869%" size="24px" />
+								</button>
 							</div>
 							<span className=" block text-[18px] mt-[20px]">성별</span>
 							<div className="min-w-[178px] h-[46px] mt-[10px] flex items-center gap-[16px]">
@@ -125,15 +115,7 @@ export default function FilterAndSort({
 								/>
 								<div className="w-6 h-6 flex items-center justify-center border border-[#A1A7BD] bg-[#06B796]">
 									{isChecked ? (
-										<div
-											className="w-4 h-4 bg-no-repeat bg-center"
-											style={{
-												backgroundImage:
-													"url('/src/assets/images/spriteImages.png')",
-												backgroundSize: "245px 380px",
-												backgroundPosition: "-17px -100px"
-											}}
-										/>
+										<Icon position="7.296% 28.108%" size="16px" />
 									) : null}
 								</div>
 								<span className="ml-[2px] text-[16px]">모집중만 보기</span>
@@ -148,15 +130,7 @@ export default function FilterAndSort({
 										setIsFilterOpen(false);
 									}}
 								>
-									<div
-										className="w-6 h-6"
-										style={{
-											backgroundImage:
-												"url('/src/assets/images/spriteImages.png')",
-											backgroundSize: "245px 380px",
-											backgroundPosition: "-38px -96px"
-										}}
-									/>
+									<Icon position="16.74% 27.624%" size="24px" />
 									<span className="text-[18px] font-bold text-[#06B796]">
 										초기화
 									</span>
@@ -186,14 +160,7 @@ export default function FilterAndSort({
 						className="flex items-center gap-[4px] h-[24px] cursor-pointer relative"
 					>
 						<span className="text-[20px] leading-[24px]">{sort}</span>
-						<div
-							className=" w-[24px] h-[24px] bg-no-repeat bg-center"
-							style={{
-								backgroundImage: "url('/src/assets/images/spriteImages.png')",
-								backgroundSize: "245px 380px",
-								backgroundPosition: "-65px -40px"
-							}}
-						/>
+						<Icon position="26.87% 11.172%" size="24px" />
 					</button>
 					{/* 정렬 툴팁 */}
 					{sortToggle && (
@@ -220,20 +187,13 @@ export default function FilterAndSort({
 				{selectFilter.map((filt) => (
 					<button
 						key={filt}
-						className="min-w-[100px] h-[36px] bg-[#F3F4F6] border border-[#06B796] rounded-[14px] flex items-center justify-center cursor-pointer"
+						className="min-w-[100px] h-[36px] bg-[#F3F4F6] border border-[#06B796] rounded-[14px] flex items-center justify-center gap-[5px] cursor-pointer"
 						onClick={() => {
 							setSelectFilter(selectFilter.filter((item) => item !== filt));
 						}}
 					>
 						<span className="h-[36px] text-[18px] text-[#06B796]">{filt}</span>
-						<div
-							className="w-[22px] h-[22px]"
-							style={{
-								backgroundImage: "url('/src/assets/images/spriteImages.png')",
-								backgroundSize: "245px 380px",
-								backgroundPosition: "-53px -127px"
-							}}
-						/>
+						<Icon position="25.751% 35.326%" size="22px" />
 					</button>
 				))}
 			</div>

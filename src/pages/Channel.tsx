@@ -9,16 +9,18 @@ type ContextType = {
 	sort: string;
 	selectFilter: string[];
 	isChecked: boolean;
+	search: string;
 };
 export default function Channel() {
-	const { sort, selectFilter, isChecked } = useOutletContext<ContextType>();
+	const { sort, selectFilter, isChecked, search } =
+		useOutletContext<ContextType>();
 	const { channelName } = useParams();
 	const decodedChannelName = decodeURIComponent(channelName || "");
-	const [posts, setPosts] = useState<Post[]>([]);
-	const [filteredPosts, setFilteredPosts] = useState<Post[]>(posts);
+	const [posts, setPosts] = useState<PostHomeData[]>([]);
+	const [filteredPosts, setFilteredPosts] = useState<PostHomeData[]>(posts);
 	const navigate = useNavigate();
 
-	const SortPosts = useCallback((sort: string, targetPosts: Post[]) => {
+	const SortPosts = useCallback((sort: string, targetPosts: PostHomeData[]) => {
 		if (sort === "최신순") {
 			return [...targetPosts].sort(
 				(a, b) =>
@@ -34,7 +36,7 @@ export default function Channel() {
 
 			if (filterArr?.length) {
 				filtered = filtered.filter((post) => {
-					const condition = post.title.recruitCondition;
+					const condition = (post.title as PostTitleData).recruitCondition;
 					if (!condition) return false;
 					return filterArr.every(
 						(filt) =>
@@ -45,97 +47,36 @@ export default function Channel() {
 			}
 
 			if (isChecked) {
-				filtered = filtered.filter((post) => post.title.isRecruiting);
+				filtered = filtered.filter(
+					(post) => (post.title as PostTitleData).isRecruiting
+				);
 			}
 			return filtered;
 		},
 		[posts, isChecked]
 	);
-	//
-	interface Like {
-		id: string;
-		user: string;
-		post: string;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	}
-	interface Comment {
-		_id: string;
-		comment: string;
-		author: User;
-		post: string;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	}
-	// interface Channel {
-	// 	_id: string;
-	// 	name: string;
-	// 	description: string;
-	// 	authRequired: boolean;
-	// 	posts: string[];
-	// 	createdAt: string;
-	// 	updatedAt: string;
-	// 	__v: number;
-	// }
-	interface User {
-		coverImage: string;
-		image: string;
-		role: string;
-		emailVerified: boolean;
-		banned: boolean;
-		isOnline: boolean;
-		posts: Post[];
-		likes: Like[];
-		comments: string[];
-		followers: string[]; //
-		following: string[]; //
-		notifications: Notification[]; //
-		messages: [];
-		_id: string;
-		fullName: string;
-		email: string;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-		username: string | null;
-	}
-	// interface FullName { User
-	//   name: string;
-	//   tel: string;
-	//   gender: "여자" | "남자";
-	//   age: number;
-	//   nickname: string;
-	// }
-	// interface RecruitCondition {
-	// 	gender: string;
-	// 	ageRange: string[];
-	// }
-	// interface PostData {
-	// 	title: string;
-	// 	memberLimit: number;
-	// 	memberList: string[];
-	// 	location: string;
-	// 	dateRange: Date[];
-	// 	isRecruiting: boolean;
-	// 	recruitCondition: RecruitCondition;
-	// 	description: string;
-	// 	contents: string;
-	// }
-	interface Post {
-		likes: Like[];
-		comments: Comment[];
-		_id: string;
-		image: string; //optional
-		imagePublicId: string;
-		title: PostData;
-		channel: Channel;
-		author: User; //
-		createdAt: string; //
-		updatedAt: string;
-		__v: number;
-	}
+
+	const SearchPosts = useCallback((word: string, posts: PostHomeData[]) => {
+		if (!word.trim()) return posts; //검색어 없는경우
+		return posts.filter((post) => {
+			const title = post.title.title;
+			const content = post.title.description;
+			const auth = post.author.fullName;
+			let author = "";
+			if (typeof auth === "object" && auth !== null) {
+				author = auth.name;
+			} else if (typeof auth === "string") {
+				author = auth;
+			}
+			const location = post.title.location;
+			return (
+				title.toLowerCase().includes(word.toLowerCase()) ||
+				content.toLowerCase().includes(word.toLowerCase()) ||
+				author.toLowerCase().includes(word.toLowerCase()) ||
+				location.toLowerCase().includes(word.toLowerCase())
+			);
+		});
+	}, []);
 
 	useEffect(() => {
 		if (channelName) {
@@ -146,7 +87,7 @@ export default function Channel() {
 					const channelId = channelData._id;
 					// console.log(channelId);
 					const postData = await getPosts(channelId);
-					const parsedPosts = postData.map((post: Post) => {
+					const parsedPosts = postData.map((post: PostData) => {
 						let parsedTitle = post.title;
 						if (typeof post.title === "string") {
 							try {
@@ -174,9 +115,10 @@ export default function Channel() {
 	useEffect(() => {
 		if (posts.length === 0) return;
 		const filtered = FilterPosts(selectFilter);
-		const sorted = SortPosts(sort, filtered);
+		const searched = SearchPosts(search, filtered);
+		const sorted = SortPosts(sort, searched);
 		setFilteredPosts(sorted);
-	}, [posts, selectFilter, sort, FilterPosts, SortPosts]);
+	}, [posts, selectFilter, sort, search, FilterPosts, SortPosts, SearchPosts]);
 
 	return (
 		<div className="w-full grid grid-cols-3 gap-[20px] mt-[20px] relative">
@@ -222,9 +164,9 @@ export default function Channel() {
 								/>
 								<div className="text-[16px] ml-[8px]">
 									<p className="font-bold">
-										{JSON.parse(post.author.fullName).nickname}
+										{JSON.parse(post.author.fullName as string).nickname}
 									</p>
-									<p>{JSON.parse(post.author.fullName).name}</p>
+									<p>{JSON.parse(post.author.fullName as string).name}</p>
 								</div>
 							</div>
 							{/* 게시글 제목, 내용 */}

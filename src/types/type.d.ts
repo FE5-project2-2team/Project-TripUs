@@ -56,29 +56,7 @@ interface NotiType {
 	userId: string;
 	postId: string | null;
 }
-// interface UserInChannel {
-// 	posts: Post[];
-// 	//likes:Like[];
-// 	_id: string;
-// 	fullName: User;
-// 	username: string | null;
-// 	image: string;
-// 	imagePublicId: string;
-// }
-// interface PostInChannel {
-// 	_id: string;
-// 	image: string;
-// 	title: PostData;
-// 	channel: Channel; //id필요한거면 channelId로 대체
-// 	author: UserInChannel; //
-// 	createdAt: string; //
-// }
-// interface Channel {
-// 	_id: string;
-// 	name: string;
-// 	description: string;
-// 	authRequired: boolean;
-// 	posts: string[];
+
 //API Response
 interface UserData {
 	coverImage: string;
@@ -166,4 +144,50 @@ interface MessageData {
 	seen: boolean;
 	createdAt: string;
 	updatedAt: string;
+}
+
+interface UserHomeData {
+	coverImage: string;
+	image: string;
+	role: string;
+	isOnline: boolean;
+	posts: PostData[];
+	likes: LikeData[];
+	comments: string[];
+	notifications: Notification[];
+	messages: Message[];
+	_id: string;
+	fullName: string | User;
+	email: string;
+	createdAt: string;
+	updatedAt: string;
+}
+interface PostHomeData {
+	likes: Like[];
+	comments: CommentData[];
+	_id: string;
+	image?: string;
+	imagePublicId?: string;
+	title: PostTitleData;
+	channel: ChannelData;
+	author: UserHomeData;
+	createdAt: string;
+	updatedAt: string;
+}
+
+interface PostTitleData {
+	title: string;
+	memberLimit: number;
+	memberList: string[];
+	location: string;
+	dateRange: Date[];
+	isRecruiting: boolean;
+	recruitCondition: RecruitCondition;
+	description: string;
+	contents: string;
+}
+
+interface RecruitCondition {
+	gender: string;
+	ageRange: string[];
 }

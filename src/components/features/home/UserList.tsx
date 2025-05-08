@@ -1,92 +1,27 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getUsers } from "../../../apis/user";
 
-export default function UserList() {
-	const [userList, setUserList] = useState<UserInChannel[]>([]);
-	// interface Like {
-	// 	id: string;
-	// 	user: string;
-	// 	post: string;
-	// 	createdAt: string;
-	// 	updatedAt: string;
-	// 	__v: number;
-	// }
-	// interface Comment {
-	// 	_id: string;
-	// 	comment: string;
-	// 	author: User;
-	// 	post: string;
-	// 	createdAt: string;
-	// 	updatedAt: string;
-	// 	__v: number;
-	// }
-	// interface Channel {
-	// 	_id: string;
-	// 	name: string;
-	// 	description: string;
-	// 	authRequired: boolean;
-	// 	posts: string[];
-	// 	createdAt: string;
-	// 	updatedAt: string;
-	// 	__v: number;
-	// }추가완료
-	// interface User {
-	// 	role: string;
-	// 	emailVerified: boolean;
-	// 	banned: boolean;
-	// 	isOnline: boolean;
-	// 	posts: Post[];
-	// 	likes: Like[];
-	// 	comments: string[];
-	// 	followers: string[]; //
-	// 	following: string[]; //
-	// 	notifications: Notification[];
-	// 	messages: [];
-	// 	_id: string;
-	// 	fullName: string | FullName;
-	// 	email: string;
-	// 	createdAt: string;
-	// 	updatedAt: string;
-	// 	__v: number;
-	// 	username: string | null;
-	// 	image: string;
-	// 	imagePublicId: string;
-	// }
-	// interface FullName {//user
-	// 	name: string;
-	// 	tel: string;
-	// 	gender: "여자" | "남자";
-	// 	age: number;
-	// 	nickname: string;
-	// }
-	// interface PostData {
-	// 	title: string;
-	// 	memberLimit: number;
-	// 	memberList: string[];
-	// 	location: string;
-	// 	dateRange: Date[];
-	// 	isRecruiting: boolean;
-	// 	recruitCondition: string[];
-	// 	contents: string;
-	//}
-	// interface Post {
-	// 	likes: Like[];
-	// 	comments: Comment[];
-	// 	_id: string;//postId
-	// 	image: string; //File|null
-	// 	imagePublicId: string;
-	// 	title: PostData;
-	// 	channel: Channel;
-	// 	author: User;
-	// 	createdAt: string;
-	// 	updatedAt: string;
-	// 	__v: number;
-	// }
+export default function UserList({ userSearch }: { userSearch: string }) {
+	const [userList, setUserList] = useState<UserHomeData[]>([]);
+	const [filteredUser, setFilteredUser] = useState<UserHomeData[]>([]);
+	const SearchFunc = useCallback((word: string, list: UserHomeData[]) => {
+		let userName = "";
+		if (!word.trim()) return list;
+		return list.filter((user) => {
+			const temp = user.fullName;
+			if (typeof temp === "object" && temp != null) {
+				userName = temp.name;
+			} else if (typeof temp === "string") {
+				userName = temp;
+			}
+			return userName.toLowerCase().includes(word.toLowerCase());
+		});
+	}, []);
 	useEffect(() => {
 		const fetchUsers = async () => {
 			try {
 				const userUpdate = await getUsers();
-				const parsedUser = userUpdate.map((user: UserInChannel) => {
+				const parsedUser = userUpdate.map((user: UserHomeData) => {
 					let parsedFullName: User;
 					if (typeof user.fullName === "string") {
 						try {
@@ -107,18 +42,24 @@ export default function UserList() {
 					}
 					return { ...user, fullName: parsedFullName };
 				});
-				console.log(parsedUser);
+				// console.log(parsedUser);
 				setUserList(parsedUser);
+				setFilteredUser(parsedUser);
 			} catch (err) {
 				console.error("사용자 목록 불러오기 오류:", err);
 			}
 		};
 		fetchUsers();
 	}, []);
+	useEffect(() => {
+		if (userList.length === 0) return;
+		const searched = SearchFunc(userSearch, userList);
+		setFilteredUser(searched);
+	}, [SearchFunc, userList, userSearch]);
 	return (
 		<>
 			<div className="w-[268px] h-[1166px] overflow-y-auto overflow-x-hidden">
-				{userList.map((user) => (
+				{filteredUser.map((user) => (
 					<div
 						key={user._id}
 						className=" w-[268px] h-[100px] flex items-center"

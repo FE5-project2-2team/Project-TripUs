@@ -4,17 +4,17 @@ import { getChannels } from "../../../apis/channel";
 
 //채널 목록
 export default function ChannelList() {
-	type Channel = {
-		_id: string;
-		name: string;
-		description: string;
-		authRequired: boolean;
-		posts: string[];
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	};
-	const [channels, setChannels] = useState<Channel[]>([]); //채널 목록
+	// type Channel = {
+	// 	_id: string;
+	// 	name: string;
+	// 	description: string;
+	// 	authRequired: boolean;
+	// 	posts: string[];
+	// 	createdAt: string;
+	// 	updatedAt: string;
+	// 	__v: number;
+	// };
+	const [channels, setChannels] = useState<ChannelData[]>([]); //채널 목록
 	const navigate = useNavigate();
 	const { channelName } = useParams();
 	const [selected, setSelected] = useState(channelName || "");

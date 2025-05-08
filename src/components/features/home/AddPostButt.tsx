@@ -1,3 +1,5 @@
+import Icon from "../../commons/Icon";
+
 export default function AddPostButt() {
 	return (
 		<div
@@ -10,14 +12,7 @@ export default function AddPostButt() {
 			</span>
 			<button>
 				<div className="w-[60px] h-[60px] rounded-full flex items-center justify-center bg-[#06B796] cursor-pointer">
-					<div
-						className="w-[35px] h-[35px] bg-no-repeat"
-						style={{
-							backgroundImage: "url('/src/assets/images/spriteImages.png')",
-							backgroundSize: "245px 380px",
-							backgroundPosition: "-24px -171px"
-						}}
-					/>
+					<Icon position="11.606% 49.71%" size="35px" />
 				</div>
 			</button>
 		</div>
