@@ -1,26 +1,29 @@
-import { ComponentPropsWithoutRef, useRef } from "react";
+import { ComponentPropsWithoutRef } from "react";
+import { useFormContext } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
 type InputProps = ComponentPropsWithoutRef<"input"> & { value: string };
 
 export default function InputBtn(props: InputProps) {
-	const { value, children, ...rest } = props;
-	const inputRef = useRef<null | HTMLInputElement>(null);
+	const { value, name, type, children } = props;
+	const { register } = useFormContext();
 	return (
 		<label htmlFor={value}>
 			<input
-				className="w-0 h-0 absolute"
+				className="peer hidden"
 				id={value}
 				value={value}
-				ref={inputRef}
-				key={value}
-				{...rest}
+				type={type}
+				{...register(`condition.${name}`, {
+					required:
+						name === "gender"
+							? "성별을 선택해 주세요"
+							: "나이를 선택해 주세요(다중 선택 가능)"
+				})}
 			/>
 			<span
 				className={twMerge(
-					"cond-btn",
-					inputRef.current?.checked &&
-						"text-[#06b796] border-2 border-[#06b796]"
+					"cond-btn peer-checked:text-[#06b796] border-2 peer-checked:border-[#06b796]"
 				)}
 			>
 				{children}

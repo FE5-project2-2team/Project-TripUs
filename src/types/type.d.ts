@@ -50,6 +50,18 @@ interface PostDetail {
 	contents: Delta | undefined;
 }
 
+interface FormValues {
+	channel: string;
+	member: number;
+	location: string;
+	dateRange: Date[];
+	title: string;
+	condition: {
+		gender: string;
+		ageRange: string[];
+	};
+}
+
 interface NotiType {
 	notificationType: "COMMENT" | "LIKE" | "MESSAGE";
 	notificationTypeId: string;
