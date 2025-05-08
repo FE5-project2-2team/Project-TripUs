@@ -9,6 +9,7 @@ import Message from "./pages/Message";
 import NotFound from "./pages/NotFound";
 import PostCreate from "./pages/PostCreate";
 import PostDetail from "./pages/PostDetail";
+import PostEdit from "./pages/PostEdit";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 
@@ -18,6 +19,7 @@ export default function App() {
 			<Routes>
 				<Route element={<RootLayout />}>
 					<Route path="/" element={<Home />}>
+						<Route index element={<Navigate to="channel/crews" replace />} />
 						<Route path="channel/:channelName" index element={<Channel />} />
 					</Route>
 					<Route path="/post/detail/:id" element={<PostDetail />} />
@@ -25,7 +27,8 @@ export default function App() {
 
 					<Route element={<ProtectedRoute />}>
 						<Route path="/postCreate" element={<PostCreate />} />
-						<Route path="/message/:userId?" element={<Message />} />
+						<Route path="/post/edit/:id" element={<PostEdit />} />
+						<Route path="/message" element={<Message />} />
 					</Route>
 				</Route>
 				<Route element={<PublicOnlyRoute />}>

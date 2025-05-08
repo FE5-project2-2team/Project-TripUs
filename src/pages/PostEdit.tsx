@@ -1,44 +1,46 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "flatpickr/dist/themes/material_blue.css";
 import { useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ReactQuill from "react-quill-new";
-import { Link, useNavigate } from "react-router";
-import { createPost } from "../apis/post";
+import { Link, useLocation, useNavigate } from "react-router";
+import { updatePost } from "../apis/post";
 import ConditionList from "../components/features/post/ConditionList";
 import Contents from "../components/features/post/Contents";
 import InfoForm from "../components/features/post/InfoForm";
 import InputTitle from "../components/features/post/InputTitle";
-import { CHANNELS } from "../constants/posts";
-import { useAuthStore } from "../store/authStore";
 import urlToFile from "../utils/urlToFile";
 
-export default function PostCreate() {
+export default function PostEdit() {
 	const navigate = useNavigate();
-	const userId = useAuthStore((state) => state.userId)!;
+	const location = useLocation();
+	const { postData }: { postData: PostData } = location.state;
+	const postInfo: PostDetail = JSON.parse(postData.title);
 
 	const methods = useForm<FormValues>({
 		mode: "onSubmit",
 		defaultValues: {
-			channel: CHANNELS.RECRUITMENT,
-			member: 2,
-			location: "",
-			dateRange: [],
-			title: "",
+			channel: postData.channel._id,
+			member: postInfo.memberLimit,
+			location: postInfo.location,
+			dateRange: postInfo.dateRange.map((date) => new Date(date)),
+			title: postInfo.title,
 			condition: {
-				gender: "",
-				ageRange: []
+				gender: postInfo.recruitCondition.gender,
+				ageRange: postInfo.recruitCondition.ageRange
 			}
 		}
 	});
+
+	const contents = useRef<ReactQuill | null>(null);
+	contents.current?.getEditor().setContents(postInfo.contents);
 
 	const submitHandler = async (data: FormValues) => {
 		const detailData: PostDetail = {
 			title: data.title,
 			memberLimit: Number(data.member),
-			memberList: [userId],
-			applicantList: [],
+			memberList: postInfo.memberList,
+			applicantList: postInfo.applicantList,
 			location: data.location,
 			dateRange: data.dateRange,
 			isRecruiting: true,
@@ -56,11 +58,10 @@ export default function PostCreate() {
 		const imageFile = await urlToFile(contents);
 		if (imageFile) formData.append("image", imageFile);
 
-		const postId = await createPost(formData);
-		navigate(`/post/detail/${postId}`);
+		formData.append("postId", postData._id);
+		await updatePost(formData);
+		navigate(`/post/detail/${postData._id}`);
 	};
-
-	const contents = useRef<ReactQuill | null>(null);
 
 	return (
 		<div className="flex justify-center items-center">

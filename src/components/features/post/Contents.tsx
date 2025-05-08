@@ -6,8 +6,8 @@ import "react-quill-new/dist/quill.snow.css";
 const Size = Quill.import("formats/size") as { whitelist: string[] };
 Size.whitelist = ["small", "normal", "large", "huge"];
 Quill.register("formats/size", Size, true);
-
 Quill.register("modules/imageResize", ImageResize);
+
 export default function Contents({
 	contentsRef
 }: {
