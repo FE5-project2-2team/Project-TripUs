@@ -114,8 +114,8 @@ export default function PostDetail() {
 						isAuthor={isAuthor}
 						isRecruiting={postInfo.isRecruiting}
 						title={postInfo.title}
-						postId={postData._id}
 						postData={postData}
+						postInfo={postInfo}
 					/>
 					<TravelInfo
 						contents={postInfo.contents}
