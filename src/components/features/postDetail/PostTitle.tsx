@@ -24,7 +24,7 @@ export default function PostTitle({
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
 	const modifyPostHandler = async () => {
-		navigate("/postCreate", {
+		navigate(`/post/edit/${postId}`, {
 			state: {
 				postData
 			}

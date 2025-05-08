@@ -70,7 +70,7 @@ export default function Header() {
 			{isLoggedIn ? (
 				<div className="flex items-center gap-[40px] relative">
 					<Link to={"/postCreate"}>게시글 작성</Link>
-					<Link to={`/post/detail/681b23993e936b0bb07c072d`}>게시글 이동</Link>
+					<Link to={`/post/detail/681b353191a50d258cbbfd76`}>게시글 이동</Link>
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>

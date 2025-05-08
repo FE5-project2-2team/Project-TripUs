@@ -1,11 +1,7 @@
-export default function InputTitle({
-	title
-}: {
-	title: {
-		value: string;
-		onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	};
-}) {
+import { useFormContext } from "react-hook-form";
+
+export default function InputTitle() {
+	const { register } = useFormContext();
 	return (
 		<div>
 			<label htmlFor="title" className="post-input-title">
@@ -13,11 +9,10 @@ export default function InputTitle({
 			</label>
 			<input
 				id="title"
-				name="title"
 				type="text"
 				placeholder="제목을 입력해 주세요"
 				className="bg-[#F9F9F9] w-full p-5 rounded-[10px] placeholder:text-[#CDCDCD]"
-				{...title}
+				{...register("title")}
 			/>
 		</div>
 	);
