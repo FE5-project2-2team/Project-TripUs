@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { getPostById, updatePost } from "../apis/post";
+import { getPostById } from "../apis/post";
 import Button from "../components/commons/Button";
 import ApplyMembers from "../components/features/postDetail/ApplyMembers";
 import CommentsList from "../components/features/postDetail/CommentsList";
@@ -14,27 +14,6 @@ export default function PostDetail() {
 	const { id } = useParams();
 	const userId = useAuthStore((state) => state.userId);
 	const [postData, setPostData] = useState<PostData | null>(null);
-	const [isApplied, setIsApplied] = useState(false);
-
-	const applyAccompany = async () => {
-		if (!postData) return;
-		const postInfo: PostDetail = JSON.parse(postData.title);
-		const updateData = {
-			title: JSON.stringify({
-				...postInfo,
-				applicantList: postInfo.applicantList.push(userId!)
-			}),
-			postId: id
-		};
-
-		try {
-			const data = await updatePost(updateData);
-			console.log(data);
-			setIsApplied(true);
-		} catch (error) {
-			console.error(error);
-		}
-	};
 
 	const getData = useCallback(async () => {
 		try {
@@ -69,7 +48,11 @@ export default function PostDetail() {
 						dateRange={postInfo.dateRange}
 						location={postInfo.location}
 					/>
-					<UserInfo authorInfo={authorInfo} userId={postData.author._id} />
+					<UserInfo
+						authorInfo={authorInfo}
+						image={postData.author.image}
+						userId={postData.author._id}
+					/>
 					<div>
 						<span className="post-sub-title">참여 멤버</span>
 					</div>
@@ -92,11 +75,7 @@ export default function PostDetail() {
 						authorId={postData.author._id}
 					/>
 					{!isAuthor && userId && (
-						<Button
-							onClick={applyAccompany}
-							className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
-							disabled={isApplied}
-						>
+						<Button className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]">
 							동행 신청하기
 						</Button>
 					)}

@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { registerUser } from "../apis/auth";
 import SignupLogo from "../assets/images/Signup_logo.svg";
-import sprite from "../assets/images/sprite.png";
+import Button from "../components/commons/Button";
+import Icon from "../components/commons/Icon";
 
 function getGender(ssno: string) {
 	const regex = /^(\d{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[1-4]$/;
@@ -78,61 +79,68 @@ export default function Signup() {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
+		const { email, password, passwordConfirm, fullName } = form;
+
 		if (
-			!form.email.trim() ||
-			!form.password.trim() ||
-			!form.passwordConfirm.trim() ||
-			!form.fullName.name.trim() ||
-			!form.fullName.birth.trim() ||
-			!form.fullName.gender.trim() ||
-			!form.fullName.tel.trim()
+			!email.trim() ||
+			!password.trim() ||
+			!passwordConfirm.trim() ||
+			!fullName.name.trim() ||
+			!fullName.birth.trim() ||
+			!fullName.gender.trim() ||
+			!fullName.tel.trim()
 		) {
 			alert("모든 항목을 입력해주세요.");
 			return;
 		}
 
-		if (form.password !== form.passwordConfirm) {
+		if (password !== passwordConfirm) {
 			alert("비밀번호가 일치하지 않습니다!");
 			return;
 		}
 
-		const ssno = form.fullName.birth + form.fullName.gender;
-		const genderResult = getGender(ssno);
+		try {
+			const ssno = fullName.birth + fullName.gender;
+			const genderResult = getGender(ssno);
 
-		if (genderResult === "Error") {
-			alert("올바른 주민등록번호 형식이 아닙니다.");
-			return;
-		}
-
-		const gender = genderResult;
-		const birthstr = ssno.substring(0, 6);
-		const genderCode = ssno.charAt(6);
-		const birthFull =
-			parseInt(genderCode, 10) <= 2 ? `19${birthstr}` : `20${birthstr}`;
-		const age = calculateAge(birthFull);
-		const nickname = `크루${Math.floor(Math.random() * 1000 + 1)}`;
-
-		const userInfo: UserInfo = {
-			email: form.email,
-			password: form.password,
-			fullName: {
-				name: form.fullName.name,
-				tel: form.fullName.tel,
-				gender,
-				age,
-				nickname
+			if (genderResult === "Error") {
+				alert("올바른 주민등록번호 형식이 아닙니다.");
+				return;
 			}
-		};
 
-		console.log("회원 가입 요청 데이터", userInfo);
+			const gender = genderResult;
+			const birthstr = ssno.substring(0, 6);
+			const genderCode = ssno.charAt(6);
+			const birthFull =
+				parseInt(genderCode, 10) <= 2 ? `19${birthstr}` : `20${birthstr}`;
+			const age = calculateAge(birthFull);
+			const nickname = `크루${Math.floor(Math.random() * 1000 + 1)}`;
 
-		const user = await registerUser(userInfo);
+			const userInfo: UserInfo = {
+				email,
+				password,
+				fullName: {
+					name: fullName.name,
+					tel: fullName.tel,
+					gender,
+					age,
+					nickname
+				}
+			};
 
-		if (user) {
-			alert("회원가입 성공!");
-			navigate("/login");
-		} else {
-			alert("회원가입 실패");
+			console.log("회원 가입 요청 데이터", userInfo);
+
+			const user = await registerUser(userInfo);
+
+			if (user) {
+				alert("회원가입 성공!");
+				navigate("/login");
+			} else {
+				alert("회원가입 실패");
+			}
+		} catch (error) {
+			console.error("회원가입 중 오류 발생:", error);
+			alert("회원가입 중 오류가 발생했습니다.");
 		}
 	};
 
@@ -145,21 +153,22 @@ export default function Signup() {
 				<img
 					src={SignupLogo}
 					alt="TripUs 로고"
-					className="w-[278px] h-[106px] mx-auto mt-[60px] mb-[26px]"
+					className="w-[278px] h-[106px] mx-auto mt-[60px] mb-[26px] cursor-pointer"
+					onClick={() => navigate("/")}
 				/>
 				<div
 					className="relative group"
 					onMouseEnter={() => setHoveredField("name")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "name" ? "-21px -264px " : "-21px -238px"
-						}}
-					/>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							size="24px"
+							position={
+								hoveredField === "name" ? "-21px -265px" : "-21px -239px"
+							}
+						/>
+					</div>
 					<input
 						name="name"
 						placeholder="이름"
@@ -174,14 +183,14 @@ export default function Signup() {
 					onMouseEnter={() => setHoveredField("birth")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "birth" ? "-53px -264px " : "-53px -238px"
-						}}
-					/>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							size="24px"
+							position={
+								hoveredField === "birth" ? "-53px -264px" : "-53px -238px"
+							}
+						/>
+					</div>
 					<input
 						name="birth"
 						placeholder="생년월일/성별"
@@ -214,14 +223,14 @@ export default function Signup() {
 					onMouseEnter={() => setHoveredField("tel")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "tel" ? "-85px -266px " : "-85px -240px"
-						}}
-					/>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							size="24px"
+							position={
+								hoveredField === "tel" ? "-85px -266px" : "-85px -240px"
+							}
+						/>
+					</div>
 					<input
 						name="tel"
 						placeholder="전화번호"
@@ -235,14 +244,14 @@ export default function Signup() {
 					onMouseEnter={() => setHoveredField("email")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "email" ? "-117px -265px " : "-117px -239px"
-						}}
-					/>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							size="24px"
+							position={
+								hoveredField === "email" ? "-117px -265px" : "-117px -239px"
+							}
+						/>
+					</div>
 					<input
 						name="email"
 						placeholder="이메일"
@@ -256,16 +265,17 @@ export default function Signup() {
 					onMouseEnter={() => setHoveredField("password")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
-								hoveredField === "password" ? "-150px -264px " : "-150px -238px"
-						}}
-					/>
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							size="24px"
+							position={
+								hoveredField === "password" ? "-150px -264px" : "-150px -238px"
+							}
+						/>
+					</div>
 					<input
 						name="password"
+						type="password"
 						placeholder="비밀번호"
 						value={form.password}
 						onChange={handleChange}
@@ -277,34 +287,37 @@ export default function Signup() {
 					onMouseEnter={() => setHoveredField("passwordConfirm")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
-					<div
-						className="iconProps"
-						style={{
-							backgroundImage: `url(${sprite})`,
-							backgroundPosition:
+					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+						<Icon
+							size="24px"
+							position={
 								hoveredField === "passwordConfirm"
-									? "-150px -264px "
+									? "-150px -264px"
 									: "-150px -238px"
-						}}
-					/>
+							}
+						/>
+					</div>
 					<input
 						name="passwordConfirm"
+						type="password"
 						placeholder="비밀번호 확인"
 						value={form.passwordConfirm}
 						onChange={handleChange}
 						className="inputProps"
 					/>
 				</div>
-				<button type="submit" className="firstButton">
+
+				<Button type="submit" className="w-full">
 					회원가입
-				</button>
-				<button
+				</Button>
+				<Button
 					type="button"
 					onClick={() => navigate("/")}
-					className="secondButton"
+					reverse
+					className="w-full border-[1px]"
 				>
 					취소
-				</button>
+				</Button>
 			</form>
 		</>
 	);
