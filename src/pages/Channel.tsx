@@ -83,12 +83,29 @@ export default function Channel() {
 		if (channelName) {
 			const fetchPostInfo = async () => {
 				try {
+					let postData: PostHomeData[] = [];
+					if (channelName === "전체글") {
+						const channelID1 = await getChannelInfo("crews");
+						const channelID2 = await getChannelInfo("review");
+						const postData1 = await getPosts(channelID1);
+						const postData2 = await getPosts(channelID2);
+						postData = [...postData1, ...postData2];
+					} else if (channelName === "긴급 모집") {
+						const channelID1 = await getChannelInfo("crews");
+						postData = await getPosts(channelID1);
+						postData.filter((post) => {
+							const startDate = new Date(post.title.dateRange[0]);
+							const now = new Date();
+							const diff =
+								(now.getTime() - startDate.getTime()) / (1000 * 60 * 60);
+						});
+					}
 					const channelData = await getChannelInfo(decodedChannelName); //url에 나와있는 채널이름가지고 데이터 불러오기(URL속 채널이름 바뀔때마다)
 					console.log(channelData);
 					const channelId = channelData._id;
 					//console.log(channelId);
-					const postData = await getPosts(channelId);
-					const parsedPosts = postData.map((post: PostData) => {
+					postData = await getPosts(channelId);
+					const parsedPosts = postData.map((post: PostHomeData) => {
 						let parsedTitle = post.title;
 						if (typeof post.title === "string") {
 							try {

@@ -8,7 +8,6 @@ export default function ChannelList() {
 	const navigate = useNavigate();
 	const { channelName } = useParams();
 	const [selected, setSelected] = useState(channelName || "");
-
 	const handleChannelClick = (channelName: string) => {
 		navigate(`/channel/${encodeURIComponent(channelName)}`);
 	};
@@ -17,7 +16,26 @@ export default function ChannelList() {
 		const fetchChannels = async () => {
 			try {
 				const data = await getChannels();
-				setChannels(data);
+				const extraChannels: ChannelData[] = [
+					{
+						posts: [],
+						_id: "all",
+						name: "전체글",
+						description: "crews와 review 채널의 글들",
+						createdAt: "",
+						updatedAt: ""
+					},
+					...data,
+					{
+						posts: [],
+						_id: "urgent",
+						name: "긴급 모집",
+						description: "3일 남은 게시글들",
+						createdAt: "",
+						updatedAt: ""
+					}
+				];
+				setChannels(extraChannels);
 			} catch (error) {
 				console.error("채널 불러오기 실패", error);
 			}
