@@ -1,27 +1,29 @@
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useClickAway } from "react-use";
-import { deletePost, updatePost } from "../../../apis/post";
+import { twMerge } from "tailwind-merge";
+import { deletePost } from "../../../apis/post";
 import Icon from "../../commons/Icon";
 import Modal from "../../commons/Modal";
 import ModalItem from "../../commons/ModalItem";
 
 export default function PostTitle({
+	isRecruitChannel,
 	isRecruiting,
+	toggleRecruit,
 	title,
 	isAuthor,
-	postData,
-	postInfo
+	postData
 }: {
+	isRecruitChannel: boolean;
 	isRecruiting: boolean | undefined;
+	toggleRecruit: () => void;
 	title: string | undefined;
 	isAuthor: boolean;
 	postData: PostData;
-	postInfo: PostDetail;
 }) {
 	const navigate = useNavigate();
 	const [modalOpen, setModalOpen] = useState(false);
-	const [recruit, isRecruit] = useState(isRecruiting);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
 	const modifyPostHandler = () => {
@@ -44,21 +46,6 @@ export default function PostTitle({
 		}
 	};
 
-	const toggleRecruit = async () => {
-		try {
-			const newData: PostDetail = { ...postInfo };
-			newData.isRecruiting = !newData.isRecruiting;
-			isRecruit((state) => !state);
-			const formData = new FormData();
-			formData.append("title", JSON.stringify(newData));
-			formData.append("channelId", postData.channel._id);
-			formData.append("postId", postData._id);
-			await updatePost(formData);
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
 	useClickAway(modalRef, () => {
 		setModalOpen(false);
 	});
@@ -70,10 +57,18 @@ export default function PostTitle({
 			</Link>
 			<h2 className="items-center mb-[14px] inline-block">
 				<span
-					onClick={toggleRecruit}
-					className="cursor-pointer mr-4 text-xl text-[#06B796] px-3 bg-[#F3F4F6] py-[5.5px] rounded-lg"
+					onClick={() => {
+						if (!isAuthor || !isRecruitChannel) return;
+						toggleRecruit();
+					}}
+					className={twMerge(
+						"mr-4 text-xl px-3 py-[5.5px] rounded-lg",
+						isRecruitChannel
+							? "cursor-pointer text-[#06B796] bg-[#F3F4F6]"
+							: "cursor-default bg-[#06b796] text-white"
+					)}
 				>
-					{recruit ? "모집중" : "모집완료"}
+					{isRecruitChannel ? (isRecruiting ? "모집중" : "모집완료") : "후기"}
 				</span>
 				<span className="text-[28px] font-medium">{title}</span>
 			</h2>
