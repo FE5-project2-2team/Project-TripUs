@@ -21,6 +21,19 @@ interface Profile {
 	tagList: string[];
 }
 
+type ProfilePost = {
+	_id: string;
+	image: string;
+	title: string;
+	channel: {
+		_id: string;
+		name: string;
+	};
+	author: {
+		_id: string;
+	};
+};
+
 interface UserUpdateData {
 	profile?: Partial<User>;
 	tagList?: string[];
@@ -37,7 +50,7 @@ interface PostUpdateData {
 interface PostDetail {
 	title: string;
 	memberLimit: number;
-	memberList: string[];
+	memberList: UserData[];
 	applicantList: string[];
 	location: string;
 	dateRange: Date[];
@@ -50,11 +63,28 @@ interface PostDetail {
 	contents: Delta | undefined;
 }
 
+interface FormValues {
+	channel: string;
+	member: number;
+	location: string;
+	dateRange: Date[];
+	title: string;
+	condition: {
+		gender: string;
+		ageRange: string[];
+	};
+}
+
 interface NotiType {
 	notificationType: "COMMENT" | "LIKE" | "MESSAGE";
 	notificationTypeId: string;
 	userId: string;
 	postId: string | null;
+}
+
+interface CommentType {
+	type: "comment" | "apply";
+	value?: string;
 }
 
 //API Response
@@ -144,4 +174,48 @@ interface MessageData {
 	seen: boolean;
 	createdAt: string;
 	updatedAt: string;
+}
+
+interface UserHomeData {
+	coverImage: string;
+	image: string;
+	role: string;
+	isOnline: boolean;
+	posts: PostData[];
+	likes: LikeData[];
+	comments: string[];
+	notifications: Notification[];
+	messages: Message[];
+	_id: string;
+	fullName: string | User;
+	email: string;
+	createdAt: string;
+	updatedAt: string;
+}
+interface PostHomeData {
+	likes: Like[];
+	comments: CommentData[];
+	_id: string;
+	image?: string;
+	imagePublicId?: string;
+	title: PostTitleData;
+	channel: ChannelData;
+	author: UserHomeData;
+	createdAt: string;
+	updatedAt: string;
+}
+
+interface PostTitleData {
+	title: string;
+	memberLimit: number;
+	memberList: string[];
+	location: string;
+	dateRange: Date[];
+	isRecruiting: boolean;
+	recruitCondition: {
+		gender: string;
+		ageRange: string[];
+	};
+	description: string;
+	contents: string;
 }

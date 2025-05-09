@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { getPostById, updatePost } from "../apis/post";
+import { createComment, deleteComment } from "../apis/comment";
+import { getPostById } from "../apis/post";
 import Button from "../components/commons/Button";
 import ApplyMembers from "../components/features/postDetail/ApplyMembers";
 import CommentsList from "../components/features/postDetail/CommentsList";
 import Likes from "../components/features/postDetail/Likes";
+import MemberList from "../components/features/postDetail/MemberList";
 import PostTitle from "../components/features/postDetail/PostTitle";
 import TravelInfo from "../components/features/postDetail/TravelInfo";
 import UserInfo from "../components/features/user/UserInfo";
@@ -12,38 +14,86 @@ import { useAuthStore } from "../store/authStore";
 
 export default function PostDetail() {
 	const { id } = useParams();
-	const userId = useAuthStore((state) => state.userId);
+	const userId = useAuthStore((state) => state.userId)!;
 	const [postData, setPostData] = useState<PostData | null>(null);
-	const [isApplied, setIsApplied] = useState(false);
+	const [applicants, setApplicants] = useState<CommentData[]>([]);
+	const [comments, setComments] = useState<CommentData[]>([]);
+	const [members, setMembers] = useState<UserData[]>([]);
 
-	const applyAccompany = async () => {
-		if (!postData) return;
-		const postInfo: PostDetail = JSON.parse(postData.title);
-		const updateData = {
-			title: JSON.stringify({
-				...postInfo,
-				applicantList: postInfo.applicantList.push(userId!)
-			}),
-			postId: id
-		};
-
+	const getData = useCallback(async () => {
 		try {
-			const data = await updatePost(updateData);
-			console.log(data);
-			setIsApplied(true);
+			const postData: PostData = await getPostById(id!);
+			const postInfo: PostDetail = JSON.parse(postData.title);
+			setPostData(postData);
+			setMembers(postInfo.memberList);
+
+			const applyList = postData.comments.filter((commentData) => {
+				const parsed: CommentType = JSON.parse(commentData.comment);
+				return (
+					parsed.type === "apply" &&
+					postInfo.applicantList.every(
+						(applicant) => applicant !== commentData.author._id
+					)
+				);
+			});
+			setApplicants(applyList);
+
+			const commentList = postData.comments.filter((commentData) => {
+				const parsed: CommentType = JSON.parse(commentData.comment);
+				return parsed.type === "comment";
+			});
+			setComments(commentList);
+		} catch (error) {
+			console.error(error);
+		}
+	}, [id]);
+
+	const submitHandler = async (
+		e: React.FormEvent<HTMLFormElement>,
+		value: string
+	) => {
+		e.preventDefault();
+		try {
+			if (!postData) return;
+			const data: CommentType = { type: "comment", value };
+			const newComment = await createComment(
+				postData?._id,
+				JSON.stringify(data)
+			);
+			setComments((list) => [...list, newComment]);
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
-	const getData = useCallback(async () => {
+	const addMember = (newMember: UserData) => {
+		setMembers((members) => [...members, newMember]);
+	};
+
+	const deleteCommentHandler = async (commentId: string) => {
 		try {
-			const postData: PostData = await getPostById(id!);
-			setPostData(postData);
+			await deleteComment(commentId);
+			setComments((list) => list.filter((item) => item._id !== commentId));
 		} catch (error) {
 			console.error(error);
 		}
-	}, [id]);
+	};
+
+	const applyBtnHandler = async () => {
+		if (!postData) return;
+		const data: CommentType = { type: "apply" };
+		const newApplicant = await createComment(
+			postData?._id,
+			JSON.stringify(data)
+		);
+		setApplicants((applicants) => [...applicants, newApplicant]);
+	};
+
+	const deleteApplicant = (userId: string) => {
+		setApplicants((applicants) =>
+			applicants.filter((applicant) => applicant.author._id !== userId)
+		);
+	};
 
 	useEffect(() => {
 		if (!id) return;
@@ -54,6 +104,9 @@ export default function PostDetail() {
 		const authorInfo: Profile = JSON.parse(postData.author.fullName);
 		const postInfo: PostDetail = JSON.parse(postData.title);
 		const isAuthor = userId === postData.author._id;
+		const isApplied =
+			applicants.some((applicant) => applicant.author._id === userId) ||
+			postInfo.applicantList.includes(userId);
 		return (
 			<main className="flex flex-col justify-center items-center mt-[49px]">
 				<div className="flex flex-col gap-[30px] w-266 ">
@@ -61,8 +114,8 @@ export default function PostDetail() {
 						isAuthor={isAuthor}
 						isRecruiting={postInfo.isRecruiting}
 						title={postInfo.title}
-						postId={postData._id}
 						postData={postData}
+						postInfo={postInfo}
 					/>
 					<TravelInfo
 						contents={postInfo.contents}
@@ -74,9 +127,7 @@ export default function PostDetail() {
 						image={postData.author.image}
 						userId={postData.author._id}
 					/>
-					<div>
-						<span className="post-sub-title">참여 멤버</span>
-					</div>
+					<MemberList members={members} />
 					<div>
 						<span className="post-sub-title">동행 조건 사항</span>
 						<div>
@@ -88,20 +139,31 @@ export default function PostDetail() {
 							{postInfo.recruitCondition.ageRange.join(", ")}
 						</div>
 					</div>
-					<ApplyMembers />
-					<Likes likesList={postData.likes} postId={postData._id} />
+					{isAuthor && (
+						<ApplyMembers
+							postInfo={postInfo}
+							postData={postData}
+							applicants={applicants}
+							deleteApplicant={deleteApplicant}
+							addMember={addMember}
+						/>
+					)}
+					<Likes postData={postData} likesList={postData.likes} />
 					<CommentsList
-						commentsList={postData.comments}
-						postId={id as string}
+						commentsList={comments}
 						authorId={postData.author._id}
+						submitHandler={submitHandler}
+						deleteCommentHandler={deleteCommentHandler}
 					/>
 					{!isAuthor && userId && (
 						<Button
-							onClick={applyAccompany}
+							onClick={applyBtnHandler}
 							className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
 							disabled={isApplied}
 						>
-							동행 신청하기
+							{members.length === postInfo.memberLimit
+								? "모집이 마감되었습니다"
+								: "동행 신청하기"}
 						</Button>
 					)}
 				</div>

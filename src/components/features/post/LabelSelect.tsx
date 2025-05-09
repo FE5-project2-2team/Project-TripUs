@@ -1,14 +1,25 @@
-type SelectProps = React.ComponentPropsWithoutRef<"select"> & {
+import { useFormContext } from "react-hook-form";
+
+export default function LabelSelect({
+	name,
+	label,
+	children
+}: {
+	name: string;
 	label: string;
-};
-export default function LabelSelect(props: SelectProps) {
-	const { children, id, label, ...rest } = props;
+	children: React.ReactNode;
+}) {
+	const { register } = useFormContext();
 	return (
 		<div>
-			<label htmlFor={id} className="post-input-title">
+			<label htmlFor={name} className="post-input-title">
 				{label}
 			</label>
-			<select className="input-style cursor-pointer" id={id} {...rest}>
+			<select
+				className="input-style cursor-pointer"
+				id={name}
+				{...register(name)}
+			>
 				{children}
 			</select>
 		</div>
