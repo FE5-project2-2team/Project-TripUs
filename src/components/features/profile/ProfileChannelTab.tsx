@@ -3,7 +3,13 @@ import Button from "../../commons/Button";
 import ReviewTab from "./ReviewTab";
 import CrewTab from "./CrewTab";
 
-export default function ProfileChannelTab({ userId }: { userId: string }) {
+export default function ProfileChannelTab({
+	userId,
+	isMyPage
+}: {
+	userId: string;
+	isMyPage: boolean;
+}) {
 	const [activeTab, setActiveTab] = useState<"review" | "crews">("review");
 
 	return (
@@ -34,11 +40,11 @@ export default function ProfileChannelTab({ userId }: { userId: string }) {
 			{/* 탭 내용 */}
 			<div className="h-full flex pb-[30px]">
 				<div className={activeTab === "review" ? "block" : "hidden"}>
-					<ReviewTab authorId={userId} />
+					<ReviewTab authorId={userId} isMyPage={isMyPage} />
 				</div>
 
 				<div className={activeTab === "crews" ? "block" : "hidden"}>
-					<CrewTab authorId={userId} />
+					<CrewTab authorId={userId} isMyPage={isMyPage} />
 				</div>
 			</div>
 		</div>

@@ -80,8 +80,8 @@ export default function ProfileEditModal({
 	};
 
 	return (
-		<div className="fixed inset-0 flex items-center justify-center bg-white/60">
-			<div className="w-[524px] rounded-[15px] bg-white pt-[30px] pb-[24px] shadow-lg">
+		<div className="fixed inset-0 flex items-center justify-center bg-white/60 z-50">
+			<div className="w-[524px] rounded-[15px] bg-white pt-[30px] pb-[24px] shadow-lg z-50">
 				<h2 className="flex justify-center text-[24px] font-medium">
 					프로필 편집
 				</h2>
