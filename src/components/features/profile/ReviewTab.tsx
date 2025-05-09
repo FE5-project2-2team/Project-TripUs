@@ -13,6 +13,7 @@ const ReviewTab = ({
 	isMyPage: boolean;
 }) => {
 	const [posts, setPosts] = useState<ProfilePost[]>([]);
+	const reviewPosts = posts.filter((post) => post.channel.name === "review");
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -30,16 +31,17 @@ const ReviewTab = ({
 
 	return (
 		<div>
-			<h1 className="text-xl font-bold my-[30px]">
-				후기 게시글: (게시글 개수)
-			</h1>
+			<div className="flex my-[30px] text-[18px] font-medium gap-x-[8px]">
+				<h1>후기 게시글</h1>
+				<p className="text-[#06B796]">{reviewPosts.length}</p>
+			</div>
 			<div className="grid grid-cols-3 gap-x-[40px] gap-y-[30px]">
 				{isMyPage && (
-					<div
-						className="flex flex-col items-center justify-center w-[328px] h-[398px] border border-[#06B796] rounded-[15px]"
-						style={{ boxShadow: "0px 2px 4px 0px rgba(0, 0, 0, 0.16)" }}
-					>
-						<Link to={"/postCreate"}>
+					<Link to={"/postCreate"}>
+						<div
+							className="flex flex-col items-center justify-center w-[328px] h-[398px] border border-[#06B796] rounded-[15px]"
+							style={{ boxShadow: "0px 2px 4px 0px rgba(0, 0, 0, 0.16)" }}
+						>
 							<button>
 								<div className="w-[80px] h-[80px] rounded-full flex items-center justify-center cursor-pointer bg-[#06b796] hover:bg-[#038383]">
 									<div
@@ -54,11 +56,11 @@ const ReviewTab = ({
 									/>
 								</div>
 							</button>
-						</Link>
-						<p className="font-bold text-[16px] text-[#06B796] mt-[34px]">
-							새 후기를 남겨주세요.
-						</p>
-					</div>
+							<p className="font-bold text-[16px] text-[#06B796] mt-[34px]">
+								새 후기를 남겨주세요.
+							</p>
+						</div>
+					</Link>
 				)}
 				{posts
 					.filter((post) => post.channel.name === "review")
@@ -94,7 +96,7 @@ const ReviewTab = ({
 
 									{/* 하단 영역 -2 */}
 									<div className="flex flex-col my-[16px]">
-										{/* 비행가 */}
+										{/* 비행기 */}
 										<div className="flex items-center">
 											<div
 												className="w-[18px] h-[18px] mr-[4px] bg-no-repeat"

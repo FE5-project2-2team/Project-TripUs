@@ -13,6 +13,7 @@ const CrewTab = ({
 	isMyPage: boolean;
 }) => {
 	const [posts, setPosts] = useState<ProfilePost[]>([]);
+	const crewPosts = posts.filter((post) => post.channel.name === "crews");
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -30,35 +31,31 @@ const CrewTab = ({
 
 	return (
 		<div>
-			<h1 className="text-xl font-bold my-[30px]">
-				동행 게시글: (게시글 개수)
-			</h1>
+			<div className="flex my-[30px] text-[18px] font-medium gap-x-[8px]">
+				<h1>동행 게시글</h1>
+				<p className="text-[#06B796]">{crewPosts.length}</p>
+			</div>
 			<div className="grid grid-cols-3 gap-x-[40px] gap-y-[30px]">
 				{isMyPage && (
-					<div
-						className="flex flex-col items-center justify-center w-[328px] h-[398px] border border-[#06B796] rounded-[15px]"
-						style={{ boxShadow: "0px 2px 4px 0px rgba(0, 0, 0, 0.16)" }}
-					>
-						<Link to={"/postCreate"}>
-							<button>
-								<div className="w-[80px] h-[80px] rounded-full flex items-center justify-center cursor-pointer bg-[#06b796] hover:bg-[#038383]">
-									<div
-										className="w-[35px] h-[35px] bg-no-repeat"
-										style={{
-											backgroundImage:
-												"url('/src/assets/images/spriteImages.png')",
-											backgroundSize: "245px 380px",
-											backgroundPosition: "-24.3px -171.3px"
-										}}
-										aria-label="Add Post Button"
-									/>
-								</div>
-							</button>
-						</Link>
-						<p className="font-bold text-[16px] text-[#06B796] mt-[34px]">
-							함께할 크루를 찾아보세요.
-						</p>
-					</div>
+					<Link to={"/postCreate"}>
+						<div className="flex flex-col items-center justify-center w-[328px] h-[398px] border border-[#06B796] rounded-[15px] shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition-shadow duration-300">
+							<div className="w-[80px] h-[80px] rounded-full flex items-center justify-center bg-[#06b796]">
+								<div
+									className="w-[35px] h-[35px] bg-no-repeat"
+									style={{
+										backgroundImage:
+											"url('/src/assets/images/spriteImages.png')",
+										backgroundSize: "245px 380px",
+										backgroundPosition: "-24.3px -171.3px"
+									}}
+									aria-label="Add Post Button"
+								/>
+							</div>
+							<p className="font-bold text-[16px] text-[#06B796] mt-[34px]">
+								함께할 크루를 찾아보세요.
+							</p>
+						</div>
+					</Link>
 				)}
 				{posts
 					.filter((post) => post.channel.name === "crews")
@@ -94,7 +91,7 @@ const CrewTab = ({
 
 									{/* 하단 영역 -2 */}
 									<div className="flex flex-col my-[16px]">
-										{/* 비행가 */}
+										{/* 비행기 */}
 										<div className="flex items-center">
 											<div
 												className="w-[18px] h-[18px] mr-[4px] bg-no-repeat"
