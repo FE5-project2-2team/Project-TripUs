@@ -1,6 +1,6 @@
-import { Link } from "react-router";
 import { useAuthStore } from "../../../store/authStore";
 import { formatDate, formatTime } from "../../../utils/date";
+import ProfileImage from "../../commons/ProfileImage";
 
 export default function CommentItem({
 	comment,
@@ -14,16 +14,11 @@ export default function CommentItem({
 	const userId = useAuthStore((state) => state.userId);
 	const userInfo: Profile = JSON.parse(comment.author.fullName);
 	const date = new Date(comment.createdAt);
+	const { value }: CommentType = JSON.parse(comment.comment);
 
 	return (
 		<li className="flex items-center gap-[10px] py-6 border-b border-[#d9d9d9]">
-			<Link to={`/profile/${comment.author._id}`}>
-				<img
-					className="w-[50px] h-[50px] rounded-full object-cover"
-					src={comment.author.image}
-					alt="프로필 이미지"
-				/>
-			</Link>
+			<ProfileImage userId={comment.author._id} image={comment.author.image} />
 			<div className="flex flex-col">
 				<div className="flex items-center gap-1">
 					<span className="font-medium">{userInfo.nickname}</span>
@@ -33,9 +28,7 @@ export default function CommentItem({
 						</span>
 					)}
 				</div>
-				<span className="text-[#616161] text-sm mb-[2px]">
-					{comment.comment}
-				</span>
+				<span className="text-[#616161] text-sm mb-[2px]">{value}</span>
 				<div>
 					<span className="text-[#616161] text-[10px]">
 						{`${formatDate(date)} ${formatTime(date)}`}
