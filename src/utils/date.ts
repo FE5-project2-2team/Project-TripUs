@@ -1,5 +1,5 @@
 export const formatDate = (date: Date) => {
-	const month = date.getMonth().toString();
+	const month = (date.getMonth() + 1).toString();
 	const day = date.getDate().toString();
 	return `${date.getFullYear()}-${month.length === 1 ? `0${month}` : month}-${
 		day.length === 1 ? `0${day}` : day
@@ -10,6 +10,15 @@ export const formatTime = (date: Date) => {
 	const hours = date.getHours().toString();
 	const minutes = date.getMinutes().toString();
 	return `${hours.length === 1 ? `0${hours}` : hours}-${minutes.length === 1 ? `0${minutes}` : minutes}`;
+};
+
+export const getDiffInDays = (date1: string, date2: string) => {
+	const oneDayMs = 1000 * 60 * 60 * 24;
+	let diff = oneDayMs;
+	if (date2) {
+		diff = new Date(date2).getTime() - new Date(date1).getTime();
+	}
+	return Math.floor(diff / oneDayMs);
 };
 
 export function formatDateRange(dateRangeInput: unknown): string {

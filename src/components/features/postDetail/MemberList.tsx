@@ -1,6 +1,18 @@
+import { useCallback, useEffect, useState } from "react";
+import { getUserInfo } from "../../../apis/user";
 import ProfileImage from "../../commons/ProfileImage";
 
-export default function MemberList({ members }: { members: UserData[] }) {
+export default function MemberList({ members }: { members: string[] }) {
+	const [userData, setUserData] = useState<UserData[]>([]);
+	const fetchUsers = useCallback(async () => {
+		const users = await Promise.all(
+			members.map((member) => getUserInfo(member))
+		);
+		setUserData(users);
+	}, [members]);
+	useEffect(() => {
+		fetchUsers();
+	}, [fetchUsers]);
 	return (
 		<div>
 			<div className="mb-4">
@@ -8,15 +20,16 @@ export default function MemberList({ members }: { members: UserData[] }) {
 				<span className="sub_title_number">{members.length}</span>
 			</div>
 			<ul className="flex gap-[10px]">
-				{members.map((member) => {
-					const parsed: Profile = JSON.parse(member.fullName);
-					return (
-						<li key={member._id} className="flex flex-col gap-1 items-center">
-							<ProfileImage userId={member._id} image={member.image} />
-							<span className="text-sm">{parsed.nickname}</span>
-						</li>
-					);
-				})}
+				{userData &&
+					userData.map((user) => {
+						const parsed: Profile = JSON.parse(user.fullName);
+						return (
+							<li key={user._id} className="flex flex-col gap-1 items-center">
+								<ProfileImage userId={user._id} image={user.image} />
+								<span className="text-sm">{parsed.nickname}</span>
+							</li>
+						);
+					})}
 			</ul>
 		</div>
 	);

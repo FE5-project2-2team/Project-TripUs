@@ -6,7 +6,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import ReactQuill from "react-quill-new";
 import { Link, useNavigate } from "react-router";
 import { createPost } from "../apis/post";
-import { getUserInfo } from "../apis/user";
 import ConditionList from "../components/features/post/ConditionList";
 import Contents from "../components/features/post/Contents";
 import InfoForm from "../components/features/post/InfoForm";
@@ -36,11 +35,10 @@ export default function PostCreate() {
 
 	const submitHandler = async (data: FormValues) => {
 		try {
-			const userData: UserData = await getUserInfo(userId);
 			const detailData: PostDetail = {
 				title: data.title,
 				memberLimit: Number(data.member),
-				memberList: [userData],
+				memberList: [userId],
 				applicantList: [],
 				location: data.location,
 				dateRange: data.dateRange,
@@ -48,7 +46,7 @@ export default function PostCreate() {
 				recruitCondition: data.condition,
 				description: contents.current
 					?.getEditor()
-					.editor.getText(0, 20) as string,
+					.editor.getText(0, 100) as string,
 				contents: contents.current?.getEditor().getContents()
 			};
 
@@ -67,7 +65,6 @@ export default function PostCreate() {
 	};
 
 	const contents = useRef<ReactQuill | null>(null);
-
 	return (
 		<div className="flex justify-center items-center">
 			<main className="font-[Noto-Sans]">
