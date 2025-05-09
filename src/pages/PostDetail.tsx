@@ -69,7 +69,11 @@ export default function PostDetail() {
 						dateRange={postInfo.dateRange}
 						location={postInfo.location}
 					/>
-					<UserInfo authorInfo={authorInfo} userId={postData.author._id} />
+					<UserInfo
+						authorInfo={authorInfo}
+						image={postData.author.image}
+						userId={postData.author._id}
+					/>
 					<div>
 						<span className="post-sub-title">참여 멤버</span>
 					</div>
