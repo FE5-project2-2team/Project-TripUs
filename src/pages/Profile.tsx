@@ -68,6 +68,7 @@ export default function Profile() {
 
 		const updatedFullName = JSON.stringify({
 			...JSON.parse(JSON.stringify(profile)),
+			// ...profile,
 			nickname: editProfile.nickname,
 			tagList: editProfile.tagList
 		});
