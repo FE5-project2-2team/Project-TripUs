@@ -13,12 +13,23 @@ export const formatTime = (date: Date) => {
 };
 
 export function formatDateRange(dateRangeInput: unknown): string {
-	const dateRange = String(dateRangeInput);
-	const matches = dateRange.match(
-		/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/g
-	);
-	if (!matches || matches.length !== 2) return "잘못된 날짜";
-	const [start, end] = matches;
+	let dates: string[] = [];
+	// yy.mm.dd - yy.mm.dd
+	if (Array.isArray(dateRangeInput)) {
+		dates = dateRangeInput as string[];
+	}
+	// yy.mm.dd
+	else if (typeof dateRangeInput === "string") {
+		const matches = dateRangeInput.match(
+			/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/g
+		);
+		if (matches) {
+			dates = matches;
+		}
+	}
+
+	if (dates.length === 0) return "잘못된 날짜";
+
 	const format = (dateStr: string) => {
 		const date = new Date(dateStr);
 		const yy = String(date.getFullYear()).slice(2);
@@ -26,5 +37,9 @@ export function formatDateRange(dateRangeInput: unknown): string {
 		const dd = String(date.getDate()).padStart(2, "0");
 		return `${yy}.${mm}.${dd}`;
 	};
-	return `${format(start)} - ${format(end)}`;
+
+	if (dates.length === 1) return format(dates[0]);
+	if (dates.length === 2) return `${format(dates[0])} - ${format(dates[1])}`;
+
+	return "잘못된 날짜";
 }
