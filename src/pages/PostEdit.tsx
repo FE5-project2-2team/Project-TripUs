@@ -36,31 +36,34 @@ export default function PostEdit() {
 	contents.current?.getEditor().setContents(postInfo.contents);
 
 	const submitHandler = async (data: FormValues) => {
-		const detailData: PostDetail = {
-			title: data.title,
-			memberLimit: Number(data.member),
-			memberList: postInfo.memberList,
-			applicantList: postInfo.applicantList,
-			location: data.location,
-			dateRange: data.dateRange,
-			isRecruiting: true,
-			recruitCondition: data.condition,
-			description: contents.current
-				?.getEditor()
-				.editor.getText(0, 20) as string,
-			contents: contents.current?.getEditor().getContents()
-		};
+		try {
+			const detailData: PostDetail = {
+				title: data.title,
+				memberLimit: Number(data.member),
+				memberList: postInfo.memberList,
+				applicantList: postInfo.applicantList,
+				location: data.location,
+				dateRange: data.dateRange,
+				isRecruiting: true,
+				recruitCondition: data.condition,
+				description: contents.current
+					?.getEditor()
+					.editor.getText(0, 100) as string,
+				contents: contents.current?.getEditor().getContents()
+			};
+			const formData = new FormData();
+			formData.append("title", JSON.stringify(detailData));
+			formData.append("channelId", data.channel);
 
-		const formData = new FormData();
-		formData.append("title", JSON.stringify(detailData));
-		formData.append("channelId", data.channel);
+			const imageFile = await urlToFile(contents);
+			if (imageFile) formData.append("image", imageFile);
 
-		const imageFile = await urlToFile(contents);
-		if (imageFile) formData.append("image", imageFile);
-
-		formData.append("postId", postData._id);
-		await updatePost(formData);
-		navigate(`/post/detail/${postData._id}`);
+			formData.append("postId", postData._id);
+			await updatePost(formData);
+			navigate(`/post/detail/${postData._id}`);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (

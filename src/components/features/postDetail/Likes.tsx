@@ -7,10 +7,10 @@ import Icon from "../../commons/Icon";
 
 export default function Likes({
 	likesList,
-	postId
+	postData
 }: {
 	likesList: LikeData[];
-	postId: string;
+	postData: PostData;
 }) {
 	const navigate = useNavigate();
 	const userId = useAuthStore((state) => state.userId);
@@ -22,9 +22,14 @@ export default function Likes({
 		likeId: likesList.find((like) => like.user === userId)?._id
 	});
 
+	const isAuthor = userId === postData.author._id;
+
 	const likeBtnHandler = async () => {
 		if (!userId) {
 			navigate("/login");
+			return;
+		}
+		if (isAuthor) {
 			return;
 		}
 		try {
@@ -35,7 +40,7 @@ export default function Likes({
 					likeId: ""
 				}));
 			} else {
-				const myLike: LikeData = await createLike(postId);
+				const myLike: LikeData = await createLike(postData._id);
 				setLikes((likes) => ({
 					number: likes.number + 1,
 					likeId: myLike._id
@@ -49,8 +54,9 @@ export default function Likes({
 		<div
 			onClick={likeBtnHandler}
 			className={twMerge(
-				"cursor-pointer flex self-center px-[30px] pt-[10px] pb-[7.5px]  border-[1px] border-[#CDCDCD] rounded-[15px] hover:border-[#06b796]",
-				likes.likeId && "bg-[#06b796] text-white"
+				"cursor-pointer flex self-center px-[30px] pt-[10px] pb-[7.5px]  border-[1px] border-[#CDCDCD] rounded-[15px]",
+				likes.likeId && "bg-[#06b796] text-white",
+				isAuthor ? "hover:hover:bg-gray-100" : "hover:border-[#06b796]"
 			)}
 		>
 			<Icon

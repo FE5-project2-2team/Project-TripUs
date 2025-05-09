@@ -34,34 +34,37 @@ export default function PostCreate() {
 	});
 
 	const submitHandler = async (data: FormValues) => {
-		const detailData: PostDetail = {
-			title: data.title,
-			memberLimit: Number(data.member),
-			memberList: [userId],
-			applicantList: [],
-			location: data.location,
-			dateRange: data.dateRange,
-			isRecruiting: true,
-			recruitCondition: data.condition,
-			description: contents.current
-				?.getEditor()
-				.editor.getText(0, 20) as string,
-			contents: contents.current?.getEditor().getContents()
-		};
+		try {
+			const detailData: PostDetail = {
+				title: data.title,
+				memberLimit: Number(data.member),
+				memberList: [userId],
+				applicantList: [],
+				location: data.location,
+				dateRange: data.dateRange,
+				isRecruiting: true,
+				recruitCondition: data.condition,
+				description: contents.current
+					?.getEditor()
+					.editor.getText(0, 100) as string,
+				contents: contents.current?.getEditor().getContents()
+			};
 
-		const formData = new FormData();
-		formData.append("title", JSON.stringify(detailData));
-		formData.append("channelId", data.channel);
+			const formData = new FormData();
+			formData.append("title", JSON.stringify(detailData));
+			formData.append("channelId", data.channel);
 
-		const imageFile = await urlToFile(contents);
-		if (imageFile) formData.append("image", imageFile);
+			const imageFile = await urlToFile(contents);
+			if (imageFile) formData.append("image", imageFile);
 
-		const postId = await createPost(formData);
-		navigate(`/post/detail/${postId}`);
+			const postId = await createPost(formData);
+			navigate(`/post/detail/${postId}`);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const contents = useRef<ReactQuill | null>(null);
-
 	return (
 		<div className="flex justify-center items-center">
 			<main className="font-[Noto-Sans]">

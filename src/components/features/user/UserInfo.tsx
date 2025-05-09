@@ -1,10 +1,11 @@
-import { Link } from "react-router";
-import profileCircle from "../../../assets/images/profileImg_circle.svg";
+import ProfileImage from "../../commons/ProfileImage";
 export default function UserInfo({
+	isRecruitChannel,
 	image,
 	authorInfo,
 	userId
 }: {
+	isRecruitChannel: boolean;
 	image: string;
 	authorInfo: {
 		nickname: string;
@@ -16,15 +17,9 @@ export default function UserInfo({
 	const { nickname, age, gender } = authorInfo;
 	return (
 		<div>
-			<span className="post-sub-title">캡틴</span>
+			<span className="post-sub-title">{isRecruitChannel && "캡틴"}</span>
 			<div className="flex gap-[10px]">
-				<Link to={`profile/${userId}`}>
-					<img
-						className="w-[50px] h-[50px] rounded-full"
-						src={image || profileCircle}
-						alt="프로필 이미지"
-					/>
-				</Link>
+				<ProfileImage userId={userId} image={image} />
 				<div>
 					<span className="block font-medium">{nickname}</span>
 					<div className="flex gap-2 text-[#616161]">

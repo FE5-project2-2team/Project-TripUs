@@ -34,6 +34,14 @@ body {
     text-center text-[16px] focus:outline-none focus:border-[#06B796];
 }
 
+.handleApply {
+	@apply cursor-pointer leading-3.5 rounded-lg px-[15px] py-2 text-white;
+}
+
+.sub_title_number {
+	@apply text-lg font-medium text-[#06b796] ml-2;
+}
+
 .ql-container {
 	@apply text-base rounded-b-[10px] bg-[#F9F9F9] border-0! w-[1084px];
 }
