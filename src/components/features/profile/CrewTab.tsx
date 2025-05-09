@@ -31,7 +31,7 @@ const CrewTab = ({
 	return (
 		<div>
 			<h1 className="text-xl font-bold my-[30px]">
-				후기 게시글: (게시글 개수)
+				동행 게시글: (게시글 개수)
 			</h1>
 			<div className="grid grid-cols-3 gap-x-[40px] gap-y-[30px]">
 				{isMyPage && (
