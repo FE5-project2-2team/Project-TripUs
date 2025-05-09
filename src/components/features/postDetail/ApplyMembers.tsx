@@ -12,20 +12,20 @@ export default function ApplyMembers({
 	postInfo: PostDetail;
 	postData: PostData;
 	deleteApplicant: (userId: string) => void;
-	addMember: (newMember: UserData) => void;
+	addMember: (newMember: string) => void;
 }) {
 	const approveHandler = async (applicant: UserData) => {
 		try {
 			const newData: PostDetail = { ...postInfo };
 			newData.applicantList.push(applicant._id);
-			newData.memberList.push(applicant);
+			newData.memberList.push(applicant._id);
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(newData));
 			formData.append("channelId", postData.channel._id);
 			formData.append("postId", postData._id);
 			await updatePost(formData);
 			deleteApplicant(applicant._id);
-			addMember(applicant);
+			addMember(applicant._id);
 		} catch (error) {
 			console.error(error);
 		}

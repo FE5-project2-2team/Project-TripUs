@@ -1,7 +1,7 @@
 import { Korean } from "flatpickr/dist/l10n/ko.js";
 import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
-import { useController, useFormContext } from "react-hook-form";
+import { useController, useFormContext, useWatch } from "react-hook-form";
 import { CHANNELS } from "../../../constants/posts";
 import LabelSelect from "./LabelSelect";
 
@@ -11,19 +11,27 @@ export default function InfoForm() {
 		name: "dateRange",
 		control: control
 	});
+	const watchedChannel = useWatch({
+		control,
+		name: "channel"
+	});
 	return (
 		<div className="grid grid-cols-2 gap-15">
 			<LabelSelect name="channel" label="게시판 선택">
 				<option value={CHANNELS.RECRUITMENT}>동행원 모집</option>
 				<option value={CHANNELS.REVIEW}>여행 후기글</option>
 			</LabelSelect>
-			<LabelSelect name="member" label="인원">
-				{Array.from({ length: 9 }, (_, idx) => idx + 2).map((num) => (
-					<option key={num} value={num}>
-						{num}
-					</option>
-				))}
-			</LabelSelect>
+			{watchedChannel === CHANNELS.RECRUITMENT ? (
+				<LabelSelect name="member" label="인원">
+					{Array.from({ length: 9 }, (_, idx) => idx + 2).map((num) => (
+						<option key={num} value={num}>
+							{num}
+						</option>
+					))}
+				</LabelSelect>
+			) : (
+				<div />
+			)}
 			<div>
 				<label htmlFor="location" className="post-input-title">
 					지역 입력
