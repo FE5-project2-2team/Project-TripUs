@@ -50,7 +50,7 @@ interface PostUpdateData {
 interface PostDetail {
 	title: string;
 	memberLimit: number;
-	memberList: string[];
+	memberList: UserData[];
 	applicantList: string[];
 	location: string;
 	dateRange: Date[];
@@ -80,6 +80,11 @@ interface NotiType {
 	notificationTypeId: string;
 	userId: string;
 	postId: string | null;
+}
+
+interface CommentType {
+	type: "comment" | "apply";
+	value?: string;
 }
 
 //API Response
