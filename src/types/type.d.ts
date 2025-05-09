@@ -53,7 +53,7 @@ interface PostDetail {
 	memberList: string[];
 	applicantList: string[];
 	location: string;
-	dateRange: string[];
+	dateRange: Date[];
 	isRecruiting: boolean;
 	recruitCondition: {
 		gender: string;

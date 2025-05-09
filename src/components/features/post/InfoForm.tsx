@@ -7,6 +7,28 @@ import LabelSelect from "./LabelSelect";
 
 export default function InfoForm() {
 	const { register, control } = useFormContext();
+	const countries = [
+		"일본",
+		"프랑스",
+		"이탈리아",
+		"미국",
+		"태국",
+		"호주",
+		"스페인",
+		"영국",
+		"캐나다",
+		"독일",
+		"대한민국",
+		"터키",
+		"네덜란드",
+		"스위스",
+		"포르투갈",
+		"아랍에미리트",
+		"그리스",
+		"오스트리아",
+		"멕시코",
+		"베트남"
+	];
 	const { field } = useController({
 		name: "dateRange",
 		control: control
@@ -45,7 +67,13 @@ export default function InfoForm() {
 					{...register("location", {
 						required: "지역을 입력해주세요"
 					})}
+					list="locationOption"
 				/>
+				<datalist id="locationOption">
+					{countries.map((country) => (
+						<option key={country} value={country} />
+					))}
+				</datalist>
 			</div>
 			<div>
 				<label htmlFor="date" className="post-input-title">

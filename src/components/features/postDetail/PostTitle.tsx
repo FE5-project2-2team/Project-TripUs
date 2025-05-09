@@ -13,23 +13,23 @@ export default function PostTitle({
 	toggleRecruit,
 	title,
 	isAuthor,
-	postData
+	postId
 }: {
 	isRecruitChannel: boolean;
 	isRecruiting: boolean | undefined;
 	toggleRecruit: () => void;
 	title: string | undefined;
 	isAuthor: boolean;
-	postData: PostData;
+	postId: string;
 }) {
 	const navigate = useNavigate();
 	const [modalOpen, setModalOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
 	const modifyPostHandler = () => {
-		navigate(`/post/edit/${postData._id}`, {
+		navigate(`/post/edit/${postId}`, {
 			state: {
-				postData
+				postId
 			}
 		});
 	};
@@ -38,7 +38,7 @@ export default function PostTitle({
 		const isConfirmed = window.confirm("정말 삭제하시겠습니까?");
 		if (isConfirmed) {
 			try {
-				await deletePost(postData._id);
+				await deletePost(postId);
 				navigate("/");
 			} catch (error) {
 				console.error(error);
@@ -64,7 +64,7 @@ export default function PostTitle({
 					className={twMerge(
 						"mr-4 text-xl px-3 py-[5.5px] rounded-lg",
 						isRecruitChannel
-							? "cursor-pointer text-[#06B796] bg-[#F3F4F6]"
+							? "cursor-pointer text-[#06B796] bg-[#F3F4F6] hover:"
 							: "cursor-default bg-[#06b796] text-white"
 					)}
 				>
