@@ -9,7 +9,7 @@ export default function ChannelList() {
 	const { channelName } = useParams();
 	const [selected, setSelected] = useState(channelName || "");
 	const handleChannelClick = (channelName: string) => {
-		navigate(`/channel/${encodeURIComponent(channelName)}`);
+		navigate(`/channel/${channelName}`); //
 	};
 
 	useEffect(() => {
