@@ -5,35 +5,31 @@ export const getPosts = async (channelId: string) => {
 	return data;
 };
 
+export const getPostById = async (postId: string) => {
+	const { data } = await axiosInstance.get(`/posts/${postId}`);
+	return data;
+};
+
 export const getPostsByAuthor = async (AuthorId: string) => {
 	const { data } = await axiosInstance.get(`/posts/author/${AuthorId}`);
 	return data;
 };
 
-<<<<<<< HEAD
 export const createPost = async (post: FormData) => {
-	try {
-		const { data } = await axiosInstance.post("/posts/create", post, {
-			headers: {
-				"Content-Type": "multipart/form-data"
-			}
-		});
-		return data._id;
-	} catch (error) {
-		if (error instanceof Error) {
-			console.log(error.message);
-		} else {
-			console.log("Unknwon Error", error);
+	const { data } = await axiosInstance.post("/posts/create", post, {
+		headers: {
+			"Content-Type": "multipart/form-data"
 		}
-	}
-=======
-export const createPost = async (post: Post) => {
-	await axiosInstance.post("/posts/create", post);
->>>>>>> main
+	});
+	return data;
 };
 
-export const updatePost = async (post: Post) => {
-	await axiosInstance.put("/posts/update", post);
+export const updatePost = async (post: FormData) => {
+	await axiosInstance.put("/posts/update", post, {
+		headers: {
+			"Content-Type": "multipart/form-data"
+		}
+	});
 };
 
 export const deletePost = async (postId: string) => {

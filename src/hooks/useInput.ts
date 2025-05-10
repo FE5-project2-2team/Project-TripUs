@@ -26,6 +26,7 @@ export const useInput = <T extends Record<string, string | number | []>>(
 	};
 	return {
 		inputs: bindings,
-		values
+		values,
+		setValues
 	};
 };

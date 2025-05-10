@@ -1,13 +1,23 @@
-import { twMerge } from "tailwind-merge";
-import sprite from "../../assets/images/sprite2.png";
-export default function Icon({ position }: { position: string }) {
+export default function Icon({
+	size,
+	position,
+	hoverPosition,
+	hovered
+}: {
+	size?: string | undefined;
+	position?: string | undefined;
+	hovered?: boolean;
+	hoverPosition?: string;
+}) {
 	return (
-		<div
-			className={twMerge(
-				"bg-size-[245px_380px] inline-block mr-2 w-[24px] h-[24px]",
-				position
-			)}
-			style={{ backgroundImage: `url(${sprite})` }}
+		<span
+			className={`group-hover:[] inline-block bg-no-repeat bg-[url('/images/spriteImages1.png')]`}
+			style={{
+				width: size,
+				height: size,
+				backgroundPosition: hovered ? hoverPosition : position,
+				backgroundSize: "245px 380px"
+			}}
 		/>
 	);
 }

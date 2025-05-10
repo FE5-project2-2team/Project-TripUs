@@ -1,104 +1,107 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate, useOutletContext, useParams } from "react-router";
 import { getChannelInfo } from "../apis/channel";
 import { getPosts } from "../apis/post";
-
+import Icon from "../components/commons/Icon";
+import defaultImage from "../assets/images/primaryImage.png";
 //채널 정보 가져오기
 //채널별 게시글 보여주기
+type ContextType = {
+	sort: string;
+	selectFilter: string[];
+	isChecked: boolean;
+	search: string;
+};
 export default function Channel() {
+	const { sort, selectFilter, isChecked, search } =
+		useOutletContext<ContextType>();
 	const { channelName } = useParams();
-	const decodedChannelName = decodeURIComponent(channelName || "");
-	const [posts, setPosts] = useState<Post[]>([]);
-	interface Like {
-		id: string;
-		user: string;
-		post: string;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	}
-	interface Comment {
-		_id: string;
-		comment: string;
-		author: User;
-		post: string;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	}
-	interface Channel {
-		_id: string;
-		name: string;
-		description: string;
-		authRequired: boolean;
-		posts: string[];
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	}
-	interface User {
-		coverImage: string;
-		image: string;
-		role: string;
-		emailVerified: boolean;
-		banned: boolean;
-		isOnline: boolean;
-		posts: Post[];
-		likes: Like[];
-		comments: string[];
-		followers: string[]; //
-		following: string[]; //
-		notifications: Notification[];
-		messages: [];
-		_id: string;
-		fullName: string;
-		email: string;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-		username: string | null;
-	}
-	// interface FullName {
-	//   name: string;
-	//   tel: string;
-	//   gender: "여자" | "남자";
-	//   age: number;
-	//   nickname: string;
-	// }
-	interface PostData {
-		title: string;
-		memberLimit: number;
-		memberList: string[];
-		location: string;
-		dateRange: Date[];
-		isRecruiting: boolean;
-		recruitCondition: string[];
-		contents: string;
-	}
-	interface Post {
-		likes: Like[];
-		comments: Comment[];
-		_id: string;
-		image: string; //optional
-		imagePublicId: string;
-		title: PostData;
-		channel: Channel;
-		author: User;
-		createdAt: string;
-		updatedAt: string;
-		__v: number;
-	}
+	const [posts, setPosts] = useState<PostHomeData[]>([]); //19번 라인 삭제
+	const [filteredPosts, setFilteredPosts] = useState<PostHomeData[]>(posts);
+	const navigate = useNavigate();
+	const SortPosts = useCallback((sort: string, targetPosts: PostHomeData[]) => {
+		if (sort === "최신순") {
+			return [...targetPosts].sort(
+				(a, b) =>
+					new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+			);
+		} else {
+			return [...targetPosts].sort((a, b) => b.likes.length - a.likes.length);
+		}
+	}, []);
+
+	const FilterPosts = useCallback(
+		(filterArr: string[]) => {
+			let filtered = posts;
+
+			if (filterArr?.length) {
+				filtered = filtered.filter((post) => {
+					const condition = (post.title as PostTitleData).recruitCondition;
+					if (!condition) return false;
+					return filterArr.every(
+						(filt) =>
+							condition.gender === filt ||
+							(condition.ageRange && condition.ageRange.includes(filt))
+					);
+				});
+			}
+			if (isChecked) {
+				filtered = filtered.filter(
+					(post) => (post.title as PostTitleData).isRecruiting
+				);
+			}
+			return filtered;
+		},
+		[posts, isChecked]
+	);
+
+	const SearchPosts = useCallback((word: string, posts: PostHomeData[]) => {
+		if (!word.trim()) return posts; //검색어 없는경우
+		return posts.filter((post) => {
+			const title = post.title.title;
+			const content = post.title.description;
+			const auth = post.author.fullName;
+			let author = "";
+			if (typeof auth === "object" && auth !== null) {
+				author = auth.name;
+			} else if (typeof auth === "string") {
+				author = auth;
+			}
+			const location = post.title.location;
+			return (
+				title.toLowerCase().includes(word.toLowerCase()) ||
+				content.toLowerCase().includes(word.toLowerCase()) ||
+				author.toLowerCase().includes(word.toLowerCase()) ||
+				location.toLowerCase().includes(word.toLowerCase())
+			);
+		});
+	}, []);
 
 	useEffect(() => {
 		if (channelName) {
 			const fetchPostInfo = async () => {
 				try {
-					const channelData = await getChannelInfo(decodedChannelName); //url에 나와있는 채널이름가지고 데이터 불러오기(URL속 채널이름 바뀔때마다)
-					// console.log(data);
-					const channelId = channelData._id;
-					// console.log(channelId);
-					const postData = await getPosts(channelId);
-					const parsedPosts = postData.map((post: Post) => {
+					let postData: PostHomeData[] = [];
+					if (channelName === "전체글") {
+						const [channel1, channel2] = await Promise.all([
+							getChannelInfo("crews"),
+							getChannelInfo("review")
+						]);
+						// console.log(channel1);
+						const postData1 = await getPosts(channel1._id);
+						const postData2 = await getPosts(channel2._id);
+						postData = [...postData1, ...postData2];
+					} else if (channelName === "긴급 모집") {
+						const channelCrews = await getChannelInfo("crews");
+						postData = await getPosts(channelCrews._id);
+					} else {
+						const channelData = await getChannelInfo(channelName); //url에 나와있는 채널이름가지고 데이터 불러오기(URL속 채널이름 바뀔때마다)
+						// console.log(channelData);
+						const channelId = channelData._id;
+						//console.log(channelId);
+						postData = await getPosts(channelId);
+					}
+					let parsedPosts = postData.map((post: PostHomeData) => {
 						let parsedTitle = post.title;
 						if (typeof post.title === "string") {
 							try {
@@ -113,6 +116,18 @@ export default function Channel() {
 						};
 					});
 
+					if (channelName === "긴급 모집") {
+						parsedPosts = parsedPosts.filter((post) => {
+							const startDate = new Date(post.title.dateRange[0]).getTime();
+							const now = new Date().getTime();
+							// console.log("여행시작일:", startDate);
+							// console.log("현재시간:", now);
+							const diff = (startDate - now) / (1000 * 60 * 60);
+							// console.log("시간차이:", diff);
+							return diff <= 72 && diff >= 0;
+						});
+					}
+
 					setPosts(parsedPosts);
 				} catch (err) {
 					console.error("게시글 불러오기 오류:", err);
@@ -121,98 +136,131 @@ export default function Channel() {
 
 			fetchPostInfo();
 		}
-	}, [decodedChannelName, channelName]);
-
+	}, [channelName]);
+	//
+	const filtered = useMemo(
+		() => FilterPosts(selectFilter),
+		[selectFilter, FilterPosts]
+	);
+	const searched = useMemo(
+		() => SearchPosts(search, filtered),
+		[search, filtered, SearchPosts]
+	);
+	const sorted = useMemo(
+		() => SortPosts(sort, searched),
+		[sort, searched, SortPosts]
+	);
+	useEffect(() => {
+		setFilteredPosts(sorted);
+	}, [sorted]);
+	const formatDate = (date: Date) => {
+		const parsedDate = new Date(date);
+		return `${parsedDate.getFullYear().toString().slice(2)}.${(parsedDate.getMonth() + 1).toString().padStart(2, "0")}.${parsedDate.getDate().toString().padStart(2, "0")}`;
+	};
 	return (
-		<div className="w-full max-w-[1000px] grid grid-cols-3 mx-auto gap-[50px] mt-[20px]">
-			{posts.map((post) => (
+		<div className="w-full grid grid-cols-3 gap-[40px] mt-[20px] items-center relative">
+			{filteredPosts.map((post: PostHomeData) => (
 				//포스트 카드
+
 				<div
 					key={post._id}
-					className="w-[300px] h-[462px] rounded-[15px] border border-[#D9D9D9]"
+					className="w-[340px] min-h-[434px] rounded-[15px] border border-[#D9D9D9] flex flex-col overflow-hidden cursor-pointer"
+					onClick={() => navigate(`/post/detail/${post._id}`)}
 				>
 					<div className="relative">
 						<img
-							src={post.image}
-							className="w-[300px] h-[200px] rounded-[15px] z-10"
+							src={post.image ? post.image : defaultImage}
+							className="w-full h-[180px] rounded-t-[15px] object-cover z-10"
 						/>
-						{channelName === "crews" ? (
-							post.title.isRecruiting === true ? (
-								<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[56px] h-[26px] rounded-[8px] bg-[#FD346E] text-[#fff] z-20">
-									모집중
-								</div>
-							) : (
-								<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[56px] h-[26px] rounded-[8px] bg-[#1C274C] text-[#fff] z-20">
-									모집완료
-								</div>
-							)
-						) : (
-							channelName === "review" && (
-								<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[56px] h-[26px] rounded-[8px] bg-[#06B796] text-[#fff] z-20">
-									후기
-								</div>
-							)
-						)}
+						{(() => {
+							if (channelName === "crews" || channelName === "전체글") {
+								return post.channel.name === "crews" ? (
+									post.title.isRecruiting === true ? (
+										<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#FD346E] text-[#fff] text-[14px] z-20">
+											모집중
+										</div>
+									) : (
+										<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#1C274C] text-[#fff] text-[14px] z-20">
+											모집완료
+										</div>
+									)
+								) : (
+									<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#06B796] text-[#fff] text-[14px] z-20">
+										후기
+									</div>
+								);
+							}
+							if (channelName === "review") {
+								return (
+									<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#06B796] text-[#fff] text-[14px] z-20">
+										후기
+									</div>
+								);
+							}
+							if (channelName === "긴급 모집") {
+								return (
+									<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[red] text-[#fff] text-[14px] z-20">
+										긴급
+									</div>
+								);
+							}
+							return null;
+						})()}
 					</div>
-					<div className="p-[15px] flex flex-col gap-[15px]">
-						{/* 사용자 이미지,이름,닉네임 */}
-						<div className="flex flex-row items-center w-[115px] h-[36px]">
-							<img
-								src={post.author.image}
-								alt="사용자이미지"
-								className="w-[36px] h-[36px] rounded-full"
-							/>
-							<p className="text-[16px]">
-								{JSON.parse(post.author.fullName).nickname}
-								{JSON.parse(post.author.fullName).name}
-							</p>
-						</div>
-						{/* 게시글 제목, 내용 */}
-						<div className="w-[270px] h-[64px] flex flex-col">
-							<p className="text-[16px] font-bold">
-								게시글 제목: {post.title.title}
-							</p>
-							<p className="mt-[7px] text-[14px] overflow-hidden text-ellipsis whitespace-nowrap">
-								{post.title.contents}
-							</p>
-						</div>
-						{/* 여행지, 크루원수,날짜*/}
-						<div className="w-[142px] h-[68px]">
-							<p>여행지:{post.title.location}</p>
-							<p>
-								크루원수: {post.title.memberList.length} /{" "}
-								{post.title.memberLimit}
-							</p>
-							<p className="text-[14px]">
-								{`${new Date(post.title.dateRange[0])
-									.getFullYear()
-									.toString()
-									.slice(2)}.${(
-									new Date(post.title.dateRange[0]).getMonth() + 1
-								)
-									.toString()
-									.padStart(2, "0")}.${new Date(post.title.dateRange[0])
-									.getDate()
-									.toString()
-									.padStart(2, "0")}`}{" "}
-								~
-								{`${new Date(post.title.dateRange[1])
-									.getFullYear()
-									.toString()
-									.slice(2)}.${(
-									new Date(post.title.dateRange[1]).getMonth() + 1
-								)
-									.toString()
-									.padStart(2, "0")}.${new Date(post.title.dateRange[1])
-									.getDate()
-									.toString()
-									.padStart(2, "0")}`}
-							</p>
+					<div className="flex flex-col justify-between flex-grow p-[16px]">
+						<div className="space-y-4">
+							{/* 사용자 이미지,이름,닉네임 */}
+							<div className="flex flex-row items-center min-w-[115px] h-[36px]">
+								<img
+									src={post.author.image}
+									alt="사용자이미지"
+									className="w-[36px] h-[36px] rounded-full"
+								/>
+								<div className="min-w-[71px] text-[16px] ml-[8px]">
+									<p className="font-normal">
+										{JSON.parse(post.author.fullName as string).nickname}
+									</p>
+									<p>{JSON.parse(post.author.fullName as string).name}</p>
+								</div>
+							</div>
+							{/* 게시글 제목, 내용 */}
+							<div className="w-[296px] h-[65px] flex flex-col">
+								<p className="text-[16px] font-bold">{post.title.title}</p>
+								<p className="mt-[7px] min-h-[38px] text-[14px] overflow-hidden text-ellipsis whitespace-nowrap">
+									{post.title.description}
+								</p>
+							</div>
+							{/* 여행지, 크루원수,날짜*/}
+							<div className="min-w-[142px] h-[70px] text-[14px]">
+								{post.channel.name !== "review" && (
+									<p className="flex gap-1">
+										<Icon position="5.447% 19.352%" size="18px" />
+										{post.title.location}
+									</p>
+								)}
+								<p className="flex gap-[4px]">
+									<Icon position="15.52% 19.671%" size="18px" />
+									{post.title.memberList.length} / {post.title.memberLimit}
+								</p>
+								<p className="flex gap-1">
+									<Icon position="25.835% 20.058%" size="18px" />
+									{`${formatDate(post.title.dateRange[0])}`}
+									{post.title.dateRange[1] &&
+										` ~ 
+									${formatDate(post.title.dateRange[1])}`}
+								</p>
+							</div>
 						</div>
 						{/* 나이,성별 */}
-						<p>
-							#{JSON.parse(post.author.fullName).gender} #
-							{Math.floor(JSON.parse(post.author.fullName).age / 10) * 10}대
+						<p className="text-[14px] flex mt-4 gap-4">
+							{post.title.recruitCondition.gender &&
+								`#${post.title.recruitCondition.gender}`}
+							{post.title.recruitCondition.ageRange &&
+								post.title.recruitCondition.ageRange.map((age) => (
+									<span key={age} className="min-w-[35px] h-[19px]">
+										#{age}
+									</span>
+								))}
 						</p>
 					</div>
 				</div>

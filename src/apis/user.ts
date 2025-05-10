@@ -40,12 +40,12 @@ export const updateUserPwd = async (newPwd: string) => {
 	return data;
 };
 
-export const updateUserInfo = async ({ profile }: UpdatedUserData) => {
-	const userInfo: { fullName?: string; username?: string } = {};
-	if (profile) {
-		userInfo.fullName = JSON.stringify(profile);
-	}
+// export const updateUserInfo = async ({ profile }: UpdatedUserData) => {
+// 	const userInfo: { fullName?: string; username?: string } = {};
+// 	if (profile) {
+// 		userInfo.fullName = JSON.stringify(profile);
+// 	}
 
-	const { data } = await axiosInstance.put("/settings/update-user", userInfo);
-	return data;
-};
+// 	const { data } = await axiosInstance.put("/settings/update-user", userInfo);
+// 	return data;
+// };
