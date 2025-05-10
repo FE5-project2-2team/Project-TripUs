@@ -1,7 +1,9 @@
 import axios from "axios";
 import ImageResize from "quill-image-resize-module-plus";
+import { useFormContext } from "react-hook-form";
 import ReactQuill, { Quill } from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import { CHANNELS } from "../../../constants/posts";
 
 const Size = Quill.import("formats/size") as { whitelist: string[] };
 Size.whitelist = ["small", "normal", "large", "huge"];
@@ -13,6 +15,10 @@ export default function Contents({
 }: {
 	contentsRef: React.RefObject<ReactQuill | null>;
 }) {
+	const { watch } = useFormContext();
+	const channel = watch("channel");
+	const showImageBtn = channel === CHANNELS.REVIEW;
+
 	const ImageHandler = async () => {
 		if (!contentsRef.current) return;
 
@@ -55,8 +61,8 @@ export default function Contents({
 					toolbar: {
 						container: [
 							[{ size: ["small", false, "large", "huge"] }],
-							["bold", "italic", "underline", "strike"],
-							["link", "image"]
+							["bold", "italic", "underline", "strike", "link"],
+							showImageBtn ? ["image"] : []
 						],
 						handlers: {
 							image: ImageHandler

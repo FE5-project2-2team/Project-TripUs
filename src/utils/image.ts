@@ -1,8 +1,7 @@
+import axios from "axios";
 import ReactQuill from "react-quill-new";
 
-export default async function urlToFile(
-	contents: React.RefObject<ReactQuill | null>
-) {
+export async function urlToFile(contents: React.RefObject<ReactQuill | null>) {
 	const url = contents.current
 		?.getEditor()
 		.getContents()
@@ -18,5 +17,21 @@ export default async function urlToFile(
 		} catch (error) {
 			console.error(error);
 		}
+	}
+}
+
+export async function fileToUrl(file: File) {
+	const formData = new FormData();
+	formData.append("file", file);
+	formData.append("upload_preset", "postImages");
+
+	try {
+		const { data } = await axios.post(
+			"https://api.cloudinary.com/v1_1/dopw7udhj/image/upload",
+			formData
+		);
+		return data;
+	} catch (error) {
+		console.error(error);
 	}
 }

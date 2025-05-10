@@ -10,13 +10,16 @@ import ConditionList from "../components/features/post/ConditionList";
 import Contents from "../components/features/post/Contents";
 import InfoForm from "../components/features/post/InfoForm";
 import InputTitle from "../components/features/post/InputTitle";
+import UploadImage from "../components/features/post/UploadImage";
 import { CHANNELS } from "../constants/posts";
+import { useImage } from "../hooks/useImage";
 import { useAuthStore } from "../store/authStore";
-import urlToFile from "../utils/urlToFile";
+import { fileToUrl, urlToFile } from "../utils/image";
 
 export default function PostCreate() {
 	const navigate = useNavigate();
 	const userId = useAuthStore((state) => state.userId)!;
+	const { ImageListRef } = useImage();
 
 	const methods = useForm<FormValues>({
 		mode: "onSubmit",
@@ -35,6 +38,10 @@ export default function PostCreate() {
 
 	const submitHandler = async (data: FormValues) => {
 		try {
+			const urls: string[] = await Promise.all(
+				ImageListRef.current.map((img) => fileToUrl(img))
+			);
+
 			const detailData: PostDetail = {
 				title: data.title,
 				memberLimit: Number(data.member),
@@ -47,7 +54,8 @@ export default function PostCreate() {
 				description: contents.current
 					?.getEditor()
 					.editor.getText(0, 100) as string,
-				contents: contents.current?.getEditor().getContents()
+				contents: contents.current?.getEditor().getContents(),
+				images: urls
 			};
 
 			const formData = new FormData();
@@ -78,6 +86,9 @@ export default function PostCreate() {
 						<div className="flex flex-col gap-10 my-13">
 							<InputTitle />
 							<Contents contentsRef={contents} />
+							{methods.watch().channel === CHANNELS.RECRUITMENT && (
+								<UploadImage />
+							)}
 							<ConditionList />
 						</div>
 						<div className="flex items-center justify-between mb-10">

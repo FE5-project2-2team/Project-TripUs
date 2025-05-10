@@ -9,7 +9,8 @@ import ConditionList from "../components/features/post/ConditionList";
 import Contents from "../components/features/post/Contents";
 import InfoForm from "../components/features/post/InfoForm";
 import InputTitle from "../components/features/post/InputTitle";
-import urlToFile from "../utils/urlToFile";
+import UploadImage from "../components/features/post/UploadImage";
+import { urlToFile } from "../utils/image";
 
 export default function PostEdit() {
 	const navigate = useNavigate();
@@ -79,6 +80,7 @@ export default function PostEdit() {
 						<div className="flex flex-col gap-10 my-13">
 							<InputTitle />
 							<Contents contentsRef={contents} />
+							<UploadImage />
 							<ConditionList />
 						</div>
 						<div className="flex items-center justify-between mb-10">
