@@ -38,20 +38,19 @@ const CrewTab = ({
 			<div className="grid grid-cols-3 gap-x-[40px] gap-y-[30px]">
 				{isMyPage && (
 					<Link to={"/postCreate"}>
-						<div className="flex flex-col items-center justify-center w-[328px] h-[398px] border border-[#06B796] rounded-[15px] shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition-shadow duration-300">
-							<div className="w-[80px] h-[80px] rounded-full flex items-center justify-center bg-[#06b796]">
+						<div className="group flex flex-col items-center justify-center w-[328px] h-[398px] border border-[#06B796] rounded-[15px] shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] hover:border-[#038383] transition duration-300">
+							<div className="w-[80px] h-[80px] rounded-full flex items-center justify-center bg-[#06b796] group-hover:bg-[#038383] transition duration-300">
 								<div
 									className="w-[35px] h-[35px] bg-no-repeat"
 									style={{
-										backgroundImage:
-											"url('/src/assets/images/spriteImages.png')",
+										backgroundImage: "url('/src/assets/images/spriteImages.png')",
 										backgroundSize: "245px 380px",
 										backgroundPosition: "-24.3px -171.3px"
 									}}
 									aria-label="Add Post Button"
 								/>
 							</div>
-							<p className="font-bold text-[16px] text-[#06B796] mt-[34px]">
+							<p className="font-bold text-[16px] text-[#06B796] mt-[34px] group-hover:text-[#038383] transition duration-300">
 								함께할 크루를 찾아보세요.
 							</p>
 						</div>
@@ -64,15 +63,20 @@ const CrewTab = ({
 						return (
 							<div
 								key={post._id}
-								className="w-[328px] h-[398px] rounded-[10px] bg-white cursor-pointer"
-								style={{ boxShadow: "0px 2px 4px 0px rgba(0, 0, 0, 0.16)" }}
+								className="w-[328px] h-[398px] rounded-[10px] bg-white cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition duration-300"
 								onClick={() => navigate(`/post/detail/${post._id}`)}
 							>
 								{/* 상단 영역 */}
 								<div className="relative block">
-									<p className="absolute top-0 right-0 flex items-center justify-center w-[56px] h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#06B796]">
-										후기
-									</p>
+									{parsedTitle.isRecruiting === true ? (
+										<p className="absolute select-none top-0 right-0 flex items-center justify-center w-[60px] h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#06B796]">
+											모집중
+										</p>
+									) : (
+										<p className="absolute select-none top-0 right-0 flex items-center justify-center w-[60px] h-[26px] px-[3px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#1C274C]">
+											모집완료
+										</p>
+									)}
 									<img
 										src={post.image ? post.image : postThumbnail}
 										alt="Post Thumbnail"
@@ -144,12 +148,15 @@ const CrewTab = ({
 
 									{/* 하단영역 -3 */}
 									<div className="flex gap-[16px]">
-										<p className="text-[14px]">
-											#{parsedTitle.recruitCondition.ageRange}
-										</p>
-										<p className="text-[14px]">
-											#{parsedTitle.recruitCondition.gender}
-										</p>
+										{Array.isArray(parsedTitle.recruitCondition.ageRange) &&
+											parsedTitle.recruitCondition.ageRange.length > 0 && (
+											<p className="text-[14px]">
+												#{parsedTitle.recruitCondition.ageRange}
+											</p>
+										)}
+										{parsedTitle.recruitCondition.gender && (
+											<p className="text-[14px]">#{parsedTitle.recruitCondition.gender}</p>
+										)}
 									</div>
 								</div>
 							</div>

@@ -1,3 +1,5 @@
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 import { Navigate, Route, Routes } from "react-router";
 import ProtectedRoute from "./components/commons/ProtectedRoute";
 import PublicOnlyRoute from "./components/commons/PublicOnlyRoute";
@@ -16,6 +18,7 @@ import Signup from "./pages/Signup";
 export default function App() {
 	return (
 		<>
+			<ToastContainer position="top-center" autoClose={2500} />
 			<Routes>
 				<Route element={<RootLayout />}>
 					<Route path="/" element={<Home />}>

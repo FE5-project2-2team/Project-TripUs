@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { toast } from "react-toastify";
 import profileCircle from "../../../assets/images/profileImg_circle.svg";
 import { uploadPhoto } from "../../../apis/user";
 import Button from "../../commons/Button";
@@ -33,7 +34,7 @@ export default function ProfileEditModal({
 			setEditProfile((prev) => ({ ...prev, image: result.image }));
 		} catch (err) {
 			console.error("사진 업로드 실패:", err);
-			alert("프로필 사진 업로드 실패");
+			toast.error("프로필 사진 업로드 실패");
 		}
 	};
 
@@ -52,7 +53,7 @@ export default function ProfileEditModal({
 			setEditProfile((prev) => ({ ...prev, image: result.image }));
 		} catch (err) {
 			console.error("기본 이미지 변경 실패:", err);
-			alert("기본 이미지로 변경 실패");
+			toast.error("기본 이미지로 변경 실패");
 		}
 	};
 
@@ -61,7 +62,7 @@ export default function ProfileEditModal({
 		const value = e.currentTarget.value.trim();
 		if (!value) return;
 		if (editProfile.tagList?.includes(value)) {
-			alert("이미 추가된 태그입니다.");
+			toast.warning("이미 추가된 태그입니다.");
 			e.currentTarget.value = "";
 			return;
 		}
@@ -89,7 +90,7 @@ export default function ProfileEditModal({
 					<img
 						src={image}
 						alt="프로필 이미지"
-						className="w-[160px] h-[160px] rounded-full mx-auto object-cover"
+						className="select-none w-[160px] h-[160px] rounded-full mx-auto object-cover"
 					/>
 					<input
 						ref={fileInputRef}
@@ -102,14 +103,14 @@ export default function ProfileEditModal({
 						<Button
 							onClick={() => fileInputRef.current?.click()}
 							reverse
-							className="h-[44px] rounded-[8px] px-4 py-2 font-normal text-[16px] border"
+							className="select-none h-[44px] rounded-[8px] px-4 py-2 font-normal text-[16px] border"
 						>
 							프로필 이미지 변경
 						</Button>
 						<Button
 							onClick={handleResetToDefaultImage}
 							reverse
-							className="h-[44px] rounded-[8px] px-4 py-2 font-normal text-[16px] border"
+							className="select-none h-[44px] rounded-[8px] px-4 py-2 font-normal text-[16px] border"
 						>
 							기본 이미지로 변경
 						</Button>
@@ -119,7 +120,7 @@ export default function ProfileEditModal({
 				{/* 닉네임 수정 */}
 				<div className="flex flex-col items-center pt-[20px] pb-[10px]">
 					<div>
-						<label className="block text-[16px] text-[#333333]">닉네임</label>
+						<label className="select-none block text-[16px] text-[#333333]">닉네임</label>
 						<input
 							type="text"
 							value={editProfile.nickname}
@@ -134,14 +135,14 @@ export default function ProfileEditModal({
 					</div>
 					{/* 태그 입력 */}
 					<div>
-						<label className="block text-[16px] text-[#333333]">
+						<label className="select-none block text-[16px] text-[#333333]">
 							자기소개 키워드
 						</label>
 						<input
 							type="text"
 							onKeyDown={handleInputTag}
 							placeholder="입력 후 Enter"
-							className="text-[16px] text-[#333333] rounded-[10px] w-[340px] h-[49px] px-[13px] mt-[10px] border border-[#616161]"
+							className="select-none text-[16px] text-[#333333] rounded-[10px] w-[340px] h-[49px] px-[13px] mt-[10px] border border-[#616161]"
 						/>
 						<div className="flex flex-wrap justify-center gap-[10px] mt-[10px] w-[340px]">
 							{editProfile.tagList?.map((tag, i) => (
@@ -166,7 +167,7 @@ export default function ProfileEditModal({
 				<div className="flex justify-center gap-[20px] mt-6">
 					<Button
 						onClick={onUpdate}
-						className="w-[160px] h-[46px] px-[65px] py-[12px] rounded-[10px] text-[16px]"
+						className="select-none w-[160px] h-[46px] px-[65px] py-[12px] rounded-[10px] text-[16px]"
 					>
 						저장
 					</Button>
@@ -174,7 +175,7 @@ export default function ProfileEditModal({
 					<Button
 						onClick={onClose}
 						reverse
-						className="w-[160px] h-[46px] px-[60px] py-[12px] rounded-[10px] text-[16px] border"
+						className="select-none w-[160px] h-[46px] px-[60px] py-[12px] rounded-[10px] text-[16px] border"
 					>
 						취소
 					</Button>

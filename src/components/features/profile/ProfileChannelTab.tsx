@@ -18,7 +18,7 @@ export default function ProfileChannelTab({
 			<div className="flex bg-[#F3F4F6] rounded-[10px]">
 				<Button
 					onClick={() => setActiveTab("review")}
-					className={`h-[50px] flex-1 py-2 text-center font-semibold ${
+					className={`h-[50px] flex-1 py-2 text-center font-semibold select-none ${
 						activeTab === "review"
 							? "text-white m-[5px] font-medium text-[18px]"
 							: "bg-fff text-[#333333] m-[5px] font-medium text-[18px]"
@@ -28,7 +28,7 @@ export default function ProfileChannelTab({
 				</Button>
 				<Button
 					onClick={() => setActiveTab("crews")}
-					className={`h-[50px] flex-1 py-2 text-center font-semibold ${
+					className={`h-[50px] flex-1 py-2 text-center font-semibold select-none ${
 						activeTab === "crews"
 							? "text-white m-[5px] font-medium text-[18px]"
 							: "bg-fff text-[#333333] m-[5px] font-medium text-[18px]"
