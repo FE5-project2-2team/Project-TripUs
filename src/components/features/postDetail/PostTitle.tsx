@@ -51,7 +51,7 @@ export default function PostTitle({
 	});
 
 	return (
-		<div className="mb-9 flex justify-between items-center relative">
+		<div className=" flex justify-between items-center relative">
 			<Link className="cursor-pointer" to={"/"}>
 				<Icon position="39.301% 27.747%" size="16px" />
 			</Link>

@@ -21,7 +21,7 @@ export const createPost = async (post: FormData) => {
 			"Content-Type": "multipart/form-data"
 		}
 	});
-	return data;
+	return data._id;
 };
 
 export const updatePost = async (post: FormData) => {

@@ -14,12 +14,12 @@ import UploadImage from "../components/features/post/UploadImage";
 import { CHANNELS } from "../constants/posts";
 import { useImage } from "../hooks/useImage";
 import { useAuthStore } from "../store/authStore";
-import { fileToUrl, urlToFile } from "../utils/image";
+import { urlToFile } from "../utils/image";
 
 export default function PostCreate() {
 	const navigate = useNavigate();
 	const userId = useAuthStore((state) => state.userId)!;
-	const { ImageListRef } = useImage();
+	const { imageListRef, ...imageProps } = useImage();
 
 	const methods = useForm<FormValues>({
 		mode: "onSubmit",
@@ -36,12 +36,10 @@ export default function PostCreate() {
 		}
 	});
 
+	const contents = useRef<ReactQuill | null>(null);
+
 	const submitHandler = async (data: FormValues) => {
 		try {
-			const urls: string[] = await Promise.all(
-				ImageListRef.current.map((img) => fileToUrl(img))
-			);
-
 			const detailData: PostDetail = {
 				title: data.title,
 				memberLimit: Number(data.member),
@@ -55,15 +53,21 @@ export default function PostCreate() {
 					?.getEditor()
 					.editor.getText(0, 100) as string,
 				contents: contents.current?.getEditor().getContents(),
-				images: urls
+				images: imageListRef.current
 			};
 
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(detailData));
 			formData.append("channelId", data.channel);
-
-			const imageFile = await urlToFile(contents);
-			if (imageFile) formData.append("image", imageFile);
+			let imageFile: File | undefined;
+			if (data.channel === CHANNELS.REVIEW) {
+				imageFile = await urlToFile(contents);
+				if (imageFile) {
+					formData.append("image", imageFile);
+				}
+			} else {
+				formData.append("image", imageListRef.current[0]);
+			}
 
 			const postId = await createPost(formData);
 			navigate(`/post/detail/${postId}`);
@@ -72,7 +76,6 @@ export default function PostCreate() {
 		}
 	};
 
-	const contents = useRef<ReactQuill | null>(null);
 	return (
 		<div className="flex justify-center items-center">
 			<main className="font-[Noto-Sans]">
@@ -87,7 +90,7 @@ export default function PostCreate() {
 							<InputTitle />
 							<Contents contentsRef={contents} />
 							{methods.watch().channel === CHANNELS.RECRUITMENT && (
-								<UploadImage />
+								<UploadImage {...imageProps} />
 							)}
 							<ConditionList />
 						</div>

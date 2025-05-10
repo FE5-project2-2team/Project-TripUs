@@ -131,7 +131,7 @@ export default function PostDetail() {
 		const isRecruitChannel = postData.channel._id === CHANNELS.RECRUITMENT;
 		return (
 			<main className="flex flex-col justify-center items-center mt-[49px]">
-				<div className="flex flex-col gap-[30px] w-266 ">
+				<div className="flex flex-col gap-[30px] w-275 ">
 					<PostTitle
 						isRecruitChannel={isRecruitChannel}
 						isAuthor={isAuthor}
@@ -140,6 +140,10 @@ export default function PostDetail() {
 						title={postInfo.title}
 						postData={postData}
 					/>
+					{postData.channel._id === CHANNELS.RECRUITMENT &&
+						postInfo.images?.map((image) => (
+							<img src={image} className="h-125 object-cover rounded-[10px]" />
+						))}
 					<TravelInfo isRecruitChannel={isRecruitChannel} postInfo={postInfo} />{" "}
 					<UserInfo
 						isRecruitChannel={isRecruitChannel}

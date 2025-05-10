@@ -1,11 +1,17 @@
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { useImage } from "../../../hooks/useImage";
 import Icon from "../../commons/Icon";
 
-export default function UploadImage() {
+export default function UploadImage({
+	showImages,
+	addImage,
+	removeImage
+}: {
+	showImages: string[];
+	addImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	removeImage: (image: string) => void;
+}) {
 	const [value, setValue] = useState("");
-	const { addImage, removeImage, showImages } = useImage();
 	return (
 		<div>
 			<span className="post-input-title">사진</span>

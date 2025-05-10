@@ -30,7 +30,7 @@ export async function fileToUrl(file: File) {
 			"https://api.cloudinary.com/v1_1/dopw7udhj/image/upload",
 			formData
 		);
-		return data;
+		return data.secure_url;
 	} catch (error) {
 		console.error(error);
 	}

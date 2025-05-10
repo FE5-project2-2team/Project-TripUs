@@ -74,6 +74,7 @@ interface FormValues {
 		gender: string;
 		ageRange: string[];
 	};
+	images: string[];
 }
 
 interface NotiType {

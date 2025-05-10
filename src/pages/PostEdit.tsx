@@ -1,6 +1,6 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ReactQuill from "react-quill-new";
 import { Link, useLocation, useNavigate } from "react-router";
@@ -10,6 +10,8 @@ import Contents from "../components/features/post/Contents";
 import InfoForm from "../components/features/post/InfoForm";
 import InputTitle from "../components/features/post/InputTitle";
 import UploadImage from "../components/features/post/UploadImage";
+import { CHANNELS } from "../constants/posts";
+import { useImage } from "../hooks/useImage";
 import { urlToFile } from "../utils/image";
 
 export default function PostEdit() {
@@ -17,6 +19,7 @@ export default function PostEdit() {
 	const location = useLocation();
 	const { postData }: { postData: PostData } = location.state;
 	const postInfo: PostDetail = JSON.parse(postData.title);
+	const { imageListRef, initImages, ...imageProps } = useImage();
 
 	const methods = useForm<FormValues>({
 		mode: "onSubmit",
@@ -50,14 +53,21 @@ export default function PostEdit() {
 				description: contents.current
 					?.getEditor()
 					.editor.getText(0, 100) as string,
-				contents: contents.current?.getEditor().getContents()
+				contents: contents.current?.getEditor().getContents(),
+				images: imageListRef.current
 			};
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(detailData));
 			formData.append("channelId", data.channel);
-
-			const imageFile = await urlToFile(contents);
-			if (imageFile) formData.append("image", imageFile);
+			let imageFile: File | undefined;
+			if (data.channel === CHANNELS.REVIEW) {
+				imageFile = await urlToFile(contents);
+				if (imageFile) {
+					formData.append("image", imageFile);
+				}
+			} else {
+				formData.append("image", imageListRef.current[0]);
+			}
 
 			formData.append("postId", postData._id);
 			await updatePost(formData);
@@ -66,6 +76,11 @@ export default function PostEdit() {
 			console.error(error);
 		}
 	};
+
+	useEffect(() => {
+		if (!postInfo.images) return;
+		initImages(postInfo.images);
+	}, []);
 
 	return (
 		<div className="flex justify-center items-center">
@@ -80,7 +95,9 @@ export default function PostEdit() {
 						<div className="flex flex-col gap-10 my-13">
 							<InputTitle />
 							<Contents contentsRef={contents} />
-							<UploadImage />
+							{methods.watch().channel === CHANNELS.RECRUITMENT && (
+								<UploadImage {...imageProps} />
+							)}
 							<ConditionList />
 						</div>
 						<div className="flex items-center justify-between mb-10">
