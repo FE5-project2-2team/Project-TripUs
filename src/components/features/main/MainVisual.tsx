@@ -124,14 +124,14 @@ export default function MainVisual() {
 				</div>
 			</Swiper>
 			{/* pagination + autoplay control */}
-			<div className="flex justify-center items-center gap-[4px] mt-[8px] h-[24px]">
-				<div className="custom-pagination w-[124px] mr-[5px]" />
+			<div className="flex justify-center items-center gap-[4px] mt-[10px] h-[24px] ">
+				<div className="custom-pagination flex items-center" />
 				<button
 					onClick={toggleAutoplay}
-					className="w-[23px] h-[23px] bg-[#cdcdcd] rounded-full flex items-center justify-center hover:bg-[#06B796] transition-colors duration-300"
+					className="w-[22px] h-[22px] bg-[#cdcdcd] rounded-full flex items-center justify-center hover:bg-[#06B796] transition-colors duration-300 ml-[4px]"
 				>
 					<Icon
-						position={autoplaying ? "-9.5px -14px" : "-30px -14px"}
+						position={autoplaying ? "-6px -11px" : "-21px -11px"}
 						size="20px"
 					/>
 				</button>
