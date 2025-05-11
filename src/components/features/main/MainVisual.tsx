@@ -125,7 +125,10 @@ export default function MainVisual() {
 			</Swiper>
 			{/* pagination + autoplay control */}
 			<div className="flex justify-center items-center gap-[4px] mt-[10px] h-[24px] ">
-				<div className="custom-pagination flex items-center" />
+				<div className="flex items-center">
+					<div className="custom-pagination" />
+				</div>
+
 				<button
 					onClick={toggleAutoplay}
 					className="w-[22px] h-[22px] bg-[#cdcdcd] rounded-full flex items-center justify-center hover:bg-[#06B796] transition-colors duration-300 ml-[4px]"
