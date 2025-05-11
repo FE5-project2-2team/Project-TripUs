@@ -128,7 +128,6 @@ export default function MainVisual() {
 				<div className="flex items-center">
 					<div className="custom-pagination" />
 				</div>
-
 				<button
 					onClick={toggleAutoplay}
 					className="w-[22px] h-[22px] bg-[#cdcdcd] rounded-full flex items-center justify-center hover:bg-[#06B796] transition-colors duration-300 ml-[4px]"
