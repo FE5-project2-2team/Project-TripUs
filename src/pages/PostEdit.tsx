@@ -48,7 +48,7 @@ export default function PostEdit() {
 				recruitCondition: data.condition,
 				description: contents.current
 					?.getEditor()
-					.editor.getText(0, 20) as string,
+					.editor.getText(0, 100) as string,
 				contents: contents.current?.getEditor().getContents()
 			};
 			const formData = new FormData();

@@ -19,7 +19,7 @@ export default function App() {
 			<Routes>
 				<Route element={<RootLayout />}>
 					<Route path="/" element={<Home />}>
-						<Route index element={<Navigate to="channel/crews" replace />} />
+						<Route index element={<Navigate to="channel/전체글" replace />} />
 						<Route path="channel/:channelName" index element={<Channel />} />
 					</Route>
 					<Route path="/post/detail/:id" element={<PostDetail />} />

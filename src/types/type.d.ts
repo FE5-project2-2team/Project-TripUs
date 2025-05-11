@@ -50,10 +50,10 @@ interface PostUpdateData {
 interface PostDetail {
 	title: string;
 	memberLimit: number;
-	memberList: UserData[];
+	memberList: string[];
 	applicantList: string[];
 	location: string;
-	dateRange: Date[];
+	dateRange: string[];
 	isRecruiting: boolean;
 	recruitCondition: {
 		gender: string;

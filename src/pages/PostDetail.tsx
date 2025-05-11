@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { createComment, deleteComment } from "../apis/comment";
-import { getPostById } from "../apis/post";
+import { getPostById, updatePost } from "../apis/post";
 import Button from "../components/commons/Button";
 import ApplyMembers from "../components/features/postDetail/ApplyMembers";
 import CommentsList from "../components/features/postDetail/CommentsList";
@@ -10,6 +10,7 @@ import MemberList from "../components/features/postDetail/MemberList";
 import PostTitle from "../components/features/postDetail/PostTitle";
 import TravelInfo from "../components/features/postDetail/TravelInfo";
 import UserInfo from "../components/features/user/UserInfo";
+import { CHANNELS } from "../constants/posts";
 import { useAuthStore } from "../store/authStore";
 
 export default function PostDetail() {
@@ -18,7 +19,8 @@ export default function PostDetail() {
 	const [postData, setPostData] = useState<PostData | null>(null);
 	const [applicants, setApplicants] = useState<CommentData[]>([]);
 	const [comments, setComments] = useState<CommentData[]>([]);
-	const [members, setMembers] = useState<UserData[]>([]);
+	const [members, setMembers] = useState<string[]>([]);
+	const [isRecruiting, setIsRecruiting] = useState(false);
 
 	const getData = useCallback(async () => {
 		try {
@@ -26,6 +28,7 @@ export default function PostDetail() {
 			const postInfo: PostDetail = JSON.parse(postData.title);
 			setPostData(postData);
 			setMembers(postInfo.memberList);
+			setIsRecruiting(postInfo.isRecruiting);
 
 			const applyList = postData.comments.filter((commentData) => {
 				const parsed: CommentType = JSON.parse(commentData.comment);
@@ -48,6 +51,23 @@ export default function PostDetail() {
 		}
 	}, [id]);
 
+	const toggleRecruit = async () => {
+		try {
+			if (!postData) return;
+			const postInfo = JSON.parse(postData.title);
+			const newData: PostDetail = { ...postInfo };
+			newData.isRecruiting = !newData.isRecruiting;
+			setIsRecruiting((state) => !state);
+			const formData = new FormData();
+			formData.append("title", JSON.stringify(newData));
+			formData.append("channelId", postData.channel._id);
+			formData.append("postId", postData._id);
+			await updatePost(formData);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	const submitHandler = async (
 		e: React.FormEvent<HTMLFormElement>,
 		value: string
@@ -66,7 +86,7 @@ export default function PostDetail() {
 		}
 	};
 
-	const addMember = (newMember: UserData) => {
+	const addMember = (newMember: string) => {
 		setMembers((members) => [...members, newMember]);
 	};
 
@@ -107,39 +127,43 @@ export default function PostDetail() {
 		const isApplied =
 			applicants.some((applicant) => applicant.author._id === userId) ||
 			postInfo.applicantList.includes(userId);
+
+		const isRecruitChannel = postData.channel._id === CHANNELS.RECRUITMENT;
 		return (
 			<main className="flex flex-col justify-center items-center mt-[49px]">
 				<div className="flex flex-col gap-[30px] w-266 ">
 					<PostTitle
+						isRecruitChannel={isRecruitChannel}
 						isAuthor={isAuthor}
-						isRecruiting={postInfo.isRecruiting}
+						isRecruiting={isRecruiting}
+						toggleRecruit={toggleRecruit}
 						title={postInfo.title}
 						postData={postData}
-						postInfo={postInfo}
 					/>
-					<TravelInfo
-						contents={postInfo.contents}
-						dateRange={postInfo.dateRange}
-						location={postInfo.location}
-					/>
+					<TravelInfo isRecruitChannel={isRecruitChannel} postInfo={postInfo} />{" "}
 					<UserInfo
+						isRecruitChannel={isRecruitChannel}
 						authorInfo={authorInfo}
 						image={postData.author.image}
 						userId={postData.author._id}
 					/>
-					<MemberList members={members} />
-					<div>
-						<span className="post-sub-title">동행 조건 사항</span>
-						<div>
-							<span className="text-[#616161] mr-[10px]">성별</span>
-							<span>{postInfo.recruitCondition.gender}</span>
-						</div>
-						<div>
-							<span className="text-[#616161] mr-[10px]">나이</span>
-							{postInfo.recruitCondition.ageRange.join(", ")}
-						</div>
-					</div>
-					{isAuthor && (
+					{isRecruitChannel && (
+						<>
+							<MemberList members={members} />
+							<div>
+								<span className="post-sub-title">동행 조건 사항</span>
+								<div>
+									<span className="text-[#616161] mr-[10px]">성별</span>
+									<span>{postInfo.recruitCondition.gender}</span>
+								</div>
+								<div>
+									<span className="text-[#616161] mr-[10px]">나이</span>
+									{postInfo.recruitCondition.ageRange.join(", ")}
+								</div>
+							</div>
+						</>
+					)}
+					{isAuthor && isRecruiting && (
 						<ApplyMembers
 							postInfo={postInfo}
 							postData={postData}
@@ -155,15 +179,15 @@ export default function PostDetail() {
 						submitHandler={submitHandler}
 						deleteCommentHandler={deleteCommentHandler}
 					/>
-					{!isAuthor && userId && (
+					{!isAuthor && userId && isRecruitChannel && (
 						<Button
 							onClick={applyBtnHandler}
 							className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
 							disabled={isApplied}
 						>
-							{members.length === postInfo.memberLimit
-								? "모집이 마감되었습니다"
-								: "동행 신청하기"}
+							{postInfo.isRecruiting
+								? "동행 신청하기"
+								: "모집이 마감되었습니다"}
 						</Button>
 					)}
 				</div>

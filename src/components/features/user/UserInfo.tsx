@@ -1,9 +1,11 @@
 import ProfileImage from "../../commons/ProfileImage";
 export default function UserInfo({
+	isRecruitChannel,
 	image,
 	authorInfo,
 	userId
 }: {
+	isRecruitChannel: boolean;
 	image: string;
 	authorInfo: {
 		nickname: string;
@@ -15,7 +17,7 @@ export default function UserInfo({
 	const { nickname, age, gender } = authorInfo;
 	return (
 		<div>
-			<span className="post-sub-title">캡틴</span>
+			<span className="post-sub-title">{isRecruitChannel && "캡틴"}</span>
 			<div className="flex gap-[10px]">
 				<ProfileImage userId={userId} image={image} />
 				<div>
