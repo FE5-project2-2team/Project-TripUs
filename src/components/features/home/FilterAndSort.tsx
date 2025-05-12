@@ -193,13 +193,15 @@ export default function FilterAndSort({
 				{selectFilter.map((filt) => (
 					<button
 						key={filt}
-						className="min-w-[100px] h-[36px] bg-[#F3F4F6] border border-[#06B796] rounded-[14px] flex items-center justify-center gap-[5px] cursor-pointer"
+						className="min-w-[100px] h-[36px] bg-[#F3F4F6] border border-[#06B796] rounded-[14px] flex items-center justify-center gap-auto cursor-pointer"
 						onClick={() => {
 							setSelectFilter(selectFilter.filter((item) => item !== filt));
 						}}
 					>
-						<span className="h-[36px] text-[18px] text-[#06B796]">{filt}</span>
-						<Icon position="25.751% 35.326%" size="22px" />
+						<span className=" flex items-center justify-center h-[36px] text-[18px] text-[#06B796]">
+							{filt}
+						</span>
+						<Icon position="24.751% 34.326%" size="22px" />
 					</button>
 				))}
 			</div>
