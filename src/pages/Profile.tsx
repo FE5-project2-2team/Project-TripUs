@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { axiosInstance } from "../apis/axios";
 import { getUserInfo } from "../apis/user";
 import { useAuthStore } from "../store/authStore";
-import { toast } from "react-toastify";
+import { showToast } from "../components/commons/Toast";
 import profileCircle from "../assets/images/profileImg_circle.svg";
 import ProfileHeader from "../components/features/profile/ProfileHeader";
 import ProfileView from "../components/features/profile/ProfileView";
@@ -63,12 +63,11 @@ export default function Profile() {
 	const handleUpdate = async () => {
 		const nicknameRegex = /^[가-힣a-zA-Z0-9]{2,10}$/;
 		if (!nicknameRegex.test(editProfile.nickname)) {
-			toast.warning("닉네임은 2자 이상 10자 이하의 한글, 영문, 숫자만 가능합니다.");
+			showToast({ type: 'error', message: '닉네임은 2자 이상 10자 이하의 한글, 영문, 숫자만 가능합니다.' });
 			return;
 		}
 
 		const updatedFullName = JSON.stringify({
-			// ...JSON.parse(JSON.stringify(profile)),
 			...profile,
 			nickname: editProfile.nickname,
 			tagList: editProfile.tagList
@@ -81,10 +80,10 @@ export default function Profile() {
 			console.log("업데이트 성공:", response.data);
 			setProfile(editProfile);
 			setIsModalOpen(false);
-			toast.success("프로필이 업데이트 되었습니다!");
+			showToast({ type: 'success', message: '프로필이 업데이트 되었습니다!' });
 		} catch (err) {
 			console.error("업데이트 실패:", err);
-			toast.error("프로필 업데이트 실패");
+			showToast({ type: 'error', message: '프로필 업데이트 실패' });
 		}
 	};
 

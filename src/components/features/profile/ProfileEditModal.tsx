@@ -1,8 +1,9 @@
 import { useRef } from "react";
-import { toast } from "react-toastify";
-import profileCircle from "../../../assets/images/profileImg_circle.svg";
+import { showToast } from "../../commons/Toast";
 import { uploadPhoto } from "../../../apis/user";
+import { useUserStore } from "../../../store/userStore";
 import Button from "../../commons/Button";
+import profileCircle from "../../../assets/images/profileImg_circle.svg";
 
 interface Props {
 	editProfile: Profile;
@@ -22,6 +23,7 @@ export default function ProfileEditModal({
 	onUpdate
 }: Props) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const { setImage: setGlobalImage, setNickname: setGlobalNickname } = useUserStore();
 
 	const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
@@ -32,9 +34,10 @@ export default function ProfileEditModal({
 			if (!result?.image) throw new Error("서버 응답에 image 없음");
 			setImage(result.image);
 			setEditProfile((prev) => ({ ...prev, image: result.image }));
+			setGlobalImage(result.image);
 		} catch (err) {
 			console.error("사진 업로드 실패:", err);
-			toast.error("프로필 사진 업로드 실패");
+			showToast({ type: 'error', message: '프로필 사진 업로드 실패' });
 		}
 	};
 
@@ -51,9 +54,10 @@ export default function ProfileEditModal({
 
 			setImage(result.image);
 			setEditProfile((prev) => ({ ...prev, image: result.image }));
+			setGlobalImage(result.image);
 		} catch (err) {
 			console.error("기본 이미지 변경 실패:", err);
-			toast.error("기본 이미지로 변경 실패");
+			showToast({ type: 'error', message: '기본 이미지로 변경 실패' });
 		}
 	};
 
@@ -62,7 +66,7 @@ export default function ProfileEditModal({
 		const value = e.currentTarget.value.trim();
 		if (!value) return;
 		if (editProfile.tagList?.includes(value)) {
-			toast.warning("이미 추가된 태그입니다.");
+			showToast({ type: 'warning', message: '이미 추가된 태그입니다.' });
 			e.currentTarget.value = "";
 			return;
 		}
@@ -166,7 +170,11 @@ export default function ProfileEditModal({
 				{/* 버튼 */}
 				<div className="flex justify-center gap-[20px] mt-6">
 					<Button
-						onClick={onUpdate}
+						onClick={() => {
+							onUpdate();
+							setGlobalImage(image);
+							setGlobalNickname(editProfile.nickname);
+						}}
 						className="select-none w-[160px] h-[46px] px-[65px] py-[12px] rounded-[10px] text-[16px]"
 					>
 						저장

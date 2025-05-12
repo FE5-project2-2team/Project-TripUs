@@ -15,10 +15,10 @@ import PostEdit from "./pages/PostEdit";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 
+
 export default function App() {
 	return (
-		<>
-			<ToastContainer position="top-center" autoClose={2500} />
+		<> 
 			<Routes>
 				<Route element={<RootLayout />}>
 					<Route path="/" element={<Home />}>
@@ -41,6 +41,17 @@ export default function App() {
 				<Route path="/404" element={<NotFound />} />
 				<Route path="/*" element={<Navigate to="/404" replace />} />
 			</Routes>
+			<ToastContainer
+				position="top-center"
+				autoClose={2500}
+				hideProgressBar
+				closeOnClick={false}
+				pauseOnHover
+				draggable
+				toastClassName={() =>
+					'bg-transparent shadow-none p-0 m-0 flex justify-center'
+				}
+			/>
 		</>
 	);
 }

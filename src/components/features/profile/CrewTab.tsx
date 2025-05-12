@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { getPostsByAuthor } from "../../../apis/post";
-import postThumbnail from "../../../assets/images/primaryImage2.png";
-import { formatDateRange } from "../../../utils/date";
 import { Link } from "react-router";
+import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { getPostsByAuthor } from "../../../apis/post";
+import { formatDateRange } from "../../../utils/date";
+import Icon from "../../../components/commons/Icon";
+import postThumbnail from "../../../assets/images/primaryImage.png";
 
 const CrewTab = ({
 	authorId,
@@ -40,15 +41,7 @@ const CrewTab = ({
 					<Link to={"/postCreate"}>
 						<div className="group flex flex-col items-center justify-center w-[328px] h-[398px] border border-[#06B796] rounded-[15px] shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] hover:border-[#038383] transition duration-300">
 							<div className="w-[80px] h-[80px] rounded-full flex items-center justify-center bg-[#06b796] group-hover:bg-[#038383] transition duration-300">
-								<div
-									className="w-[35px] h-[35px] bg-no-repeat"
-									style={{
-										backgroundImage: "url('/src/assets/images/spriteImages.png')",
-										backgroundSize: "245px 380px",
-										backgroundPosition: "-24.3px -171.3px"
-									}}
-									aria-label="Add Post Button"
-								/>
+								<Icon position="-12px -153px" size="35px" />
 							</div>
 							<p className="font-bold text-[16px] text-[#06B796] mt-[34px] group-hover:text-[#038383] transition duration-300">
 								함께할 크루를 찾아보세요.
@@ -87,59 +80,27 @@ const CrewTab = ({
 								<div className="p-[16px]">
 									{/* 하단 영역 -1 */}
 									<div className="flex flex-col gap-y-[8px]">
-										<h1 className="font-bold text-[16px]">
-											{parsedTitle.title}
-										</h1>
-										<h2 className="text-[14px]">{parsedTitle.description}</h2>
+										<h1 className="font-bold text-[16px]">{parsedTitle.title}</h1>
+										<h2 className="h-[38px] text-[14px] line-clamp-2">{parsedTitle.description}</h2>
 									</div>
 
 									{/* 하단 영역 -2 */}
 									<div className="flex flex-col my-[16px]">
 										{/* 비행기 */}
-										<div className="flex items-center">
-											<div
-												className="w-[18px] h-[18px] mr-[4px] bg-no-repeat"
-												style={{
-													backgroundImage:
-														"url('/src/assets/images/spriteImages.png')",
-													backgroundSize: "245px 380px",
-													backgroundPosition: "-12px -74px"
-												}}
-												aria-label="Plane"
-											/>
+										<div className="flex items-center gap-1">
+											<Icon position="5.3% 20.2%" size="18px" />
 											<h3 className="text-[14px]">{parsedTitle.location}</h3>
 										</div>
 
 										{/* 인원 */}
-										<div className="flex items-center">
-											<div
-												className="w-[18px] h-[18px] mr-[4px] bg-no-repeat"
-												style={{
-													backgroundImage:
-														"url('/src/assets/images/spriteImages.png')",
-													backgroundSize: "245px 380px",
-													backgroundPosition: "-35px -74px"
-												}}
-												aria-label="People"
-											/>
-											<h3 className="text-[14px]">
-												{parsedTitle.memberList.length}/
-												{parsedTitle.memberLimit}
-											</h3>
+										<div className="flex items-center gap-1">
+											<Icon position="15.3% 20.5%" size="18px" />
+											<h3 className="text-[14px]">{parsedTitle.memberList.length} / {parsedTitle.memberLimit}</h3>
 										</div>
 
 										{/* 달력 */}
-										<div className="flex items-center">
-											<div
-												className="w-[18px] h-[18px] mr-[4px] bg-no-repeat"
-												style={{
-													backgroundImage:
-														"url('/src/assets/images/spriteImages.png')",
-													backgroundSize: "245px 380px",
-													backgroundPosition: "-58px -74px"
-												}}
-												aria-label="Calander"
-											/>
+										<div className="flex items-center gap-1">
+											<Icon position="25.3% 20.7%" size="18px" />
 											<h3 className="text-[14px]">
 												{formatDateRange(parsedTitle.dateRange)}
 											</h3>
