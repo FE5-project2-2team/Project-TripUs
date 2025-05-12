@@ -13,30 +13,6 @@ export default function AddPostButt() {
 		return () => window.removeEventListener("scroll", handScroll);
 	}, []);
 	return (
-		// <div
-		// 	className={`fixed right-[50px] z-50 transition-all duration-500 ${
-		// 		isFixed
-		// 			? "bottom-[30px] translate-y-0 opacity-100"
-		// 			: "bottom-[-100px] translate-y-[200px] opacity-0"
-		// 	}`}
-		// >
-		// 	<button
-		// 		className="group flex items-center justify-center hover:justify-between
-		//        w-[70px] hover:w-[177px] h-[70px]
-		//        rounded-full bg-[#06B796] text-white
-		//        transition-all duration-300 overflow-hidden px-[20px] cursor-pointer"
-		// 	>
-		// 		<span
-		// 			className="whitespace-nowrap opacity-0 group-hover:opacity-100
-		//          transition-opacity duration-300 text-[20px] font-medium"
-		// 		>
-		// 			게시글 추가
-		// 		</span>
-		// 		<div>
-		// 			<Icon position="-19px -161px" size="21px" />
-		// 		</div>
-		// 	</button>
-		// </div>
 		<div
 			className={`fixed right-[50px] z-50 transition-all duration-500 ${
 				isFixed
