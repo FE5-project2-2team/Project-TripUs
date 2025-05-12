@@ -6,29 +6,47 @@ import MessageList from "../components/features/message/MessageList";
 import MessageInput from "../components/features/message/MessageInput";
 
 export default function Message() {
-	const { userId } = useParams();
+	const { id } = useParams();
 	const [messages, setMessages] = useState<MessageData[]>([]);
 	const myUserId = useAuthStore((state) => state.userId);
 
-	useEffect(() => {
-		if (!userId) return;
+	const opponent =
+		messages.length > 0
+			? messages[0].sender._id === myUserId
+				? messages[0].receiver
+				: messages[0].sender
+			: null;
 
-		getMessageList(userId)
-			.then(setMessages)
-			.catch((err) => console.error("메시지 조회 실패", err));
-	}, [userId]);
-
 	useEffect(() => {
-		if (!userId) return;
-		readMessage(userId);
-	}, [userId]);
+		if (!id) return;
+
+		const fetchMessages = async () => {
+			try {
+				const data = await getMessageList(id);
+				setMessages(data);
+				readMessage(id); // 읽음 처리
+			} catch (err) {
+				console.error("메시지 로딩 실패", err);
+			}
+		};
+		fetchMessages();
+	}, [id]);
+
+	const handleNewMessage = (newMsg: MessageData) => {
+		setMessages((prev) => [...prev, newMsg]);
+	};
+
 	return (
 		<div className="flex flex-col h-full">
+			{opponent && (
+				<h2 className="px-4 py-2 text-lg font-semibold">
+					{typeof opponent.fullName === "string"
+						? JSON.parse(opponent.fullName).name
+						: (opponent.fullName as User).name}
+				</h2>
+			)}
 			<MessageList messages={messages} myUserId={myUserId!} />
-			<MessageInput
-				receiverId={userId!}
-				onMessageSent={(newMsg) => setMessages((prev) => [...prev, newMsg])}
-			/>
+			<MessageInput receiverId={id!} onMessageSent={handleNewMessage} />
 		</div>
 	);
 }

@@ -12,37 +12,35 @@ export default function MessageInput({
 }: MessageInputProps) {
 	const [text, setText] = useState("");
 
-	const handleSubmit = async () => {
+	const handleSend = async () => {
 		if (!text.trim()) return;
-
 		try {
-			const newMessage = await createMessage(text, receiverId);
-			onMessageSent(newMessage);
+			const data = await createMessage(text, receiverId);
+			onMessageSent(data);
 			setText("");
 		} catch (err) {
 			console.error("메시지 전송 실패", err);
 		}
 	};
 
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") handleSend();
+	};
+
 	return (
-		<div className="p-2 border-t border-gray-300 flex">
+		<div className="p-4 border-t flex">
 			<input
-				className="flex-1 border rounded p-2"
-				placeholder="메시지를 입력하세요"
 				value={text}
 				onChange={(e) => setText(e.target.value)}
-				onKeyDown={(e) => {
-					if (e.key === "Enter" && !e.shiftKey) {
-						e.preventDefault();
-						handleSubmit();
-					}
-				}}
+				onKeyDown={handleKeyDown}
+				placeholder="메시지를 입력하세요"
+				className="flex-1 border rounded px-3 py-2 text-sm"
 			/>
 			<button
-				className="ml-2 px-4 py-2 bg-blue-500 text-white rounded"
-				onClick={handleSubmit}
+				onClick={handleSend}
+				className="ml-2 px-4 py-2 bg-blue-500 text-white rounded text-sm"
 			>
-				보내기
+				전송
 			</button>
 		</div>
 	);
