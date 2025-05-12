@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useClickAway } from "react-use";
 import { twMerge } from "tailwind-merge";
 import { deletePost } from "../../../apis/post";
@@ -56,9 +56,9 @@ export default function PostTitle({
 
 	return (
 		<div className=" flex justify-between items-center relative">
-			<Link className="cursor-pointer" to={"/"}>
+			<div className="cursor-pointer" onClick={() => navigate(-1)}>
 				<Icon position="39.301% 27.747%" size="16px" />
-			</Link>
+			</div>
 			<h2 className="items-center mb-[14px] inline-block">
 				<span
 					onClick={() => {

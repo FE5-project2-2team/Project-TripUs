@@ -1,10 +1,9 @@
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ReactQuill from "react-quill-new";
-import { Link, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { updatePost } from "../apis/post";
+import Icon from "../components/commons/Icon";
 import ConditionList from "../components/features/post/ConditionList";
 import Contents from "../components/features/post/Contents";
 import InfoForm from "../components/features/post/InfoForm";
@@ -88,8 +87,8 @@ export default function PostEdit() {
 				<FormProvider {...methods}>
 					<form
 						className="mt-10"
-						onSubmit={methods.handleSubmit(submitHandler)}
 						action=""
+						onSubmit={(e) => e.preventDefault()}
 					>
 						<InfoForm />
 						<div className="flex flex-col gap-10 my-13">
@@ -101,14 +100,16 @@ export default function PostEdit() {
 							<ConditionList />
 						</div>
 						<div className="flex items-center justify-between mb-10">
-							<Link to={"/"}>
-								<div className="flex justify-center items-center gap-4">
-									<FontAwesomeIcon icon={faArrowLeft} />
-									<span className="text-xl">나가기</span>
-								</div>
-							</Link>
+							<div
+								onClick={() => navigate(-1)}
+								className="flex justify-center items-center gap-4 cursor-pointer"
+							>
+								<Icon position="39.301% 27.747%" size="16px" />
+								<span className="text-xl">나가기</span>
+							</div>
 							<button
-								type="submit"
+								type="button"
+								onClick={methods.handleSubmit(submitHandler)}
 								className="bg-[#06b796] text-white px-[50px] py-[18px] rounded-[10px] text-xl hover:bg-[#038383] hover:cursor-pointer"
 							>
 								등록하기

@@ -1,8 +1,10 @@
 import { Korean } from "flatpickr/dist/l10n/ko.js";
-import "flatpickr/dist/themes/material_blue.css";
+import "flatpickr/dist/themes/material_green.css";
+import { useState } from "react";
 import Flatpickr from "react-flatpickr";
 import { useController, useFormContext, useWatch } from "react-hook-form";
 import { CHANNELS } from "../../../constants/posts";
+import AutoComplete from "./AutoComplete";
 import LabelSelect from "./LabelSelect";
 
 export default function InfoForm() {
@@ -15,6 +17,7 @@ export default function InfoForm() {
 		control,
 		name: "channel"
 	});
+	const [isFocused, setIsFocused] = useState(false);
 	return (
 		<div className="grid grid-cols-2 gap-15">
 			<LabelSelect name="channel" label="게시판 선택">
@@ -32,7 +35,7 @@ export default function InfoForm() {
 			) : (
 				<div />
 			)}
-			<div>
+			<div className="relative">
 				<label htmlFor="location" className="post-input-title">
 					지역 입력
 				</label>
@@ -42,10 +45,11 @@ export default function InfoForm() {
 					placeholder="지역 입력"
 					autoComplete="off"
 					className="input-style placeholder:text-[#CDCDCD]"
-					{...register("location", {
-						required: "지역을 입력해주세요"
-					})}
+					{...register("location")}
+					onFocus={() => setIsFocused(true)}
+					onBlur={() => setIsFocused(false)}
 				/>
+				{isFocused && <AutoComplete />}
 			</div>
 			<div>
 				<label htmlFor="date" className="post-input-title">
