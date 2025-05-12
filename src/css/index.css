@@ -43,3 +43,11 @@ body {
 .sub_title_number {
 	@apply text-lg font-medium text-[#06b796] ml-2;
 }
+
+/* swiper pagination */
+.custom-bullet {
+	@apply inline-block w-[12px] h-[12px] bg-[#CDCDCD] rounded-full mx-[4px] opacity-100 transition-colors duration-300 cursor-pointer;
+}
+.custom-bullet-active {
+	@apply w-[36px] bg-[#06B796];
+}
