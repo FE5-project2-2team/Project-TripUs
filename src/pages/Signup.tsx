@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { registerUser } from "../apis/auth";
+import { toast } from "react-toastify";
 import SignupLogo from "../assets/images/Signup_logo.svg";
 import Button from "../components/commons/Button";
 import Icon from "../components/commons/Icon";
@@ -124,20 +125,15 @@ export default function Signup() {
 		const newErrors: { [key: string]: string } = {};
 
 		if (!emailRegex.test(email)) {
-			newErrors.email = "올바른 이메일 형식이 아닙니다.";
+			newErrors.email = "*이메일 형식이 올바르지 않습니다.";
 		}
 
 		if (fullName.tel.replace(/\D/g, "").length !== 11) {
-			newErrors.tel = "전화번호를 정확히 입력해주세요.";
+			newErrors.tel = "*전화번호를 정확히 입력해주세요.";
 		}
 
 		if (password !== passwordConfirm) {
-			newErrors.passwordConfirm = "비밀번호가 일치하지 않습니다.";
-		}
-
-		if (Object.keys(newErrors).length > 0) {
-			setErrors(newErrors);
-			return;
+			newErrors.passwordConfirm = "*비밀번호가 일치하지 않습니다.";
 		}
 
 		try {
@@ -145,8 +141,7 @@ export default function Signup() {
 			const genderResult = getGender(ssno);
 
 			if (genderResult === "Error") {
-				alert("올바른 주민등록번호 형식이 아닙니다.");
-				return;
+				newErrors.birth = "*주민등록번호 형식이 올바르지 않습니다.";
 			}
 
 			const gender = genderResult;
@@ -156,6 +151,11 @@ export default function Signup() {
 				parseInt(genderCode, 10) <= 2 ? `19${birthstr}` : `20${birthstr}`;
 			const age = calculateAge(birthFull);
 			const nickname = `크루${Math.floor(Math.random() * 1000 + 1)}`;
+
+			if (Object.keys(newErrors).length > 0) {
+				setErrors(newErrors);
+				return;
+			}
 
 			const userInfo: UserInfo = {
 				email,
@@ -174,14 +174,14 @@ export default function Signup() {
 			const user = await registerUser(userInfo);
 
 			if (user) {
-				alert("회원가입 성공!");
+				toast.success("회원 가입이 완료되었습니다!");
 				navigate("/login");
 			} else {
-				alert("회원가입 실패");
+				toast.error("회원가입 실패");
 			}
 		} catch (error) {
 			console.error("회원가입 중 오류 발생:", error);
-			alert("회원가입 중 오류가 발생했습니다.");
+			toast.warning("회원가입 중 오류가 발생했습니다.");
 		}
 	};
 
@@ -221,7 +221,7 @@ export default function Signup() {
 					</div>
 				</div>
 
-				<div className="mb-[26px]">
+				<div className="flex flex-col mb-[11px]">
 					<div
 						className="relative group"
 						onMouseEnter={() => setHoveredField("birth")}
@@ -243,6 +243,7 @@ export default function Signup() {
 							onChange={handleChange}
 							className="inputBirth"
 						/>
+
 						<span className="w-[12px] text-center text-[#616161] text-[20px]">
 							-
 						</span>
@@ -262,8 +263,11 @@ export default function Signup() {
 							/>
 						))}
 					</div>
+					<p className="text-red-500 text-xs font-bold mt-[1px] h-[14px] leading-tight">
+						{errors.birth ?? ""}
+					</p>
 				</div>
-				<div className="flex flex-col mb-[6px]">
+				<div className="flex flex-col mb-[11px]">
 					<div
 						className="relative group"
 						onMouseEnter={() => setHoveredField("tel")}
@@ -285,11 +289,11 @@ export default function Signup() {
 							className="inputProps"
 						/>
 					</div>
-					<p className="text-red-500 text-xs mt-[6px] h-[14px] leading-tight">
+					<p className="text-red-500 text-xs font-bold mt-[1px] h-[14px] leading-tight">
 						{errors.tel ?? ""}
 					</p>
 				</div>
-				<div className="flex flex-col mb-[6px]">
+				<div className="flex flex-col mb-[11px]">
 					<div
 						className="relative group"
 						onMouseEnter={() => setHoveredField("email")}
@@ -311,7 +315,7 @@ export default function Signup() {
 							className="inputProps"
 						/>
 					</div>
-					<p className="text-red-500 text-xs mt-[6px] h-[14px] leading-tight">
+					<p className="text-red-500 text-xs font-bold mt-[1px] h-[14px] leading-tight">
 						{errors.email ?? ""}
 					</p>
 				</div>
@@ -341,7 +345,7 @@ export default function Signup() {
 						/>
 					</div>
 				</div>
-				<div className="flex flex-col mb-[6px]">
+				<div className="flex flex-col mb-[11px]">
 					<div
 						className="relative group"
 						onMouseEnter={() => setHoveredField("passwordConfirm")}
@@ -366,7 +370,7 @@ export default function Signup() {
 							className="inputProps"
 						/>
 					</div>
-					<p className="text-red-500 text-xs mt-[6px] h-[14px] leading-tight">
+					<p className="text-red-500 text-xs font-bold mt-[1px] h-[14px] leading-tight">
 						{errors.passwordConfirm ?? ""}
 					</p>
 				</div>
