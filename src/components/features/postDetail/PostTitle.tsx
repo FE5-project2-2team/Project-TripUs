@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { useClickAway } from "react-use";
 import { twMerge } from "tailwind-merge";
 import { deletePost } from "../../../apis/post";
+import Confirm from "../../commons/Confirm";
 import Icon from "../../commons/Icon";
 import Modal from "../../commons/Modal";
 import ModalItem from "../../commons/ModalItem";
@@ -25,6 +26,7 @@ export default function PostTitle({
 	const navigate = useNavigate();
 	const [modalOpen, setModalOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
+	const [confirmOpen, setConfirmOpen] = useState(false);
 
 	const modifyPostHandler = () => {
 		navigate(`/post/edit/${postData._id}`, {
@@ -35,15 +37,17 @@ export default function PostTitle({
 	};
 
 	const deletePostHandler = async () => {
-		const isConfirmed = window.confirm("정말 삭제하시겠습니까?");
-		if (isConfirmed) {
-			try {
-				await deletePost(postData._id);
-				navigate("/");
-			} catch (error) {
-				console.error(error);
-			}
+		setConfirmOpen(true);
+		try {
+			await deletePost(postData._id);
+			navigate("/");
+		} catch (error) {
+			console.error(error);
 		}
+	};
+
+	const confirmOpenHandler = () => {
+		setConfirmOpen((state) => !state);
 	};
 
 	useClickAway(modalRef, () => {
@@ -89,10 +93,19 @@ export default function PostTitle({
 					<ModalItem noIcon clickHandler={modifyPostHandler}>
 						<span className="inline-block w-full text-center">수정</span>
 					</ModalItem>
-					<ModalItem noIcon clickHandler={deletePostHandler}>
+					<ModalItem noIcon clickHandler={confirmOpenHandler}>
 						<span className="inline-block w-full text-center">삭제</span>
 					</ModalItem>
 				</Modal>
+			)}
+			{confirmOpen && (
+				<>
+					<div className="fixed inset-0 bg-black opacity-30 z-50" />
+					<Confirm
+						deletePostHandler={deletePostHandler}
+						cancelHandler={confirmOpenHandler}
+					/>
+				</>
 			)}
 		</div>
 	);

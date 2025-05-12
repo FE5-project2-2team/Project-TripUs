@@ -1,3 +1,4 @@
+import "quill/dist/quill.snow.css";
 import { Navigate, Route, Routes } from "react-router";
 import ProtectedRoute from "./components/commons/ProtectedRoute";
 import PublicOnlyRoute from "./components/commons/PublicOnlyRoute";

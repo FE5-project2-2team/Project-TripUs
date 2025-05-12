@@ -7,9 +7,7 @@ import ApplyMembers from "../components/features/postDetail/ApplyMembers";
 import CommentsList from "../components/features/postDetail/CommentsList";
 import Likes from "../components/features/postDetail/Likes";
 import MemberList from "../components/features/postDetail/MemberList";
-import PostTitle from "../components/features/postDetail/PostTitle";
-import TravelInfo from "../components/features/postDetail/TravelInfo";
-import UserInfo from "../components/features/user/UserInfo";
+import PostHeader from "../components/features/postDetail/PostHeader";
 import { CHANNELS } from "../constants/posts";
 import { useAuthStore } from "../store/authStore";
 
@@ -132,24 +130,12 @@ export default function PostDetail() {
 		return (
 			<main className="flex flex-col justify-center items-center mt-[49px]">
 				<div className="flex flex-col gap-[30px] w-275 ">
-					<PostTitle
-						isRecruitChannel={isRecruitChannel}
-						isAuthor={isAuthor}
-						isRecruiting={isRecruiting}
-						toggleRecruit={toggleRecruit}
-						title={postInfo.title}
+					<PostHeader
 						postData={postData}
-					/>
-					{postData.channel._id === CHANNELS.RECRUITMENT &&
-						postInfo.images?.map((image) => (
-							<img src={image} className="h-125 object-cover rounded-[10px]" />
-						))}
-					<TravelInfo isRecruitChannel={isRecruitChannel} postInfo={postInfo} />{" "}
-					<UserInfo
-						isRecruitChannel={isRecruitChannel}
+						postInfo={postInfo}
 						authorInfo={authorInfo}
-						image={postData.author.image}
-						userId={postData.author._id}
+						isRecruitChannel={isRecruitChannel}
+						toggleRecruit={toggleRecruit}
 					/>
 					{isRecruitChannel && (
 						<>

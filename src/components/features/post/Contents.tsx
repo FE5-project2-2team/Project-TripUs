@@ -2,7 +2,6 @@ import axios from "axios";
 import ImageResize from "quill-image-resize-module-plus";
 import { useFormContext } from "react-hook-form";
 import ReactQuill, { Quill } from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
 import { CHANNELS } from "../../../constants/posts";
 
 const Size = Quill.import("formats/size") as { whitelist: string[] };
@@ -62,6 +61,8 @@ export default function Contents({
 						container: [
 							[{ size: ["small", false, "large", "huge"] }],
 							["bold", "italic", "underline", "strike", "link"],
+							[{ list: "ordered" }, { list: "bullet" }],
+							[{ align: [] }],
 							showImageBtn ? ["image"] : []
 						],
 						handlers: {

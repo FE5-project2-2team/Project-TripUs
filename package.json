@@ -21,6 +21,7 @@
 		"html-react-parser": "^5.2.3",
 		"i": "^0.3.7",
 		"npm": "^10.9.2",
+		"quill": "^2.0.3",
 		"quill-delta": "^5.1.0",
 		"quill-delta-to-html": "^0.12.1",
 		"quill-image-resize-module-plus": "^1.0.2",
