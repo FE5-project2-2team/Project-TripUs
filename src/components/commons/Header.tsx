@@ -14,6 +14,7 @@ import { useAuthStore } from "../../store/authStore";
 import Button from "./Button";
 import Modal from "./Modal";
 import ModalItem from "./ModalItem";
+import NotiList from "../features/notification/NotiList";
 
 export default function Header() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -24,6 +25,7 @@ export default function Header() {
 	const [image, setImage] = useState(profileCircle);
 	const [nickname, setNickname] = useState("");
 	const [modalOpen, setModalOpen] = useState(false);
+	const [notiOpen, setNotiOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
 	const getUserData = useCallback(async () => {
@@ -52,6 +54,10 @@ export default function Header() {
 		setModalOpen(false);
 	};
 
+	const toggleNoti = () => {
+		setNotiOpen((noti) => !noti);
+	};
+
 	useEffect(() => {
 		if (isLoggedIn && userId) {
 			getUserData();
@@ -72,9 +78,14 @@ export default function Header() {
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
-					<button>
+					<button onClick={toggleNoti} className="cursor-pointer">
 						<FontAwesomeIcon icon={faBell} className="text-xl" />
 					</button>
+					{notiOpen && (
+						<div className="absolute top-[60px] right-[150px] z-60">
+							<NotiList notiOpen={notiOpen} setNotiOpen={setNotiOpen} />
+						</div>
+					)}
 					<button
 						onClick={() => {
 							if (!modalOpen) setModalOpen(true);

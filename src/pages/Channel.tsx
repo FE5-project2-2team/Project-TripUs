@@ -4,6 +4,7 @@ import { getChannelInfo } from "../apis/channel";
 import { getPosts } from "../apis/post";
 import Icon from "../components/commons/Icon";
 import defaultImage from "../assets/images/primaryImage.png";
+import profileImg from "../assets/images/profileImg_circle.svg";
 //채널 정보 가져오기
 //채널별 게시글 보여주기
 type ContextType = {
@@ -164,7 +165,7 @@ export default function Channel() {
 
 				<div
 					key={post._id}
-					className="w-[340px] min-h-[434px] rounded-[15px] border border-[#D9D9D9] flex flex-col overflow-hidden cursor-pointer"
+					className="w-[340px] h-[434px] rounded-[15px] border border-[#D9D9D9] flex flex-col overflow-hidden cursor-pointer shadow"
 					onClick={() => navigate(`/post/detail/${post._id}`)}
 				>
 					<div className="relative">
@@ -207,37 +208,41 @@ export default function Channel() {
 							return null;
 						})()}
 					</div>
-					<div className="flex flex-col justify-between flex-grow p-[16px]">
+					<div className="flex flex-col justify-between flex-grow p-4">
 						<div className="space-y-4">
 							{/* 사용자 이미지,이름,닉네임 */}
 							<div className="flex flex-row items-center min-w-[115px] h-[36px]">
 								<img
-									src={post.author.image}
+									src={post.author.image ? post.author.image : profileImg}
 									alt="사용자이미지"
 									className="w-[36px] h-[36px] rounded-full"
 								/>
-								<div className="min-w-[71px] text-[16px] ml-[8px]">
-									<p className="font-normal">
+								<div className="min-w-[71px] ml-[8px]">
+									<p className="font-normal text-[16px]">
 										{JSON.parse(post.author.fullName as string).nickname}
 									</p>
-									<p>{JSON.parse(post.author.fullName as string).name}</p>
+									<p className="text-[14px]">
+										{JSON.parse(post.author.fullName as string).name}
+									</p>
 								</div>
 							</div>
 							{/* 게시글 제목, 내용 */}
-							<div className="w-[296px] h-[65px] flex flex-col">
+							<div className="w-[296px] h-[65px] mt-4 flex flex-col">
 								<p className="text-[16px] font-bold">{post.title.title}</p>
-								<p className="mt-[7px] min-h-[38px] text-[14px] overflow-hidden text-ellipsis whitespace-nowrap">
+								<p className="mt-[7px] min-h-[38px] text-[14px] line-clamp-2">
 									{post.title.description}
 								</p>
 							</div>
 							{/* 여행지, 크루원수,날짜*/}
-							<div className="min-w-[142px] h-[70px] text-[14px]">
-								{post.channel.name !== "review" && (
-									<p className="flex gap-1">
-										<Icon position="5.447% 19.352%" size="18px" />
-										{post.title.location}
-									</p>
-								)}
+							<div className="min-w-[142px] h-[70px] text-[14px] mt-2">
+								<div className="min-w-[61px] h-[18px]">
+									{post.channel.name !== "review" && (
+										<p className="flex gap-1">
+											<Icon position="5.447% 19.352%" size="18px" />
+											{post.title.location}
+										</p>
+									)}
+								</div>
 								<p className="flex gap-[4px]">
 									<Icon position="15.52% 19.671%" size="18px" />
 									{post.title.memberList.length} / {post.title.memberLimit}
@@ -252,7 +257,7 @@ export default function Channel() {
 							</div>
 						</div>
 						{/* 나이,성별 */}
-						<p className="text-[14px] flex mt-4 gap-4">
+						<div className="text-[14px] flex mt-auto gap-4 mt-2">
 							{post.title.recruitCondition.gender &&
 								`#${post.title.recruitCondition.gender}`}
 							{post.title.recruitCondition.ageRange &&
@@ -261,7 +266,7 @@ export default function Channel() {
 										#{age}
 									</span>
 								))}
-						</p>
+						</div>
 					</div>
 				</div>
 			))}

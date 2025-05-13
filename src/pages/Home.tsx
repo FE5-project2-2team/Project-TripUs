@@ -26,13 +26,9 @@ export default function Home() {
 					{/* 배너+검색 */}
 					<div className="w-full flex justify-between mt-[20px] gap-4">
 						{/* 배너 */}
-						<div className="w-[65%]">
-							<ChannelList />
-						</div>
+						<ChannelList />
 						{/* 동행글 검색창*/}
-						<div className="w-[35%]">
-							<PostSearch search={search} setSearch={setSearch} />
-						</div>
+						<PostSearch search={search} setSearch={setSearch} />
 					</div>
 					{/* 필터,정렬 */}
 					<FilterAndSort
