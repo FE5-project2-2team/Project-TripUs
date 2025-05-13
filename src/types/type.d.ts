@@ -53,7 +53,7 @@ interface PostDetail {
 	memberList: string[];
 	applicantList: string[];
 	location: string;
-	dateRange: string[];
+	dateRange: Date[];
 	isRecruiting: boolean;
 	recruitCondition: {
 		gender: string;
@@ -61,6 +61,7 @@ interface PostDetail {
 	};
 	description: string;
 	contents: Delta | undefined;
+	images?: string[];
 }
 
 interface FormValues {
@@ -73,6 +74,7 @@ interface FormValues {
 		gender: string;
 		ageRange: string[];
 	};
+	images: string[];
 }
 
 interface NotiType {

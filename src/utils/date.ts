@@ -12,7 +12,7 @@ export const formatTime = (date: Date) => {
 	return `${hours.length === 1 ? `0${hours}` : hours}-${minutes.length === 1 ? `0${minutes}` : minutes}`;
 };
 
-export const getDiffInDays = (date1: string, date2: string) => {
+export const getDiffInDays = (date1: Date, date2: Date) => {
 	const oneDayMs = 1000 * 60 * 60 * 24;
 	let diff = oneDayMs;
 	if (date2) {

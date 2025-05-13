@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
 @import "./tailwind.css";
 @import "./icons.css";
+@import "./quill.css";
 
 body {
 	color: #333;
@@ -8,6 +9,10 @@ body {
 	font-optical-sizing: auto;
 	font-style: normal;
 	zoom: 90%;
+}
+
+button {
+	@apply select-none;
 }
 
 .inputProps {
@@ -41,18 +46,6 @@ body {
 
 .sub_title_number {
 	@apply text-lg font-medium text-[#06b796] ml-2;
-}
-
-.ql-container {
-	@apply text-base rounded-b-[10px] bg-[#F9F9F9] border-0! w-[1084px];
-}
-
-.ql-toolbar {
-	@apply rounded-t-[10px] bg-[#F9F9F9] border-0! border-b-[1px]! border-b-[#eee]!;
-}
-
-.ql-editor.ql-blank::before {
-	@apply text-[#CDCDCD] not-italic;
 }
 
 /* swiper pagination */

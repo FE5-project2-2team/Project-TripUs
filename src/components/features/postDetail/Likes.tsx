@@ -32,22 +32,40 @@ export default function Likes({
 		if (isAuthor) {
 			return;
 		}
-		try {
-			if (likes.likeId) {
+		if (likes.likeId) {
+			const prevLiked = likes.likeId;
+			setLikes((prev) => ({
+				number: prev.number - 1,
+				likeId: undefined
+			}));
+			try {
 				await deleteLike(likes.likeId);
-				setLikes((likes) => ({
-					number: likes.number - 1,
-					likeId: ""
-				}));
-			} else {
-				const myLike: LikeData = await createLike(postData._id);
-				setLikes((likes) => ({
-					number: likes.number + 1,
-					likeId: myLike._id
+			} catch (error) {
+				console.error(error);
+				setLikes((prev) => ({
+					number: prev.number + 1,
+					likeId: prevLiked
 				}));
 			}
-		} catch (error) {
-			console.error(error);
+		} else {
+			setLikes((prev) => ({
+				number: prev.number + 1,
+				likeId: "temp"
+			}));
+
+			try {
+				const myLike: LikeData = await createLike(postData._id);
+				setLikes((prev) => ({
+					number: prev.number,
+					likeId: myLike._id
+				}));
+			} catch (error) {
+				console.error(error);
+				setLikes((prev) => ({
+					number: prev.number - 1,
+					likeId: undefined
+				}));
+			}
 		}
 	};
 	return (
