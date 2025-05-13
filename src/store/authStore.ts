@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+
 
 type AuthStore = {
 	isLoggedIn: boolean;
@@ -8,11 +10,24 @@ type AuthStore = {
 	logout: () => void;
 };
 
-export const useAuthStore = create<AuthStore>((set) => ({
-	isLoggedIn: false,
-	accessToken: null,
-	userId: null,
-	login: (accessToken, userId) =>
-		set({ isLoggedIn: true, accessToken, userId }),
-	logout: () => set({ isLoggedIn: false, accessToken: null, userId: null })
-}));
+export const useAuthStore = create<AuthStore>()(
+	persist(
+		(set) => ({
+			isLoggedIn: false,
+			accessToken: null,
+			userId: null,
+
+			login: (accessToken, userId) =>
+				set({ isLoggedIn: true, accessToken, userId }),
+			logout: () =>
+				set({ 
+					isLoggedIn: false, 
+					accessToken: null, 
+					userId: null,
+				}),
+		}),
+		{
+			name: "auth-storage", // for local storge
+		}
+	)
+);
