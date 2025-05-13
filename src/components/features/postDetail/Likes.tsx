@@ -33,18 +33,38 @@ export default function Likes({
 		if (isAuthor) {
 			return;
 		}
-		try {
-			if (likes.likeId) {
+		if (likes.likeId) {
+			const prevLiked = likes.likeId;
+			setLikes((prev) => ({
+				number: prev.number - 1,
+				likeId: undefined
+			}));
+			try {
 				await deleteLike(likes.likeId);
-				setLikes((likes) => ({
-					number: likes.number - 1,
-					likeId: ""
+			} catch (error) {
+				console.error(error);
+				setLikes((prev) => ({
+					number: prev.number + 1,
+					likeId: prevLiked
 				}));
-			} else {
+			}
+		} else {
+			setLikes((prev) => ({
+				number: prev.number + 1,
+				likeId: "temp"
+			}));
+
+			try {
 				const myLike: LikeData = await createLike(postData._id);
-				setLikes((likes) => ({
-					number: likes.number + 1,
+				setLikes((prev) => ({
+					number: prev.number,
 					likeId: myLike._id
+				}));
+			} catch (error) {
+				console.error(error);
+				setLikes((prev) => ({
+					number: prev.number - 1,
+					likeId: undefined
 				}));
 
 				//추가
@@ -59,8 +79,6 @@ export default function Likes({
 				// console.log("현재 사용자:", userId);
 				//
 			}
-		} catch (error) {
-			console.error(error);
 		}
 	};
 	return (

@@ -16,7 +16,7 @@ export default function LabelSelect({
 				{label}
 			</label>
 			<select
-				className="input-style cursor-pointer"
+				className="input-style cursor-pointer focus:outline-none"
 				id={name}
 				{...register(name)}
 			>

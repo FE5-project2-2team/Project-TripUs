@@ -1,6 +1,7 @@
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from "react-toastify";
+import "quill/dist/quill.snow.css";
 import { Navigate, Route, Routes } from "react-router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./components/commons/ProtectedRoute";
 import PublicOnlyRoute from "./components/commons/PublicOnlyRoute";
 import RootLayout from "./layouts/RootLayout";
@@ -8,18 +9,17 @@ import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 //import Message from "./pages/Message";
+import MessageLayout from "./components/features/message/MessageLayout";
 import NotFound from "./pages/NotFound";
 import PostCreate from "./pages/PostCreate";
 import PostDetail from "./pages/PostDetail";
 import PostEdit from "./pages/PostEdit";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
-import MessageLayout from "./components/features/message/MessageLayout";
-
 
 export default function App() {
 	return (
-		<> 
+		<>
 			<Routes>
 				<Route element={<RootLayout />}>
 					<Route path="/" element={<Home />}>
@@ -51,7 +51,7 @@ export default function App() {
 				pauseOnHover
 				draggable
 				toastClassName={() =>
-					'bg-transparent shadow-none p-0 m-0 flex justify-center'
+					"bg-transparent shadow-none p-0 m-0 flex justify-center"
 				}
 			/>
 		</>
