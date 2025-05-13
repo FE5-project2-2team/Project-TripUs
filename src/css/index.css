@@ -11,6 +11,10 @@ body {
 	zoom: 90%;
 }
 
+button {
+	@apply select-none;
+}
+
 .inputProps {
 	@apply pl-[54px] w-full h-[60px] border border-[#616161] rounded-[10px]
     text-[16px] text-[#333333] placeholder-[#616161]

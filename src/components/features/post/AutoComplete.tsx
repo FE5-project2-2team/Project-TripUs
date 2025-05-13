@@ -22,7 +22,7 @@ export default function AutoComplete() {
 		);
 	}, [watchedLoaction]);
 	return (
-		<ul className="absolute top-[97px] w-full max-h-45 overflow-hidden border-1 border-[#d6d6d6] py-2 px-2 bg-white pb-2 rounded-b-[10px]">
+		<ul className="absolute top-[94px] w-full max-h-45 overflow-hidden border-1 border-[#d6d6d6] py-2 px-2 bg-white pb-2 rounded-b-[10px]">
 			{list.length > 0 ? (
 				list.map((location, index) => (
 					<li

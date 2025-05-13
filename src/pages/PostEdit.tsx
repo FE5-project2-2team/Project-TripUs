@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FieldErrors, FormProvider, useForm } from "react-hook-form";
 import ReactQuill from "react-quill-new";
 import { useLocation, useNavigate } from "react-router";
 import { updatePost } from "../apis/post";
 import Icon from "../components/commons/Icon";
+import { showToast } from "../components/commons/Toast";
 import ConditionList from "../components/features/post/ConditionList";
 import Contents from "../components/features/post/Contents";
 import InfoForm from "../components/features/post/InfoForm";
@@ -38,6 +39,34 @@ export default function PostEdit() {
 	const contents = useRef<ReactQuill | null>(null);
 	contents.current?.getEditor().setContents(postInfo.contents);
 
+	const errorHandler = (errors: FieldErrors<FormValues>) => {
+		const editor = contents.current?.getEditor();
+		const fullText = editor?.getText().replace(/\n/g, "").trim();
+		if (!fullText) return;
+		if (errors.location) {
+			showToast({ type: "error", message: errors.location.message });
+		} else if (errors.dateRange) {
+			showToast({ type: "error", message: errors.dateRange.message });
+		} else if (errors.title) {
+			const titleLen = errors.title.ref?.value.length;
+			showToast({
+				type: "error",
+				message: errors.title.message + ` (현재 : ${titleLen}자)`
+			});
+		} else if (fullText.length < 5) {
+			showToast({ type: "error", message: "내용을 5자 이상 입력해 주세요" });
+		} else if (fullText.length > 1000) {
+			showToast({
+				type: "error",
+				message: "내용은 1000자까지만 입력할 수 있습니다"
+			});
+		} else if (errors.condition?.gender) {
+			showToast({ type: "error", message: errors.condition.gender.message });
+		} else if (errors.condition?.ageRange) {
+			showToast({ type: "error", message: errors.condition.ageRange.message });
+		}
+	};
+
 	const submitHandler = async (data: FormValues) => {
 		try {
 			const detailData: PostDetail = {
@@ -55,6 +84,24 @@ export default function PostEdit() {
 				contents: contents.current?.getEditor().getContents(),
 				images: imageListRef.current
 			};
+
+			const editor = contents.current?.getEditor();
+			const fullText = editor?.getText().replace(/\n/g, "").trim();
+			if (fullText) {
+				if (fullText.length < 5) {
+					showToast({
+						type: "error",
+						message: "내용을 5자 이상 입력해 주세요"
+					});
+					return;
+				} else if (fullText.length > 1000) {
+					showToast({
+						type: "error",
+						message: "내용은 1000자까지만 입력할 수 있습니다"
+					});
+				}
+			}
+
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(detailData));
 			formData.append("channelId", data.channel);
@@ -88,7 +135,7 @@ export default function PostEdit() {
 					<form
 						className="mt-10"
 						action=""
-						onSubmit={(e) => e.preventDefault()}
+						onSubmit={methods.handleSubmit(submitHandler, errorHandler)}
 					>
 						<InfoForm />
 						<div className="flex flex-col gap-10 my-13">
@@ -108,8 +155,7 @@ export default function PostEdit() {
 								<span className="text-xl">나가기</span>
 							</div>
 							<button
-								type="button"
-								onClick={methods.handleSubmit(submitHandler)}
+								type="submit"
 								className="bg-[#06b796] text-white px-[50px] py-[18px] rounded-[10px] text-xl hover:bg-[#038383] hover:cursor-pointer"
 							>
 								등록하기
