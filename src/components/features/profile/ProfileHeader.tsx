@@ -35,7 +35,7 @@ export default function ProfileHeader({
 			{isMyPage ? (
 				<button
 					onClick={onEditClick}
-					className="inline-flex items-center justify-center w-[160px] h-[40px] font-medium text-[18px] text-white bg-[#06b796] px-[27px] py-[7px] rounded-[8px] cursor-pointer"
+					className="select-none inline-flex items-center justify-center w-[160px] h-[40px] font-medium text-[18px] text-white bg-[#06b796] px-[27px] py-[7px] rounded-[8px] cursor-pointer"
 				>
 					회원정보 수정
 				</button>
