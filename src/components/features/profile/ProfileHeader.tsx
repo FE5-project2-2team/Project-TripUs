@@ -41,7 +41,7 @@ export default function ProfileHeader({
 				</button>
 			) : (
 				<button
-					onClick={() => navigate(`/messages?userId=${userId}}`)}
+					onClick={() => navigate(`/message/${userId}`)}
 					className="inline-flex items-center justify-center w-[160px] h-[40px] font-medium text-[18px] text-white bg-[#1C274C] px-[27px] py-[7px] rounded-[8px] cursor-pointer"
 				>
 					채팅 보내기
