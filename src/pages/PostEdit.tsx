@@ -42,7 +42,6 @@ export default function PostEdit() {
 	const errorHandler = (errors: FieldErrors<FormValues>) => {
 		const editor = contents.current?.getEditor();
 		const fullText = editor?.getText().replace(/\n/g, "").trim();
-		if (!fullText) return;
 		if (errors.location) {
 			showToast({ type: "error", message: errors.location.message });
 		} else if (errors.dateRange) {
@@ -53,9 +52,9 @@ export default function PostEdit() {
 				type: "error",
 				message: errors.title.message + ` (현재 : ${titleLen}자)`
 			});
-		} else if (fullText.length < 5) {
+		} else if ((fullText && fullText.length < 5) || !fullText) {
 			showToast({ type: "error", message: "내용을 5자 이상 입력해 주세요" });
-		} else if (fullText.length > 1000) {
+		} else if (fullText && fullText.length > 1000) {
 			showToast({
 				type: "error",
 				message: "내용은 1000자까지만 입력할 수 있습니다"
@@ -69,14 +68,13 @@ export default function PostEdit() {
 
 	const submitHandler = async (data: FormValues) => {
 		try {
+			if (!postInfo) return;
 			const detailData: PostDetail = {
+				...postInfo,
 				title: data.title,
 				memberLimit: Number(data.member),
-				memberList: postInfo.memberList,
-				applicantList: postInfo.applicantList,
 				location: data.location,
 				dateRange: data.dateRange,
-				isRecruiting: true,
 				recruitCondition: data.condition,
 				description: contents.current
 					?.getEditor()
@@ -87,19 +85,15 @@ export default function PostEdit() {
 
 			const editor = contents.current?.getEditor();
 			const fullText = editor?.getText().replace(/\n/g, "").trim();
-			if (fullText) {
-				if (fullText.length < 5) {
-					showToast({
-						type: "error",
-						message: "내용을 5자 이상 입력해 주세요"
-					});
-					return;
-				} else if (fullText.length > 1000) {
-					showToast({
-						type: "error",
-						message: "내용은 1000자까지만 입력할 수 있습니다"
-					});
-				}
+			if ((fullText && fullText.length < 5) || !fullText) {
+				showToast({ type: "error", message: "내용을 5자 이상 입력해 주세요" });
+				return;
+			} else if (fullText && fullText.length > 1000) {
+				showToast({
+					type: "error",
+					message: "내용은 1000자까지만 입력할 수 있습니다"
+				});
+				return;
 			}
 
 			const formData = new FormData();

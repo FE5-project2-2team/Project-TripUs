@@ -80,8 +80,12 @@ const CrewTab = ({
 								<div className="p-[16px]">
 									{/* 하단 영역 -1 */}
 									<div className="flex flex-col gap-y-[8px]">
-										<h1 className="font-bold text-[16px]">{parsedTitle.title}</h1>
-										<h2 className="h-[38px] text-[14px] line-clamp-2">{parsedTitle.description}</h2>
+										<h1 className="font-bold text-[16px]">
+											{parsedTitle.title}
+										</h1>
+										<h2 className="h-[38px] text-[14px] line-clamp-2">
+											{parsedTitle.description}
+										</h2>
 									</div>
 
 									{/* 하단 영역 -2 */}
@@ -95,7 +99,10 @@ const CrewTab = ({
 										{/* 인원 */}
 										<div className="flex items-center gap-1">
 											<Icon position="15.3% 20.5%" size="18px" />
-											<h3 className="text-[14px]">{parsedTitle.memberList.length} / {parsedTitle.memberLimit}</h3>
+											<h3 className="text-[14px]">
+												{parsedTitle.memberList.length} /{" "}
+												{parsedTitle.memberLimit}
+											</h3>
 										</div>
 
 										{/* 달력 */}
@@ -111,12 +118,14 @@ const CrewTab = ({
 									<div className="flex gap-[16px]">
 										{Array.isArray(parsedTitle.recruitCondition.ageRange) &&
 											parsedTitle.recruitCondition.ageRange.length > 0 && (
-											<p className="text-[14px]">
-												#{parsedTitle.recruitCondition.ageRange}
-											</p>
-										)}
+												<p className="text-[14px]">
+													#{parsedTitle.recruitCondition.ageRange}
+												</p>
+											)}
 										{parsedTitle.recruitCondition.gender && (
-											<p className="text-[14px]">#{parsedTitle.recruitCondition.gender}</p>
+											<p className="text-[14px]">
+												#{parsedTitle.recruitCondition.gender}
+											</p>
 										)}
 									</div>
 								</div>

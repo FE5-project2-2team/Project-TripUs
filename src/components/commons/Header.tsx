@@ -24,7 +24,7 @@ export default function Header() {
 
 	// const [image, setImage] = useState(profileCircle);
 	// const [nickname, setNickname] = useState("");
-	const { nickname, image, setNickname, setImage} = useUserStore();
+	const { nickname, image, setNickname, setImage } = useUserStore();
 	const [modalOpen, setModalOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
@@ -38,7 +38,7 @@ export default function Header() {
 		} catch (error) {
 			console.error(error);
 		}
-	}, [userId, setImage, setNickname]);  // 변경된 부분
+	}, [userId, setImage, setNickname]); // 변경된 부분
 	const signOut = () => {
 		navigate("/");
 		logout();

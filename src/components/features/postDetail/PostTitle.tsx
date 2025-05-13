@@ -68,7 +68,7 @@ export default function PostTitle({
 					className={twMerge(
 						"mr-4 text-xl px-3 py-[5.5px] rounded-lg",
 						isRecruitChannel
-							? "cursor-pointer text-[#06B796] bg-[#F3F4F6]"
+							? "cursor-pointer text-[#06B796] bg-[#F3F4F6] hover:"
 							: "cursor-default bg-[#06b796] text-white"
 					)}
 				>

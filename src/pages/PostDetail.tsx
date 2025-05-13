@@ -43,6 +43,7 @@ export default function PostDetail() {
 				const parsed: CommentType = JSON.parse(commentData.comment);
 				return parsed.type === "comment";
 			});
+
 			setComments(commentList);
 		} catch (error) {
 			console.error(error);
@@ -71,10 +72,11 @@ export default function PostDetail() {
 		value: string
 	) => {
 		e.preventDefault();
+		if (!postData) return;
+
 		try {
-			if (!postData) return;
 			const data: CommentType = { type: "comment", value };
-			const newComment = await createComment(
+			const newComment: CommentData = await createComment(
 				postData?._id,
 				JSON.stringify(data)
 			);
@@ -90,8 +92,8 @@ export default function PostDetail() {
 
 	const deleteCommentHandler = async (commentId: string) => {
 		try {
-			await deleteComment(commentId);
 			setComments((list) => list.filter((item) => item._id !== commentId));
+			await deleteComment(commentId);
 		} catch (error) {
 			console.error(error);
 		}
@@ -173,7 +175,7 @@ export default function PostDetail() {
 						<Button
 							onClick={applyBtnHandler}
 							className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
-							disabled={isApplied}
+							disabled={!postInfo.isRecruiting || isApplied}
 						>
 							{postInfo.isRecruiting
 								? "동행 신청하기"
