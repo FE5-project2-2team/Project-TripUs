@@ -63,7 +63,10 @@ export default function Profile() {
 	const handleUpdate = async () => {
 		const nicknameRegex = /^[가-힣a-zA-Z0-9]{2,10}$/;
 		if (!nicknameRegex.test(editProfile.nickname)) {
-			showToast({ type: 'error', message: '닉네임은 2자 이상 10자 이하의 한글, 영문, 숫자만 가능합니다.' });
+			showToast({
+				type: "error",
+				message: "닉네임은 2자 이상 10자 이하의 한글, 영문, 숫자만 가능합니다."
+			});
 			return;
 		}
 
@@ -80,10 +83,10 @@ export default function Profile() {
 			console.log("업데이트 성공:", response.data);
 			setProfile(editProfile);
 			setIsModalOpen(false);
-			showToast({ type: 'success', message: '프로필이 업데이트 되었습니다!' });
+			showToast({ type: "success", message: "프로필이 업데이트 되었습니다!" });
 		} catch (err) {
 			console.error("업데이트 실패:", err);
-			showToast({ type: 'error', message: '프로필 업데이트 실패' });
+			showToast({ type: "error", message: "프로필 업데이트 실패" });
 		}
 	};
 

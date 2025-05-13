@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import { showToast } from "../../commons/Toast";
 import { uploadPhoto } from "../../../apis/user";
-import { useUserStore } from "../../../store/userStore";
-import Button from "../../commons/Button";
 import profileCircle from "../../../assets/images/profileImg_circle.svg";
+import { useAuthStore } from "../../../store/authStore";
+import Button from "../../commons/Button";
+import { showToast } from "../../commons/Toast";
 
 interface Props {
 	editProfile: Profile;
@@ -23,7 +23,9 @@ export default function ProfileEditModal({
 	onUpdate
 }: Props) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
-	const { setImage: setGlobalImage, setNickname: setGlobalNickname } = useUserStore();
+
+	const { setImage: setGlobalImage, setNickname: setGlobalNickname } =
+		useAuthStore();
 
 	const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
@@ -37,7 +39,7 @@ export default function ProfileEditModal({
 			setGlobalImage(result.image);
 		} catch (err) {
 			console.error("사진 업로드 실패:", err);
-			showToast({ type: 'error', message: '프로필 사진 업로드 실패' });
+			showToast({ type: "error", message: "프로필 사진 업로드 실패" });
 		}
 	};
 
@@ -57,7 +59,7 @@ export default function ProfileEditModal({
 			setGlobalImage(result.image);
 		} catch (err) {
 			console.error("기본 이미지 변경 실패:", err);
-			showToast({ type: 'error', message: '기본 이미지로 변경 실패' });
+			showToast({ type: "error", message: "기본 이미지로 변경 실패" });
 		}
 	};
 
@@ -66,7 +68,7 @@ export default function ProfileEditModal({
 		const value = e.currentTarget.value.trim();
 		if (!value) return;
 		if (editProfile.tagList?.includes(value)) {
-			showToast({ type: 'warning', message: '이미 추가된 태그입니다.' });
+			showToast({ type: "warning", message: "이미 추가된 태그입니다." });
 			e.currentTarget.value = "";
 			return;
 		}
@@ -124,7 +126,9 @@ export default function ProfileEditModal({
 				{/* 닉네임 수정 */}
 				<div className="flex flex-col items-center pt-[20px] pb-[10px]">
 					<div>
-						<label className="select-none block text-[16px] text-[#333333]">닉네임</label>
+						<label className="select-none block text-[16px] text-[#333333]">
+							닉네임
+						</label>
 						<input
 							type="text"
 							value={editProfile.nickname}
