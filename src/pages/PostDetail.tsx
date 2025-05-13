@@ -7,9 +7,7 @@ import ApplyMembers from "../components/features/postDetail/ApplyMembers";
 import CommentsList from "../components/features/postDetail/CommentsList";
 import Likes from "../components/features/postDetail/Likes";
 import MemberList from "../components/features/postDetail/MemberList";
-import PostTitle from "../components/features/postDetail/PostTitle";
-import TravelInfo from "../components/features/postDetail/TravelInfo";
-import UserInfo from "../components/features/user/UserInfo";
+import PostHeader from "../components/features/postDetail/PostHeader";
 import { CHANNELS } from "../constants/posts";
 import { useAuthStore } from "../store/authStore";
 
@@ -45,6 +43,7 @@ export default function PostDetail() {
 				const parsed: CommentType = JSON.parse(commentData.comment);
 				return parsed.type === "comment";
 			});
+
 			setComments(commentList);
 		} catch (error) {
 			console.error(error);
@@ -73,10 +72,11 @@ export default function PostDetail() {
 		value: string
 	) => {
 		e.preventDefault();
+		if (!postData) return;
+
 		try {
-			if (!postData) return;
 			const data: CommentType = { type: "comment", value };
-			const newComment = await createComment(
+			const newComment: CommentData = await createComment(
 				postData?._id,
 				JSON.stringify(data)
 			);
@@ -92,8 +92,8 @@ export default function PostDetail() {
 
 	const deleteCommentHandler = async (commentId: string) => {
 		try {
-			await deleteComment(commentId);
 			setComments((list) => list.filter((item) => item._id !== commentId));
+			await deleteComment(commentId);
 		} catch (error) {
 			console.error(error);
 		}
@@ -131,21 +131,14 @@ export default function PostDetail() {
 		const isRecruitChannel = postData.channel._id === CHANNELS.RECRUITMENT;
 		return (
 			<main className="flex flex-col justify-center items-center mt-[49px]">
-				<div className="flex flex-col gap-[30px] w-266 ">
-					<PostTitle
-						isRecruitChannel={isRecruitChannel}
-						isAuthor={isAuthor}
-						isRecruiting={isRecruiting}
-						toggleRecruit={toggleRecruit}
-						title={postInfo.title}
+				<div className="flex flex-col gap-[30px] w-275 ">
+					<PostHeader
 						postData={postData}
-					/>
-					<TravelInfo isRecruitChannel={isRecruitChannel} postInfo={postInfo} />{" "}
-					<UserInfo
-						isRecruitChannel={isRecruitChannel}
+						postInfo={postInfo}
 						authorInfo={authorInfo}
-						image={postData.author.image}
-						userId={postData.author._id}
+						isRecruitChannel={isRecruitChannel}
+						toggleRecruit={toggleRecruit}
+						isRecruiting={isRecruiting}
 					/>
 					{isRecruitChannel && (
 						<>
@@ -163,7 +156,7 @@ export default function PostDetail() {
 							</div>
 						</>
 					)}
-					{isAuthor && isRecruiting && (
+					{isAuthor && isRecruiting ? (
 						<ApplyMembers
 							postInfo={postInfo}
 							postData={postData}
@@ -171,6 +164,8 @@ export default function PostDetail() {
 							deleteApplicant={deleteApplicant}
 							addMember={addMember}
 						/>
+					) : (
+						<div></div>
 					)}
 					<Likes postData={postData} likesList={postData.likes} />
 					<CommentsList
@@ -183,7 +178,7 @@ export default function PostDetail() {
 						<Button
 							onClick={applyBtnHandler}
 							className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
-							disabled={isApplied}
+							disabled={!postInfo.isRecruiting || isApplied}
 						>
 							{postInfo.isRecruiting
 								? "동행 신청하기"

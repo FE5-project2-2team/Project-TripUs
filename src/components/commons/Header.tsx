@@ -10,7 +10,6 @@ import { useClickAway } from "react-use";
 import { getUserInfo } from "../../apis/user";
 import headerLogo from "../../assets/images/logo_header.svg";
 import { useAuthStore } from "../../store/authStore";
-import { useUserStore } from "../../store/userStore";
 import Button from "./Button";
 import Modal from "./Modal";
 import ModalItem from "./ModalItem";
@@ -21,9 +20,15 @@ export default function Header() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 	const userId = useAuthStore((state) => state.userId);
 	const logout = useAuthStore((state) => state.logout);
+	const image = useAuthStore((state) => state.image);
+	const nickname = useAuthStore((state) => state.nickname);
+	const setImage = useAuthStore((state) => state.setImage);
+	const setNickname = useAuthStore((state) => state.setNickname);
 	const navigate = useNavigate();
 
-	const { nickname, image, setNickname, setImage } = useUserStore();
+	// const [image, setImage] = useState(profileCircle);
+	// const [nickname, setNickname] = useState("");
+	// const { nickname, image, setNickname, setImage} = useUserStore();
 	const [modalOpen, setModalOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
@@ -42,7 +47,6 @@ export default function Header() {
 			console.error(error);
 		}
 	}, [userId, setImage, setNickname]); // 변경된 부분
-
 	const signOut = () => {
 		navigate("/");
 		logout();

@@ -20,7 +20,7 @@ export default function TravelInfo({
 				<span className="post-sub-title">
 					여행 {isRecruitChannel ? "소개" : "후기"}
 				</span>
-				<span>{parse(html)}</span>
+				<div className="contents-wrapper">{parse(html)}</div>
 			</div>
 			<div>
 				<span className="post-sub-title">여행 일정</span>
