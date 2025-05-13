@@ -5,6 +5,7 @@ import { useAuthStore } from "../store/authStore";
 import SignupLogo from "../assets/images/Signup_logo.svg";
 import Button from "../components/commons/Button";
 import Icon from "../components/commons/Icon";
+import { showToast } from "../components/commons/Toast";
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -13,6 +14,7 @@ export default function Login() {
 		email: "",
 		password: ""
 	});
+	const [errors, setErrors] = useState<{ email?: string }>({});
 	const [hoveredField, setHoveredField] = useState<string | null>(null);
 
 	const handleSignupClick = () => {
@@ -27,19 +29,34 @@ export default function Login() {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		const newErrors: { email?: string } = {};
+
+		if (!emailRegex.test(form.email)) {
+			newErrors.email = "*이메일 형식이 올바르지 않습니다.";
+		}
+
+		if (Object.keys(newErrors).length > 0) {
+			setErrors(newErrors);
+			return;
+		}
+
 		try {
 			const data = await loginUser(form.email, form.password);
 			console.log("서버응답", data);
 
 			if (data?.token) {
 				login(data.token, data.user._id);
-				alert("로그인 성공");
+				showToast({ type: "success", message: "로그인에 성공했습니다!" });
 				navigate("/");
 			} else {
-				alert("로그인 실패: 토큰이 없습니다");
+				showToast({
+					type: "error",
+					message: "이메일 또는 비밀번호가 올바르지 않습니다."
+				});
 			}
 		} catch (error) {
-			alert("로그인 실패: 서버 오류");
+			showToast({ type: "warning", message: "로그인 중 오류가 발생했습니다." });
 			console.error(error);
 		}
 	};
@@ -55,26 +72,31 @@ export default function Login() {
 					className="w-[278px] h-[106px] mx-auto mt-[223px] mb-[26px] cursor-pointer"
 					onClick={() => navigate("/")}
 				/>
-				<div
-					className="relative group"
-					onMouseEnter={() => setHoveredField("email")}
-					onMouseLeave={() => setHoveredField(null)}
-				>
-					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
-						<Icon
-							size="24px"
-							position={
-								hoveredField === "email" ? "-117px -265px" : "-117px -239px"
-							}
+				<div className="flex flex-col">
+					<div
+						className="relative group"
+						onMouseEnter={() => setHoveredField("email")}
+						onMouseLeave={() => setHoveredField(null)}
+					>
+						<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
+							<Icon
+								size="24px"
+								position={
+									hoveredField === "email" ? "-117px -265px" : "-117px -239px"
+								}
+							/>
+						</div>
+						<input
+							name="email"
+							placeholder="이메일"
+							value={form.email}
+							onChange={handleChange}
+							className="inputProps"
 						/>
 					</div>
-					<input
-						name="email"
-						placeholder="이메일"
-						value={form.email}
-						onChange={handleChange}
-						className="inputProps"
-					/>
+					<p className="text-red-500 text-xs font-bold mt-[1px] h-[1px] leading-tight">
+						{errors.email ?? ""}
+					</p>
 				</div>
 				<div
 					className="relative group"
