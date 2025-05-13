@@ -7,7 +7,7 @@ import { CHANNELS } from "../../../constants/posts";
 import AutoComplete from "./AutoComplete";
 import LabelSelect from "./LabelSelect";
 
-export default function InfoForm() {
+export default function InfoForm({ type }: { type: string }) {
 	const { register, control } = useFormContext();
 	const { field } = useController({
 		name: "dateRange",
@@ -19,10 +19,9 @@ export default function InfoForm() {
 		name: "channel"
 	});
 	const [isFocused, setIsFocused] = useState(false);
-
 	return (
 		<div className="grid grid-cols-2 gap-15">
-			<LabelSelect name="channel" label="게시판 선택">
+			<LabelSelect type={type} name="channel" label="게시판 선택">
 				<option value={CHANNELS.RECRUITMENT}>동행원 모집</option>
 				<option value={CHANNELS.REVIEW}>여행 후기글</option>
 			</LabelSelect>
