@@ -1,71 +1,55 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { getUsers } from "../../../apis/user";
+import { useEffect, useRef, useState } from "react";
+import { getUsers, searchUsers } from "../../../apis/user";
 import { useNavigate } from "react-router";
 import Icon from "../../commons/Icon";
 import UserListItem from "./UserListItem";
 import { useClickAway } from "react-use";
+import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
+
+function normalizeUsers(raw: UserHomeData[]): UserHomeData[] {
+	return raw.map((u) => {
+		// fullName 파싱
+		let parsed: Partial<User> = {};
+
+		if (typeof u.fullName === "string") {
+			try {
+				parsed = JSON.parse(u.fullName);
+			} catch {
+				// 파싱 자체가 실패했을 때
+				parsed = { name: u.fullName };
+			}
+		} else {
+			parsed = u.fullName;
+		}
+
+		// 누락된 필드를 기본값으로 채우는 코드
+		const fullNameObj: User = {
+			name: parsed.name || "알 수 없음",
+			tel: parsed.tel || "",
+			gender: parsed.gender || "남자",
+			age: typeof parsed.age === "number" && parsed.age > 0 ? parsed.age : 20,
+			nickname:
+				parsed.nickname || `크루${Math.floor(Math.random() * 900) + 100}`
+		};
+
+		// image fallback
+		const profileImage = u.image?.trim() ? u.image : defaultProfileImage;
+
+		return {
+			...u,
+			fullName: fullNameObj,
+			image: profileImage
+		};
+	});
+}
 
 export default function UserListModal({ onClose }: { onClose: () => void }) {
 	const [userList, setUserList] = useState<UserHomeData[]>([]);
 	const [filteredUser, setFilteredUser] = useState<UserHomeData[]>([]);
 	const [search, setSearch] = useState("");
+	const [isSearching, setIsSearching] = useState(false);
 	const navigate = useNavigate();
 	const [isFocused, setIsFocused] = useState(false);
-
-	// 1. 검색 필터 함수
-	// const searchUsers = useCallback((word: string, list: UserHomeData[]) => {
-	// 	if (!word.trim()) return list;
-	// 	return list.filter((user) => {
-	// 		let name = "";
-	// 		const fullName = user.fullName;
-	// 		if (typeof fullName === "object" && fullName !== null) {
-	// 			name = fullName.name;
-	// 		} else if (typeof fullName === "string") {
-	// 			name = fullName;
-	// 		}
-	// 		return name.toLowerCase().includes(word.toLowerCase());
-	// 	});
-	// }, []);
-
-	// // 2. 사용자 목록 불러오기
-	// useEffect(() => {
-	// 	const fetchUsers = async () => {
-	// 		try {
-	// 			const rawUsers = await getUsers();
-	// 			const parsed = rawUsers.map((user: UserHomeData) => {
-	// 				if (typeof user.fullName === "string") {
-	// 					try {
-	// 						return { ...user, fullName: JSON.parse(user.fullName) };
-	// 					} catch {
-	// 						return {
-	// 							...user,
-	// 							fullName: {
-	// 								name: user.fullName,
-	// 								tel: "",
-	// 								gender: "남자",
-	// 								age: 0,
-	// 								nickname: ""
-	// 							}
-	// 						};
-	// 					}
-	// 				}
-	// 				return user;
-	// 			});
-	// 			setUserList(parsed);
-	// 			setFilteredUser(parsed);
-	// 		} catch (err) {
-	// 			console.error("유저 불러오기 실패", err);
-	// 		}
-	// 	};
-	// 	fetchUsers();
-	// }, []);
-
-	// // 3. 검색어가 바뀔 때 필터링
-	// useEffect(() => {
-	// 	if (userList.length === 0) return;
-	// 	const result = searchUsers(search, userList);
-	// 	setFilteredUser(result);
-	// }, [search, searchUsers, userList]);
 
 	// 바깥 클릭 감지
 	const modalRef = useRef<HTMLDivElement>(null);
@@ -75,36 +59,43 @@ export default function UserListModal({ onClose }: { onClose: () => void }) {
 	useEffect(() => {
 		(async () => {
 			try {
-				const raw = await getUsers();
-				const parsed = raw.map((u: UserHomeData) => {
-					if (typeof u.fullName === "string") {
-						try {
-							return { ...u, fullName: JSON.parse(u.fullName) };
-						} catch {
-							/* fallback */
-						}
-					}
-					return u;
-				});
+				const all = await getUsers(); // raw array
+				const parsed = normalizeUsers(all); // 파싱 + image fallback
 				setUserList(parsed);
 				setFilteredUser(parsed);
-			} catch {
-				console.error("유저 불러오기 실패");
+			} catch (e) {
+				console.error("전체 유저 불러오기 실패", e);
 			}
 		})();
 	}, []);
 
-	// 검색 필터
-	const searchUsers = useCallback((word: string, list: UserHomeData[]) => {
-		if (!word.trim()) return list;
-		return list.filter((u) => {
-			const fn = typeof u.fullName === "object" ? u.fullName.name : u.fullName;
-			return fn.toLowerCase().includes(word.toLowerCase());
-		});
-	}, []);
+	// 사용자 검색 → API 호출
 	useEffect(() => {
-		setFilteredUser(searchUsers(search, userList));
-	}, [search, searchUsers, userList]);
+		if (!search.trim()) {
+			setFilteredUser(userList);
+			return;
+		}
+
+		let cancelled = false;
+		(async () => {
+			setIsSearching(true);
+			try {
+				const rawResults = await searchUsers(search);
+				if (!cancelled) {
+					const parsed = normalizeUsers(rawResults);
+					setFilteredUser(parsed);
+				}
+			} catch (e) {
+				console.error("검색 API 호출 실패", e);
+			} finally {
+				if (!cancelled) setIsSearching(false);
+			}
+		})();
+
+		return () => {
+			cancelled = true;
+		};
+	}, [search, userList]);
 
 	return (
 		<div
@@ -136,14 +127,25 @@ export default function UserListModal({ onClose }: { onClose: () => void }) {
 				</div>
 			</div>
 
-			<div className="h-[382px] overflow-y-auto p-[5px] border-1 border-[#e4e4e4] rounded-[8px]">
-				{filteredUser.map((user) => (
-					<UserListItem
-						key={user._id}
-						user={user}
-						onClick={() => navigate(`/profile/${user._id}`)}
-					/>
-				))}
+			{/* 결과 리스트 */}
+			<div
+				className="h-[382px] overflow-y-auto p-[5px]
+                      border border-[#e4e4e4] rounded-[8px]"
+			>
+				{isSearching ? (
+					<p className="text-center text-sm text-gray-500">검색 중…</p>
+				) : (
+					filteredUser.map((user) => (
+						<UserListItem
+							key={user._id}
+							user={user}
+							onClick={() => {
+								navigate(`/profile/${user._id}`);
+								onClose();
+							}}
+						/>
+					))
+				)}
 			</div>
 		</div>
 	);

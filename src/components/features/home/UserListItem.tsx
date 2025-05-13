@@ -6,7 +6,7 @@ interface UserListItemProps {
 }
 
 export default function UserListItem({ user, onClick }: UserListItemProps) {
-	const { name, gender, age } = user.fullName as User;
+	const { nickname, gender, age } = user.fullName as User;
 	const ageGroup = Math.floor(age / 10) * 10;
 	const isOnline = user.isOnline;
 
@@ -33,7 +33,7 @@ export default function UserListItem({ user, onClick }: UserListItemProps) {
 				/>
 			</div>
 			<div>
-				<div className="text-[16px] font-medium">{name}</div>
+				<div className="text-[16px] font-medium">{nickname}</div>
 				<ul className="text-[14px] text-gray-500 flex gap-[12px]">
 					<li>{ageGroup}대</li>
 					<li>{gender}</li>
