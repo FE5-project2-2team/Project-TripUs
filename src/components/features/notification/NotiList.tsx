@@ -14,6 +14,9 @@ export default function NotificationList({
 }) {
 	const bannerArr = ["전체", "게시글", "메시지", "동행요청"];
 	const [notiContents, setNotiContents] = useState("전체");
+	const handleClose = () => {
+		setNotiOpen(false);
+	};
 	return (
 		<>
 			<div className="w-[560px] min-h-[664px] rounded-[10px] bg-[#fff] border border-[#D9D9D9] shadow-xl">
@@ -58,13 +61,13 @@ export default function NotificationList({
 
 				{/* 알림 내용들 */}
 				<div className="w-full h-[500px] overflow-y-auto">
-					{notiContents === "전체" && <NotiWhole />}
-					{notiContents === "게시글" && <NotiPosts />}
-					{notiContents === "메시지" && <NotiMessage />}
-					{notiContents === "동행요청" && <NotiRequest />}
+					{notiContents === "전체" && <NotiWhole onClose={handleClose} />}
+					{notiContents === "게시글" && <NotiPosts onClose={handleClose} />}
+					{notiContents === "메시지" && <NotiMessage onClose={handleClose} />}
+					{notiContents === "동행요청" && <NotiRequest onClose={handleClose} />}
 				</div>
 				{/* 모두읽음 */}
-				<div className="flex justify-end">
+				<div className="flex justify-end items-center border-t border-t-[#CDCDCD]">
 					<button className="flex items-center h-[22px] text-[18px] mt-[18px] mr-[30px] text-[#333333] cursor-pointer">
 						모두 읽음
 					</button>

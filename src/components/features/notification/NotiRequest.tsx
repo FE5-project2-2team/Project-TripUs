@@ -10,10 +10,7 @@ export default function NotiRequest() {
 	useEffect(() => {
 		const NotiFunc = async () => {
 			try {
-				// console.log("알림요청시작");
 				const myNotiInfo: NotiData[] = await getNotiList();
-				// console.log("알림 목록:", myNotiInfo);
-				// myNotiInfo.map((noti) => console.log(noti.comment));
 				setNotiInfo(myNotiInfo);
 				await readNoti();
 			} catch (e) {
@@ -24,7 +21,9 @@ export default function NotiRequest() {
 	}, []);
 	return (
 		<>
-			{notiInfo.length > 0 ? (
+			{notiInfo.filter(
+				(notice) => !notice.comment && (notice.user as UserData)._id === userId
+			).length > 0 ? (
 				//동행신청
 				notiInfo
 					.filter(

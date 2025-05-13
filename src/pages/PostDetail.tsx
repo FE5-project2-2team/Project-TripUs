@@ -121,15 +121,15 @@ export default function PostDetail() {
 		setApplicants((applicants) => [...applicants, newApplicant]);
 
 		//알림
-		console.log("newApplicant", newApplicant);
+		// console.log("newApplicant", newApplicant);
 		const post: PostData = await getPostById(newApplicant.post);
-		const reqNoti = await createNoti({
+		await createNoti({
 			notificationType: "APPLY",
 			notificationTypeId: newApplicant._id,
 			userId: post.author._id,
 			postId: newApplicant.post
 		});
-		console.log("동행요청reqNoti:", reqNoti);
+		// console.log("동행요청reqNoti:", reqNoti);
 	};
 
 	const deleteApplicant = (userId: string) => {

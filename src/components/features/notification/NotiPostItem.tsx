@@ -1,6 +1,14 @@
+import { useNavigate } from "react-router";
 import profileImg from "../../../assets/images/profileImg_circle.svg";
 
-export default function NotiItem({ notice }: { notice: NotiData }) {
+export default function NotiPostItem({
+	notice,
+	onClose
+}: {
+	notice: NotiData;
+	onClose: () => void;
+}) {
+	const navigate = useNavigate();
 	const formatTime = (time: string): string => {
 		if (!time) return "시간정보없음";
 
@@ -20,8 +28,18 @@ export default function NotiItem({ notice }: { notice: NotiData }) {
 	const userImage = notice.author.image || profileImg;
 	const time = formatTime(notice.createdAt);
 
+	const handleClick = () => {
+		if (notice.post) {
+			navigate(`/post/detail/${notice.post}`);
+			onClose();
+		}
+	};
+
 	return (
-		<div className="flex items-center w-full h-[100px]">
+		<div
+			className="flex items-center w-full h-[100px] border-b border-[#CDCDCD] cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150"
+			onClick={handleClick}
+		>
 			<div className="relative flex items-center">
 				<img
 					className="w-[60px] h-[60px] rounded-full ml-[30px]"

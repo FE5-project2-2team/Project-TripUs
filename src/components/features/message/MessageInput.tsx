@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createMessage } from "../../../apis/message";
+import { createNoti } from "../../../apis/notification";
 
 interface MessageInputProps {
 	receiverId: string;
@@ -18,6 +19,14 @@ export default function MessageInput({
 			const data = await createMessage(text, receiverId);
 			onMessageSent(data);
 			setText("");
+
+			//알림
+			await createNoti({
+				notificationType: "MESSAGE",
+				notificationTypeId: data._id,
+				userId: data.sender._id,
+				postId: null
+			});
 		} catch (err) {
 			console.error("메시지 전송 실패", err);
 		}
