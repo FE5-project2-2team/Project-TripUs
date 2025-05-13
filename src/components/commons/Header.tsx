@@ -9,7 +9,6 @@ import { Link, useNavigate } from "react-router";
 import { useClickAway } from "react-use";
 import { getUserInfo } from "../../apis/user";
 import headerLogo from "../../assets/images/logo_header.svg";
-// import profileCircle from "../../assets/images/profileImg_circle.svg";
 import { useAuthStore } from "../../store/authStore";
 import { useUserStore } from "../../store/userStore";
 import Button from "./Button";
@@ -24,26 +23,13 @@ export default function Header() {
 	const logout = useAuthStore((state) => state.logout);
 	const navigate = useNavigate();
 
-	// const [image, setImage] = useState(profileCircle);
-	// const [nickname, setNickname] = useState("");
 	const { nickname, image, setNickname, setImage } = useUserStore();
 	const [modalOpen, setModalOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
-	// userList
-	// const userIconRef = useRef<HTMLButtonElement | null>(null);
-	// const [userListPos, setUserListPos] = useState<{ top: number; left: number }>(
-	// 	{ top: 0, left: 0 }
-	// );
 	const [isUserListOpen, setIsUserListOpen] = useState(false);
-
-	// const openUserList = () => {
-	// 	if (userIconRef.current) {
-	// 		const rect = userIconRef.current.getBoundingClientRect();
-	// 		setUserListPos({ top: rect.bottom + 8, left: rect.left });
-	// 	}
-	// 	setIsUserListOpen(true);
-	// };
+	const [popoverPos, setPopoverPos] = useState({ top: 50, left: 0 });
+	const userListBtnRef = useRef<HTMLButtonElement>(null);
 
 	const getUserData = useCallback(async () => {
 		if (!userId) return;
@@ -56,6 +42,7 @@ export default function Header() {
 			console.error(error);
 		}
 	}, [userId, setImage, setNickname]); // 변경된 부분
+
 	const signOut = () => {
 		navigate("/");
 		logout();
@@ -81,6 +68,17 @@ export default function Header() {
 		setModalOpen(false);
 	});
 
+	const toggleUserList = () => {
+		if (!isUserListOpen && userListBtnRef.current) {
+			const rect = userListBtnRef.current.getBoundingClientRect();
+			setPopoverPos({
+				top: rect.bottom + window.scrollY,
+				left: rect.left + window.scrollX
+			});
+		}
+		setIsUserListOpen((prev) => !prev);
+	};
+
 	return (
 		<div className="w-[1100px] flex justify-between h-[70px] m-auto">
 			<Link to={"/"} className="flex items-center">
@@ -90,9 +88,9 @@ export default function Header() {
 				<div className="flex items-center gap-[40px] relative">
 					{/* userList */}
 					<button
-						// ref={userIconRef}
+						ref={userListBtnRef}
 						className="mt-[7px] relative cursor-pointer"
-						onClick={() => setIsUserListOpen((prev) => !prev)}
+						onClick={toggleUserList}
 					>
 						<Icon size="24px" position="-201px -42px" />
 					</button>
@@ -150,23 +148,41 @@ export default function Header() {
 					{isUserListOpen && (
 						<UserListModal
 							onClose={() => setIsUserListOpen(false)}
-							// position={userListPos}
+							position={popoverPos}
 						/>
 					)}
 				</div>
 			) : (
 				<div className="flex items-center gap-[10px]">
+					{/* userList */}
+					<button
+						ref={userListBtnRef}
+						className="mt-[7px] mr-[5px] relative cursor-pointer"
+						onClick={toggleUserList}
+					>
+						<Icon size="24px" position="-201px -42px" />
+					</button>
 					<Link to={"/login"}>
 						<Button
 							reverse
-							className="w-[78px] h-[45px] text-[18px] border-transparent hover:border-[#06B796] hover:bg-white hover:text-[#06b796]"
+							className="w-[120px] h-[45px] text-[18px] border-transparent hover:border-[#06B796] hover:bg-[#E0F4F2] hover:text-[#06b796]"
 						>
 							로그인
 						</Button>
 					</Link>
 					<Link to={"/signup"}>
-						<Button className="w-25 h-[45px] text-[18px]">회원 가입</Button>
+						<Button className="w-[120px] h-[45px] text-[18px]">
+							회원 가입
+						</Button>
 					</Link>
+
+					{/* userList */}
+					{isUserListOpen && (
+						<UserListModal
+							onClose={() => setIsUserListOpen(false)}
+							position={popoverPos}
+						/>
+					)}
 				</div>
 			)}
 		</div>

@@ -1,3 +1,5 @@
+import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
+
 interface UserListItemProps {
 	user: UserHomeData;
 	onClick: () => void;
@@ -8,14 +10,17 @@ export default function UserListItem({ user, onClick }: UserListItemProps) {
 	const ageGroup = Math.floor(age / 10) * 10;
 	const isOnline = user.isOnline;
 
+	// 이미지가 없으면 기본 이미지 사용
+	const profileImage = user.image?.trim() ? user.image : defaultProfileImage;
+
 	return (
 		<div
-			className="flex items-center gap-3 pt-[15px] pb-[15px] cursor-pointer"
+			className="flex items-center gap-3 pt-3 pb-3 cursor-pointer first:pt-0"
 			onClick={onClick}
 		>
 			<div className="relative w-[50px] h-[50px]">
 				<img
-					src={user.image}
+					src={profileImage}
 					alt="사용자"
 					className="w-full h-full rounded-full object-cover"
 				/>
@@ -31,7 +36,7 @@ export default function UserListItem({ user, onClick }: UserListItemProps) {
 				<div className="text-[16px] font-medium">{name}</div>
 				<ul className="text-[14px] text-gray-500 flex gap-[12px]">
 					<li>{ageGroup}대</li>
-					<li> {gender}</li>
+					<li>{gender}</li>
 				</ul>
 			</div>
 		</div>
