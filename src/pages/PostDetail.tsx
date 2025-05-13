@@ -138,6 +138,7 @@ export default function PostDetail() {
 						authorInfo={authorInfo}
 						isRecruitChannel={isRecruitChannel}
 						toggleRecruit={toggleRecruit}
+						isRecruiting={isRecruiting}
 					/>
 					{isRecruitChannel && (
 						<>
@@ -155,7 +156,7 @@ export default function PostDetail() {
 							</div>
 						</>
 					)}
-					{isAuthor && isRecruiting && (
+					{isAuthor && isRecruiting ? (
 						<ApplyMembers
 							postInfo={postInfo}
 							postData={postData}
@@ -163,6 +164,8 @@ export default function PostDetail() {
 							deleteApplicant={deleteApplicant}
 							addMember={addMember}
 						/>
+					) : (
+						<div></div>
 					)}
 					<Likes postData={postData} likesList={postData.likes} />
 					<CommentsList

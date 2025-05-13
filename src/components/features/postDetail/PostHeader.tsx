@@ -12,12 +12,14 @@ export default function PostHeader({
 	postInfo,
 	authorInfo,
 	isRecruitChannel,
+	isRecruiting,
 	toggleRecruit
 }: {
 	postData: PostData;
 	postInfo: PostDetail;
 	authorInfo: Profile;
 	isRecruitChannel: boolean;
+	isRecruiting: boolean;
 	toggleRecruit: () => void;
 }) {
 	const userId = useAuthStore((state) => state.userId)!;
@@ -38,7 +40,7 @@ export default function PostHeader({
 			<PostTitle
 				isRecruitChannel={isRecruitChannel}
 				isAuthor={isAuthor}
-				isRecruiting={postInfo.isRecruiting}
+				isRecruiting={isRecruiting}
 				toggleRecruit={toggleRecruit}
 				title={postInfo.title}
 				postData={postData}
