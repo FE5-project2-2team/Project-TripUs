@@ -14,6 +14,8 @@ import { useAuthStore } from "../../store/authStore";
 import Button from "./Button";
 import Modal from "./Modal";
 import ModalItem from "./ModalItem";
+import Icon from "./Icon";
+import UserListModal from "../features/home/UserListModal";
 
 export default function Header() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -26,6 +28,21 @@ export default function Header() {
 	const [modalOpen, setModalOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
+	// userList
+	// const userIconRef = useRef<HTMLButtonElement | null>(null);
+	// const [userListPos, setUserListPos] = useState<{ top: number; left: number }>(
+	// 	{ top: 0, left: 0 }
+	// );
+	const [isUserListOpen, setIsUserListOpen] = useState(false);
+
+	// const openUserList = () => {
+	// 	if (userIconRef.current) {
+	// 		const rect = userIconRef.current.getBoundingClientRect();
+	// 		setUserListPos({ top: rect.bottom + 8, left: rect.left });
+	// 	}
+	// 	setIsUserListOpen(true);
+	// };
+
 	const getUserData = useCallback(async () => {
 		if (!userId) return;
 		try {
@@ -37,6 +54,7 @@ export default function Header() {
 			console.error(error);
 		}
 	}, [userId]);
+
 	const signOut = () => {
 		navigate("/");
 		logout();
@@ -63,12 +81,20 @@ export default function Header() {
 	});
 
 	return (
-		<div className="flex justify-between h-[70px] px-5 border-b border-[#CACACA]">
+		<div className="w-[1100px] flex justify-between h-[70px] m-auto">
 			<Link to={"/"} className="flex items-center">
 				<img src={headerLogo} alt="로고" />
 			</Link>
 			{isLoggedIn ? (
 				<div className="flex items-center gap-[40px] relative">
+					{/* userList */}
+					<button
+						// ref={userIconRef}
+						className="mt-[7px] relative cursor-pointer"
+						onClick={() => setIsUserListOpen((prev) => !prev)}
+					>
+						<Icon size="24px" position="-201px -42px" />
+					</button>
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
@@ -117,6 +143,14 @@ export default function Header() {
 								로그아웃
 							</ModalItem>
 						</Modal>
+					)}
+
+					{/* userList */}
+					{isUserListOpen && (
+						<UserListModal
+							onClose={() => setIsUserListOpen(false)}
+							// position={userListPos}
+						/>
 					)}
 				</div>
 			) : (
