@@ -61,7 +61,7 @@ export default function NotificationList({
 					{notiContents === "전체" && <NotiWhole />}
 					{notiContents === "게시글" && <NotiPosts />}
 					{notiContents === "메시지" && <NotiMessage />}
-					{notiContents === "동행 요청" && <NotiRequest />}
+					{notiContents === "동행요청" && <NotiRequest />}
 				</div>
 				{/* 모두읽음 */}
 				<div className="flex justify-end">

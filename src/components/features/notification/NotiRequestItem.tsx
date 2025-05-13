@@ -34,16 +34,14 @@ export default function NotiRequestItem({ notice }: { notice: NotiData }) {
 			</div>
 
 			<div className="flex flex-col ml-[14px] w-[426px]">
-				{notice.comment && (
-					<div className="w-full">
-						<div className="flex justify-between items-center w-full">
-							<div className="text-[16px]">
-								{nickname}님이 동행요청을 보내셨습니다.
-							</div>
-							<div className="text-[14px] whitespace-nowrap">{time}</div>
+				<div className="w-full">
+					<div className="flex justify-between items-center w-full">
+						<div className="text-[16px]">
+							{nickname}님이 동행요청을 보내셨습니다.
 						</div>
+						<div className="text-[14px] whitespace-nowrap">{time}</div>
 					</div>
-				)}
+				</div>
 			</div>
 		</div>
 	);
