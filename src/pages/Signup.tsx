@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { registerUser } from "../apis/auth";
-import { toast } from "react-toastify";
 import SignupLogo from "../assets/images/Signup_logo.svg";
 import Button from "../components/commons/Button";
 import Icon from "../components/commons/Icon";
+import { showToast } from "../components/commons/Toast";
 
 function getGender(ssno: string) {
 	const regex = /^(\d{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[1-4]$/;
@@ -174,14 +174,17 @@ export default function Signup() {
 			const user = await registerUser(userInfo);
 
 			if (user) {
-				toast.success("회원 가입이 완료되었습니다!");
+				showToast({ type: "success", message: "회원 가입이 완료되었습니다!" });
 				navigate("/login");
 			} else {
-				toast.error("회원가입 실패");
+				showToast({ type: "error", message: "회원 가입 실패!" });
 			}
 		} catch (error) {
 			console.error("회원가입 중 오류 발생:", error);
-			toast.warning("회원가입 중 오류가 발생했습니다.");
+			showToast({
+				type: "warning",
+				message: "회원 가입 중 오류가 발생했습니다."
+			});
 		}
 	};
 
