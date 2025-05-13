@@ -1,3 +1,5 @@
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 import { Navigate, Route, Routes } from "react-router";
 import ProtectedRoute from "./components/commons/ProtectedRoute";
 import PublicOnlyRoute from "./components/commons/PublicOnlyRoute";
@@ -5,17 +7,19 @@ import RootLayout from "./layouts/Rootlayout";
 import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Message from "./pages/Message";
+//import Message from "./pages/Message";
 import NotFound from "./pages/NotFound";
 import PostCreate from "./pages/PostCreate";
 import PostDetail from "./pages/PostDetail";
 import PostEdit from "./pages/PostEdit";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
+import MessageLayout from "./components/features/message/MessageLayout";
+
 
 export default function App() {
 	return (
-		<>
+		<> 
 			<Routes>
 				<Route element={<RootLayout />}>
 					<Route path="/" element={<Home />}>
@@ -28,7 +32,8 @@ export default function App() {
 					<Route element={<ProtectedRoute />}>
 						<Route path="/postCreate" element={<PostCreate />} />
 						<Route path="/post/edit/:id" element={<PostEdit />} />
-						<Route path="/message" element={<Message />} />
+						<Route path="/message" element={<MessageLayout />} />
+						<Route path="/message/:id" element={<MessageLayout />} />
 					</Route>
 				</Route>
 				<Route element={<PublicOnlyRoute />}>
@@ -38,6 +43,17 @@ export default function App() {
 				<Route path="/404" element={<NotFound />} />
 				<Route path="/*" element={<Navigate to="/404" replace />} />
 			</Routes>
+			<ToastContainer
+				position="top-center"
+				autoClose={2500}
+				hideProgressBar
+				closeOnClick={false}
+				pauseOnHover
+				draggable
+				toastClassName={() =>
+					'bg-transparent shadow-none p-0 m-0 flex justify-center'
+				}
+			/>
 		</>
 	);
 }

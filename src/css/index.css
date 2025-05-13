@@ -7,6 +7,7 @@ body {
 	font-family: "Noto Sans KR", sans-serif;
 	font-optical-sizing: auto;
 	font-style: normal;
+	zoom: 90%;
 }
 
 .inputProps {
@@ -52,4 +53,12 @@ body {
 
 .ql-editor.ql-blank::before {
 	@apply text-[#CDCDCD] not-italic;
+}
+
+/* swiper pagination */
+.custom-bullet {
+	@apply inline-block w-[12px] h-[12px] bg-[#CDCDCD] rounded-full mx-[4px] opacity-100 transition-colors duration-300 cursor-pointer;
+}
+.custom-bullet-active {
+	@apply w-[36px] bg-[#06B796];
 }
