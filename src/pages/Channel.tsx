@@ -236,7 +236,7 @@ export default function Channel() {
 							{/* 여행지, 크루원수,날짜*/}
 							<div className="min-w-[142px] h-[70px] text-[14px] mt-2">
 								<div className="min-w-[61px] h-[18px]">
-									{post.channel.name !== "review" && (
+									{post.title.location && (
 										<p className="flex gap-1">
 											<Icon position="5.447% 19.352%" size="18px" />
 											{post.title.location}
@@ -257,7 +257,7 @@ export default function Channel() {
 							</div>
 						</div>
 						{/* 나이,성별 */}
-						<div className="text-[14px] flex mt-auto gap-4 mt-2">
+						<div className="text-[14px] flex mt-auto gap-4">
 							{post.title.recruitCondition.gender &&
 								`#${post.title.recruitCondition.gender}`}
 							{post.title.recruitCondition.ageRange &&

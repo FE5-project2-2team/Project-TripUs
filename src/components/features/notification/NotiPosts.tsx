@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getNotiList, readNoti } from "../../../apis/notification";
 import { useAuthStore } from "../../../store/authStore";
-import NotiItem from "./notiItem";
+import NotiItem from "./NotiItem";
 
 export default function NotiPosts() {
 	const [notiInfo, setNotiInfo] = useState<NotiData[] | []>([]);
