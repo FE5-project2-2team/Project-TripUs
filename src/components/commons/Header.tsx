@@ -26,15 +26,10 @@ export default function Header() {
 	const setNickname = useAuthStore((state) => state.setNickname);
 	const navigate = useNavigate();
 
-	// const [image, setImage] = useState(profileCircle);
-	// const [nickname, setNickname] = useState("");
-	// const { nickname, image, setNickname, setImage} = useUserStore();
 	const [modalOpen, setModalOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
 	const [isUserListOpen, setIsUserListOpen] = useState(false);
-	const [popoverPos, setPopoverPos] = useState({ top: 50, left: 0 });
-	const userListBtnRef = useRef<HTMLButtonElement>(null);
 
 	const getUserData = useCallback(async () => {
 		if (!userId) return;
@@ -47,6 +42,7 @@ export default function Header() {
 			console.error(error);
 		}
 	}, [userId, setImage, setNickname]); // 변경된 부분
+
 	const signOut = () => {
 		navigate("/");
 		logout();
@@ -72,17 +68,6 @@ export default function Header() {
 		setModalOpen(false);
 	});
 
-	const toggleUserList = () => {
-		if (!isUserListOpen && userListBtnRef.current) {
-			const rect = userListBtnRef.current.getBoundingClientRect();
-			setPopoverPos({
-				top: rect.bottom + window.scrollY,
-				left: rect.left + window.scrollX
-			});
-		}
-		setIsUserListOpen((prev) => !prev);
-	};
-
 	return (
 		<div className="w-[1100px] flex justify-between h-[70px] m-auto">
 			<Link to={"/"} className="flex items-center">
@@ -91,13 +76,17 @@ export default function Header() {
 			{isLoggedIn ? (
 				<div className="flex items-center gap-[40px] relative">
 					{/* userList */}
-					<button
-						ref={userListBtnRef}
-						className="mt-[7px] relative cursor-pointer"
-						onClick={toggleUserList}
-					>
-						<Icon size="24px" position="-201px -42px" />
-					</button>
+					<div className="relative inline-block">
+						<button
+							className="mt-[7px] relative cursor-pointer"
+							onClick={() => setIsUserListOpen((prev) => !prev)}
+						>
+							<Icon size="24px" position="-201px -42px" />
+						</button>
+						{isUserListOpen && (
+							<UserListModal onClose={() => setIsUserListOpen(false)} />
+						)}
+					</div>
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
@@ -147,25 +136,21 @@ export default function Header() {
 							</ModalItem>
 						</Modal>
 					)}
-
-					{/* userList */}
-					{isUserListOpen && (
-						<UserListModal
-							onClose={() => setIsUserListOpen(false)}
-							position={popoverPos}
-						/>
-					)}
 				</div>
 			) : (
 				<div className="flex items-center gap-[10px]">
 					{/* userList */}
-					<button
-						ref={userListBtnRef}
-						className="mt-[7px] mr-[5px] relative cursor-pointer"
-						onClick={toggleUserList}
-					>
-						<Icon size="24px" position="-201px -42px" />
-					</button>
+					<div className="relative inline-block">
+						<button
+							className="mt-[7px] relative cursor-pointer"
+							onClick={() => setIsUserListOpen((prev) => !prev)}
+						>
+							<Icon size="24px" position="-201px -42px" />
+						</button>
+						{isUserListOpen && (
+							<UserListModal onClose={() => setIsUserListOpen(false)} />
+						)}
+					</div>
 					<Link to={"/login"}>
 						<Button
 							reverse
@@ -179,14 +164,6 @@ export default function Header() {
 							회원 가입
 						</Button>
 					</Link>
-
-					{/* userList */}
-					{isUserListOpen && (
-						<UserListModal
-							onClose={() => setIsUserListOpen(false)}
-							position={popoverPos}
-						/>
-					)}
 				</div>
 			)}
 		</div>

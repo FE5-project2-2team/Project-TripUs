@@ -15,7 +15,7 @@ export default function UserListItem({ user, onClick }: UserListItemProps) {
 
 	return (
 		<div
-			className="flex items-center gap-3 pt-3 pb-3 cursor-pointer first:pt-0"
+			className="flex items-center gap-3 p-[10px] cursor-pointer mb-[5px] rounded-[8px] hover:bg-[#F6FAF9]"
 			onClick={onClick}
 		>
 			<div className="relative w-[50px] h-[50px]">

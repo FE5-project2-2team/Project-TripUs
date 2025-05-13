@@ -5,12 +5,7 @@ import Icon from "../../commons/Icon";
 import UserListItem from "./UserListItem";
 import { useClickAway } from "react-use";
 
-interface Props {
-	onClose: () => void;
-	position: { top: number; left: number };
-}
-
-export default function UserListModal({ onClose, position }: Props) {
+export default function UserListModal({ onClose }: { onClose: () => void }) {
 	const [userList, setUserList] = useState<UserHomeData[]>([]);
 	const [filteredUser, setFilteredUser] = useState<UserHomeData[]>([]);
 	const [search, setSearch] = useState("");
@@ -114,8 +109,7 @@ export default function UserListModal({ onClose, position }: Props) {
 	return (
 		<div
 			ref={modalRef}
-			style={{ top: position.top, left: position.left }}
-			className="fixed mt-2 w-[400px] h-[544px] bg-white z-50 shadow-[0px_2px_8px_rgba(0,0,0,0.20)] px-[30px] py-[30px] rounded-[15px]"
+			className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[400px] h-[580px] bg-white z-50 shadow-[0px_2px_8px_rgba(0,0,0,0.20)] px-[30px] py-[40px] rounded-[10px]"
 		>
 			<div className="flex justify-between items-center mb-[20px]">
 				<h2 className="text-[20px] font-semibold">사용자 리스트</h2>
@@ -124,7 +118,7 @@ export default function UserListModal({ onClose, position }: Props) {
 				</button>
 			</div>
 
-			<div className="relative mb-[20px]">
+			<div className="relative mb-[15px]">
 				<input
 					value={search}
 					onFocus={() => setIsFocused(true)}
@@ -132,9 +126,9 @@ export default function UserListModal({ onClose, position }: Props) {
 					onChange={(e) => setSearch(e.target.value)}
 					type="text"
 					placeholder="사용자를 검색해보세요"
-					className="w-full border border-[#CDCDCD] rounded-[10px] px-3 py-2 pr-10 text-sm placeholder-[#616161] focus:outline-none focus:border-[#06b796]"
+					className="w-full border border-[#e4e4e4] rounded-[10px] px-[16px] py-[16px] pr-10 text-sm placeholder-[#616161] focus:outline-none focus:border-[#06b796]"
 				/>
-				<div className="absolute right-3.5 top-2 cursor-pointer">
+				<div className="absolute right-[16px] top-[15px] cursor-pointer">
 					<Icon
 						size="16px"
 						position={isFocused ? "-148px -349px" : "-34px -128px"}
@@ -142,7 +136,7 @@ export default function UserListModal({ onClose, position }: Props) {
 				</div>
 			</div>
 
-			<div className="h-[380px] overflow-y-auto p-[16px] border-1 border-[#CDCDCD] rounded-[10px]">
+			<div className="h-[382px] overflow-y-auto p-[5px] border-1 border-[#e4e4e4] rounded-[8px]">
 				{filteredUser.map((user) => (
 					<UserListItem
 						key={user._id}
