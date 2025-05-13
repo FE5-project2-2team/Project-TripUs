@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import { showToast } from "../../commons/Toast";
 import { uploadPhoto } from "../../../apis/user";
-import { useUserStore } from "../../../store/userStore";
-import Button from "../../commons/Button";
 import profileCircle from "../../../assets/images/profileImg_circle.svg";
+import { useAuthStore } from "../../../store/authStore";
+import Button from "../../commons/Button";
+import { showToast } from "../../commons/Toast";
 
 interface Props {
 	editProfile: Profile;
@@ -23,8 +23,9 @@ export default function ProfileEditModal({
 	onUpdate
 }: Props) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
+
 	const { setImage: setGlobalImage, setNickname: setGlobalNickname } =
-		useUserStore();
+		useAuthStore();
 
 	const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
