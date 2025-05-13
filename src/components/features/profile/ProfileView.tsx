@@ -10,7 +10,7 @@ export default function ProfileView({ profile, image }: ProfileViewProps) {
 				<img
 					src={image}
 					alt="프로필 이미지"
-					className="w-[160px] h-[160px] rounded-full mx-auto mb-[20px] object-cover"
+					className="select-none w-[160px] h-[160px] rounded-full mx-auto mb-[20px] object-cover"
 				/>
 				{/* 유저 프로필 정보 */}
 				<p className="text-[18px] font-medium">
