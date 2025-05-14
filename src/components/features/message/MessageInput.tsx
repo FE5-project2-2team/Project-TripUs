@@ -24,7 +24,10 @@ export default function MessageInput({
 	};
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === "Enter") handleSend();
+		if (e.key === "Enter") {
+			e.preventDefault();
+			handleSend();
+		}
 	};
 
 	return (
