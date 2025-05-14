@@ -17,7 +17,6 @@ export default function ApplyMembers({
 	const approveHandler = async (applicant: UserData) => {
 		try {
 			const newData: PostDetail = { ...postInfo };
-			newData.applicantList.push(applicant._id);
 			newData.memberList.push(applicant._id);
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(newData));
@@ -34,7 +33,7 @@ export default function ApplyMembers({
 	const rejectHandler = async (userId: string) => {
 		try {
 			const newData: PostDetail = { ...postInfo };
-			newData.applicantList.push(userId);
+			newData.rejectList.push(userId);
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(newData));
 			formData.append("channelId", postData.channel._id);
