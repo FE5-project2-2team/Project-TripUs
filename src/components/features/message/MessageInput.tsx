@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createMessage } from "../../../apis/message";
+import Icon from "../../commons/Icon";
 
 interface MessageInputProps {
 	receiverId: string;
@@ -31,20 +32,22 @@ export default function MessageInput({
 	};
 
 	return (
-		<div className="p-4 border-t flex">
-			<input
-				value={text}
-				onChange={(e) => setText(e.target.value)}
-				onKeyDown={handleKeyDown}
-				placeholder="메시지를 입력하세요"
-				className="flex-1 border rounded px-3 py-2 text-sm"
-			/>
-			<button
-				onClick={handleSend}
-				className="ml-2 px-4 py-2 bg-blue-500 text-white rounded text-sm"
-			>
-				전송
-			</button>
+		<div className="p-4 flex justify-center">
+			<div className="w-[680px] h-[60px] bg-white rounded-[8px] flex items-center px-4">
+				<input
+					value={text}
+					onChange={(e) => setText(e.target.value)}
+					onKeyDown={handleKeyDown}
+					placeholder="메시지를 입력하세요"
+					className="flex-1 h-full bg-transparent focus:outline-none text-[16px] placeholder:text-gray-400"
+				/>
+				<button
+					onClick={handleSend}
+					className="w-[50px] h-[46px] bg-[#06B796] hover:bg-[#05A187] rounded-[8px] flex items-center justify-center ml-2 transition-colors duration-200"
+				>
+					<Icon size="24px" position="-24px -200px" />
+				</button>
+			</div>
 		</div>
 	);
 }

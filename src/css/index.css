@@ -55,3 +55,19 @@ button {
 .custom-bullet-active {
 	@apply w-[36px] bg-[#06B796];
 }
+
+/* scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+	width: 6px;
+}
+
+/* 흰 배경 제거 */
+.custom-scrollbar::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+/* 스크롤 막대 색상 */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	background-color: #999999;
+	border-radius: 10px;
+}
