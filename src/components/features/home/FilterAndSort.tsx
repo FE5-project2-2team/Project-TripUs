@@ -170,7 +170,7 @@ export default function FilterAndSort({
 					</button>
 					{/* 정렬 툴팁 */}
 					{sortToggle && (
-						<div className="absolute top-full left-0 w-[142px] h-[98px] drop-shadow bg-white rounded-[10px] z-50">
+						<div className="absolute top-[30px] left-[-50px] w-[142px] h-[98px] drop-shadow bg-white rounded-[10px] z-50">
 							{["최신순", "인기순"].map((option) => (
 								<button
 									key={option}

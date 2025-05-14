@@ -10,6 +10,7 @@ import MemberList from "../components/features/postDetail/MemberList";
 import PostHeader from "../components/features/postDetail/PostHeader";
 import { CHANNELS } from "../constants/posts";
 import { useAuthStore } from "../store/authStore";
+import { createNoti } from "../apis/notification"; //알림
 
 export default function PostDetail() {
 	const { id } = useParams();
@@ -92,6 +93,18 @@ export default function PostDetail() {
 				JSON.stringify(data)
 			);
 			setComments((list) => [...list, newComment]);
+
+			//알림
+			// console.log("newComment:", newComment);
+			const post: PostData = await getPostById(newComment.post);
+			//console.log("post작성자(알림받을사람):", post.author._id);
+			await createNoti({
+				notificationType: "COMMENT",
+				notificationTypeId: newComment._id,
+				userId: post.author._id,
+				postId: newComment.post
+			});
+			// console.log("댓글 알림생성:", commentNoti);
 		} catch (error) {
 			console.error(error);
 		}
@@ -118,6 +131,17 @@ export default function PostDetail() {
 			JSON.stringify(data)
 		);
 		setApplicants((applicants) => [...applicants, newApplicant]);
+
+		//알림
+		// console.log("newApplicant", newApplicant);
+		const post: PostData = await getPostById(newApplicant.post);
+		await createNoti({
+			notificationType: "APPLY",
+			notificationTypeId: newApplicant._id,
+			userId: post.author._id,
+			postId: newApplicant.post
+		});
+		// console.log("동행요청reqNoti:", reqNoti);
 	};
 
 	const cancelBtnHandler = async () => {
