@@ -12,12 +12,16 @@ export default function ConversationList() {
 		const fetchConversations = async () => {
 			try {
 				const data = await getConversations();
+				console.log("getConversation 응답", data);
 				setConversations(data);
 			} catch (err) {
 				console.log("대화 목록 불러오기 실패", err);
 			}
 		};
 		fetchConversations();
+
+		const interval = setInterval(fetchConversations, 3000);
+		return () => clearInterval(interval);
 	}, []);
 
 	const getDisplayName = (fullName: string | User) => {
@@ -49,6 +53,15 @@ export default function ConversationList() {
 				const opponent =
 					conv.sender._id === myUserId ? conv.receiver : conv.sender;
 
+				console.log("대화방", {
+					상대방: opponent.fullName,
+					마지막메시지: conv.message,
+					seen: conv.seen,
+					sender: conv.sender._id,
+					receiver: conv.receiver._id,
+					나: myUserId
+				});
+
 				const formattedTime = new Date(conv.createdAt).toLocaleTimeString([], {
 					hour: "2-digit",
 					minute: "2-digit"
@@ -78,6 +91,9 @@ export default function ConversationList() {
 
 						<div className="text-xs text-gray-400 whitespace-nowrap ml-2">
 							{formattedTime}
+							{conv.receiver._id === myUserId && !conv.seen && (
+								<span className="w-[8px] h-[8px] bg-red-500 rounded-full ml-2 inline-block"></span>
+							)}
 						</div>
 					</div>
 				);
