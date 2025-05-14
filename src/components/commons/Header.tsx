@@ -14,6 +14,8 @@ import Button from "./Button";
 import Modal from "./Modal";
 import ModalItem from "./ModalItem";
 import NotiList from "../features/notification/NotiList";
+import Icon from "./Icon";
+import UserListModal from "../features/user/UserListModal";
 
 export default function Header() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -29,6 +31,8 @@ export default function Header() {
 	const [notiOpen, setNotiOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
+	const [isUserListOpen, setIsUserListOpen] = useState(false);
+
 	const getUserData = useCallback(async () => {
 		if (!userId) return;
 		try {
@@ -40,6 +44,7 @@ export default function Header() {
 			console.error(error);
 		}
 	}, [userId, setImage, setNickname]); // 변경된 부분
+
 	const signOut = () => {
 		navigate("/");
 		logout();
@@ -70,12 +75,24 @@ export default function Header() {
 	});
 
 	return (
-		<div className="flex justify-between h-[70px] px-5 border-b border-[#CACACA]">
+		<div className="w-[1100px] flex justify-between h-[70px] m-auto">
 			<Link to={"/"} className="flex items-center">
 				<img src={headerLogo} alt="로고" />
 			</Link>
 			{isLoggedIn ? (
 				<div className="flex items-center gap-[40px] relative">
+					{/* userList */}
+					<div className="relative inline-block">
+						<button
+							className="mt-[7px] relative cursor-pointer"
+							onClick={() => setIsUserListOpen((prev) => !prev)}
+						>
+							<Icon size="24px" position="-201px -42px" />
+						</button>
+						{isUserListOpen && (
+							<UserListModal onClose={() => setIsUserListOpen(false)} />
+						)}
+					</div>
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
@@ -133,16 +150,30 @@ export default function Header() {
 				</div>
 			) : (
 				<div className="flex items-center gap-[10px]">
+					{/* userList */}
+					<div className="relative inline-block">
+						<button
+							className="mt-[7px] relative cursor-pointer"
+							onClick={() => setIsUserListOpen((prev) => !prev)}
+						>
+							<Icon size="24px" position="-201px -42px" />
+						</button>
+						{isUserListOpen && (
+							<UserListModal onClose={() => setIsUserListOpen(false)} />
+						)}
+					</div>
 					<Link to={"/login"}>
 						<Button
 							reverse
-							className="w-[78px] h-[45px] text-[18px] border-transparent hover:border-[#06B796] hover:bg-white hover:text-[#06b796]"
+							className="w-[120px] h-[45px] text-[18px] border-transparent hover:border-[#06B796] hover:bg-[#E0F4F2] hover:text-[#06b796]"
 						>
 							로그인
 						</Button>
 					</Link>
 					<Link to={"/signup"}>
-						<Button className="w-25 h-[45px] text-[18px]">회원 가입</Button>
+						<Button className="w-[120px] h-[45px] text-[18px]">
+							회원 가입
+						</Button>
 					</Link>
 				</div>
 			)}

@@ -30,6 +30,9 @@ export default function Message() {
 			}
 		};
 		fetchMessages();
+
+		const interval = setInterval(fetchMessages, 3000);
+		return () => clearInterval(interval);
 	}, [id]);
 
 	const handleNewMessage = (newMsg: MessageData) => {
