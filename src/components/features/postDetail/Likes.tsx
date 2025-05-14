@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { createLike, deleteLike } from "../../../apis/like";
 import { useAuthStore } from "../../../store/authStore";
 import Icon from "../../commons/Icon";
+import { createNoti } from "../../../apis/notification";
 
 export default function Likes({
 	likesList,
@@ -59,6 +60,16 @@ export default function Likes({
 					number: prev.number,
 					likeId: myLike._id
 				}));
+				//추가
+				await createNoti({
+					notificationType: "LIKE",
+					notificationTypeId: myLike._id,
+					userId: postData.author._id,
+					postId: postData._id
+				});
+				// console.log("좋아요 알림생성:", likeNoti);
+				// console.log("알림 받을 대상:", postData.author._id);
+				// console.log("현재 사용자:", userId);
 			} catch (error) {
 				console.error(error);
 				setLikes((prev) => ({

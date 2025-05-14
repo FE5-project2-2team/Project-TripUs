@@ -1,7 +1,6 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import profileCircle from "../assets/images/profileImg_circle.svg";
-
 
 type AuthStore = {
 	isLoggedIn: boolean;
@@ -29,18 +28,19 @@ export const useAuthStore = create<AuthStore>()(
 			login: (accessToken, userId) =>
 				set({ isLoggedIn: true, accessToken, userId }),
 			logout: () =>
-				set({ 
-					isLoggedIn: false, 
-					accessToken: null, 
+				set({
+					isLoggedIn: false,
+					accessToken: null,
 					userId: null,
 					image: profileCircle,
-					nickname: null,
+					nickname: null
 				}),
 			setImage: (image) => set({ image }),
-			setNickname: (nickname) => set({ nickname }),
+			setNickname: (nickname) => set({ nickname })
 		}),
 		{
-			name: "auth-storage", // for local storge
+			name: "auth-storage",
+			storage: createJSONStorage(() => sessionStorage)
 		}
 	)
 );

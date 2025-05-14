@@ -10,6 +10,7 @@ import MemberList from "../components/features/postDetail/MemberList";
 import PostHeader from "../components/features/postDetail/PostHeader";
 import { CHANNELS } from "../constants/posts";
 import { useAuthStore } from "../store/authStore";
+import { createNoti } from "../apis/notification"; //알림
 
 export default function PostDetail() {
 	const { id } = useParams();
@@ -19,6 +20,7 @@ export default function PostDetail() {
 	const [comments, setComments] = useState<CommentData[]>([]);
 	const [members, setMembers] = useState<string[]>([]);
 	const [isRecruiting, setIsRecruiting] = useState(false);
+	const [isApplying, setIsApplying] = useState(false);
 
 	const getData = useCallback(async () => {
 		try {
@@ -32,12 +34,22 @@ export default function PostDetail() {
 				const parsed: CommentType = JSON.parse(commentData.comment);
 				return (
 					parsed.type === "apply" &&
-					postInfo.applicantList.every(
+					postInfo.memberList.every(
+						(member) => member !== commentData.author._id
+					) &&
+					postInfo.rejectList.every(
 						(applicant) => applicant !== commentData.author._id
 					)
 				);
 			});
 			setApplicants(applyList);
+			const isMember = postInfo.memberList.includes(userId);
+			const isRejected = postInfo.rejectList.includes(userId);
+			const isApplying =
+				applicants.some((applicant) => applicant.author._id === userId) &&
+				!isMember &&
+				!isRejected;
+			setIsApplying(isApplying);
 
 			const commentList = postData.comments.filter((commentData) => {
 				const parsed: CommentType = JSON.parse(commentData.comment);
@@ -48,7 +60,7 @@ export default function PostDetail() {
 		} catch (error) {
 			console.error(error);
 		}
-	}, [id]);
+	}, [id, applicants, userId]);
 
 	const toggleRecruit = async () => {
 		try {
@@ -81,6 +93,18 @@ export default function PostDetail() {
 				JSON.stringify(data)
 			);
 			setComments((list) => [...list, newComment]);
+
+			//알림
+			// console.log("newComment:", newComment);
+			const post: PostData = await getPostById(newComment.post);
+			//console.log("post작성자(알림받을사람):", post.author._id);
+			await createNoti({
+				notificationType: "COMMENT",
+				notificationTypeId: newComment._id,
+				userId: post.author._id,
+				postId: newComment.post
+			});
+			// console.log("댓글 알림생성:", commentNoti);
 		} catch (error) {
 			console.error(error);
 		}
@@ -107,6 +131,25 @@ export default function PostDetail() {
 			JSON.stringify(data)
 		);
 		setApplicants((applicants) => [...applicants, newApplicant]);
+
+		//알림
+		// console.log("newApplicant", newApplicant);
+		const post: PostData = await getPostById(newApplicant.post);
+		await createNoti({
+			notificationType: "APPLY",
+			notificationTypeId: newApplicant._id,
+			userId: post.author._id,
+			postId: newApplicant.post
+		});
+		// console.log("동행요청reqNoti:", reqNoti);
+	};
+
+	const cancelBtnHandler = async () => {
+		setIsApplying(true);
+		const myApply = applicants.filter(
+			(applicant) => applicant.author._id === userId
+		);
+		await deleteComment(myApply[0]._id);
 	};
 
 	const deleteApplicant = (userId: string) => {
@@ -123,11 +166,10 @@ export default function PostDetail() {
 	if (postData) {
 		const authorInfo: Profile = JSON.parse(postData.author.fullName);
 		const postInfo: PostDetail = JSON.parse(postData.title);
-		const isAuthor = userId === postData.author._id;
-		const isApplied =
-			applicants.some((applicant) => applicant.author._id === userId) ||
-			postInfo.applicantList.includes(userId);
 
+		const isAuthor = userId === postData.author._id;
+		const isMember = postInfo.memberList.includes(userId);
+		const isRejected = postInfo.rejectList.includes(userId);
 		const isRecruitChannel = postData.channel._id === CHANNELS.RECRUITMENT;
 		return (
 			<main className="flex flex-col justify-center items-center mt-[49px]">
@@ -174,14 +216,19 @@ export default function PostDetail() {
 						submitHandler={submitHandler}
 						deleteCommentHandler={deleteCommentHandler}
 					/>
-					{!isAuthor && userId && isRecruitChannel && (
+					{!isAuthor && userId && isRecruitChannel && !isMember && (
 						<Button
-							onClick={applyBtnHandler}
+							reverse={isApplying}
+							onClick={isApplying ? cancelBtnHandler : applyBtnHandler}
 							className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
-							disabled={!postInfo.isRecruiting || isApplied}
+							disabled={!postInfo.isRecruiting || isRejected}
 						>
 							{postInfo.isRecruiting
-								? "동행 신청하기"
+								? isRejected
+									? "거절 되었습니다"
+									: isApplying
+										? "동행 신청 취소"
+										: "동행 신청하기"
 								: "모집이 마감되었습니다"}
 						</Button>
 					)}

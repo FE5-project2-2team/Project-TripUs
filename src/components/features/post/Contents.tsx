@@ -10,13 +10,16 @@ Quill.register("formats/size", Size, true);
 Quill.register("modules/imageResize", ImageResize);
 
 export default function Contents({
-	contentsRef
+	contentsRef,
+	isConfirmed
 }: {
 	contentsRef: React.RefObject<ReactQuill | null>;
+	isConfirmed: number;
 }) {
 	const { watch } = useFormContext();
-	const channel = watch("channel");
-	const showImageBtn = channel === CHANNELS.REVIEW;
+
+	const watchedChannel = watch("channel");
+	const showImageBtn = watchedChannel === CHANNELS.REVIEW;
 
 	const ImageHandler = async () => {
 		if (!contentsRef.current) return;
@@ -46,16 +49,18 @@ export default function Contents({
 			}
 		};
 	};
+
 	return (
 		<div>
 			<label htmlFor="contents" className="post-input-title">
 				내용
 			</label>
 			<ReactQuill
+				key={isConfirmed}
 				ref={contentsRef}
 				theme="snow"
 				placeholder="내용을 입력해 주세요 (1000자 이내)"
-				className="h-125 mb-[30px]"
+				className="h-125 overflow-y mb-[30px]"
 				modules={{
 					toolbar: {
 						container: [
@@ -69,7 +74,17 @@ export default function Contents({
 							image: ImageHandler
 						}
 					},
-					imageResize: {}
+					imageResize: {
+						modules: ["Resize", "DisplaySize", "Toolbar"],
+						displayStyles: {
+							backgroundColor: "black",
+							border: "none",
+							color: "white"
+						},
+						handleStyles: {
+							border: "1px solid #fff"
+						}
+					}
 				}}
 			/>
 		</div>
