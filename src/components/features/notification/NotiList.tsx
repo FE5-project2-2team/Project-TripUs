@@ -20,24 +20,6 @@ export default function NotiList({
 	const bannerArr = ["전체", "게시글", "메시지", "동행요청"];
 	const [notiContents, setNotiContents] = useState("전체");
 	// const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		const NotiFunc = async () => {
-			try {
-				setIsLoading(true);
-				const myNotiInfo: NotiData[] = await getNotiList();
-				//  console.log("알림 목록:", myNotiInfo);
-				setNotiInfo(myNotiInfo);
-				// console.log("setNotiInfo업데이트:", notiInfo);
-			} catch (e) {
-				console.error("알림 가져오기 에러:", e);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-		NotiFunc();
-	}, [setNotiInfo]);
 
 	//모든 알림 읽었다면 readNoti보내기
 	useEffect(() => {
@@ -52,14 +34,27 @@ export default function NotiList({
 		};
 		markNoti();
 	}, [notiInfo]);
-
+	useEffect(() => {
+		//알림
+		const NotiFunc = async () => {
+			try {
+				const myNotiInfo: NotiData[] = await getNotiList();
+				console.log("서버 알림 응답:", myNotiInfo);
+				setNotiInfo(myNotiInfo);
+			} catch (e) {
+				console.error("알림 가져오기 에러:", e);
+			}
+		};
+		NotiFunc();
+		//
+	}, [setNotiInfo]);
 	const handleClose = () => {
 		setNotiOpen(false);
 	};
 	const handleRead = async () => {
 		try {
 			await readNoti();
-			setNotiInfo((notice) => notice.map((n) => ({ ...n, seen: true })));
+			// setNotiInfo((notice) => notice.map((n) => ({ ...n, seen: true })));
 		} catch (e) {
 			console.error("모두 읽음처리 실패", e);
 		}
@@ -163,11 +158,7 @@ export default function NotiList({
 
 				{/* 알림 내용들 */}
 				<div className="w-full h-[500px] overflow-y-auto">
-					{isLoading ? (
-						<div className="text-center py-10 text-[#D9D9D9]">로딩중...</div>
-					) : (
-						filteredBannerNoti()
-					)}
+					{filteredBannerNoti()}
 				</div>
 				{/* 모두읽음 */}
 				<div className="flex justify-end items-center border-t border-t-[#CDCDCD]">

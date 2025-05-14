@@ -165,7 +165,7 @@ export default function Channel() {
 
 				<div
 					key={post._id}
-					className="w-[340px] h-[434px] rounded-[15px] border border-[#D9D9D9] flex flex-col overflow-hidden cursor-pointer shadow"
+					className="w-[340px] h-[434px] rounded-[15px] flex flex-col overflow-hidden cursor-pointer shadow"
 					onClick={() => navigate(`/post/detail/${post._id}`)}
 				>
 					<div className="relative">

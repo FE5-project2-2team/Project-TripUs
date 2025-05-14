@@ -20,7 +20,7 @@ export default function NotiPosts({
 					.map((notice) => (
 						<NotiPostItem
 							key={notice._id}
-							notice={noti.find((n) => n._id === notice._id)!}
+							notice={notice}
 							onClose={onClose}
 							setNotiInfo={setNotiInfo}
 						/>

@@ -36,7 +36,6 @@ export default function NotiMessageItem({
 		const getMessages = async () => {
 			try {
 				const messages: MessageData[] = await getMessageList(notice.author._id);
-
 				setMess(messages.find((m) => m._id === notice.message));
 			} catch (error) {
 				console.error("특정 사용자 메시지 목록 불러오기 실패", error);

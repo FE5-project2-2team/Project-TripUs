@@ -75,7 +75,6 @@ export default function Header() {
 	useClickAway(modalRef, () => {
 		setModalOpen(false);
 	});
-
 	return (
 		<div className="w-[1100px] flex justify-between h-[70px] m-auto">
 			<Link to={"/"} className="flex items-center">
