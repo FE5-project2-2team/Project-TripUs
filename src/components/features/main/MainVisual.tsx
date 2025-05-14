@@ -11,7 +11,6 @@ import type { Swiper as SwiperClass } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import "../../../css/index.css";
 
 import { useRef, useState } from "react";
 import Icon from "../../commons/Icon";

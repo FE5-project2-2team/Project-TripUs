@@ -40,6 +40,13 @@ export const updateUserPwd = async (newPwd: string) => {
 	return data;
 };
 
+// userSearch
+export const searchUsers = async (query: string) => {
+	const encoded = encodeURIComponent(query);
+	const { data } = await axiosInstance.get(`/search/users/${encoded}`);
+	return data as UserHomeData[];
+};
+
 // export const updateUserInfo = async ({ profile }: UpdatedUserData) => {
 // 	const userInfo: { fullName?: string; username?: string } = {};
 // 	if (profile) {
