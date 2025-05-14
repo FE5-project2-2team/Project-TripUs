@@ -14,7 +14,7 @@ import Button from "./Button";
 import Modal from "./Modal";
 import ModalItem from "./ModalItem";
 import Icon from "./Icon";
-import UserListModal from "../features/home/UserListModal";
+import UserListModal from "../features/user/UserListModal";
 
 export default function Header() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
