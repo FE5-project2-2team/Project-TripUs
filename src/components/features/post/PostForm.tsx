@@ -18,7 +18,7 @@ interface PostFormProps {
 		addImage: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
 		removeImage: (image: string) => void;
 	};
-	methods: UseFormReturn<FormValues, FormValues>;
+	methods: UseFormReturn<FormValues>;
 	type: string;
 }
 

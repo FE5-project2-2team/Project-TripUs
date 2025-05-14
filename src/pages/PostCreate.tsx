@@ -14,13 +14,12 @@ export default function PostCreate() {
 	const navigate = useNavigate();
 	const userId = useAuthStore((state) => state.userId)!;
 	const { imageListRef, ...imageProps } = useImage();
-
+	const contentsRef = useRef<ReactQuill | null>(null);
 	const methods = usePostForm();
-
-	const contents = useRef<ReactQuill | null>(null);
-
 	const submitHandler = async (data: FormValues) => {
 		try {
+			if (!data.condition) return;
+			const editor = contentsRef.current?.getEditor();
 			const detailData: PostDetail = {
 				title: data.title,
 				memberLimit: Number(data.member),
@@ -30,17 +29,17 @@ export default function PostCreate() {
 				dateRange: data.dateRange,
 				isRecruiting: true,
 				recruitCondition: data.condition,
-				description: contents.current
-					?.getEditor()
-					.editor.getText(0, 100) as string,
-				contents: contents.current?.getEditor().getContents(),
+				description: editor?.getText() as string,
+				contents: editor?.getContents(),
 				images: imageListRef.current
 			};
 
-			const editor = contents.current?.getEditor();
 			const fullText = editor?.getText().replace(/\n/g, "").trim();
 			if ((fullText && fullText.length < 5) || !fullText) {
-				showToast({ type: "error", message: "내용을 5자 이상 입력해 주세요" });
+				showToast({
+					type: "error",
+					message: "내용을 5자 이상 입력해 주세요"
+				});
 				return;
 			} else if (fullText && fullText.length > 1000) {
 				showToast({
@@ -65,7 +64,7 @@ export default function PostCreate() {
 		<PostForm
 			submitHandler={submitHandler}
 			errorHandler={formErrorHandler}
-			contentsRef={contents}
+			contentsRef={contentsRef}
 			imageProps={imageProps}
 			methods={methods}
 			type="create"

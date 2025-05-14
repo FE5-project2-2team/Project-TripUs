@@ -1,6 +1,6 @@
 import { Korean } from "flatpickr/dist/l10n/ko.js";
 import "flatpickr/dist/themes/material_green.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Flatpickr from "react-flatpickr";
 import { useController, useFormContext, useWatch } from "react-hook-form";
 import { CHANNELS } from "../../../constants/posts";
@@ -8,17 +8,33 @@ import AutoComplete from "./AutoComplete";
 import LabelSelect from "./LabelSelect";
 
 export default function InfoForm({ type }: { type: string }) {
-	const { register, control } = useFormContext();
+	const { register, reset, control } = useFormContext();
 	const { field } = useController({
 		name: "dateRange",
-		control: control,
-		rules: { required: "일정을 선택해주세요" }
+		control: control
 	});
 	const watchedChannel = useWatch({
 		control,
 		name: "channel"
 	});
 	const [isFocused, setIsFocused] = useState(false);
+	useEffect(() => {
+		if (!watchedChannel || type === "edit") return;
+		reset({
+			channel: watchedChannel,
+			member: 2,
+			location: "",
+			dateRange: [],
+			title: "",
+			contents: "",
+			description: "",
+			condition: {
+				gender: "",
+				ageRange: []
+			},
+			images: []
+		});
+	}, [watchedChannel, reset, type]);
 	return (
 		<div className="grid grid-cols-2 gap-15">
 			<LabelSelect type={type} name="channel" label="게시판 선택">
@@ -46,13 +62,7 @@ export default function InfoForm({ type }: { type: string }) {
 					placeholder="지역 입력"
 					autoComplete="off"
 					className="input-style placeholder:text-[#CDCDCD] focus:outline-0"
-					{...register("location", {
-						required: "지역을 입력해주세요",
-						pattern: {
-							value: /[A-Za-z가-힣]/,
-							message: "지역은 영문 대소문자 또는 한글만 입력 가능합니다"
-						}
-					})}
+					{...register("location")}
 					onFocus={() => setIsFocused(true)}
 					onBlur={() => setIsFocused(false)}
 				/>

@@ -1,9 +1,12 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CHANNELS } from "../constants/posts";
+import { postFormSchema } from "../utils/post.schema";
 
 export function usePostForm(defaultValues?: Partial<FormValues>) {
 	return useForm<FormValues>({
 		mode: "onSubmit",
+		resolver: zodResolver(postFormSchema),
 		shouldFocusError: false,
 		defaultValues: {
 			channel: CHANNELS.RECRUITMENT,
@@ -11,7 +14,6 @@ export function usePostForm(defaultValues?: Partial<FormValues>) {
 			location: "",
 			dateRange: [],
 			title: "",
-			contents: "",
 			condition: {
 				gender: "",
 				ageRange: []

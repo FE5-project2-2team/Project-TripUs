@@ -11,11 +11,12 @@ import { formErrorHandler } from "../utils/errorhandle";
 export default function PostEdit() {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const { imageListRef, initImages, ...imageProps } = useImage();
+	const contentsRef = useRef<ReactQuill | null>(null);
 
 	const { postData }: { postData: PostData } = location.state;
 	const postInfo: PostDetail = JSON.parse(postData.title);
 
-	const { imageListRef, initImages, ...imageProps } = useImage();
 	const methods = usePostForm({
 		channel: postData.channel._id,
 		member: postInfo.memberLimit,
@@ -29,12 +30,11 @@ export default function PostEdit() {
 		images: postInfo.images
 	});
 
-	const contents = useRef<ReactQuill | null>(null);
-	contents.current?.getEditor().setContents(postInfo.contents);
-
 	const submitHandler = async (data: FormValues) => {
 		try {
+			if (!data.condition) return;
 			if (!postInfo) return;
+			const editor = contentsRef.current?.getEditor();
 			const detailData: PostDetail = {
 				...postInfo,
 				title: data.title,
@@ -42,14 +42,11 @@ export default function PostEdit() {
 				location: data.location,
 				dateRange: data.dateRange,
 				recruitCondition: data.condition,
-				description: contents.current
-					?.getEditor()
-					.editor.getText(0, 100) as string,
-				contents: contents.current?.getEditor().getContents(),
+				description: editor?.getText() as string,
+				contents: editor?.getContents(),
 				images: imageListRef.current
 			};
 
-			const editor = contents.current?.getEditor();
 			const fullText = editor?.getText().replace(/\n/g, "").trim();
 			if ((fullText && fullText.length < 5) || !fullText) {
 				showToast({ type: "error", message: "내용을 5자 이상 입력해 주세요" });
@@ -65,8 +62,8 @@ export default function PostEdit() {
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(detailData));
 			formData.append("channelId", data.channel);
-
 			formData.append("postId", postData._id);
+
 			await updatePost(formData);
 			navigate(`/post/detail/${postData._id}`);
 		} catch (error) {
@@ -79,11 +76,18 @@ export default function PostEdit() {
 		initImages(postInfo.images);
 	}, []);
 
+	useEffect(() => {
+		if (contentsRef.current) {
+			const editor = contentsRef.current.getEditor();
+			editor.setContents(postInfo.contents);
+		}
+	}, []);
+
 	return (
 		<PostForm
 			submitHandler={submitHandler}
 			errorHandler={formErrorHandler}
-			contentsRef={contents}
+			contentsRef={contentsRef}
 			imageProps={imageProps}
 			methods={methods}
 			type="edit"

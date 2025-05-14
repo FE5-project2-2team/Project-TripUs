@@ -70,8 +70,7 @@ interface FormValues {
 	location: string;
 	dateRange: Date[];
 	title: string;
-	contents: Delta;
-	condition: {
+	condition?: {
 		gender: string;
 		ageRange: string[];
 	};
