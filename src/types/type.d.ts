@@ -51,7 +51,7 @@ interface PostDetail {
 	title: string;
 	memberLimit: number;
 	memberList: string[];
-	applicantList: string[];
+	rejectList: string[];
 	location: string;
 	dateRange: Date[];
 	isRecruiting: boolean;
@@ -70,7 +70,7 @@ interface FormValues {
 	location: string;
 	dateRange: Date[];
 	title: string;
-	condition: {
+	condition?: {
 		gender: string;
 		ageRange: string[];
 	};

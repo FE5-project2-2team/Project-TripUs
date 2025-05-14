@@ -14,12 +14,7 @@ export default function InputBtn(props: InputProps) {
 				id={value}
 				value={value}
 				type={type}
-				{...register(`condition.${name}`, {
-					required:
-						name === "gender"
-							? "성별을 선택해 주세요"
-							: "나이를 선택해 주세요(다중 선택 가능)"
-				})}
+				{...register(`condition.${name}`)}
 			/>
 			<span
 				className={twMerge(
