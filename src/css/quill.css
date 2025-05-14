@@ -10,6 +10,10 @@
 	@apply text-lg;
 }
 
+.ql-editor img {
+	@apply max-w-none;
+}
+
 .ql-size-small {
 	@apply text-sm;
 }
