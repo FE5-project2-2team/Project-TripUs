@@ -15,8 +15,15 @@ import PostDetail from "./pages/PostDetail";
 import PostEdit from "./pages/PostEdit";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
+import { useThemeStore } from "./store/themeStore";
+import { useEffect } from "react";
 
 export default function App() {
+	// darkmode
+	useEffect(() => {
+		useThemeStore.getState().initializeTheme(); // 직접 호출
+	}, []);
+
 	return (
 		<>
 			<Routes>

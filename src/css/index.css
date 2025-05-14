@@ -3,8 +3,18 @@
 @import "./icons.css";
 @import "./quill.css";
 
+html {
+	@apply bg-white text-[#333];
+}
+
+html.dark {
+	@apply bg-[#1B1D22] text-[#dadada];
+}
+
 body {
-	color: #333;
+	/* darkmode */
+	/* @apply text-[#333] bg-white dark:text-white dark:bg-[#1B1D22]; */
+	/* color: #333; */
 	font-family: "Noto Sans KR", sans-serif;
 	font-optical-sizing: auto;
 	font-style: normal;

@@ -15,7 +15,8 @@ import Modal from "./Modal";
 import ModalItem from "./ModalItem";
 import Icon from "./Icon";
 import UserListModal from "../features/user/UserListModal";
-
+import NotiList from "../features/notification/NotiList";
+import { useThemeStore } from "../../store/themeStore";
 export default function Header() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 	const userId = useAuthStore((state) => state.userId);
@@ -27,8 +28,11 @@ export default function Header() {
 	const navigate = useNavigate();
 
 	const [modalOpen, setModalOpen] = useState(false);
+	const [notiOpen, setNotiOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
+	const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
+	const unRead = notiInfo.some((n) => !n.seen);
 	const [isUserListOpen, setIsUserListOpen] = useState(false);
 
 	const getUserData = useCallback(async () => {
@@ -54,8 +58,20 @@ export default function Header() {
 		setModalOpen(false);
 	};
 
+	// darkmode
+	const toggleTheme = useThemeStore((state) => state.toggleTheme);
+	const isDark = useThemeStore((state) => state.isDark);
+	const darkModeIconPosition = isDark ? "52.036% 81.18%" : "23.318% 81.006%";
+	const hoverDarkModeIconPosition = isDark
+		? "52.036% 88.483%"
+		: "23.318% 88.268%";
 	const setDarkMode = () => {
+		toggleTheme();
 		setModalOpen(false);
+	};
+
+	const toggleNoti = () => {
+		setNotiOpen((noti) => !noti);
 	};
 
 	useEffect(() => {
@@ -67,7 +83,6 @@ export default function Header() {
 	useClickAway(modalRef, () => {
 		setModalOpen(false);
 	});
-
 	return (
 		<div className="w-[1100px] flex justify-between h-[70px] m-auto">
 			<Link to={"/"} className="flex items-center">
@@ -90,9 +105,23 @@ export default function Header() {
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
-					<button>
+					{/* 알림 */}
+					<button onClick={toggleNoti} className="cursor-pointer relative">
 						<FontAwesomeIcon icon={faBell} className="text-xl" />
+						{unRead && (
+							<div className="absolute w-[10px] h-[10px] rounded-full top-[-5px] right-[-5px] bg-[#FD346E]" />
+						)}
 					</button>
+					{notiOpen && (
+						<div className="absolute top-[60px] right-[150px] z-60">
+							<NotiList
+								notiOpen={notiOpen}
+								setNotiOpen={setNotiOpen}
+								notiInfo={notiInfo}
+								setNotiInfo={setNotiInfo}
+							/>
+						</div>
+					)}
 					<button
 						onClick={() => {
 							if (!modalOpen) setModalOpen(true);
@@ -120,11 +149,11 @@ export default function Header() {
 							</ModalItem>
 							<ModalItem
 								clickHandler={setDarkMode}
-								position="23.318% 81.006%"
-								hoverPosition="23.318% 88.268%"
-								size="22px"
+								position={darkModeIconPosition}
+								hoverPosition={hoverDarkModeIconPosition}
+								size="23px"
 							>
-								다크모드
+								{isDark ? "라이트모드" : "다크모드"}
 							</ModalItem>
 							<ModalItem
 								clickHandler={signOut}

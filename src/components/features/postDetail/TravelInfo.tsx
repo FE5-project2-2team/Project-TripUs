@@ -36,12 +36,14 @@ export default function TravelInfo({
 						<Icon position="45.923% 20.604%" size="16px" />
 						<span className="relative bottom-[2px]">{postInfo.location}</span>
 					</span>
-					<span className="flex items-center gap-[10px]">
-						<Icon position="15.419% 20.765%" size="18px" />
-						<span className="relative bottom-[2px]">
-							{postInfo.memberLimit} 명
+					{isRecruitChannel && (
+						<span className="flex items-center gap-[10px]">
+							<Icon position="15.419% 20.765%" size="18px" />
+							<span className="relative bottom-[2px]">
+								{postInfo.memberLimit} 명
+							</span>
 						</span>
-					</span>
+					)}
 				</div>
 			</div>
 		</>

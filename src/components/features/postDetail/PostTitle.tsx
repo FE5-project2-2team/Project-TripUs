@@ -102,8 +102,11 @@ export default function PostTitle({
 				<>
 					<div className="fixed inset-0 bg-black opacity-30 z-50" />
 					<Confirm
-						deletePostHandler={deletePostHandler}
+						confirmHandler={deletePostHandler}
 						cancelHandler={confirmOpenHandler}
+						title="게시글을 삭제하시겠습니까?"
+						description="삭제된 게시글은 복구할 수 없습니다."
+						confirmBtn="삭제"
 					/>
 				</>
 			)}
