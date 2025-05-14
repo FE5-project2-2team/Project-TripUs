@@ -5,6 +5,7 @@ import Icon from "../../commons/Icon";
 import UserListItem from "./UserListItem";
 import { useClickAway } from "react-use";
 import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
+import { useThemeStore } from "../../../store/themeStore";
 
 function normalizeUsers(raw: UserHomeData[]): UserHomeData[] {
 	return raw.map((u) => {
@@ -97,15 +98,20 @@ export default function UserListModal({ onClose }: { onClose: () => void }) {
 		};
 	}, [search, userList]);
 
+	// darkmode
+	const isDark = useThemeStore((state) => state.isDark);
+	const searchIconPosition = isDark ? "82.969% 27.747%" : "14.847% 35.165%";
+	const closeIconPosition = isDark ? "72.727% 27.869%" : "28.571% 27.869%";
+
 	return (
 		<div
 			ref={modalRef}
-			className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[400px] h-[580px] bg-white z-50 shadow-[0px_2px_8px_rgba(0,0,0,0.20)] px-[30px] py-[40px] rounded-[10px]"
+			className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[400px] h-[580px] bg-white z-50 shadow-[0px_2px_8px_rgba(0,0,0,0.20)] px-[30px] py-[40px] rounded-[10px] dark:bg-[#313131]"
 		>
 			<div className="flex justify-between items-center mb-[20px]">
 				<h2 className="text-[20px] font-semibold">사용자 리스트</h2>
-				<button onClick={onClose} className="text-2xl cursor-pointer">
-					<Icon size="15px" position="-66px -102px" />
+				<button onClick={onClose} className="text-2xl cursor-pointer mr-[3px]">
+					<Icon size="14px" position={closeIconPosition} />
 				</button>
 			</div>
 
@@ -117,12 +123,12 @@ export default function UserListModal({ onClose }: { onClose: () => void }) {
 					onChange={(e) => setSearch(e.target.value)}
 					type="text"
 					placeholder="사용자를 검색해보세요"
-					className="w-full border border-[#e4e4e4] rounded-[10px] px-[16px] py-[16px] pr-10 text-sm placeholder-[#616161] focus:outline-none focus:border-[#06b796]"
+					className="w-full border border-[#e4e4e4] rounded-[10px] px-[16px] py-[16px] pr-10 text-sm placeholder-[#616161] focus:outline-none focus:border-[#06b796] dark:border-[#CDCDCD] dark:placeholder-[#cdcdcd]"
 				/>
 				<div className="absolute right-[16px] top-[15px] cursor-pointer">
 					<Icon
 						size="16px"
-						position={isFocused ? "-148px -349px" : "-34px -128px"}
+						position={isFocused ? "-148px -349px" : searchIconPosition}
 					/>
 				</div>
 			</div>
@@ -130,7 +136,7 @@ export default function UserListModal({ onClose }: { onClose: () => void }) {
 			{/* 결과 리스트 */}
 			<div
 				className="h-[382px] overflow-y-auto p-[5px]
-                      border border-[#e4e4e4] rounded-[8px]"
+                      border border-[#e4e4e4] rounded-[8px] dark:border-[#cdcdcd]"
 			>
 				{isSearching ? (
 					<p className="text-center text-sm text-gray-500">검색 중…</p>

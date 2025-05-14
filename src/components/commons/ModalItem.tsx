@@ -13,7 +13,7 @@ export default function ModalItem(props: {
 	const element = (hovered: boolean) => (
 		<li
 			onClick={clickHandler}
-			className="flex gap-2 items-center group cursor-pointer p-2 rounded-lg hover:bg-[#E0F4F2] hover:text-[#06B796]"
+			className="flex gap-2 items-center group cursor-pointer p-2 rounded-lg hover:bg-[#E0F4F2] hover:text-[#06B796] dark:hover:bg-[#B8E1E1]"
 		>
 			{!noIcon && <Icon hovered={hovered} {...rest} />}
 			{children}

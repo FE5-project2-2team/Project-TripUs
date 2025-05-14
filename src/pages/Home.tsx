@@ -40,7 +40,7 @@ export default function Home() {
 						setIsChecked={setIsChecked}
 					/>
 					{/* 게시글들 */}
-					<div className="overflow-y-auto w-full flex items-center">
+					<div className="w-full flex items-center">
 						<Outlet context={{ sort, selectFilter, isChecked, search }} />
 						<Link to={"/postCreate"}>
 							<AddPostButt />
