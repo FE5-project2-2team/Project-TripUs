@@ -181,7 +181,7 @@ export default function PostDetail() {
 		const isRejected = postInfo.rejectList.includes(userId);
 		const isRecruitChannel = postData.channel._id === CHANNELS.RECRUITMENT;
 		return (
-			<main className="flex flex-col justify-center items-center mt-[49px]">
+			<main className="flex flex-col justify-center items-center mt-[49px] mb-20">
 				<div className="flex flex-col gap-[30px] w-275 ">
 					<PostHeader
 						postData={postData}
