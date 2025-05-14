@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 interface ThemeState {
 	isDark: boolean;
 	toggleTheme: () => void;
+	initializeTheme: () => void;
 }
 
 export const useThemeStore = create<ThemeState>()(
@@ -14,6 +15,18 @@ export const useThemeStore = create<ThemeState>()(
 				const next = !get().isDark;
 				document.documentElement.classList.toggle("dark", next);
 				set({ isDark: next });
+			},
+			initializeTheme: () => {
+				let isDark = false;
+				try {
+					const stored = localStorage.getItem("theme-storage");
+					isDark = stored ? JSON.parse(stored).state?.isDark : false;
+				} catch (e) {
+					console.error("다크모드 상태 초기화 실패", e);
+				}
+
+				document.documentElement.classList.toggle("dark", isDark);
+				set({ isDark });
 			}
 		}),
 		{

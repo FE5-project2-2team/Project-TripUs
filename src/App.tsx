@@ -21,10 +21,9 @@ import { useEffect } from "react";
 
 export default function App() {
 	// darkmode
-	const isDark = useThemeStore((state) => state.isDark);
 	useEffect(() => {
-		document.documentElement.classList.toggle("dark", isDark);
-	}, [isDark]);
+		useThemeStore.getState().initializeTheme(); // 직접 호출
+	}, []);
 
 	return (
 		<>
