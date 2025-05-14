@@ -11,7 +11,7 @@ export default function NotiPosts({
 	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
 }) {
 	const userId = useAuthStore((state) => state.userId)!;
-
+	// console.log("noti:", noti);
 	return (
 		<>
 			{noti.length > 0 ? (
@@ -20,7 +20,7 @@ export default function NotiPosts({
 					.map((notice) => (
 						<NotiPostItem
 							key={notice._id}
-							notice={notice}
+							notice={noti.find((n) => n._id === notice._id)!}
 							onClose={onClose}
 							setNotiInfo={setNotiInfo}
 						/>

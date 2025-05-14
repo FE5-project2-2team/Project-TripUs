@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { getPostById } from "../../../apis/post";
+// import { useEffect } from "react";
+// import { getPostById } from "../../../apis/post";
 import profileImg from "../../../assets/images/profileImg_circle.svg";
 import { useNavigate } from "react-router";
 
@@ -13,7 +13,7 @@ export default function NotiRequestItem({
 	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
 }) {
 	const navigate = useNavigate();
-	const [parsedTitle, setParsedTitle] = useState<string>("");
+	// const [parsedTitle, setParsedTitle] = useState<string>("");
 	// const [isSeen, setIsSeen] = useState(notice.seen);
 	const formatTime = (time: string): string => {
 		if (!time) return "시간정보없음";
@@ -28,19 +28,19 @@ export default function NotiRequestItem({
 		return `${String(hours).padStart(2, "0")}:${String(min).padStart(2, "0")} ${period}`;
 	};
 
-	useEffect(() => {
-		const fetchPost = async () => {
-			try {
-				const post = await getPostById(notice.post as string);
-				const parsed = JSON.parse(post.title);
-				setParsedTitle(parsed.title);
-			} catch (error) {
-				console.error("게시글 불러오기 실패:", error);
-				setParsedTitle("제목 없음");
-			}
-		};
-		fetchPost();
-	}, [notice.post]);
+	// useEffect(() => {
+	// 	const fetchPost = async () => {
+	// 		try {
+	// 			const post = await getPostById(notice.post as string);
+	// 			// const parsed = JSON.parse(post.title);
+	// 			// setParsedTitle(parsed.title);
+	// 		} catch (error) {
+	// 			console.error("게시글 불러오기 실패:", error);
+	// 			// setParsedTitle("제목 없음");
+	// 		}
+	// 	};
+	// 	fetchPost();
+	// }, [notice.post]);
 	const nickname = JSON.parse(notice.author.fullName).nickname;
 	const userImage = notice.author.image || profileImg;
 	const time = formatTime(notice.createdAt);
@@ -84,9 +84,9 @@ export default function NotiRequestItem({
 						</div>
 						<div className="text-[14px] whitespace-nowrap">{time}</div>
 					</div>
-					<div className="text-[14px]">
+					{/* <div className="text-[14px]">
 						{parsedTitle ? `게시글: ${parsedTitle}` : "게시글:   "}
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</div>

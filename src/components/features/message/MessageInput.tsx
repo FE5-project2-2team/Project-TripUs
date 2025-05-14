@@ -24,9 +24,10 @@ export default function MessageInput({
 			await createNoti({
 				notificationType: "MESSAGE",
 				notificationTypeId: data._id,
-				userId: data.sender._id,
+				userId: data.receiver._id,
 				postId: null
 			});
+			// console.log("메세지 전송:", mess);
 		} catch (err) {
 			console.error("메시지 전송 실패", err);
 		}

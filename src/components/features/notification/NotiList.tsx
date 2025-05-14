@@ -29,6 +29,7 @@ export default function NotiList({
 				const myNotiInfo: NotiData[] = await getNotiList();
 				//  console.log("알림 목록:", myNotiInfo);
 				setNotiInfo(myNotiInfo);
+				// console.log("setNotiInfo업데이트:", notiInfo);
 			} catch (e) {
 				console.error("알림 가져오기 에러:", e);
 			} finally {
@@ -38,6 +39,7 @@ export default function NotiList({
 		NotiFunc();
 	}, [setNotiInfo]);
 
+	//모든 알림 읽었다면 readNoti보내기
 	useEffect(() => {
 		const markNoti = async () => {
 			if (notiInfo.every((n) => n.seen)) {
@@ -69,7 +71,9 @@ export default function NotiList({
 			case "메시지":
 				return notiInfo.filter((notice) => notice.message);
 			case "동행요청":
-				return notiInfo.filter((notice) => !notice.comment && !notice.like);
+				return notiInfo.filter(
+					(notice) => !notice.comment && !notice.like && !notice.message
+				);
 			default:
 				return notiInfo;
 		}

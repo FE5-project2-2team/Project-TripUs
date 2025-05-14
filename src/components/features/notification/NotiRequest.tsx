@@ -20,7 +20,7 @@ export default function NotiRequest({
 					.map((notice) => (
 						<NotiRequestItem
 							key={notice._id}
-							notice={notice}
+							notice={noti.find((n) => n._id === notice._id)!}
 							onClose={onClose}
 							setNotiInfo={setNotiInfo}
 						/>

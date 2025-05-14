@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router";
 import profileImg from "../../../assets/images/profileImg_circle.svg";
+import { useEffect, useState } from "react";
+import { getMessageList } from "../../../apis/message";
 // import { useEffect } from "react";
 
 export default function NotiMessageItem({
@@ -13,6 +15,7 @@ export default function NotiMessageItem({
 }) {
 	const navigate = useNavigate();
 	// const [isSeen, setIsSeen] = useState(notice.seen);
+	const [mess, setMess] = useState<MessageData>();
 	const formatTime = (time: string): string => {
 		if (!time) return "시간정보없음";
 
@@ -29,13 +32,27 @@ export default function NotiMessageItem({
 	const userImage = notice.author.image || profileImg;
 	const time = formatTime(notice.createdAt);
 
+	useEffect(() => {
+		const getMessages = async () => {
+			try {
+				const messages: MessageData[] = await getMessageList(notice.author._id);
+
+				setMess(messages.find((m) => m._id === notice.message));
+			} catch (error) {
+				console.error("특정 사용자 메시지 목록 불러오기 실패", error);
+			}
+		};
+		getMessages();
+	}, []);
+
 	const handleClick = async () => {
 		try {
-			if (notice.post) {
+			if (notice.message) {
 				setNotiInfo((noti) =>
 					noti.map((n) => (n._id === notice._id ? { ...n, seen: true } : n))
 				);
-				navigate(`/post/detail/${notice.post}`);
+				console.log("특정사용자Id:", notice.author._id);
+				navigate(`/message/${notice.author._id}`);
 				onClose();
 			}
 		} catch (e) {
@@ -62,11 +79,11 @@ export default function NotiMessageItem({
 				<div className="w-full">
 					<div className="flex justify-between items-center w-full">
 						<div className="text-[16px]">
-							{nickname}님이 메시지를를 보내셨습니다.
+							{nickname}님이 메시지를 보내셨습니다.
 						</div>
 						<div className="text-[14px] whitespace-nowrap">{time}</div>
 					</div>
-					<div className="text-[14px]"></div>
+					<div className="text-[14px]">{mess?.message}</div>
 				</div>
 			</div>
 		</div>

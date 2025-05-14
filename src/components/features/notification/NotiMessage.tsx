@@ -21,7 +21,7 @@ export default function NotiMessage({
 					.map((notice) => (
 						<NotiMessageItem
 							key={notice._id}
-							notice={notice}
+							notice={noti.find((n) => n._id === notice._id)!}
 							onClose={onClose}
 							setNotiInfo={setNotiInfo}
 						/>

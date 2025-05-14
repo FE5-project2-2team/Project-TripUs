@@ -23,10 +23,10 @@ export default function NotiPostItem({
 		if (hours === 0) hours = 12;
 		return `${String(hours).padStart(2, "0")}:${String(min).padStart(2, "0")} ${period}`;
 	};
-
+	console.log("notice,notice.seen:", notice, notice.seen);
 	// console.log("user:", notice.user);
 	// console.log("author:", notice.author);
-	const nickname = JSON.parse(notice.author.fullName)?.nickname || "알수없음음";
+	const nickname = JSON.parse(notice.author.fullName)?.nickname || "알수없음";
 	const userImage = notice.author.image || profileImg;
 	const time = formatTime(notice.createdAt);
 
