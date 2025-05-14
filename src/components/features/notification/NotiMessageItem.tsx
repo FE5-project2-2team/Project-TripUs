@@ -43,7 +43,7 @@ export default function NotiMessageItem({
 			}
 		};
 		getMessages();
-	}, []);
+	}, [notice.author._id, notice.message]);
 
 	const handleClick = async () => {
 		try {
