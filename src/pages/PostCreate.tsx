@@ -72,7 +72,7 @@ export default function PostCreate() {
 				title: data.title,
 				memberLimit: Number(data.member),
 				memberList: [userId],
-				applicantList: [],
+				rejectList: [],
 				location: data.location,
 				dateRange: data.dateRange,
 				isRecruiting: true,
