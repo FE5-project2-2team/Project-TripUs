@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FieldErrors, FormProvider, UseFormReturn } from "react-hook-form";
 import ReactQuill from "react-quill-new";
 import { useNavigate } from "react-router";
@@ -31,6 +32,10 @@ export default function PostForm({
 	type
 }: PostFormProps) {
 	const navigate = useNavigate();
+	const [isConfirmed, setIsConfirmed] = useState(0);
+	const confirmHandler = () => {
+		setIsConfirmed((state) => (state ? 0 : 1));
+	};
 	return (
 		<div className="flex justify-center items-center">
 			<main className="font-[Noto-Sans]">
@@ -40,10 +45,10 @@ export default function PostForm({
 						action=""
 						onSubmit={methods.handleSubmit(submitHandler, errorHandler)}
 					>
-						<InfoForm type={type} />
+						<InfoForm type={type} confirmHandler={confirmHandler} />
 						<div className="flex flex-col gap-10 my-13">
 							<InputTitle />
-							<Contents contentsRef={contentsRef} />
+							<Contents contentsRef={contentsRef} isConfirmed={isConfirmed} />
 							{methods.watch().channel === CHANNELS.RECRUITMENT && (
 								<UploadImage {...imageProps} />
 							)}

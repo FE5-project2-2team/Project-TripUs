@@ -10,9 +10,11 @@ Quill.register("formats/size", Size, true);
 Quill.register("modules/imageResize", ImageResize);
 
 export default function Contents({
-	contentsRef
+	contentsRef,
+	isConfirmed
 }: {
 	contentsRef: React.RefObject<ReactQuill | null>;
+	isConfirmed: number;
 }) {
 	const { watch } = useFormContext();
 
@@ -54,7 +56,7 @@ export default function Contents({
 				내용
 			</label>
 			<ReactQuill
-				key={watchedChannel}
+				key={isConfirmed}
 				ref={contentsRef}
 				theme="snow"
 				placeholder="내용을 입력해 주세요 (1000자 이내)"
