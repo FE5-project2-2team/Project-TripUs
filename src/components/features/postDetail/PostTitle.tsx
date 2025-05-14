@@ -39,8 +39,8 @@ export default function PostTitle({
 	const deletePostHandler = async () => {
 		setConfirmOpen(true);
 		try {
-			await deletePost(postData._id);
 			navigate("/");
+			await deletePost(postData._id);
 		} catch (error) {
 			console.error(error);
 		}
