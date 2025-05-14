@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./components/commons/ProtectedRoute";
 import PublicOnlyRoute from "./components/commons/PublicOnlyRoute";
-import RootLayout from "./layouts/RootLayout";
+import RootLayout from "./layouts/Rootlayout";
 import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -16,8 +16,15 @@ import PostDetail from "./pages/PostDetail";
 import PostEdit from "./pages/PostEdit";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
+import { useThemeStore } from "./store/themeStore";
+import { useEffect } from "react";
 
 export default function App() {
+	// darkmode
+	useEffect(() => {
+		useThemeStore.getState().initializeTheme(); // 직접 호출
+	}, []);
+
 	return (
 		<>
 			<Routes>
