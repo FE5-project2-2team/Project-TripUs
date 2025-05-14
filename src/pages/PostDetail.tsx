@@ -20,11 +20,8 @@ export default function PostDetail() {
 	const [comments, setComments] = useState<CommentData[]>([]);
 	const [members, setMembers] = useState<string[]>([]);
 	const [isRecruiting, setIsRecruiting] = useState(false);
-<<<<<<< HEAD
-=======
 	const [isApplying, setIsApplying] = useState(false);
 
->>>>>>> main
 	const getData = useCallback(async () => {
 		try {
 			const postData: PostData = await getPostById(id!);
