@@ -1,8 +1,18 @@
 import { useNavigate } from "react-router";
 import profileImg from "../../../assets/images/profileImg_circle.svg";
+// import { useEffect } from "react";
 
-export default function NotiMessageItem({ notice }: { notice: NotiData }) {
+export default function NotiMessageItem({
+	notice,
+	onClose,
+	setNotiInfo
+}: {
+	notice: NotiData;
+	onClose: () => void;
+	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
+}) {
 	const navigate = useNavigate();
+	// const [isSeen, setIsSeen] = useState(notice.seen);
 	const formatTime = (time: string): string => {
 		if (!time) return "시간정보없음";
 
@@ -15,14 +25,21 @@ export default function NotiMessageItem({ notice }: { notice: NotiData }) {
 		if (hours === 0) hours = 12;
 		return `${String(hours).padStart(2, "0")}:${String(min).padStart(2, "0")} ${period}`;
 	};
-
 	const nickname = JSON.parse(notice.author.fullName).nickname;
 	const userImage = notice.author.image || profileImg;
 	const time = formatTime(notice.createdAt);
 
-	const handleClick = () => {
-		if (notice.message) {
-			navigate(`/message/${notice.message}`);
+	const handleClick = async () => {
+		try {
+			if (notice.post) {
+				setNotiInfo((noti) =>
+					noti.map((n) => (n._id === notice._id ? { ...n, seen: true } : n))
+				);
+				navigate(`/post/detail/${notice.post}`);
+				onClose();
+			}
+		} catch (e) {
+			console.error("알람 읽음 처리 실패", e);
 		}
 	};
 	return (

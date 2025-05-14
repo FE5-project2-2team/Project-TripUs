@@ -3,9 +3,18 @@ import { getPostById } from "../../../apis/post";
 import profileImg from "../../../assets/images/profileImg_circle.svg";
 import { useNavigate } from "react-router";
 
-export default function NotiRequestItem({ notice }: { notice: NotiData }) {
+export default function NotiRequestItem({
+	notice,
+	onClose,
+	setNotiInfo
+}: {
+	notice: NotiData;
+	onClose: () => void;
+	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
+}) {
 	const navigate = useNavigate();
 	const [parsedTitle, setParsedTitle] = useState<string>("");
+	// const [isSeen, setIsSeen] = useState(notice.seen);
 	const formatTime = (time: string): string => {
 		if (!time) return "시간정보없음";
 
@@ -36,9 +45,18 @@ export default function NotiRequestItem({ notice }: { notice: NotiData }) {
 	const userImage = notice.author.image || profileImg;
 	const time = formatTime(notice.createdAt);
 
-	const handleClick = () => {
-		if (notice.post) {
-			navigate(`/post/detail/${notice.post}`);
+	const handleClick = async () => {
+		try {
+			if (notice.post) {
+				// setIsSeen(true);
+				setNotiInfo((noti) =>
+					noti.map((n) => (n._id === notice._id ? { ...n, seen: true } : n))
+				);
+				navigate(`/post/detail/${notice.post}`);
+				onClose();
+			}
+		} catch (e) {
+			console.error("알람 읽음 처리 실패", e);
 		}
 	};
 

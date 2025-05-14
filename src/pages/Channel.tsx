@@ -170,7 +170,13 @@ export default function Channel() {
 				>
 					<div className="relative">
 						<img
-							src={post.image ? post.image : defaultImage}
+							src={
+								post.image
+									? post.image
+									: // JSON.parse(post.title.title).images[0]
+										// 	? JSON.parse(post.title.title).images[0]
+										defaultImage
+							}
 							className="w-full h-[180px] rounded-t-[15px] object-cover z-10"
 						/>
 						{(() => {

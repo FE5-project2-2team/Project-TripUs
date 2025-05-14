@@ -3,10 +3,12 @@ import profileImg from "../../../assets/images/profileImg_circle.svg";
 
 export default function NotiPostItem({
 	notice,
-	onClose
+	onClose,
+	setNotiInfo
 }: {
 	notice: NotiData;
 	onClose: () => void;
+	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
 }) {
 	const navigate = useNavigate();
 	const formatTime = (time: string): string => {
@@ -24,14 +26,25 @@ export default function NotiPostItem({
 
 	// console.log("user:", notice.user);
 	// console.log("author:", notice.author);
-	const nickname = JSON.parse(notice.author.fullName).nickname;
+	const nickname = JSON.parse(notice.author.fullName)?.nickname || "알수없음음";
 	const userImage = notice.author.image || profileImg;
 	const time = formatTime(notice.createdAt);
 
-	const handleClick = () => {
-		if (notice.post) {
-			navigate(`/post/detail/${notice.post}`);
-			onClose();
+	const handleClick = async () => {
+		try {
+			if (notice.post) {
+				setNotiInfo((noti) => {
+					const newNoti = noti.map((n) =>
+						n._id === notice._id ? { ...n, seen: true } : n
+					);
+					console.log("알림 읽음 처리됨", newNoti);
+					return newNoti;
+				});
+				navigate(`/post/detail/${notice.post}`);
+				onClose();
+			}
+		} catch (e) {
+			console.error("알람 읽음 처리 실패", e);
 		}
 	};
 
@@ -70,7 +83,7 @@ export default function NotiPostItem({
 							<div className="text-[14px] whitespace-nowrap">{time}</div>
 						</div>
 						<div className="text-[14px]">
-							{JSON.parse(notice.comment?.comment).value}
+							{JSON.parse(notice.comment?.comment).value || ""}
 						</div>
 					</div>
 				)}

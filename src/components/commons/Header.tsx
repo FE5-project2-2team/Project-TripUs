@@ -29,6 +29,9 @@ export default function Header() {
 	const [notiOpen, setNotiOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
+	const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
+	const unRead = notiInfo.some((n) => !n.seen);
+
 	const getUserData = useCallback(async () => {
 		if (!userId) return;
 		try {
@@ -79,12 +82,21 @@ export default function Header() {
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
-					<button onClick={toggleNoti} className="cursor-pointer">
+					{/* 알림 */}
+					<button onClick={toggleNoti} className="cursor-pointer relative">
 						<FontAwesomeIcon icon={faBell} className="text-xl" />
+						{unRead && (
+							<div className="absolute w-[10px] h-[10px] rounded-full top-[-5px] right-[-5px] bg-[#FD346E]" />
+						)}
 					</button>
 					{notiOpen && (
 						<div className="absolute top-[60px] right-[150px] z-60">
-							<NotiList notiOpen={notiOpen} setNotiOpen={setNotiOpen} />
+							<NotiList
+								notiOpen={notiOpen}
+								setNotiOpen={setNotiOpen}
+								notiInfo={notiInfo}
+								setNotiInfo={setNotiInfo}
+							/>
 						</div>
 					)}
 					<button

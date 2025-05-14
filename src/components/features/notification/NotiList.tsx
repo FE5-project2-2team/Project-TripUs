@@ -1,22 +1,120 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Icon from "../../commons/Icon";
 import NotiWhole from "./NotiWhole";
 import NotiPosts from "./NotiPosts";
 import NotiMessage from "./NotiMessage";
 import NotiRequest from "./NotiRequest";
+import { getNotiList, readNoti } from "../../../apis/notification";
 
-export default function NotificationList({
+export default function NotiList({
 	notiOpen,
-	setNotiOpen
+	setNotiOpen,
+	notiInfo,
+	setNotiInfo
 }: {
 	notiOpen: boolean;
 	setNotiOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	notiInfo: NotiData[];
+	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
 }) {
 	const bannerArr = ["전체", "게시글", "메시지", "동행요청"];
 	const [notiContents, setNotiContents] = useState("전체");
+	// const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		const NotiFunc = async () => {
+			try {
+				setIsLoading(true);
+				const myNotiInfo: NotiData[] = await getNotiList();
+				//  console.log("알림 목록:", myNotiInfo);
+				setNotiInfo(myNotiInfo);
+			} catch (e) {
+				console.error("알림 가져오기 에러:", e);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+		NotiFunc();
+	}, [setNotiInfo]);
+
+	useEffect(() => {
+		const markNoti = async () => {
+			if (notiInfo.every((n) => n.seen)) {
+				try {
+					await readNoti();
+				} catch (e) {
+					console.error("읽음 처리 실패", e);
+				}
+			}
+		};
+		markNoti();
+	}, [notiInfo]);
+
 	const handleClose = () => {
 		setNotiOpen(false);
 	};
+	const handleRead = async () => {
+		try {
+			await readNoti();
+			setNotiInfo((notice) => notice.map((n) => ({ ...n, seen: true })));
+		} catch (e) {
+			console.error("모두 읽음처리 실패", e);
+		}
+	};
+	const filtered = () => {
+		switch (notiContents) {
+			case "게시글":
+				return notiInfo.filter((notice) => notice.like || notice.comment);
+			case "메시지":
+				return notiInfo.filter((notice) => notice.message);
+			case "동행요청":
+				return notiInfo.filter((notice) => !notice.comment && !notice.like);
+			default:
+				return notiInfo;
+		}
+	};
+
+	const filteredBannerNoti = () => {
+		const filterNoti = filtered();
+		switch (notiContents) {
+			case "전체":
+				return (
+					<NotiWhole
+						noti={filterNoti}
+						onClose={handleClose}
+						setNotiInfo={setNotiInfo}
+					/>
+				);
+			case "게시글":
+				return (
+					<NotiPosts
+						noti={filterNoti}
+						onClose={handleClose}
+						setNotiInfo={setNotiInfo}
+					/>
+				);
+			case "메시지":
+				return (
+					<NotiMessage
+						noti={filterNoti}
+						onClose={handleClose}
+						setNotiInfo={setNotiInfo}
+					/>
+				);
+			case "동행요청":
+				return (
+					<NotiRequest
+						noti={filterNoti}
+						onClose={handleClose}
+						setNotiInfo={setNotiInfo}
+					/>
+				);
+			default:
+				return null;
+		}
+	};
+
 	return (
 		<>
 			<div className="w-[560px] min-h-[664px] rounded-[10px] bg-[#fff] border border-[#D9D9D9] shadow-xl">
@@ -61,14 +159,18 @@ export default function NotificationList({
 
 				{/* 알림 내용들 */}
 				<div className="w-full h-[500px] overflow-y-auto">
-					{notiContents === "전체" && <NotiWhole onClose={handleClose} />}
-					{notiContents === "게시글" && <NotiPosts onClose={handleClose} />}
-					{notiContents === "메시지" && <NotiMessage onClose={handleClose} />}
-					{notiContents === "동행요청" && <NotiRequest onClose={handleClose} />}
+					{isLoading ? (
+						<div className="text-center py-10 text-[#D9D9D9]">로딩중...</div>
+					) : (
+						filteredBannerNoti()
+					)}
 				</div>
 				{/* 모두읽음 */}
 				<div className="flex justify-end items-center border-t border-t-[#CDCDCD]">
-					<button className="flex items-center h-[22px] text-[18px] mt-[18px] mr-[30px] text-[#333333] cursor-pointer">
+					<button
+						className="flex items-center h-[22px] text-[18px] mt-[18px] mr-[30px] text-[#333333] cursor-pointer"
+						onClick={handleRead}
+					>
 						모두 읽음
 					</button>
 				</div>
