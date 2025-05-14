@@ -3,6 +3,7 @@ import "flatpickr/dist/themes/material_green.css";
 import { useEffect, useState } from "react";
 import Flatpickr from "react-flatpickr";
 import { useController, useFormContext, useWatch } from "react-hook-form";
+import { twMerge } from "tailwind-merge";
 import { CHANNELS } from "../../../constants/posts";
 import Confirm from "../../commons/Confirm";
 import AutoComplete from "./AutoComplete";
@@ -97,7 +98,10 @@ export default function InfoForm({
 						type="text"
 						placeholder="지역 입력"
 						autoComplete="off"
-						className="input-style placeholder:text-[#CDCDCD] focus:outline-0"
+						className={twMerge(
+							"input-style placeholder:text-[#CDCDCD] focus:outline-0",
+							"dark:placeholder:text-[#616161] dark:border-[#616161]"
+						)}
 						{...register("location")}
 						onFocus={() => setIsFocused(true)}
 						onBlur={() => setIsFocused(false)}
@@ -110,12 +114,16 @@ export default function InfoForm({
 					</label>
 					<Flatpickr
 						id="date"
-						className="input-style placeholder:text-[#CDCDCD] focus:outline-0"
+						className={twMerge(
+							"input-style placeholder:text-[#CDCDCD] focus:outline-0",
+							"dark:placeholder:text-[#616161] dark:border-[#616161]"
+						)}
 						options={{
 							mode: "range",
 							dateFormat: "Y-m-d",
 							closeOnSelect: false,
-							locale: Korean
+							locale: Korean,
+							position: "below right"
 						}}
 						placeholder="일정 선택"
 						onChange={(selectedDates) => {

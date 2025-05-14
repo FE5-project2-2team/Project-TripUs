@@ -67,7 +67,7 @@ export default function ApplyMembers({
 								<span>{userInfo.name}</span>
 							</div>
 						</div>
-						<div className="absolute left-60 top-3">
+						<div className="absolute left-50 top-3">
 							<button
 								onClick={() => approveHandler(applicant.author)}
 								className="handleApply bg-[#06b796] hover:bg-[#038383] mr-2"

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { createComment, deleteComment } from "../apis/comment";
+import { createNoti } from "../apis/notification"; //알림
 import { getPostById, updatePost } from "../apis/post";
 import Button from "../components/commons/Button";
 import ApplyMembers from "../components/features/postDetail/ApplyMembers";
@@ -10,7 +11,6 @@ import MemberList from "../components/features/postDetail/MemberList";
 import PostHeader from "../components/features/postDetail/PostHeader";
 import { CHANNELS } from "../constants/posts";
 import { useAuthStore } from "../store/authStore";
-import { createNoti } from "../apis/notification"; //알림
 
 export default function PostDetail() {
 	const { id } = useParams();
@@ -197,11 +197,15 @@ export default function PostDetail() {
 							<div>
 								<span className="post-sub-title">동행 조건 사항</span>
 								<div>
-									<span className="text-[#616161] mr-[10px]">성별</span>
+									<span className="text-[#616161] mr-[10px] dark:text-[#dadada]">
+										성별
+									</span>
 									<span>{postInfo.recruitCondition.gender}</span>
 								</div>
 								<div>
-									<span className="text-[#616161] mr-[10px]">나이</span>
+									<span className="text-[#616161] mr-[10px] dark:text-[#dadada]">
+										나이
+									</span>
 									{postInfo.recruitCondition.ageRange.join(", ")}
 								</div>
 							</div>

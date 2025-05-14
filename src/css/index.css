@@ -2,6 +2,7 @@
 @import "./tailwind.css";
 @import "./icons.css";
 @import "./quill.css";
+@custom-variant dark (&:where(.dark, .dark *));
 
 html {
 	@apply bg-white text-[#333];

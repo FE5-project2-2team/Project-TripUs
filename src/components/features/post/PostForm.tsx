@@ -3,6 +3,7 @@ import { FieldErrors, FormProvider, UseFormReturn } from "react-hook-form";
 import ReactQuill from "react-quill-new";
 import { useNavigate } from "react-router";
 import { CHANNELS } from "../../../constants/posts";
+import { useThemeStore } from "../../../store/themeStore";
 import Icon from "../../commons/Icon";
 import ConditionList from "./ConditionList";
 import Contents from "./Contents";
@@ -31,6 +32,7 @@ export default function PostForm({
 	methods,
 	type
 }: PostFormProps) {
+	const { isDark } = useThemeStore();
 	const navigate = useNavigate();
 	const [isConfirmed, setIsConfirmed] = useState(0);
 	const confirmHandler = () => {
@@ -59,7 +61,10 @@ export default function PostForm({
 								onClick={() => navigate(-1)}
 								className="flex justify-center items-center gap-4 cursor-pointer"
 							>
-								<Icon position="39.301% 27.747%" size="16px" />
+								<Icon
+									position={isDark ? "50.218% 27.747%" : "39.301% 27.747%"}
+									size="16px"
+								/>
 								<span className="text-xl">나가기</span>
 							</div>
 							<button
