@@ -30,9 +30,6 @@ export default function PostDetail() {
 				const parsed: CommentType = JSON.parse(commentData.comment);
 				return (
 					parsed.type === "apply" &&
-					postInfo.memberList.every(
-						(member) => member !== commentData.author._id
-					) &&
 					postInfo.rejectList.every(
 						(applicant) => applicant !== commentData.author._id
 					)
@@ -51,7 +48,13 @@ export default function PostDetail() {
 
 			setPostData(postData);
 			setIsApplying(isApplying);
-			setMembers(postInfo.memberList);
+			setMembers(
+				postInfo.memberList.filter(
+					(member) =>
+						applyList.some((apply) => apply.author._id === member) ||
+						member === postData.author._id
+				)
+			);
 			setIsRecruiting(postInfo.isRecruiting);
 			setApplicants(applyList);
 			setComments(commentList);
@@ -162,9 +165,18 @@ export default function PostDetail() {
 		);
 	};
 
-	const cancelAccompanyHandler = () => {
+	const cancelAccompanyHandler = async () => {
 		if (!postData) return;
-		setMembers((members) => members.filter((member) => member === userId));
+		try {
+			setMembers((members) => members.filter((member) => member !== userId));
+			const myApply = postData.comments.find((commentData) => {
+				const parsed: CommentType = JSON.parse(commentData.comment);
+				return parsed.type === "apply";
+			});
+			if (myApply) await deleteComment(myApply._id);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	useEffect(() => {
