@@ -78,7 +78,7 @@ interface FormValues {
 }
 
 interface NotiType {
-	notificationType: "COMMENT" | "LIKE" | "MESSAGE";
+	notificationType: "COMMENT" | "LIKE" | "MESSAGE" | "APPLY";
 	notificationTypeId: string;
 	userId: string;
 	postId: string | null;
@@ -157,6 +157,7 @@ interface NotiData {
 	message?: string; // 메시지 id
 	createdAt: string;
 	updatedAt: string;
+	like?: LikeData;
 }
 
 interface ConversationData {
@@ -186,7 +187,7 @@ interface UserHomeData {
 	posts: PostData[];
 	likes: LikeData[];
 	comments: string[];
-	notifications: Notification[];
+	notifications: NotiData[];
 	messages: Message[];
 	_id: string;
 	fullName: string | User;
