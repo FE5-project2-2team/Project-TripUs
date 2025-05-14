@@ -29,7 +29,7 @@ export default function InfoForm({
 	const changeChannelHandler = () => {
 		reset({
 			channel: watchedChannel,
-			member: 2,
+			member: "2",
 			location: "",
 			dateRange: [],
 			title: "",

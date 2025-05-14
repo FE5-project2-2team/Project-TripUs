@@ -66,7 +66,7 @@ interface PostDetail {
 
 interface FormValues {
 	channel: string;
-	member: number;
+	member: string;
 	location: string;
 	dateRange: Date[];
 	title: string;

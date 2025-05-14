@@ -10,7 +10,7 @@ export function usePostForm(defaultValues?: Partial<FormValues>) {
 		shouldFocusError: false,
 		defaultValues: {
 			channel: CHANNELS.RECRUITMENT,
-			member: 2,
+			member: "2",
 			location: "",
 			dateRange: [],
 			title: "",
