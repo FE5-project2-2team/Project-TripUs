@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import profileImg from "../../../assets/images/profileImg_circle.svg";
 import { useNoti } from "../../../context/useNoti";
+import { getDiffInDays } from "../../../utils/date";
 
 export default function NotiPostItem({
 	notice,
@@ -17,12 +18,19 @@ export default function NotiPostItem({
 		if (!time) return "시간정보없음";
 
 		const date = new Date(time);
+		const currentTime = new Date();
+		if (getDiffInDays(new Date(time), currentTime) >= 1) {
+			const month = date.getMonth();
+			const dates = date.getDate();
+			return `${String(month).padStart(2, "0")}.${String(dates).padStart(2, "0")}`;
+		}
 		let hours = date.getHours();
 		const min = date.getMinutes();
 		const period = hours >= 12 ? "PM" : "AM";
 
 		hours = hours % 12;
 		if (hours === 0) hours = 12;
+
 		return `${String(hours).padStart(2, "0")}:${String(min).padStart(2, "0")} ${period}`;
 	};
 	// console.log("notice,notice.seen:", notice, notice.seen);

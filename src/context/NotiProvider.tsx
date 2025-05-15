@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { getNotiList, readNoti } from "../apis/notification";
 import { NotiContext } from "./NotiContext";
+import { useAuthStore } from "../store/authStore";
 
 export function NotiProvider({ children }: { children: React.ReactNode }) {
 	const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
+	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
 	const refetchNotiList = useCallback(async () => {
 		try {
@@ -15,7 +17,7 @@ export function NotiProvider({ children }: { children: React.ReactNode }) {
 				const prevIdSet = new Set(prev.map((noti) => noti._id));
 				const newNotis = res.filter((noti) => !prevIdSet.has(noti._id));
 				const combined = [...newNotis, ...prev];
-				console.log("중복처리전:", combined);
+				// console.log("중복처리전:", combined);
 				const mergedMap = new Map<string, NotiData>();
 
 				for (const noti of combined) {
@@ -30,13 +32,21 @@ export function NotiProvider({ children }: { children: React.ReactNode }) {
 					}
 				}
 				const after = Array.from(mergedMap.values());
-				console.log("중복처리후:", after);
+				// console.log("중복처리후:", after);
 				return after;
 			});
 		} catch (err) {
 			console.error("알림 목록 가져오기 실패:", err);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (!isLoggedIn) return;
+		const interval = setInterval(() => {
+			refetchNotiList();
+		}, 5000);
+		return () => clearInterval(interval);
+	}, [isLoggedIn, refetchNotiList]);
 
 	useEffect(() => {
 		if (notiInfo.length > 0 && notiInfo.every((noti) => noti.seen)) {

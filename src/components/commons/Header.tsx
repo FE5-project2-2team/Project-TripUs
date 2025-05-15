@@ -32,7 +32,7 @@ export default function Header() {
 	const [modalOpen, setModalOpen] = useState(false);
 	const [notiOpen, setNotiOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
-
+	const notiRef = useRef<HTMLDivElement | null>(null);
 	// const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
 	const { notiInfo } = useNoti();
 	const unRead = notiInfo.some((n) => !n.seen);
@@ -91,6 +91,10 @@ export default function Header() {
 	useClickAway(modalRef, () => {
 		setModalOpen(false);
 	});
+
+	useClickAway(notiRef, () => {
+		setNotiOpen(false);
+	});
 	return (
 		<div className="w-[1100px] flex justify-between h-[70px] m-auto">
 			<Link to={"/"} className="flex items-center">
@@ -110,26 +114,28 @@ export default function Header() {
 							<UserListModal onClose={() => setIsUserListOpen(false)} />
 						)}
 					</div>
+					{/* 알림 */}
+					<div ref={notiRef}>
+						<button onClick={toggleNoti} className="cursor-pointer relative">
+							<FontAwesomeIcon icon={faBell} className="text-xl" />
+							{unRead && (
+								<div className="absolute w-[10px] h-[10px] rounded-full top-[-5px] right-[-5px] bg-[#FD346E]" />
+							)}
+						</button>
+						{notiOpen && (
+							<div className="absolute top-[60px] right-[210px] z-60">
+								<NotiList
+									notiOpen={notiOpen}
+									setNotiOpen={setNotiOpen}
+									// notiInfo={notiInfo}
+									// setNotiInfo={setNotiInfo}
+								/>
+							</div>
+						)}
+					</div>
 					<Link to={"/message"}>
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
-					{/* 알림 */}
-					<button onClick={toggleNoti} className="cursor-pointer relative">
-						<FontAwesomeIcon icon={faBell} className="text-xl" />
-						{unRead && (
-							<div className="absolute w-[10px] h-[10px] rounded-full top-[-5px] right-[-5px] bg-[#FD346E]" />
-						)}
-					</button>
-					{notiOpen && (
-						<div className="absolute top-[60px] right-[150px] z-60">
-							<NotiList
-								notiOpen={notiOpen}
-								setNotiOpen={setNotiOpen}
-								// notiInfo={notiInfo}
-								// setNotiInfo={setNotiInfo}
-							/>
-						</div>
-					)}
 					<button
 						onClick={() => {
 							if (!modalOpen) setModalOpen(true);
