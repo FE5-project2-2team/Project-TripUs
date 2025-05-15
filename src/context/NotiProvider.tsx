@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react";
-import { getNotiList } from "../apis/notification";
+import { useCallback, useEffect, useState } from "react";
+import { getNotiList, readNoti } from "../apis/notification";
 import { NotiContext } from "./NotiContext";
 
 export function NotiProvider({ children }: { children: React.ReactNode }) {
@@ -38,6 +38,11 @@ export function NotiProvider({ children }: { children: React.ReactNode }) {
 		}
 	}, []);
 
+	useEffect(() => {
+		if (notiInfo.length > 0 && notiInfo.every((noti) => noti.seen)) {
+			readNoti(); // 모든 알림이 seen === true일 때만 실행
+		}
+	}, [notiInfo]);
 	return (
 		<NotiContext.Provider value={{ notiInfo, setNotiInfo, refetchNotiList }}>
 			{children}
