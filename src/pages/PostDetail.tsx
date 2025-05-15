@@ -6,6 +6,7 @@ import ApplyMembers from "../components/features/postDetail/ApplyMembers";
 import CommentsList from "../components/features/postDetail/CommentsList";
 import Likes from "../components/features/postDetail/Likes";
 import MemberList from "../components/features/postDetail/MemberList";
+import OpenTalkLink from "../components/features/postDetail/OpenTalkLink";
 import PostHeader from "../components/features/postDetail/PostHeader";
 import { CHANNELS } from "../constants/posts";
 import useConfirm from "../hooks/useConfirm";
@@ -94,6 +95,7 @@ export default function PostDetail() {
 				) : (
 					<div></div>
 				)}
+				<OpenTalkLink />
 				<Likes />
 				<CommentsList authorId={postData.author._id} />
 				{!isAuthor &&
