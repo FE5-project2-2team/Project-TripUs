@@ -6,12 +6,12 @@ export default function MessageLayout() {
 	const { id } = useParams();
 	return (
 		<div className="w-full flex justify-center bg-[#F6FAF9]">
-			<div className="w-[1280px] flex h-[calc(100vh-64px)]">
-				<aside className="w-[400px] p-4 overflow-y-auto">
+			<div className="w-[1280px] flex h-[calc(100vh-64px+30px)]">
+				<aside className="w-[400px] p-4 overflow-y-auto h-full">
 					<ConversationList />
 				</aside>
 
-				<main className="flex-1">
+				<main className="flex-1 h-full overflow-y-auto">
 					{id ? (
 						<Message />
 					) : (
