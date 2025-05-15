@@ -161,6 +161,7 @@ export default function Channel() {
 	const locationIconPosition = isDark ? "56.034% 20.708%" : "6.466% 20.708%";
 	const memberIconPosition = isDark ? "66.079% 20.765%" : "15.419% 20.765%";
 	const calendarIconPosition = isDark ? "75.983% 20.604%" : "25.764% 20.604%";
+	const likesIconPosition = isDark ? "83.5% 96.15%" : "74.3% 96.15%";
 
 	return (
 		<div className="w-full grid grid-cols-3 gap-[40px] mt-[20px] items-center relative">
@@ -231,8 +232,8 @@ export default function Channel() {
 								</div>
 							</div>
 							{/* 게시글 제목, 내용 */}
-							<div className="w-[308px] mt-4 mb-2">
-								<p className="text-[16px] font-bold line-clamp-1">
+							<div className="w-[308px] h-[65px] mt-[16px]">
+								<p className="text-[16px] font-bold line-clamp-2">
 									{post.title.title}
 								</p>
 								<p className="mt-[8px] min-h-[38px] text-[14px] line-clamp-2">
@@ -240,7 +241,7 @@ export default function Channel() {
 								</p>
 							</div>
 							{/* 여행지, 크루원수,날짜*/}
-							<div className="text-[14px] h-[72px]">
+							<div className="text-[14px] h-[72px] mt-4">
 								{/* 비행기 */}
 								{post.title.location && (
 									<div className="flex items-center gap-1.5">
@@ -267,16 +268,24 @@ export default function Channel() {
 								</div>
 							</div>
 						</div>
-						{/* 나이,성별 */}
-						<div className="text-[14px] flex mt-[2px] gap-4">
-							{post.title.recruitCondition.gender &&
-								`#${post.title.recruitCondition.gender}`}
-							{post.title.recruitCondition.ageRange &&
-								post.title.recruitCondition.ageRange.map((age) => (
-									<span key={age} className="min-w-[35px] h-[19px]">
-										#{age}
-									</span>
-								))}
+						
+						<div className="flex justify-between mt-[2px] text-[14px]">
+							{/* 나이,성별 */}
+							<div className="flex gap-4">
+								{post.title.recruitCondition.gender &&
+									`#${post.title.recruitCondition.gender}`}
+								{post.title.recruitCondition.ageRange &&
+									post.title.recruitCondition.ageRange.map((age) => (
+										<span key={age} className="min-w-[35px] h-[19px]">
+											#{age}
+										</span>
+									))}
+							</div>
+							{/* 좋아요 */}
+							<div className="flex items-center gap-[5px]">
+								<h3 className="text-[#808080] dark:text-[#cdcdcd]">{post.likes.length}</h3>
+								<Icon position={likesIconPosition} size="18px" />
+							</div>	
 						</div>
 					</div>
 				</div>

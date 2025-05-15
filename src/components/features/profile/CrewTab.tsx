@@ -139,10 +139,9 @@ const CrewTab = ({
 										</div>
 										{/* 좋아요 */}
 										<div className="flex items-center gap-[5px]">
-											<h3 className="text-[#808080] dark:text-[#dadada]">{post.likes.length}</h3>
+											<h3 className="text-[#808080] dark:text-[#cdcdcd]">{post.likes.length}</h3>
 											<Icon position={likesIconPosition} size="18px" />
 										</div>	
-
 									</div>
 								</div>
 							</div>
