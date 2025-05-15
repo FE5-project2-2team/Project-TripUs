@@ -4,7 +4,7 @@ import NotiMessageItem from "./NotiMessageItem";
 export default function NotiMessage({
 	noti,
 	onClose
-	// setNotiInfo
+	// setNotiInfonpm
 }: {
 	noti: NotiData[];
 	onClose: () => void;
