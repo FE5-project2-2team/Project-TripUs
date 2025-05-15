@@ -19,6 +19,7 @@ export default function InfoForm({
 }) {
 	const { register, reset, setValue, control } = useFormContext();
 	const { confirmOpen, toggleConfirm } = useConfirm();
+	const isEditing = type === "edit";
 
 	const { field } = useController({
 		name: "dateRange",
@@ -58,7 +59,7 @@ export default function InfoForm({
 
 	const [isFocused, setIsFocused] = useState(false);
 	useEffect(() => {
-		if (!watchedChannel || type === "edit") return;
+		if (!watchedChannel || isEditing) return;
 		toggleConfirm();
 	}, [watchedChannel, reset, type]);
 	return (
@@ -73,7 +74,7 @@ export default function InfoForm({
 				/>
 			)}
 			<div className="grid grid-cols-2 gap-15">
-				<LabelSelect type={type} name="channel" label="게시판 선택">
+				<LabelSelect isEditing={isEditing} name="channel" label="게시판 선택">
 					<option value={CHANNELS.RECRUITMENT}>동행원 모집</option>
 					<option value={CHANNELS.REVIEW}>여행 후기글</option>
 				</LabelSelect>
@@ -89,17 +90,25 @@ export default function InfoForm({
 					<div />
 				)}
 				<div className="relative flex flex-col items-start">
-					<label htmlFor="location" className="post-input-title">
+					<label
+						htmlFor="location"
+						className={twMerge(
+							"post-input-title",
+							isEditing && "text-[#aaaaaa]"
+						)}
+					>
 						지역 입력
 					</label>
 					<input
+						disabled={isEditing}
 						id="location"
 						type="text"
 						placeholder="지역 입력"
 						autoComplete="off"
 						className={twMerge(
 							"input-style placeholder:text-[#CDCDCD] focus:outline-0",
-							"dark:placeholder:text-[#616161] dark:border-[#616161]"
+							"dark:placeholder:text-[#616161] dark:border-[#616161]",
+							"disabled:text-[#aaaaaa]"
 						)}
 						{...register("location")}
 						onFocus={() => setIsFocused(true)}
@@ -108,21 +117,32 @@ export default function InfoForm({
 					{isFocused && <AutoComplete />}
 				</div>
 				<div className="flex flex-col items-start">
-					<label htmlFor="date" className="post-input-title">
+					<label
+						htmlFor="date"
+						className={twMerge(
+							"post-input-title",
+							isEditing && "text-[#aaaaaa]"
+						)}
+					>
 						일정 선택
 					</label>
 					<Flatpickr
+						disabled={isEditing}
 						id="date"
 						className={twMerge(
 							"input-style placeholder:text-[#CDCDCD] focus:outline-0",
-							"dark:placeholder:text-[#616161] dark:border-[#616161]"
+							"dark:placeholder:text-[#616161] dark:border-[#616161]",
+							"disabled:cursor-default! disabled:text-[#aaaaaa]"
 						)}
 						options={{
 							mode: "range",
 							dateFormat: "Y-m-d",
 							closeOnSelect: false,
 							locale: Korean,
-							position: "below right"
+							position: "below right",
+							...(watchedChannel === CHANNELS.RECRUITMENT
+								? { minDate: "today" }
+								: { maxDate: "today" })
 						}}
 						placeholder="일정 선택"
 						onChange={(selectedDates) => {
