@@ -4,49 +4,37 @@ import NotiWhole from "./NotiWhole";
 import NotiPosts from "./NotiPosts";
 import NotiMessage from "./NotiMessage";
 import NotiRequest from "./NotiRequest";
-import { getNotiList, readNoti } from "../../../apis/notification";
+import { readNoti } from "../../../apis/notification";
+import { useNoti } from "../../../context/useNoti";
 
 export default function NotiList({
 	notiOpen,
-	setNotiOpen,
-	notiInfo,
-	setNotiInfo
+	setNotiOpen
 }: {
 	notiOpen: boolean;
 	setNotiOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	notiInfo: NotiData[];
-	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
 }) {
 	const bannerArr = ["전체", "게시글", "메시지", "동행요청"];
 	const [notiContents, setNotiContents] = useState("전체");
-	// const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
+	const { notiInfo, setNotiInfo } = useNoti();
 
-	//모든 알림 읽었다면 readNoti보내기
 	useEffect(() => {
-		const markNoti = async () => {
-			if (notiInfo.every((n) => n.seen)) {
-				try {
-					await readNoti();
-				} catch (e) {
-					console.error("읽음 처리 실패", e);
+		setNotiInfo((notice) => {
+			let updated = false;
+
+			const updatedNotice = notice.map((n) => {
+				const isEmpty =
+					("like" in n && !n.like) ||
+					("comment" in n && !n.comment) ||
+					("message" in n && !n.message);
+				if (isEmpty && !n.seen) {
+					updated = true;
+					return { ...n, seen: true };
 				}
-			}
-		};
-		markNoti();
-	}, [notiInfo]);
-	useEffect(() => {
-		//알림
-		const NotiFunc = async () => {
-			try {
-				const myNotiInfo: NotiData[] = await getNotiList();
-				console.log("서버 알림 응답:", myNotiInfo);
-				setNotiInfo(myNotiInfo);
-			} catch (e) {
-				console.error("알림 가져오기 에러:", e);
-			}
-		};
-		NotiFunc();
-		//
+				return n;
+			});
+			return updated ? updatedNotice : notice;
+		});
 	}, [setNotiInfo]);
 	const handleClose = () => {
 		setNotiOpen(false);
@@ -54,7 +42,7 @@ export default function NotiList({
 	const handleRead = async () => {
 		try {
 			await readNoti();
-			// setNotiInfo((notice) => notice.map((n) => ({ ...n, seen: true })));
+			setNotiInfo((notice) => notice.map((n) => ({ ...n, seen: true })));
 		} catch (e) {
 			console.error("모두 읽음처리 실패", e);
 		}
@@ -62,12 +50,17 @@ export default function NotiList({
 	const filtered = () => {
 		switch (notiContents) {
 			case "게시글":
-				return notiInfo.filter((notice) => notice.like || notice.comment);
+				return notiInfo.filter(
+					(notice) => "like" in notice || "comment" in notice
+				);
 			case "메시지":
-				return notiInfo.filter((notice) => notice.message);
+				return notiInfo.filter((notice) => "message" in notice);
 			case "동행요청":
 				return notiInfo.filter(
-					(notice) => !notice.comment && !notice.like && !notice.message
+					(notice) =>
+						!("comment" in notice) &&
+						!("like" in notice) &&
+						!("message" in notice)
 				);
 			default:
 				return notiInfo;
@@ -78,37 +71,13 @@ export default function NotiList({
 		const filterNoti = filtered();
 		switch (notiContents) {
 			case "전체":
-				return (
-					<NotiWhole
-						noti={filterNoti}
-						onClose={handleClose}
-						setNotiInfo={setNotiInfo}
-					/>
-				);
+				return <NotiWhole noti={filterNoti} onClose={handleClose} />;
 			case "게시글":
-				return (
-					<NotiPosts
-						noti={filterNoti}
-						onClose={handleClose}
-						setNotiInfo={setNotiInfo}
-					/>
-				);
+				return <NotiPosts noti={filterNoti} onClose={handleClose} />;
 			case "메시지":
-				return (
-					<NotiMessage
-						noti={filterNoti}
-						onClose={handleClose}
-						setNotiInfo={setNotiInfo}
-					/>
-				);
+				return <NotiMessage noti={filterNoti} onClose={handleClose} />;
 			case "동행요청":
-				return (
-					<NotiRequest
-						noti={filterNoti}
-						onClose={handleClose}
-						setNotiInfo={setNotiInfo}
-					/>
-				);
+				return <NotiRequest noti={filterNoti} onClose={handleClose} />;
 			default:
 				return null;
 		}
@@ -116,7 +85,7 @@ export default function NotiList({
 
 	return (
 		<>
-			<div className="w-[560px] min-h-[664px] rounded-[10px] bg-[#fff] border border-[#D9D9D9] shadow-xl">
+			<div className="w-[560px] min-h-[664px] rounded-[10px] bg-[#fff] border border-[#D9D9D9] shadow-[0_2px_8px_0_rgba(99,99,99,0.20)]">
 				{/* 상단-알림,x버튼*/}
 				<div className="w-[500px] h-[29px] flex items-center justify-between mt-5 mx-6">
 					<div className="mt-5 text-[24px] font-bold">알림</div>
