@@ -62,6 +62,7 @@ interface PostDetail {
 	description: string;
 	contents: Delta | undefined;
 	images?: string[];
+	url: string;
 }
 
 interface FormValues {
@@ -75,6 +76,7 @@ interface FormValues {
 		ageRange: string[];
 	};
 	images: string[];
+	url: string;
 }
 
 interface NotiType {
