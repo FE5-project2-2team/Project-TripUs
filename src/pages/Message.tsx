@@ -49,7 +49,7 @@ export default function Message() {
 				</h2>
 			)}
 
-			<MessageList messages={messages} myUserId={myUserId!} />
+			<MessageList key={id} messages={messages} myUserId={myUserId!} />
 			<MessageInput receiverId={id!} onMessageSent={handleNewMessage} />
 		</div>
 	);

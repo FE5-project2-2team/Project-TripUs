@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createMessage } from "../../../apis/message";
+import { createNoti } from "../../../apis/notification";
 import Icon from "../../commons/Icon";
 
 interface MessageInputProps {
@@ -19,6 +20,13 @@ export default function MessageInput({
 			const data = await createMessage(text, receiverId);
 			onMessageSent(data);
 			setText("");
+
+			await createNoti({
+				notificationType: "MESSAGE",
+				notificationTypeId: data._id,
+				userId: data.receiver._id,
+				postId: null
+			});
 		} catch (err) {
 			console.error("메시지 전송 실패", err);
 		}
@@ -43,7 +51,7 @@ export default function MessageInput({
 				/>
 				<button
 					onClick={handleSend}
-					className="w-[50px] h-[46px] bg-[#06B796] hover:bg-[#05A187] rounded-[8px] flex items-center justify-center ml-2 transition-colors duration-200"
+					className="w-[50px] h-[46px] bg-[#06B796] hover:bg-[#05A187] rounded-[8px] flex items-center justify-center ml-2 transition-colors duration-200 cursor-pointer"
 				>
 					<Icon size="24px" position="-24px -200px" />
 				</button>

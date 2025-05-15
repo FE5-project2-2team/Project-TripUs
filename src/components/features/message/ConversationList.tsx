@@ -19,7 +19,6 @@ export default function ConversationList() {
 		const fetchConversations = async () => {
 			try {
 				const data = await getConversations();
-				console.log("getConversation 응답", data);
 				setConversations(data);
 			} catch (err) {
 				console.log("대화 목록 불러오기 실패", err);
