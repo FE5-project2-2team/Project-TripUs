@@ -202,9 +202,17 @@ export default function Channel() {
 								);
 							}
 
+							if (channelName === "review") {
+								return (
+									<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#06B796] text-[#fff] text-[14px] z-20">
+										후기
+									</div>
+								);
+							}
+
 							if (channelName === "긴급 모집") {
 								return (
-									<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[red] text-[#fff] text-[14px] z-20">
+									<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#FF2929] text-[#fff] text-[14px] z-20">
 										긴급
 									</div>
 								);
