@@ -47,6 +47,11 @@ interface PostUpdateData {
 	imageToDeletePublicId?: string;
 }
 
+interface Condition {
+	gender: "남성" | "여성" | "성별 무관";
+	ageRange: string[];
+}
+
 interface PostDetail {
 	title: string;
 	memberLimit: number;
@@ -55,10 +60,7 @@ interface PostDetail {
 	location: string;
 	dateRange: Date[];
 	isRecruiting: boolean;
-	recruitCondition: {
-		gender: string;
-		ageRange: string[];
-	};
+	recruitCondition: Condition;
 	description: string;
 	contents: Delta | undefined;
 	images?: string[];
@@ -70,10 +72,7 @@ interface FormValues {
 	location: string;
 	dateRange: Date[];
 	title: string;
-	condition?: {
-		gender: string;
-		ageRange: string[];
-	};
+	condition?: Condition;
 	images: string[];
 }
 
@@ -215,10 +214,7 @@ interface PostTitleData {
 	location: string;
 	dateRange: Date[];
 	isRecruiting: boolean;
-	recruitCondition: {
-		gender: string;
-		ageRange: string[];
-	};
+	recruitCondition: Condition;
 	description: string;
 	contents: string;
 }
