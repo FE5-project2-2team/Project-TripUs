@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createComment, deleteComment } from "../apis/comment";
 import { createNoti } from "../apis/notification";
 import { getPostById, updatePost } from "../apis/post";
+import { showToast } from "../components/commons/Toast";
 
 type PostStore = {
 	postData: PostData | null;
@@ -177,6 +178,10 @@ export const usePostStore = create<PostStore>((set, get) => ({
 		const { postData } = get();
 		if (!postData) return;
 
+		if (value.length === 0) {
+			showToast({ type: "error", message: "댓글을 입력해주세요" });
+			return;
+		}
 		try {
 			const data: CommentType = { type: "comment", value };
 			const newComment: CommentData = await createComment(

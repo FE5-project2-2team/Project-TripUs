@@ -43,7 +43,6 @@ export default function PostHeader({
 				isRecruiting={isRecruiting}
 				toggleRecruit={toggleRecruit}
 				title={postInfo.title}
-				postData={postData}
 			/>
 			{postInfo.images?.length !== 0 && (
 				<div className="relative">

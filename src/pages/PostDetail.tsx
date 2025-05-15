@@ -11,6 +11,7 @@ import { CHANNELS } from "../constants/posts";
 import useConfirm from "../hooks/useConfirm";
 import { useAuthStore } from "../store/authStore";
 import { usePostStore } from "../store/postStore";
+import { getDiffInDays } from "../utils/date";
 
 export default function PostDetail() {
 	const { id } = useParams();
@@ -46,6 +47,8 @@ export default function PostDetail() {
 	const isCanceledAppication =
 		applicants.every((applicant) => applicant.author._id !== userId) &&
 		!members.includes(userId);
+
+	const fiveDaysLeft = getDiffInDays(new Date(), postInfo.dateRange[0]) < 5;
 
 	return (
 		<main className="flex flex-col justify-center items-center mt-[49px] mb-20">
@@ -105,15 +108,19 @@ export default function PostDetail() {
 				{!isAuthor && isMember && !isCanceledAppication && (
 					<Button
 						onClick={toggleConfirm}
-						reverse
+						disabled={fiveDaysLeft}
+						reverse={!fiveDaysLeft}
 						className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
 					>
-						동행 철회
+						{fiveDaysLeft ? "철회 불가능" : "동행 철회"}
 					</Button>
 				)}
 				{confirmOpen && (
 					<Confirm
-						confirmHandler={() => cancelAccompany(userId)}
+						confirmHandler={() => {
+							toggleConfirm();
+							cancelAccompany(userId);
+						}}
 						cancelHandler={toggleConfirm}
 						title="동행을 철회하시겠습니까?"
 						description="철회 시, 다시 신청이 불가능합니다."
