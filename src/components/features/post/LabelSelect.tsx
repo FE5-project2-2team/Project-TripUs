@@ -2,18 +2,17 @@ import { useFormContext } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
 export default function LabelSelect({
-	type,
+	isEditing,
 	name,
 	label,
 	children
 }: {
-	type?: string;
+	isEditing?: boolean;
 	name: string;
 	label: string;
 	children: React.ReactNode;
 }) {
 	const { register } = useFormContext();
-	const isEditing = type === "edit";
 	return (
 		<div>
 			<label
