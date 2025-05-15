@@ -5,7 +5,7 @@ import Message from "../../../pages/Message";
 export default function MessageLayout() {
 	const { id } = useParams();
 	return (
-		<div className="w-full flex justify-center bg-[#F6FAF9]">
+		<div className="w-full flex justify-center bg-[#F6FAF9] dark:bg-[#1B1D22]">
 			<div className="w-[1280px] flex h-[calc(100vh-64px+30px)]">
 				<aside className="w-[400px] p-4 overflow-y-auto h-full">
 					<ConversationList />
