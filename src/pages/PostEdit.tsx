@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import ReactQuill from "react-quill-new";
 import { useLocation, useNavigate } from "react-router";
+import { updatePost } from "../apis/post";
 import { showToast } from "../components/commons/Toast";
 import PostForm from "../components/features/post/PostForm";
 import { CHANNELS } from "../constants/posts";
 import { useImage } from "../hooks/useImage";
 import { usePostForm } from "../hooks/usePostForm";
 import { formErrorHandler } from "../utils/errorhandle";
-import { updatePost } from "../apis/post";
 
 export default function PostEdit() {
 	const navigate = useNavigate();
