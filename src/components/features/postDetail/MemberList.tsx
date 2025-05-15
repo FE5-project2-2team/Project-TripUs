@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { getUserInfo } from "../../../apis/user";
+import { usePostStore } from "../../../store/postStore";
 import ProfileImage from "../../commons/ProfileImage";
 
-export default function MemberList({ members }: { members: string[] }) {
+export default function MemberList() {
+	const members = usePostStore((state) => state.members);
 	const [userData, setUserData] = useState<UserData[]>([]);
 	const fetchUsers = useCallback(async () => {
 		const users = await Promise.all(

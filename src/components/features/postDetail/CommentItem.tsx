@@ -1,17 +1,17 @@
 import { useAuthStore } from "../../../store/authStore";
+import { usePostStore } from "../../../store/postStore";
 import { formatDate, formatTime } from "../../../utils/date";
 import ProfileImage from "../../commons/ProfileImage";
 
 export default function CommentItem({
 	comment,
-	authorId,
-	deleteCommentHandler
+	authorId
 }: {
 	comment: CommentData;
 	authorId: string;
-	deleteCommentHandler: (commentId: string) => void;
 }) {
 	const userId = useAuthStore((state) => state.userId);
+	const deleteComment = usePostStore((state) => state.deleteComment);
 	const userInfo: Profile = JSON.parse(comment.author.fullName);
 	const date = new Date(comment.createdAt);
 	const { value }: CommentType = JSON.parse(comment.comment);
@@ -35,7 +35,7 @@ export default function CommentItem({
 					</span>
 					{userId === comment.author._id && (
 						<span
-							onClick={() => deleteCommentHandler(comment._id)}
+							onClick={() => deleteComment(comment._id)}
 							className="text-[12px] hover:text-black ml-3 cursor-pointer self-end dark:hover:text-[#fff]"
 						>
 							삭제

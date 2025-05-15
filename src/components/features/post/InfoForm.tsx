@@ -5,6 +5,7 @@ import Flatpickr from "react-flatpickr";
 import { useController, useFormContext, useWatch } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { CHANNELS } from "../../../constants/posts";
+import useConfirm from "../../../hooks/useConfirm";
 import Confirm from "../../commons/Confirm";
 import AutoComplete from "./AutoComplete";
 import LabelSelect from "./LabelSelect";
@@ -17,7 +18,8 @@ export default function InfoForm({
 	confirmHandler: () => void;
 }) {
 	const { register, reset, setValue, control } = useFormContext();
-	const [modalOpen, setModalOpen] = useState(false);
+	const { confirmOpen, toggleConfirm } = useConfirm();
+
 	const { field } = useController({
 		name: "dateRange",
 		control: control
@@ -42,7 +44,7 @@ export default function InfoForm({
 			},
 			images: []
 		});
-		setModalOpen(false);
+		toggleConfirm();
 		confirmHandler();
 	};
 
@@ -57,21 +59,18 @@ export default function InfoForm({
 	const [isFocused, setIsFocused] = useState(false);
 	useEffect(() => {
 		if (!watchedChannel || type === "edit") return;
-		setModalOpen((state) => !state);
+		toggleConfirm();
 	}, [watchedChannel, reset, type]);
 	return (
 		<>
-			{modalOpen && (
-				<>
-					<div className="fixed inset-0 bg-black opacity-30 z-50" />
-					<Confirm
-						confirmHandler={changeChannelHandler}
-						cancelHandler={cancelHandler}
-						title="게시판을 변경하시겠습니까?"
-						description="작성 중인 내용이 모두 삭제됩니다."
-						confirmBtn="변경"
-					/>
-				</>
+			{confirmOpen && (
+				<Confirm
+					confirmHandler={changeChannelHandler}
+					cancelHandler={cancelHandler}
+					title="게시판을 변경하시겠습니까?"
+					description="작성 중인 내용이 모두 삭제됩니다."
+					confirmBtn="변경"
+				/>
 			)}
 			<div className="grid grid-cols-2 gap-15">
 				<LabelSelect type={type} name="channel" label="게시판 선택">

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { CHANNELS } from "../../../constants/posts";
 import { useAuthStore } from "../../../store/authStore";
+import { usePostStore } from "../../../store/postStore";
 import Icon from "../../commons/Icon";
 import UserInfo from "../user/UserInfo";
 import PostTitle from "./PostTitle";
@@ -12,17 +13,17 @@ export default function PostHeader({
 	postInfo,
 	authorInfo,
 	isRecruitChannel,
-	isRecruiting,
-	toggleRecruit
+	isRecruiting
 }: {
 	postData: PostData;
 	postInfo: PostDetail;
 	authorInfo: Profile;
 	isRecruitChannel: boolean;
 	isRecruiting: boolean;
-	toggleRecruit: () => void;
 }) {
 	const userId = useAuthStore((state) => state.userId)!;
+	const toggleRecruit = usePostStore((state) => state.toggleRecruit);
+
 	const isAuthor = userId === postData.author._id;
 	const [swiperIndex, setSwiperIndex] = useState(0);
 	const [swiper, setSwiper] = useState<SwiperClass>();

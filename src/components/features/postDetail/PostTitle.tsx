@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { useClickAway } from "react-use";
 import { twMerge } from "tailwind-merge";
 import { deletePost } from "../../../apis/post";
+import useConfirm from "../../../hooks/useConfirm";
 import { useThemeStore } from "../../../store/themeStore";
 import Confirm from "../../commons/Confirm";
 import Icon from "../../commons/Icon";
@@ -27,7 +28,7 @@ export default function PostTitle({
 	const navigate = useNavigate();
 	const [modalOpen, setModalOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
-	const [confirmOpen, setConfirmOpen] = useState(false);
+	const { confirmOpen, toggleConfirm } = useConfirm();
 	const { isDark } = useThemeStore();
 
 	const modifyPostHandler = () => {
@@ -39,17 +40,13 @@ export default function PostTitle({
 	};
 
 	const deletePostHandler = async () => {
-		setConfirmOpen(true);
+		toggleConfirm();
 		try {
 			navigate("/");
 			await deletePost(postData._id);
 		} catch (error) {
 			console.error(error);
 		}
-	};
-
-	const confirmOpenHandler = () => {
-		setConfirmOpen((state) => !state);
 	};
 
 	useClickAway(modalRef, () => {
@@ -102,22 +99,19 @@ export default function PostTitle({
 					<ModalItem noIcon clickHandler={modifyPostHandler}>
 						<span className="inline-block w-full text-center">수정</span>
 					</ModalItem>
-					<ModalItem noIcon clickHandler={confirmOpenHandler}>
+					<ModalItem noIcon clickHandler={toggleConfirm}>
 						<span className="inline-block w-full text-center">삭제</span>
 					</ModalItem>
 				</Modal>
 			)}
 			{confirmOpen && (
-				<>
-					<div className="fixed inset-0 bg-black opacity-30 z-50" />
-					<Confirm
-						confirmHandler={deletePostHandler}
-						cancelHandler={confirmOpenHandler}
-						title="게시글을 삭제하시겠습니까?"
-						description="삭제된 게시글은 복구할 수 없습니다."
-						confirmBtn="삭제"
-					/>
-				</>
+				<Confirm
+					confirmHandler={deletePostHandler}
+					cancelHandler={toggleConfirm}
+					title="게시글을 삭제하시겠습니까?"
+					description="삭제된 게시글은 복구할 수 없습니다."
+					confirmBtn="삭제"
+				/>
 			)}
 		</div>
 	);
