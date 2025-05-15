@@ -2,20 +2,22 @@ import { useNavigate } from "react-router";
 import profileImg from "../../../assets/images/profileImg_circle.svg";
 import { useEffect, useState } from "react";
 import { getMessageList } from "../../../apis/message";
+import { useNoti } from "../../../context/useNoti";
 // import { useEffect } from "react";
 
 export default function NotiMessageItem({
 	notice,
-	onClose,
-	setNotiInfo
+	onClose
+	// setNotiInfo
 }: {
 	notice: NotiData;
 	onClose: () => void;
-	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
+	// setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
 }) {
 	const navigate = useNavigate();
 	// const [isSeen, setIsSeen] = useState(notice.seen);
 	const [mess, setMess] = useState<MessageData>();
+	const { setNotiInfo } = useNoti();
 	const formatTime = (time: string): string => {
 		if (!time) return "시간정보없음";
 
@@ -47,10 +49,14 @@ export default function NotiMessageItem({
 	const handleClick = async () => {
 		try {
 			if (notice.message) {
-				setNotiInfo((noti) =>
-					noti.map((n) => (n._id === notice._id ? { ...n, seen: true } : n))
-				);
-				console.log("특정사용자Id:", notice.author._id);
+				setNotiInfo((noti) => {
+					const newNoti = noti.map((n) =>
+						n._id === notice._id ? { ...n, seen: true } : n
+					);
+					console.log("메시지 알림 읽음", newNoti);
+					return newNoti;
+				});
+				// console.log("특정사용자Id:", notice.author._id);
 				navigate(`/message/${notice.author._id}`);
 				onClose();
 			}

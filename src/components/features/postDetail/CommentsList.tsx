@@ -1,27 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useAuthStore } from "../../../store/authStore";
+import { usePostStore } from "../../../store/postStore";
 import CommentItem from "./CommentItem";
 
-export default function CommentsList({
-	commentsList,
-	authorId,
-	submitHandler,
-	deleteCommentHandler
-}: {
-	commentsList: CommentData[];
-	authorId: string;
-	submitHandler: (e: React.FormEvent<HTMLFormElement>, value: string) => void;
-	deleteCommentHandler: (commentId: string) => void;
-}) {
+export default function Comments({ authorId }: { authorId: string }) {
 	const [value, setValue] = useState("");
+	const addComment = usePostStore((state) => state.addComment);
+	const comments = usePostStore((state) => state.comments);
 	const userId = useAuthStore((state) => state.userId);
 	return (
 		<div className="mb-10">
 			<span className="post-sub-title inline">댓글</span>
-			<span className="sub_title_number">{commentsList.length}</span>
+			<span className="sub_title_number">{comments.length}</span>
 			<ul className="border-t border-[#CDCDCD] mt-4 dark:border-[#616161]">
-				{commentsList
+				{comments
 					.filter((commentData) => {
 						const parsed: CommentType = JSON.parse(commentData.comment);
 						return parsed.type === "comment";
@@ -32,7 +25,6 @@ export default function CommentsList({
 								key={commentData._id}
 								comment={commentData}
 								authorId={authorId}
-								deleteCommentHandler={deleteCommentHandler}
 							/>
 						);
 					})}
@@ -41,7 +33,7 @@ export default function CommentsList({
 				<form
 					className="relative"
 					onSubmit={(e) => {
-						submitHandler(e, value);
+						addComment(e, value);
 						setValue("");
 					}}
 				>
