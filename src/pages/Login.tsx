@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { loginUser } from "../apis/auth";
-import { useAuthStore } from "../store/authStore";
 import SignupLogo from "../assets/images/Signup_logo.svg";
 import Button from "../components/commons/Button";
 import Icon from "../components/commons/Icon";
 import { showToast } from "../components/commons/Toast";
+import { useAuthStore } from "../store/authStore";
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -46,7 +46,7 @@ export default function Login() {
 			console.log("서버응답", data);
 
 			if (data?.token) {
-				login(data.token, data.user._id);
+				login(data.token, data.user);
 				showToast({ type: "success", message: "로그인에 성공했습니다!" });
 				navigate("/");
 			} else {
