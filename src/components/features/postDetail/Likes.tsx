@@ -6,15 +6,10 @@ import { createNoti } from "../../../apis/notification";
 import { useAuthStore } from "../../../store/authStore";
 import Icon from "../../commons/Icon";
 
-export default function Likes({
-	likesList,
-	postData
-}: {
-	likesList: LikeData[];
-	postData: PostData;
-}) {
+export default function Likes({ postData }: { postData: PostData }) {
 	const navigate = useNavigate();
 	const userId = useAuthStore((state) => state.userId);
+	const likesList = postData.likes;
 	const [likes, setLikes] = useState<{
 		number: number;
 		likeId: string | undefined;
