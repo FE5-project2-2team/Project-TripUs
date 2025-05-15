@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { useClickAway } from "react-use";
 import { twMerge } from "tailwind-merge";
 import { deletePost } from "../../../apis/post";
+import { useThemeStore } from "../../../store/themeStore";
 import Confirm from "../../commons/Confirm";
 import Icon from "../../commons/Icon";
 import Modal from "../../commons/Modal";
@@ -27,6 +28,7 @@ export default function PostTitle({
 	const [modalOpen, setModalOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 	const [confirmOpen, setConfirmOpen] = useState(false);
+	const { isDark } = useThemeStore();
 
 	const modifyPostHandler = () => {
 		navigate(`/post/edit/${postData._id}`, {
@@ -39,8 +41,8 @@ export default function PostTitle({
 	const deletePostHandler = async () => {
 		setConfirmOpen(true);
 		try {
-			await deletePost(postData._id);
 			navigate("/");
+			await deletePost(postData._id);
 		} catch (error) {
 			console.error(error);
 		}
@@ -57,7 +59,10 @@ export default function PostTitle({
 	return (
 		<div className=" flex justify-between items-center relative">
 			<div className="cursor-pointer" onClick={() => navigate(-1)}>
-				<Icon position="39.301% 27.747%" size="16px" />
+				<Icon
+					position={isDark ? "50.218% 27.747%" : "39.301% 27.747%"}
+					size="16px"
+				/>
 			</div>
 			<h2 className="items-center mb-[14px] inline-block">
 				<span
@@ -69,7 +74,8 @@ export default function PostTitle({
 						"mr-4 text-xl px-3 py-[5.5px] rounded-lg",
 						isRecruitChannel
 							? "cursor-pointer text-[#06B796] bg-[#F3F4F6] hover:"
-							: "cursor-default bg-[#06b796] text-white"
+							: "cursor-default bg-[#06b796] text-white",
+						"dark:bg-[#1B1D22] dark:border-1 dark:border-[#06b796]"
 					)}
 				>
 					{isRecruitChannel ? (isRecruiting ? "모집중" : "모집완료") : "후기"}
@@ -83,7 +89,10 @@ export default function PostTitle({
 						if (!modalOpen) setModalOpen(true);
 					}}
 				>
-					<Icon position="36.444% 35.561%" size="20px" />
+					<Icon
+						position={isDark ? "61.778% 28.342%" : "36.444% 35.561%"}
+						size="20px"
+					/>
 				</button>
 			) : (
 				<div />

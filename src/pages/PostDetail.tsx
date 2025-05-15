@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { createComment, deleteComment } from "../apis/comment";
+import { createNoti } from "../apis/notification"; //알림
 import { getPostById, updatePost } from "../apis/post";
 import Button from "../components/commons/Button";
 import ApplyMembers from "../components/features/postDetail/ApplyMembers";
@@ -10,7 +11,6 @@ import MemberList from "../components/features/postDetail/MemberList";
 import PostHeader from "../components/features/postDetail/PostHeader";
 import { CHANNELS } from "../constants/posts";
 import { useAuthStore } from "../store/authStore";
-import { createNoti } from "../apis/notification"; //알림
 
 export default function PostDetail() {
 	const { id } = useParams();
@@ -25,10 +25,6 @@ export default function PostDetail() {
 		try {
 			const postData: PostData = await getPostById(id!);
 			const postInfo: PostDetail = JSON.parse(postData.title);
-			setPostData(postData);
-			setMembers(postInfo.memberList);
-			setIsRecruiting(postInfo.isRecruiting);
-
 			const applyList = postData.comments.filter((commentData) => {
 				const parsed: CommentType = JSON.parse(commentData.comment);
 				return (
@@ -41,25 +37,27 @@ export default function PostDetail() {
 					)
 				);
 			});
-			setApplicants(applyList);
 			const isMember = postInfo.memberList.includes(userId);
 			const isRejected = postInfo.rejectList.includes(userId);
 			const isApplying =
-				applicants.some((applicant) => applicant.author._id === userId) &&
+				applyList.some((applicant) => applicant.author._id === userId) &&
 				!isMember &&
 				!isRejected;
-			setIsApplying(isApplying);
-
 			const commentList = postData.comments.filter((commentData) => {
 				const parsed: CommentType = JSON.parse(commentData.comment);
 				return parsed.type === "comment";
 			});
 
+			setPostData(postData);
+			setIsApplying(isApplying);
+			setMembers(postInfo.memberList);
+			setIsRecruiting(postInfo.isRecruiting);
+			setApplicants(applyList);
 			setComments(commentList);
 		} catch (error) {
 			console.error(error);
 		}
-	}, [id, applicants, userId]);
+	}, [id, userId]);
 
 	const toggleRecruit = async () => {
 		try {
@@ -124,6 +122,7 @@ export default function PostDetail() {
 
 	const applyBtnHandler = async () => {
 		if (!postData) return;
+		setIsApplying(true);
 		const data: CommentType = { type: "apply" };
 		const newApplicant = await createComment(
 			postData?._id,
@@ -144,17 +143,27 @@ export default function PostDetail() {
 	};
 
 	const cancelBtnHandler = async () => {
-		setIsApplying(true);
+		setIsApplying(false);
 		const myApply = applicants.filter(
 			(applicant) => applicant.author._id === userId
 		);
-		await deleteComment(myApply[0]._id);
+		setApplicants((applicants) =>
+			applicants.filter((applicant) => applicant.author._id !== userId)
+		);
+		myApply.forEach(async (apply) => {
+			await deleteComment(apply._id);
+		});
 	};
 
 	const deleteApplicant = (userId: string) => {
 		setApplicants((applicants) =>
 			applicants.filter((applicant) => applicant.author._id !== userId)
 		);
+	};
+
+	const cancelAccompanyHandler = () => {
+		if (!postData) return;
+		setMembers((members) => members.filter((member) => member === userId));
 	};
 
 	useEffect(() => {
@@ -171,7 +180,7 @@ export default function PostDetail() {
 		const isRejected = postInfo.rejectList.includes(userId);
 		const isRecruitChannel = postData.channel._id === CHANNELS.RECRUITMENT;
 		return (
-			<main className="flex flex-col justify-center items-center mt-[49px]">
+			<main className="flex flex-col justify-center items-center mt-[49px] mb-20">
 				<div className="flex flex-col gap-[30px] w-275 ">
 					<PostHeader
 						postData={postData}
@@ -187,11 +196,15 @@ export default function PostDetail() {
 							<div>
 								<span className="post-sub-title">동행 조건 사항</span>
 								<div>
-									<span className="text-[#616161] mr-[10px]">성별</span>
+									<span className="text-[#616161] mr-[10px] dark:text-[#dadada]">
+										성별
+									</span>
 									<span>{postInfo.recruitCondition.gender}</span>
 								</div>
 								<div>
-									<span className="text-[#616161] mr-[10px]">나이</span>
+									<span className="text-[#616161] mr-[10px] dark:text-[#dadada]">
+										나이
+									</span>
 									{postInfo.recruitCondition.ageRange.join(", ")}
 								</div>
 							</div>
@@ -229,6 +242,15 @@ export default function PostDetail() {
 										? "동행 신청 취소"
 										: "동행 신청하기"
 								: "모집이 마감되었습니다"}
+						</Button>
+					)}
+					{!isAuthor && isMember && (
+						<Button
+							onClick={cancelAccompanyHandler}
+							reverse
+							className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
+						>
+							동행 철회
 						</Button>
 					)}
 				</div>

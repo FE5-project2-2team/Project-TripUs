@@ -1,4 +1,5 @@
 import { useFormContext } from "react-hook-form";
+import { twMerge } from "tailwind-merge";
 
 export default function InputTitle() {
 	const { register } = useFormContext();
@@ -11,7 +12,10 @@ export default function InputTitle() {
 				id="title"
 				type="text"
 				placeholder="제목을 입력해 주세요"
-				className="bg-[#F9F9F9] w-full p-5 rounded-[10px] placeholder:text-[#CDCDCD] focus:outline-0"
+				className={twMerge(
+					"bg-[#F9F9F9] w-full p-5 rounded-[10px] placeholder:text-[#CDCDCD] focus:outline-0",
+					"dark:bg-[#333] dark:placeholder:text-[#616161]"
+				)}
 				{...register("title")}
 			/>
 		</div>

@@ -18,6 +18,7 @@ import UserListModal from "../features/user/UserListModal";
 import NotiList from "../features/notification/NotiList";
 import { useNoti } from "../../context/useNoti";
 
+import { useThemeStore } from "../../store/themeStore";
 export default function Header() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 	const userId = useAuthStore((state) => state.userId);
@@ -60,7 +61,15 @@ export default function Header() {
 		setModalOpen(false);
 	};
 
+	// darkmode
+	const toggleTheme = useThemeStore((state) => state.toggleTheme);
+	const isDark = useThemeStore((state) => state.isDark);
+	const darkModeIconPosition = isDark ? "52.036% 81.18%" : "23.318% 81.006%";
+	const hoverDarkModeIconPosition = isDark
+		? "52.036% 88.483%"
+		: "23.318% 88.268%";
 	const setDarkMode = () => {
+		toggleTheme();
 		setModalOpen(false);
 	};
 
@@ -143,11 +152,11 @@ export default function Header() {
 							</ModalItem>
 							<ModalItem
 								clickHandler={setDarkMode}
-								position="23.318% 81.006%"
-								hoverPosition="23.318% 88.268%"
-								size="22px"
+								position={darkModeIconPosition}
+								hoverPosition={hoverDarkModeIconPosition}
+								size="23px"
 							>
-								다크모드
+								{isDark ? "라이트모드" : "다크모드"}
 							</ModalItem>
 							<ModalItem
 								clickHandler={signOut}

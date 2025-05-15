@@ -9,6 +9,7 @@ import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 //import Message from "./pages/Message";
+import { useEffect } from "react";
 import MessageLayout from "./components/features/message/MessageLayout";
 import NotFound from "./pages/NotFound";
 import PostCreate from "./pages/PostCreate";
@@ -17,8 +18,14 @@ import PostEdit from "./pages/PostEdit";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import { NotiProvider } from "./context/NotiProvider";
+import { useThemeStore } from "./store/themeStore";
 
 export default function App() {
+	// darkmode
+	useEffect(() => {
+		useThemeStore.getState().initializeTheme(); // 직접 호출
+	}, []);
+
 	return (
 		<>
 			<NotiProvider>

@@ -15,7 +15,7 @@ export default function Confirm({
 }) {
 	return (
 		<div className="w-120 h-[150px] p-5 border-b-3 border-[#db1f5a] bg-white rounded-lg shadow-lg fixed top-4 left-[calc(50%-240px)] z-51">
-			<h3 className="font-medium mb-[13px]">{title}</h3>
+			<h3 className="font-medium mb-[13px] text-[#333]">{title}</h3>
 			<span className="text-sm text-[#616161]">{description}</span>
 			<div className="flex gap-[10px] justify-end mt-4">
 				<button
