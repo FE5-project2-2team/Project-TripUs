@@ -6,6 +6,8 @@ export const formErrorHandler = (errors: FieldErrors<FormValues>) => {
 		showToast({ type: "error", message: errors.location.message });
 	} else if (errors.dateRange) {
 		showToast({ type: "error", message: errors.dateRange.message });
+	} else if (errors.url) {
+		showToast({ type: "error", message: errors.url.message });
 	} else if (errors.title) {
 		const titleLen = errors.title.ref?.value.length;
 		showToast({

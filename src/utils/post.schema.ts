@@ -44,4 +44,14 @@ export const postFormSchema = z
 				});
 			}
 		}
+		if (data.url) {
+			const regex = /https:\/\/open.kakao.com\/o\/[A-Za-z0-9]{8}/;
+			if (!regex.test(data.url)) {
+				ctx.addIssue({
+					path: ["url"],
+					code: "custom",
+					message: "오픈 카톡 주소 형식이 틀렸습니다"
+				});
+			}
+		}
 	});

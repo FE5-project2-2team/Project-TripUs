@@ -9,6 +9,7 @@ import ConditionList from "./ConditionList";
 import Contents from "./Contents";
 import InfoForm from "./InfoForm";
 import InputTitle from "./InputTitle";
+import InputUrl from "./InputUrl";
 import UploadImage from "./UploadImage";
 
 interface PostFormProps {
@@ -56,6 +57,7 @@ export default function PostForm({
 							confirmHandler={confirmHandler}
 						/>
 						<div className="flex flex-col gap-10 my-13">
+							<InputUrl />
 							<InputTitle />
 							<Contents contentsRef={contentsRef} isConfirmed={isConfirmed} />
 							{methods.watch().channel === CHANNELS.RECRUITMENT && (
