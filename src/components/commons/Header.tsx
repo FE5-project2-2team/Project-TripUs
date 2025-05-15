@@ -9,22 +9,22 @@ import { Link, useNavigate } from "react-router";
 import { useClickAway } from "react-use";
 import { getUserInfo } from "../../apis/user";
 import headerLogo from "../../assets/images/logo_header.svg";
+import { useNoti } from "../../context/useNoti";
 import { useAuthStore } from "../../store/authStore";
+import { useThemeStore } from "../../store/themeStore";
+import NotiList from "../features/notification/NotiList";
+import UserListModal from "../features/user/UserListModal";
 import Button from "./Button";
+import Icon from "./Icon";
 import Modal from "./Modal";
 import ModalItem from "./ModalItem";
-import Icon from "./Icon";
-import UserListModal from "../features/user/UserListModal";
-import NotiList from "../features/notification/NotiList";
-import { useNoti } from "../../context/useNoti";
 
-import { useThemeStore } from "../../store/themeStore";
 export default function Header() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 	const userId = useAuthStore((state) => state.userId);
 	const logout = useAuthStore((state) => state.logout);
-	const image = useAuthStore((state) => state.image);
-	const nickname = useAuthStore((state) => state.nickname);
+	const userInfo = useAuthStore((state) => state.userInfo);
+	const userData = useAuthStore((state) => state.userData);
 	const setImage = useAuthStore((state) => state.setImage);
 	const setNickname = useAuthStore((state) => state.setNickname);
 	const navigate = useNavigate();
@@ -144,10 +144,10 @@ export default function Header() {
 					>
 						<img
 							className="w-[50px] h-[50px] mr-[10px] rounded-full object-cover"
-							src={image}
+							src={userData?.image}
 							alt="프로필 이미지"
 						/>
-						<span>{nickname}</span>
+						<span>{userInfo?.nickname}</span>
 						<FontAwesomeIcon icon={faAngleDown} className="ml-[5px]" />
 					</button>
 

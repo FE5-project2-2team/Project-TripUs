@@ -11,15 +11,14 @@ import AutoComplete from "./AutoComplete";
 import LabelSelect from "./LabelSelect";
 
 export default function InfoForm({
-	type,
+	isEditing,
 	confirmHandler
 }: {
-	type: string;
+	isEditing: boolean;
 	confirmHandler: () => void;
 }) {
 	const { register, reset, setValue, control } = useFormContext();
 	const { confirmOpen, toggleConfirm } = useConfirm();
-	const isEditing = type === "edit";
 
 	const { field } = useController({
 		name: "dateRange",
@@ -61,7 +60,7 @@ export default function InfoForm({
 	useEffect(() => {
 		if (!watchedChannel || isEditing) return;
 		toggleConfirm();
-	}, [watchedChannel, reset, type]);
+	}, [watchedChannel, reset, isEditing]);
 	return (
 		<>
 			{confirmOpen && (

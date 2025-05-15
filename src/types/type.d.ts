@@ -48,6 +48,11 @@ interface PostUpdateData {
 	imageToDeletePublicId?: string;
 }
 
+interface Condition {
+	gender: string;
+	ageRange: string[];
+}
+
 interface PostDetail {
 	title: string;
 	memberLimit: number;
@@ -56,13 +61,11 @@ interface PostDetail {
 	location: string;
 	dateRange: Date[];
 	isRecruiting: boolean;
-	recruitCondition: {
-		gender: string;
-		ageRange: string[];
-	};
+	recruitCondition: Condition;
 	description: string;
 	contents: Delta | undefined;
 	images?: string[];
+	url: string;
 }
 
 interface FormValues {
@@ -76,6 +79,7 @@ interface FormValues {
 		ageRange: string[];
 	};
 	images: string[];
+	url: string;
 }
 
 interface NotiType {
@@ -118,7 +122,7 @@ interface ChannelData {
 }
 
 interface PostData {
-	likes: Like[];
+	likes: LikeData[];
 	comments: CommentData[];
 	_id: string;
 	image?: string;
@@ -217,10 +221,7 @@ interface PostTitleData {
 	location: string;
 	dateRange: Date[];
 	isRecruiting: boolean;
-	recruitCondition: {
-		gender: string;
-		ageRange: string[];
-	};
+	recruitCondition: Condition;
 	description: string;
 	contents: string;
 	images: string[];
