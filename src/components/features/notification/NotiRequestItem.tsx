@@ -2,19 +2,20 @@
 // import { getPostById } from "../../../apis/post";
 import profileImg from "../../../assets/images/profileImg_circle.svg";
 import { useNavigate } from "react-router";
+import { useNoti } from "../../../context/useNoti";
 
 export default function NotiRequestItem({
 	notice,
-	onClose,
-	setNotiInfo
+	onClose
+	// setNotiInfo
 }: {
 	notice: NotiData;
 	onClose: () => void;
-	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
+	// setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
 }) {
 	const navigate = useNavigate();
 	// const [parsedTitle, setParsedTitle] = useState<string>("");
-	// const [isSeen, setIsSeen] = useState(notice.seen);
+	const { setNotiInfo } = useNoti();
 	const formatTime = (time: string): string => {
 		if (!time) return "시간정보없음";
 
@@ -49,9 +50,13 @@ export default function NotiRequestItem({
 		try {
 			if (notice.post) {
 				// setIsSeen(true);
-				setNotiInfo((noti) =>
-					noti.map((n) => (n._id === notice._id ? { ...n, seen: true } : n))
-				);
+				setNotiInfo((noti) => {
+					const newNoti = noti.map((n) =>
+						n._id === notice._id ? { ...n, seen: true } : n
+					);
+					console.log("동행요청 알림 읽음:", newNoti);
+					return newNoti;
+				});
 				navigate(`/post/detail/${notice.post}`);
 				onClose();
 			}

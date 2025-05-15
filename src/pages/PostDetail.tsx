@@ -21,7 +21,6 @@ export default function PostDetail() {
 	const [members, setMembers] = useState<string[]>([]);
 	const [isRecruiting, setIsRecruiting] = useState(false);
 	const [isApplying, setIsApplying] = useState(false);
-
 	const getData = useCallback(async () => {
 		try {
 			const postData: PostData = await getPostById(id!);
@@ -95,7 +94,7 @@ export default function PostDetail() {
 			setComments((list) => [...list, newComment]);
 
 			//알림
-			// console.log("newComment:", newComment);
+			console.log("newComment:", newComment);
 			const post: PostData = await getPostById(newComment.post);
 			//console.log("post작성자(알림받을사람):", post.author._id);
 			await createNoti({
@@ -133,7 +132,7 @@ export default function PostDetail() {
 		setApplicants((applicants) => [...applicants, newApplicant]);
 
 		//알림
-		// console.log("newApplicant", newApplicant);
+		console.log("newApplicant", newApplicant);
 		const post: PostData = await getPostById(newApplicant.post);
 		await createNoti({
 			notificationType: "APPLY",
