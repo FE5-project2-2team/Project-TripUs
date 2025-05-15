@@ -3,12 +3,12 @@ import NotiMessageItem from "./NotiMessageItem";
 
 export default function NotiMessage({
 	noti,
-	onClose,
-	setNotiInfo
+	onClose
+	// setNotiInfo
 }: {
 	noti: NotiData[];
 	onClose: () => void;
-	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
+	// setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
 }) {
 	const userId = useAuthStore((state) => state.userId)!;
 
@@ -17,13 +17,16 @@ export default function NotiMessage({
 			{noti.length > 0 ? (
 				//메세지
 				noti
-					.filter((notice) => (notice.user as UserData)._id === userId)
+					.filter(
+						(notice) =>
+							notice.message && (notice.user as UserData)._id === userId
+					)
 					.map((notice) => (
 						<NotiMessageItem
 							key={notice._id}
 							notice={notice}
 							onClose={onClose}
-							setNotiInfo={setNotiInfo}
+							// setNotiInfo={setNotiInfo}
 						/>
 					))
 			) : (

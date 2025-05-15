@@ -16,6 +16,8 @@ import ModalItem from "./ModalItem";
 import Icon from "./Icon";
 import UserListModal from "../features/user/UserListModal";
 import NotiList from "../features/notification/NotiList";
+import { useNoti } from "../../context/useNoti";
+
 import { useThemeStore } from "../../store/themeStore";
 export default function Header() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -31,7 +33,8 @@ export default function Header() {
 	const [notiOpen, setNotiOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 
-	const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
+	// const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
+	const { notiInfo } = useNoti();
 	const unRead = notiInfo.some((n) => !n.seen);
 	const [isUserListOpen, setIsUserListOpen] = useState(false);
 
@@ -117,8 +120,8 @@ export default function Header() {
 							<NotiList
 								notiOpen={notiOpen}
 								setNotiOpen={setNotiOpen}
-								notiInfo={notiInfo}
-								setNotiInfo={setNotiInfo}
+								// notiInfo={notiInfo}
+								// setNotiInfo={setNotiInfo}
 							/>
 						</div>
 					)}

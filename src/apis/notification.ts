@@ -2,6 +2,7 @@ import { axiosInstance } from "./axios";
 
 export const getNotiList = async () => {
 	const { data } = await axiosInstance.get("/notifications");
+	console.log("api of getNotiList:", data);
 	return data;
 };
 

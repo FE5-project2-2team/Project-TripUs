@@ -1,16 +1,18 @@
 import { useNavigate } from "react-router";
 import profileImg from "../../../assets/images/profileImg_circle.svg";
+import { useNoti } from "../../../context/useNoti";
 
 export default function NotiPostItem({
 	notice,
-	onClose,
-	setNotiInfo
+	onClose
+	// setNotiInfo
 }: {
 	notice: NotiData;
 	onClose: () => void;
-	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
+	// setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
 }) {
 	const navigate = useNavigate();
+	const { setNotiInfo } = useNoti();
 	const formatTime = (time: string): string => {
 		if (!time) return "시간정보없음";
 
@@ -32,17 +34,15 @@ export default function NotiPostItem({
 
 	const handleClick = async () => {
 		try {
-			if (notice.post) {
-				setNotiInfo((noti) => {
-					const newNoti = noti.map((n) =>
-						n._id === notice._id ? { ...n, seen: true } : n
-					);
-					console.log("알림 읽음 처리됨", newNoti);
-					return newNoti;
-				});
-				navigate(`/post/detail/${notice.post}`);
-				onClose();
-			}
+			setNotiInfo((noti) => {
+				const newNoti = noti.map((n) =>
+					n._id === notice._id ? { ...n, seen: true } : n
+				);
+				console.log("게시글 알림 읽음", newNoti);
+				return newNoti;
+			});
+			navigate(`/post/detail/${notice.post}`);
+			onClose();
 		} catch (e) {
 			console.error("알람 읽음 처리 실패", e);
 		}
