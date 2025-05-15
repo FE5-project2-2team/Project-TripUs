@@ -8,8 +8,8 @@ import RootLayout from "./layouts/RootLayout";
 import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-//import Message from "./pages/Message";
 import { useEffect } from "react";
+
 import MessageLayout from "./components/features/message/MessageLayout";
 import NotFound from "./pages/NotFound";
 import PostCreate from "./pages/PostCreate";
