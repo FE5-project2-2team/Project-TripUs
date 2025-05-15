@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 type InputProps = ComponentPropsWithoutRef<"input"> & { value: string };
 
 export default function InputBtn(props: InputProps) {
-	const { value, name, type, children } = props;
+	const { value, name, children, ...rest } = props;
 	const { register } = useFormContext();
 	return (
 		<label htmlFor={value}>
@@ -13,8 +13,8 @@ export default function InputBtn(props: InputProps) {
 				className="peer hidden"
 				id={value}
 				value={value}
-				type={type}
 				{...register(`condition.${name}`)}
+				{...rest}
 			/>
 			<span
 				className={twMerge(
