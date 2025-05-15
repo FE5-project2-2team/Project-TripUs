@@ -48,7 +48,7 @@ interface PostUpdateData {
 }
 
 interface Condition {
-	gender: "남성" | "여성" | "성별 무관";
+	gender: string;
 	ageRange: string[];
 }
 
@@ -72,7 +72,10 @@ interface FormValues {
 	location: string;
 	dateRange: Date[];
 	title: string;
-	condition?: Condition;
+	condition?: {
+		gender: string;
+		ageRange: string[];
+	};
 	images: string[];
 }
 
