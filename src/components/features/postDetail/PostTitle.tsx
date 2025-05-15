@@ -15,13 +15,11 @@ import ModalItem from "../../commons/ModalItem";
 export default function PostTitle({
 	isRecruitChannel,
 	isRecruiting,
-	toggleRecruit,
 	title,
 	isAuthor
 }: {
 	isRecruitChannel: boolean;
 	isRecruiting: boolean | undefined;
-	toggleRecruit: () => void;
 	title: string | undefined;
 	isAuthor: boolean;
 }) {
@@ -31,6 +29,7 @@ export default function PostTitle({
 	const { confirmOpen, toggleConfirm } = useConfirm();
 	const { isDark } = useThemeStore();
 	const { postData, postInfo } = usePostStore();
+	const toggleRecruit = usePostStore((state) => state.toggleRecruit);
 
 	useClickAway(modalRef, () => {
 		setModalOpen(false);

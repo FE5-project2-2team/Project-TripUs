@@ -78,12 +78,12 @@ export const usePostStore = create<PostStore>((set, get) => ({
 
 	toggleRecruit: async () => {
 		try {
-			const { postData, postInfo } = get();
+			const { postData, postInfo, isRecruiting } = get();
 			if (!postData || !postInfo) return;
 
 			const newData: PostDetail = { ...postInfo };
-			newData.isRecruiting = !newData.isRecruiting;
-			set({ isRecruiting: !newData.isRecruiting });
+			newData.isRecruiting = !isRecruiting;
+			set({ isRecruiting: newData.isRecruiting });
 
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(newData));

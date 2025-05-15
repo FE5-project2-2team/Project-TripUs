@@ -35,7 +35,6 @@ export default function PostDetail() {
 
 	useEffect(() => {
 		if (!id) return;
-		console.log("hi");
 		getData(id, userId);
 	}, [id, userId, getData]);
 
