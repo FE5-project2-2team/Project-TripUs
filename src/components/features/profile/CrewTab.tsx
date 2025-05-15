@@ -68,7 +68,7 @@ const CrewTab = ({
 								{/* 상단 영역 */}
 								<div className="relative block">
 									{getDiffInDays(new Date(), parsedTitle.dateRange[0]) < 0 ? (
-										<p className="absolute select-none top-0 right-0 flex items-center justify-center w-[60px] h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#808080]">
+										<p className="absolute select-none top-0 right-0 flex items-center justify-center w-[60px] h-[26px] px-[4px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#808080]">
 											여정완료
 										</p>
 								 	) : parsedTitle.isRecruiting === true ? (
