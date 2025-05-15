@@ -173,7 +173,7 @@ export default function Channel() {
 
 				<div
 					key={post._id}
-					className="w-[340px] h-[434px] rounded-[15px] flex flex-col overflow-hidden cursor-pointer shadow-[0px_1px_4px_rgba(0,0,0,0.16)] dark:border dark:border-[#616161]"
+					className="w-[340px] h-[434px] rounded-[15px] flex flex-col overflow-hidden cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition duration-300 dark:bg-transparent dark:border dark:border-[#616161]"
 					onClick={() => navigate(`/post/detail/${post._id}`)}
 				>
 					<div className="relative">

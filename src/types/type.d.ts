@@ -22,6 +22,7 @@ interface Profile {
 }
 
 type ProfilePost = {
+	likes: string[];
 	_id: string;
 	image: string;
 	title: string;
