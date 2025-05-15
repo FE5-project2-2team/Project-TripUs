@@ -114,9 +114,6 @@ export default function Header() {
 							<UserListModal onClose={() => setIsUserListOpen(false)} />
 						)}
 					</div>
-					<Link to={"/message"}>
-						<FontAwesomeIcon icon={faComments} className="text-xl" />
-					</Link>
 					{/* 알림 */}
 					<div ref={notiRef}>
 						<button onClick={toggleNoti} className="cursor-pointer relative">
@@ -126,7 +123,7 @@ export default function Header() {
 							)}
 						</button>
 						{notiOpen && (
-							<div className="absolute top-[60px] right-[150px] z-60">
+							<div className="absolute top-[60px] right-[210px] z-60">
 								<NotiList
 									notiOpen={notiOpen}
 									setNotiOpen={setNotiOpen}
@@ -136,6 +133,9 @@ export default function Header() {
 							</div>
 						)}
 					</div>
+					<Link to={"/message"}>
+						<FontAwesomeIcon icon={faComments} className="text-xl" />
+					</Link>
 					<button
 						onClick={() => {
 							if (!modalOpen) setModalOpen(true);

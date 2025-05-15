@@ -10,59 +10,14 @@ import { useNoti } from "../../../context/useNoti";
 export default function NotiList({
 	notiOpen,
 	setNotiOpen
-	// notiInfo,
-	// setNotiInfo
 }: {
 	notiOpen: boolean;
 	setNotiOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	// notiInfo: NotiData[];
-	// setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
 }) {
 	const bannerArr = ["전체", "게시글", "메시지", "동행요청"];
 	const [notiContents, setNotiContents] = useState("전체");
 	const { notiInfo, setNotiInfo } = useNoti();
-	// useEffect(() => {
-	// 	//알림
-	// 	const NotiFunc = async () => {
-	// 		try {
-	// 			const myNotiInfo: NotiData[] = await getNotiList();
-	// 			console.log("서버 알림 응답:", myNotiInfo);
-	// 			setNotiInfo((prev) => {
-	// 				const prevById = new Map(prev.map((n) => [n._id, n]));
-	// 				const merged = myNotiInfo.map((n) => {
-	// 					const existing = prevById.get(n._id);
-	// 					return existing ? { ...n, seen: existing.seen } : n;
-	// 				});
-	// 				return merged;
-	// 			});
-	// 		} catch (e) {
-	// 			console.error("알림 가져오기 에러:", e);
-	// 		}
-	// 	};
-	// 	NotiFunc();
-	// 	//
-	// }, [setNotiInfo]);
-	//모든 알림 읽었다면 readNoti보내기
-	// useEffect(() => {
 
-	// 	if(notiOpen&&notiInfo.length>0){
-	// 		const hasUnread=notiInfo.some((n)=>!n.seen);
-	// 		if(hasUnread){
-	// 			handleRead();
-	// 		}
-	// 	const markNoti = async () => {
-	// 		if (notiInfo.every((n) => n.seen)) {
-	// 			try {
-	// 				await readNoti();
-	// 			} catch (e) {
-	// 				console.error("읽음 처리 실패", e);
-	// 			}
-	// 		}
-	// 	};
-	// if(notiOpen){
-	// 	markNoti();
-	// }
-	// },[notiOpen,notiInfo]);
 	useEffect(() => {
 		setNotiInfo((notice) => {
 			let updated = false;
@@ -86,8 +41,6 @@ export default function NotiList({
 	};
 	const handleRead = async () => {
 		try {
-			// const hasUnread = notiInfo.some((n) => !n.seen);
-			// if (!hasUnread) return;
 			await readNoti();
 			setNotiInfo((notice) => notice.map((n) => ({ ...n, seen: true })));
 		} catch (e) {
@@ -118,37 +71,13 @@ export default function NotiList({
 		const filterNoti = filtered();
 		switch (notiContents) {
 			case "전체":
-				return (
-					<NotiWhole
-						noti={filterNoti}
-						onClose={handleClose}
-						// setNotiInfo={setNotiInfo}
-					/>
-				);
+				return <NotiWhole noti={filterNoti} onClose={handleClose} />;
 			case "게시글":
-				return (
-					<NotiPosts
-						noti={filterNoti}
-						onClose={handleClose}
-						// setNotiInfo={setNotiInfo}
-					/>
-				);
+				return <NotiPosts noti={filterNoti} onClose={handleClose} />;
 			case "메시지":
-				return (
-					<NotiMessage
-						noti={filterNoti}
-						onClose={handleClose}
-						// setNotiInfo={setNotiInfo}
-					/>
-				);
+				return <NotiMessage noti={filterNoti} onClose={handleClose} />;
 			case "동행요청":
-				return (
-					<NotiRequest
-						noti={filterNoti}
-						onClose={handleClose}
-						// setNotiInfo={setNotiInfo}
-					/>
-				);
+				return <NotiRequest noti={filterNoti} onClose={handleClose} />;
 			default:
 				return null;
 		}
