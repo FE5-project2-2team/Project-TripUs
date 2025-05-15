@@ -1,23 +1,23 @@
 import "quill/dist/quill.snow.css";
+import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./components/commons/ProtectedRoute";
 import PublicOnlyRoute from "./components/commons/PublicOnlyRoute";
-import RootLayout from "./layouts/RootLayout";
+import RootLayout from "./layouts/rootlayout";
 import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import { useEffect } from "react";
 
 import MessageLayout from "./components/features/message/MessageLayout";
+import { NotiProvider } from "./context/NotiProvider";
 import NotFound from "./pages/NotFound";
 import PostCreate from "./pages/PostCreate";
 import PostDetail from "./pages/PostDetail";
 import PostEdit from "./pages/PostEdit";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
-import { NotiProvider } from "./context/NotiProvider";
 import { useThemeStore } from "./store/themeStore";
 
 export default function App() {

@@ -1,22 +1,41 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { createLike, deleteLike } from "../../../apis/like";
 import { createNoti } from "../../../apis/notification";
 import { useAuthStore } from "../../../store/authStore";
+import { usePostStore } from "../../../store/postStore";
 import Icon from "../../commons/Icon";
 
-export default function Likes({ postData }: { postData: PostData }) {
+export default function Likes() {
 	const navigate = useNavigate();
 	const userId = useAuthStore((state) => state.userId);
-	const likesList = postData.likes;
+	const postData = usePostStore((state) => state.postData);
 	const [likes, setLikes] = useState<{
 		number: number;
 		likeId: string | undefined;
 	}>({
-		number: likesList.length,
-		likeId: likesList.find((like) => like.user === userId)?._id
+		number: 0,
+		likeId: undefined
 	});
+
+	const initLikes = useCallback(
+		(likesList: LikeData[]) => {
+			setLikes({
+				number: likesList.length,
+				likeId: likesList.find((like) => like.user === userId)?._id
+			});
+		},
+		[setLikes, userId]
+	);
+
+	useEffect(() => {
+		if (!postData) return;
+		const likesList = postData.likes;
+		initLikes(likesList);
+	}, [postData, initLikes]);
+
+	if (!postData) return;
 
 	const isAuthor = userId === postData.author._id;
 
@@ -74,6 +93,7 @@ export default function Likes({ postData }: { postData: PostData }) {
 			}
 		}
 	};
+
 	return (
 		<div
 			onClick={likeBtnHandler}

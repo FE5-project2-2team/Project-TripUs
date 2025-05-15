@@ -121,7 +121,7 @@ interface ChannelData {
 }
 
 interface PostData {
-	likes: Like[];
+	likes: LikeData[];
 	comments: CommentData[];
 	_id: string;
 	image?: string;

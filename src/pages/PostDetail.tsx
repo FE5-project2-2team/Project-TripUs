@@ -17,7 +17,7 @@ import { getDiffInDays } from "../utils/date";
 export default function PostDetail() {
 	const { id } = useParams();
 	const userId = useAuthStore((state) => state.userId)!;
-	const userInfo = useAuthStore((state) => state.userInfo);
+	const userInfo = useAuthStore((state) => state.userInfo)!;
 	const applicants = usePostStore((state) => state.applicants);
 	const { confirmOpen, toggleConfirm } = useConfirm();
 
@@ -35,6 +35,7 @@ export default function PostDetail() {
 
 	useEffect(() => {
 		if (!id) return;
+		console.log("hi");
 		getData(id, userId);
 	}, [id, userId, getData]);
 
@@ -50,10 +51,12 @@ export default function PostDetail() {
 		applicants.every((applicant) => applicant.author._id !== userId) &&
 		!members.includes(userId);
 
-	const isMatchedCondition = checkAgeMatch(postInfo.recruitCondition, {
-		gender: userInfo!.gender + "성",
-		age: userInfo!.age
-	});
+	const isMatchedCondition = userInfo
+		? checkAgeMatch(postInfo.recruitCondition, {
+				gender: userInfo.gender + "성",
+				age: userInfo.age
+			})
+		: false;
 
 	const fiveDaysLeft = getDiffInDays(new Date(), postInfo.dateRange[0]) < 5;
 
@@ -92,7 +95,7 @@ export default function PostDetail() {
 				) : (
 					<div></div>
 				)}
-				<Likes postData={postData} />
+				<Likes />
 				<CommentsList authorId={postData.author._id} />
 				{!isAuthor &&
 					userId &&
