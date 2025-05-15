@@ -16,7 +16,7 @@ export default function Home() {
 	// const [userSearch, setUserSearch] = useState("");
 	return (
 		<>
-			<div className="w-full flex justify-center">
+			<div className="w-full flex justify-center pb-[50px]">
 				{/* 본문 */}
 				<div className="flex flex-col items-center w-[1100px] min-h-screen">
 					{/* 슬라이드 이미지 */}

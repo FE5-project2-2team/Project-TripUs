@@ -16,6 +16,8 @@ export default function Login() {
 	});
 	const [errors, setErrors] = useState<{ email?: string }>({});
 	const [hoveredField, setHoveredField] = useState<string | null>(null);
+	// 추가
+	const [focusedField, setFocusedField] = useState<string | null>(null);
 
 	const handleSignupClick = () => {
 		navigate("/signup");
@@ -80,9 +82,11 @@ export default function Login() {
 					>
 						<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
 							<Icon
-								size="24px"
+								size="20px"
 								position={
-									hoveredField === "email" ? "-117px -265px" : "-117px -239px"
+									hoveredField === "email" || focusedField === "email"
+										? " 52% 73.352%"
+										: "52% 66.209%"
 								}
 							/>
 						</div>
@@ -91,10 +95,12 @@ export default function Login() {
 							placeholder="이메일"
 							value={form.email}
 							onChange={handleChange}
+							onFocus={() => setFocusedField("email")}
+							onBlur={() => setFocusedField(null)}
 							className="inputProps"
 						/>
 					</div>
-					<p className="text-red-500 text-xs font-bold mt-[1px] h-[1px] leading-tight">
+					<p className="text-[#DB1F5A] text-xs font-normal mt-[1px] h-[1px] leading-tight">
 						{errors.email ?? ""}
 					</p>
 				</div>
@@ -105,9 +111,11 @@ export default function Login() {
 				>
 					<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[20px] h-[20px]">
 						<Icon
-							size="24px"
+							size="22px"
 							position={
-								hoveredField === "password" ? "-150px -264px" : "-150px -238px"
+								hoveredField === "password" || focusedField === "password"
+									? "66.079% 73.743%"
+									: "66.079% 66.48%"
 							}
 						/>
 					</div>
@@ -117,6 +125,8 @@ export default function Login() {
 						placeholder="비밀번호"
 						value={form.password}
 						onChange={handleChange}
+						onFocus={() => setFocusedField("password")}
+						onBlur={() => setFocusedField(null)}
 						className="inputProps"
 					/>
 				</div>
@@ -128,7 +138,7 @@ export default function Login() {
 					type="button"
 					onClick={handleSignupClick}
 					reverse
-					className="w-full border-[1px]"
+					className="w-full border-[1px] dark:bg-transparent dark:hover:bg-[#333]"
 				>
 					회원가입
 				</Button>

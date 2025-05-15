@@ -188,7 +188,7 @@ export default function Header() {
 					<Link to={"/login"}>
 						<Button
 							reverse
-							className="w-[120px] h-[45px] text-[18px] border-transparent hover:border-[#06B796] hover:bg-[#E0F4F2] hover:text-[#06b796]"
+							className="w-[120px] h-[45px] text-[18px] border-transparent hover:border-[#06B796] hover:bg-[#E0F4F2] hover:text-[#06b796] dark:bg-transparent"
 						>
 							로그인
 						</Button>
