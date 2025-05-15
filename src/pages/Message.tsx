@@ -40,15 +40,16 @@ export default function Message() {
 	};
 
 	return (
-		<div className="flex flex-col h-full">
+		<div className="flex flex-col h-full relative">
 			{opponent && (
-				<h2 className="px-4 py-2 text-lg font-semibold">
+				<h2 className="px-4 text-[20px] font-semibold text-[#333] mt-[25px] mb-[25px]">
 					{typeof opponent.fullName === "string"
 						? JSON.parse(opponent.fullName).name
 						: (opponent.fullName as User).name}
 				</h2>
 			)}
-			<MessageList messages={messages} myUserId={myUserId!} />
+
+			<MessageList key={id} messages={messages} myUserId={myUserId!} />
 			<MessageInput receiverId={id!} onMessageSent={handleNewMessage} />
 		</div>
 	);

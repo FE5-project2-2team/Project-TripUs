@@ -3,12 +3,12 @@ import NotiRequestItem from "./NotiRequestItem";
 // import profileImg from "../../../assets/images/profileImg_circle.svg";
 export default function NotiRequest({
 	noti,
-	onClose,
-	setNotiInfo
+	onClose
+	// setNotiInfo
 }: {
 	noti: NotiData[];
 	onClose: () => void;
-	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
+	// setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
 }) {
 	const userId = useAuthStore((state) => state.userId)!;
 
@@ -22,7 +22,7 @@ export default function NotiRequest({
 							key={notice._id}
 							notice={notice}
 							onClose={onClose}
-							setNotiInfo={setNotiInfo}
+							// setNotiInfo={setNotiInfo}
 						/>
 					))
 			) : (

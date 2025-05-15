@@ -65,14 +65,14 @@ export default function ChattingComponent({
 					)}
 					<div>
 						{showProfileImage && (
-							<p className="text-xs text-[#333] mb-1">{nickname}</p>
+							<p className="text-[16px] text-[#333] mb-1">{nickname}</p>
 						)}
 						<div className="flex items-baseline gap-1">
 							<div className="p-3 bg-white rounded-md max-w-[300px] break-words">
-								<span className="text-base text-[#333]">{message}</span>
+								<span className="text-[16px] text-[#333]">{message}</span>
 							</div>
 							{showTime && (
-								<div className="text-[14px] text-gray-400 ml-2 self-end">
+								<div className="text-[14px] text-[#616161] ml-2 self-end">
 									{time}
 								</div>
 							)}
@@ -90,12 +90,12 @@ export default function ChattingComponent({
 							</span>
 						)}
 						{showTime && (
-							<span className="text-[14px] text-gray-400">{time}</span>
+							<span className="text-[14px] text-[#616161]">{time}</span>
 						)}
 					</div>
 
 					<div className="p-3 bg-[#E0F4F2] rounded-md max-w-[300px] break-words">
-						<span className="text-base text-[#333]">{message}</span>
+						<span className="text-[16px] text-[#333]">{message}</span>
 					</div>
 				</div>
 			)}
