@@ -11,9 +11,11 @@ import AutoComplete from "./AutoComplete";
 import LabelSelect from "./LabelSelect";
 
 export default function InfoForm({
+	initImages,
 	isEditing,
 	confirmHandler
 }: {
+	initImages: (images: string[]) => void;
 	isEditing: boolean;
 	confirmHandler: () => void;
 }) {
@@ -44,6 +46,7 @@ export default function InfoForm({
 			},
 			images: []
 		});
+		initImages([]);
 		toggleConfirm();
 		confirmHandler();
 	};

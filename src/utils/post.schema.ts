@@ -24,7 +24,7 @@ export const postFormSchema = z
 			})
 			.optional(),
 		images: z.array(z.string()),
-		url: z.string()
+		url: z.string().optional()
 	})
 	.superRefine((data, ctx) => {
 		if (data.channel !== CHANNELS.REVIEW) {

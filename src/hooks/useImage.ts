@@ -6,8 +6,10 @@ export function useImage() {
 	const imageListRef = useRef<string[]>([]);
 
 	const initImages = (images: string[]) => {
-		setShowImages(images);
-		imageListRef.current = [...images];
+		const merged = [...imageListRef.current, ...images];
+		const unique = Array.from(new Set(merged));
+		setShowImages(unique);
+		imageListRef.current = unique;
 	};
 
 	const addImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
