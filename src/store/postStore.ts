@@ -178,7 +178,7 @@ export const usePostStore = create<PostStore>((set, get) => ({
 		const { postData } = get();
 		if (!postData) return;
 
-		if (value.length === 0) {
+		if (value.trim().length === 0) {
 			showToast({ type: "error", message: "댓글을 입력해주세요" });
 			return;
 		}
