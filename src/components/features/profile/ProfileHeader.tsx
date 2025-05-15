@@ -1,5 +1,7 @@
-import spriteImage from "../../../assets/images/spriteImages.png";
+// import spriteImage from "../../../assets/images/spriteImages.png";
 import { useNavigate } from "react-router";
+import { useThemeStore } from "../../../store/themeStore";
+import Icon from "../../commons/Icon";
 // import Button from "./Button";
 
 // 상단 "마이페이지 & 리뷰" 및 "회원정보 수정" 버튼
@@ -14,21 +16,21 @@ export default function ProfileHeader({
 }) {
 	const navigate = useNavigate();
 
+	// darkmode
+	const isDark = useThemeStore((state) => state.isDark);
+	const backIconPosition = isDark ? "50.218% 27.747%" : "39.301% 27.747%";
+
 	return (
 		<div className="flex items-center justify-between mb-[50px]">
 			<div className="flex">
 				<button
-					className="mr-[8px] w-[30px] h-[30px] cursor-pointer"
-					style={{
-						backgroundImage: `url(${spriteImage})`,
-						backgroundPosition: "-135px -147px",
-						backgroundSize: "367.5px 570px",
-						backgroundRepeat: "no-repeat"
-					}}
+					className="mr-[12px] mt-[3px] cursor-pointer"
 					aria-label="Go Back"
 					onClick={() => navigate("/")}
-				/>
-				<h2 className="font-medium text-[20px] text-[#333333]">
+				>
+					<Icon position={backIconPosition} size="16px" />
+				</button>
+				<h2 className="font-medium text-[20px] text-[#333333] dark:text-[#dadada]">
 					마이페이지 & 리뷰
 				</h2>
 			</div>
