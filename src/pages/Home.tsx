@@ -15,7 +15,7 @@ export default function Home() {
 
 	return (
 		<>
-			<div className="w-full flex justify-center">
+			<div className="w-full flex justify-center pb-[70px]">
 				{/* 본문 */}
 				<div className="flex flex-col items-center w-[1100px] min-h-screen">
 					{/* 슬라이드 이미지 */}
