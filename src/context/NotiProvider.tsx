@@ -38,6 +38,13 @@ export function NotiProvider({ children }: { children: React.ReactNode }) {
 		}
 	}, []);
 
+	// useEffect(() => {
+	// 	const interval = setInterval(() => {
+	// 		refetchNotiList();
+	// 	}, 5000);
+	// 	return () => clearInterval(interval);
+	// }, [refetchNotiList]);
+
 	useEffect(() => {
 		if (notiInfo.length > 0 && notiInfo.every((noti) => noti.seen)) {
 			readNoti(); // 모든 알림이 seen === true일 때만 실행
