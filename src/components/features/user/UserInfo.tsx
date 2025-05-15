@@ -21,11 +21,12 @@ export default function UserInfo({
 					<div className="text-sm flex gap-2 text-[#616161] dark:text-[#dadada]">
 						<span>{Math.floor(age / 10) * 10}대</span>
 						<span>{gender}</span>
-						{tagList.map((tag) => (
-							<span key={tag} className="text-[#06B796]">
-								#{tag}
-							</span>
-						))}
+						{tagList &&
+							tagList.map((tag) => (
+								<span key={tag} className="text-[#06B796]">
+									#{tag}
+								</span>
+							))}
 					</div>
 				</div>
 			</div>
