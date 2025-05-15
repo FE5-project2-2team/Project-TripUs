@@ -19,6 +19,7 @@ export function usePostForm(defaultValues?: Partial<FormValues>) {
 				ageRange: []
 			},
 			images: [],
+			url: "",
 			...(defaultValues || {})
 		}
 	});

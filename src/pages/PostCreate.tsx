@@ -31,7 +31,8 @@ export default function PostCreate() {
 				recruitCondition: data.condition,
 				description: editor?.getText() as string,
 				contents: editor?.getContents(),
-				images: imageListRef.current
+				images: imageListRef.current,
+				url: data.url
 			};
 
 			const fullText = editor?.getText().replace(/\n/g, "").trim();
