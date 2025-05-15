@@ -1,5 +1,4 @@
 import { useHover } from "react-use";
-import { twMerge } from "tailwind-merge";
 import Icon from "./Icon";
 
 export default function ModalItem(props: {
@@ -14,10 +13,7 @@ export default function ModalItem(props: {
 	const element = (hovered: boolean) => (
 		<li
 			onClick={clickHandler}
-			className={twMerge(
-				"flex gap-2 items-center group cursor-pointer p-2 rounded-lg hover:bg-[#E0F4F2] hover:text-[#06B796]",
-				"dark:hover:text-[#333]"
-			)}
+			className="flex gap-2 items-center group cursor-pointer p-2 rounded-lg hover:bg-[#E0F4F2] hover:text-[#06B796] dark:hover:bg-[#B8E1E1]"
 		>
 			{!noIcon && <Icon hovered={hovered} {...rest} />}
 			{children}

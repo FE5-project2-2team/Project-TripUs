@@ -87,12 +87,12 @@ export default function ProfileEditModal({
 	};
 
 	return (
-		<div className="fixed inset-0 flex items-center justify-center bg-white/60 z-50">
-			<div className="w-[524px] rounded-[15px] bg-white pt-[30px] pb-[24px] shadow-lg z-50">
+		<div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
+			<div className="w-[524px] rounded-[15px] bg-white pt-[30px] pb-[24px] shadow-lg z-50 dark:bg-[#313131]">
 				<h2 className="flex justify-center text-[24px] font-medium">
 					프로필 편집
 				</h2>
-				<div className="pt-[30px]">
+				<div className="pt-[20px]">
 					<img
 						src={image}
 						alt="프로필 이미지"
@@ -109,14 +109,14 @@ export default function ProfileEditModal({
 						<Button
 							onClick={() => fileInputRef.current?.click()}
 							reverse
-							className="select-none h-[44px] rounded-[8px] px-4 py-2 font-normal text-[16px] border"
+							className="select-none h-[44px] rounded-[8px] px-4 py-2 font-normal text-[16px] border dark:bg-transparent dark:hover:bg-[#434343]"
 						>
 							프로필 이미지 변경
 						</Button>
 						<Button
 							onClick={handleResetToDefaultImage}
 							reverse
-							className="select-none h-[44px] rounded-[8px] px-4 py-2 font-normal text-[16px] border"
+							className="select-none h-[44px] rounded-[8px] px-4 py-2 font-normal text-[16px] border dark:bg-transparent dark:hover:bg-[#434343]"
 						>
 							기본 이미지로 변경
 						</Button>
@@ -124,39 +124,37 @@ export default function ProfileEditModal({
 				</div>
 
 				{/* 닉네임 수정 */}
-				<div className="flex flex-col items-center pt-[20px] pb-[10px]">
+				<div className="flex flex-col items-center pt-[20px] pb-[10px] gap-4">
 					<div>
-						<label className="select-none block text-[16px] text-[#333333]">
-							닉네임
-						</label>
+						<label className="select-none block text-[16px]">닉네임</label>
 						<input
 							type="text"
 							value={editProfile.nickname}
 							onChange={(e) =>
 								setEditProfile({ ...editProfile, nickname: e.target.value })
 							}
-							className="text-[16px] text-[#333333] rounded-[10px] w-[340px] h-[49px] px-[13px] py-[15px] mt-[10px] border border-[#616161]"
+							className="text-[16px] rounded-[10px] w-[340px] h-[49px] px-[13px] py-[15px] mt-[10px] border border-[#616161]"
 						/>
-						<p className="text-[#333333] text-[11px] mt-[5px]">
+						<p className="text-[11px] mt-[5px]">
 							*2자 이상 10자 이내의 한글, 영문, 숫자 입력 가능
 						</p>
 					</div>
 					{/* 태그 입력 */}
 					<div>
-						<label className="select-none block text-[16px] text-[#333333]">
+						<label className="select-none block text-[16px]">
 							자기소개 키워드
 						</label>
 						<input
 							type="text"
 							onKeyDown={handleInputTag}
 							placeholder="입력 후 Enter"
-							className="select-none text-[16px] text-[#333333] rounded-[10px] w-[340px] h-[49px] px-[13px] mt-[10px] border border-[#616161]"
+							className="select-none text-[16px] rounded-[10px] w-[340px] h-[49px] px-[13px] mt-[10px] border border-[#616161]"
 						/>
 						<div className="flex flex-wrap justify-center gap-[10px] mt-[10px] w-[340px]">
 							{editProfile.tagList?.map((tag, i) => (
 								<div
 									key={i}
-									className="flex items-center gap-1 px-3 py-1 bg-[#F3F4F6] text-[#06b796] rounded-[8px]"
+									className="flex items-center gap-1 px-3 py-1 bg-[#F3F4F6] text-[#06b796] rounded-[8px] dark:bg-transparent dark:border dark:border-[#06b796]"
 								>
 									{tag}
 									<button
@@ -172,7 +170,7 @@ export default function ProfileEditModal({
 				</div>
 
 				{/* 버튼 */}
-				<div className="flex justify-center gap-[20px] mt-6">
+				<div className="flex justify-center gap-[20px] mt-3">
 					<Button
 						onClick={() => {
 							onUpdate();
@@ -187,7 +185,7 @@ export default function ProfileEditModal({
 					<Button
 						onClick={onClose}
 						reverse
-						className="select-none w-[160px] h-[46px] px-[60px] py-[12px] rounded-[10px] text-[16px] border"
+						className="select-none w-[160px] h-[46px] px-[60px] py-[12px] rounded-[10px] text-[16px] border dark:bg-transparent dark:hover:bg-[#434343]"
 					>
 						취소
 					</Button>
