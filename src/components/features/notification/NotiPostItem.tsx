@@ -1,6 +1,16 @@
+import { useNavigate } from "react-router";
 import profileImg from "../../../assets/images/profileImg_circle.svg";
 
-export default function NotiItem({ notice }: { notice: NotiData }) {
+export default function NotiPostItem({
+	notice,
+	onClose,
+	setNotiInfo
+}: {
+	notice: NotiData;
+	onClose: () => void;
+	setNotiInfo: React.Dispatch<React.SetStateAction<NotiData[]>>;
+}) {
+	const navigate = useNavigate();
 	const formatTime = (time: string): string => {
 		if (!time) return "시간정보없음";
 
@@ -13,15 +23,36 @@ export default function NotiItem({ notice }: { notice: NotiData }) {
 		if (hours === 0) hours = 12;
 		return `${String(hours).padStart(2, "0")}:${String(min).padStart(2, "0")} ${period}`;
 	};
-
+	// console.log("notice,notice.seen:", notice, notice.seen);
 	// console.log("user:", notice.user);
 	// console.log("author:", notice.author);
-	const nickname = JSON.parse(notice.author.fullName).nickname;
+	const nickname = JSON.parse(notice.author.fullName)?.nickname || "알수없음";
 	const userImage = notice.author.image || profileImg;
 	const time = formatTime(notice.createdAt);
 
+	const handleClick = async () => {
+		try {
+			if (notice.post) {
+				setNotiInfo((noti) => {
+					const newNoti = noti.map((n) =>
+						n._id === notice._id ? { ...n, seen: true } : n
+					);
+					console.log("알림 읽음 처리됨", newNoti);
+					return newNoti;
+				});
+				navigate(`/post/detail/${notice.post}`);
+				onClose();
+			}
+		} catch (e) {
+			console.error("알람 읽음 처리 실패", e);
+		}
+	};
+
 	return (
-		<div className="flex items-center w-full h-[100px]">
+		<div
+			className="flex items-center w-full h-[100px] border-b border-[#CDCDCD] cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150"
+			onClick={handleClick}
+		>
 			<div className="relative flex items-center">
 				<img
 					className="w-[60px] h-[60px] rounded-full ml-[30px]"
@@ -52,7 +83,7 @@ export default function NotiItem({ notice }: { notice: NotiData }) {
 							<div className="text-[14px] whitespace-nowrap">{time}</div>
 						</div>
 						<div className="text-[14px]">
-							{JSON.parse(notice.comment?.comment).value}
+							{JSON.parse(notice.comment?.comment).value || ""}
 						</div>
 					</div>
 				)}

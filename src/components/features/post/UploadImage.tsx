@@ -15,7 +15,12 @@ export default function UploadImage({
 	return (
 		<div>
 			<span className="post-input-title">사진</span>
-			<div className="flex bg-[#F9F9F9] py-2 px-[10px] gap-5">
+			<div
+				className={twMerge(
+					"flex bg-[#F9F9F9] py-2 px-[10px] gap-5 rounded-[10px]",
+					"dark:bg-[#333]"
+				)}
+			>
 				{showImages &&
 					showImages.map((image, index) => (
 						<img
@@ -40,7 +45,12 @@ export default function UploadImage({
 						className="absolute w-0 h-0"
 						disabled={showImages.length === 10 ? true : false}
 					/>
-					<div className="group hover:border-[#888] flex flex-col justify-center items-center gap-[1px] w-[46px] h-[46px] border border-[#D0D0D0] bg-white rounded-lg cursor-pointer">
+					<div
+						className={twMerge(
+							"group hover:border-[#888] flex flex-col justify-center items-center gap-[1px] w-[46px] h-[46px] border border-[#D0D0D0] bg-white rounded-lg cursor-pointer",
+							"dark:bg-[#ffffffde]"
+						)}
+					>
 						<Icon position="74.89% 12.155%" size="18px" />
 						<span
 							className={twMerge(

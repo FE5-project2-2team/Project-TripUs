@@ -165,12 +165,18 @@ export default function Channel() {
 
 				<div
 					key={post._id}
-					className="w-[340px] h-[434px] rounded-[15px] border border-[#D9D9D9] flex flex-col overflow-hidden cursor-pointer shadow"
+					className="w-[340px] h-[434px] rounded-[15px] flex flex-col overflow-hidden cursor-pointer shadow"
 					onClick={() => navigate(`/post/detail/${post._id}`)}
 				>
 					<div className="relative">
 						<img
-							src={post.image ? post.image : defaultImage}
+							src={
+								post.image
+									? post.image
+									: // JSON.parse(post.title.title).images[0]
+										// 	? JSON.parse(post.title.title).images[0]
+										defaultImage
+							}
 							className="w-full h-[180px] rounded-t-[15px] object-cover z-10"
 						/>
 						{(() => {

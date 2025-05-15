@@ -4,7 +4,7 @@ import { CHANNELS } from "../constants/posts";
 export const postFormSchema = z
 	.object({
 		channel: z.string(),
-		member: z.number(),
+		member: z.string(),
 		location: z
 			.string()
 			.min(1, "지역을 입력해주세요")

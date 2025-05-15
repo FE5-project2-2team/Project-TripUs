@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { createLike, deleteLike } from "../../../apis/like";
+import { createNoti } from "../../../apis/notification";
 import { useAuthStore } from "../../../store/authStore";
 import Icon from "../../commons/Icon";
-import { createNoti } from "../../../apis/notification";
 
 export default function Likes({
 	likesList,
@@ -60,13 +60,6 @@ export default function Likes({
 					number: prev.number,
 					likeId: myLike._id
 				}));
-			} catch (error) {
-				console.error(error);
-				setLikes((prev) => ({
-					number: prev.number - 1,
-					likeId: undefined
-				}));
-
 				//추가
 				await createNoti({
 					notificationType: "LIKE",
@@ -77,7 +70,12 @@ export default function Likes({
 				// console.log("좋아요 알림생성:", likeNoti);
 				// console.log("알림 받을 대상:", postData.author._id);
 				// console.log("현재 사용자:", userId);
-				//
+			} catch (error) {
+				console.error(error);
+				setLikes((prev) => ({
+					number: prev.number - 1,
+					likeId: undefined
+				}));
 			}
 		}
 	};
@@ -86,8 +84,11 @@ export default function Likes({
 			onClick={likeBtnHandler}
 			className={twMerge(
 				"cursor-pointer flex self-center px-[30px] pt-[10px] pb-[7.5px]  border-[1px] border-[#CDCDCD] rounded-[15px]",
-				likes.likeId && "bg-[#06b796] text-white",
-				isAuthor ? "hover:hover:bg-gray-100" : "hover:border-[#06b796]"
+				isAuthor
+					? "hover:bg-gray-100 dark:hover:bg-[#333]"
+					: "hover:border-[#06b796]",
+				likes.likeId &&
+					"bg-[#06b796] text-white border-[#06b796] hover:bg-[#038383] hover:border-[#038383]"
 			)}
 		>
 			<Icon
