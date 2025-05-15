@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router";
 import { axiosInstance } from "../../../apis/axios";
+import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
 
 interface ChattingComponentProps {
 	message: string;
@@ -56,7 +57,7 @@ export default function ChattingComponent({
 				<div className="flex items-start gap-2 ml-3">
 					{showProfileImage ? (
 						<img
-							src={sender.image}
+							src={sender.image?.trim() || defaultProfileImage}
 							alt="상대 프로필"
 							className="w-[60px] h-[60px] rounded-full object-cover mt-1"
 						/>
