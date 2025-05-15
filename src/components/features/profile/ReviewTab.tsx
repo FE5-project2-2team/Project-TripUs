@@ -65,7 +65,7 @@ const ReviewTab = ({
 										후기
 									</p>
 									<img
-										src={parsedTitle.image[0] ? parsedTitle.image[0] : postThumbnail}
+										src={parsedTitle.images[0] ? parsedTitle.images[0] : postThumbnail}
 										alt="Post Thumbnail"
 										className="rounded-t-[10px] h-[180px] w-full object-cover]"
 									/>
