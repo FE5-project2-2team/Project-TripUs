@@ -70,6 +70,11 @@ export default function Header() {
 		setModalOpen(false);
 	};
 
+	// 다크모드/라이트모드별 아이콘 위치 지정
+	const userListIconPosition = isDark ? "90.135% 3.073%" : "90.135% 11.732%";
+	const logoutIconPosition = isDark ? "64.889% 88.056%" : "37.778% 80.833%";
+	const myPageIconPosition = isDark ? "65.022% 81.006%" : "8.969% 81.006%";
+
 	const toggleNoti = () => {
 		setNotiOpen((noti) => !noti);
 	};
@@ -96,7 +101,7 @@ export default function Header() {
 							className="mt-[7px] relative cursor-pointer"
 							onClick={() => setIsUserListOpen((prev) => !prev)}
 						>
-							<Icon size="24px" position="-201px -42px" />
+							<Icon size="24px" position={userListIconPosition} />
 						</button>
 						{isUserListOpen && (
 							<UserListModal onClose={() => setIsUserListOpen(false)} />
@@ -141,7 +146,7 @@ export default function Header() {
 						<Modal ref={modalRef}>
 							<ModalItem
 								clickHandler={goToMyPage}
-								position="8.969% 81.006%"
+								position={myPageIconPosition}
 								hoverPosition="8.969% 88.268%"
 								size="22px"
 							>
@@ -157,7 +162,7 @@ export default function Header() {
 							</ModalItem>
 							<ModalItem
 								clickHandler={signOut}
-								position="37.778% 80.833%"
+								position={logoutIconPosition}
 								hoverPosition="37.778% 88.056%"
 								size="22px"
 							>
@@ -174,7 +179,7 @@ export default function Header() {
 							className="mt-[7px] relative cursor-pointer"
 							onClick={() => setIsUserListOpen((prev) => !prev)}
 						>
-							<Icon size="24px" position="-201px -42px" />
+							<Icon size="24px" position={userListIconPosition} />
 						</button>
 						{isUserListOpen && (
 							<UserListModal onClose={() => setIsUserListOpen(false)} />
