@@ -156,7 +156,7 @@ export default function NotiList({
 
 	return (
 		<>
-			<div className="w-[560px] min-h-[664px] rounded-[10px] bg-[#fff] border border-[#D9D9D9] shadow-xl">
+			<div className="w-[560px] min-h-[664px] rounded-[10px] bg-[#fff] border border-[#D9D9D9] shadow-[0_2px_8px_0_rgba(99,99,99,0.20)]">
 				{/* 상단-알림,x버튼*/}
 				<div className="w-[500px] h-[29px] flex items-center justify-between mt-5 mx-6">
 					<div className="mt-5 text-[24px] font-bold">알림</div>

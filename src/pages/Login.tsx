@@ -50,7 +50,7 @@ export default function Login() {
 				login(data.token, data.user._id);
 				showToast({ type: "success", message: "로그인에 성공했습니다!" });
 				navigate("/");
-				await refetchNotiList(); //
+				await refetchNotiList(); //알림
 			} else {
 				showToast({
 					type: "error",

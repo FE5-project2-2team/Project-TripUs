@@ -118,7 +118,7 @@ export default function Header() {
 						<FontAwesomeIcon icon={faComments} className="text-xl" />
 					</Link>
 					{/* 알림 */}
-					<div className="relative" ref={notiRef}>
+					<div ref={notiRef}>
 						<button onClick={toggleNoti} className="cursor-pointer relative">
 							<FontAwesomeIcon icon={faBell} className="text-xl" />
 							{unRead && (
