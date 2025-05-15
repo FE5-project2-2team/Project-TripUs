@@ -114,7 +114,7 @@ const ReviewTab = ({
 
 									{/* 하단영역 -3*/}
 									<div className="flex items-center justify-end gap-[5px]">
-										<h3 className="text-[14px] text-[#808080]">{post.likes.length}</h3>
+										<h3 className="text-[14px] text-[#808080] dark:text-[#dadada]">{post.likes.length}</h3>
 										<Icon position={likesIconPosition} size="18px" />
 									</div>
 								</div>

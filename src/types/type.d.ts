@@ -22,10 +22,10 @@ interface Profile {
 }
 
 type ProfilePost = {
-	likes: string[];
 	_id: string;
 	image: string;
 	title: string;
+	likes: string[];
 	channel: {
 		_id: string;
 		name: string;
@@ -207,6 +207,7 @@ interface PostHomeData {
 	author: UserHomeData;
 	createdAt: string;
 	updatedAt: string;
+	images: string[];
 }
 
 interface PostTitleData {
@@ -222,4 +223,5 @@ interface PostTitleData {
 	};
 	description: string;
 	contents: string;
+	images: string[];
 }

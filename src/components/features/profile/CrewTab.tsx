@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { getPostsByAuthor } from "../../../apis/post";
-import { formatDateRange } from "../../../utils/date";
+import { formatDateRange, getDiffInDays } from "../../../utils/date";
 import Icon from "../../../components/commons/Icon";
 import postThumbnail from "../../../assets/images/primaryImage.png";
 import { useThemeStore } from "../../../store/themeStore";
@@ -67,7 +67,11 @@ const CrewTab = ({
 							>
 								{/* 상단 영역 */}
 								<div className="relative block">
-									{parsedTitle.isRecruiting === true ? (
+									{getDiffInDays(new Date(), parsedTitle.dateRange[0]) < 0 ? (
+										<p className="absolute select-none top-0 right-0 flex items-center justify-center w-[60px] h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#808080]">
+											여정완료
+										</p>
+								 	) : parsedTitle.isRecruiting === true ? (
 										<p className="absolute select-none top-0 right-0 flex items-center justify-center w-[60px] h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#06B796]">
 											모집중
 										</p>
@@ -135,7 +139,7 @@ const CrewTab = ({
 										</div>
 										{/* 좋아요 */}
 										<div className="flex items-center gap-[5px]">
-											<h3 className="text-[#808080]">{post.likes.length}</h3>
+											<h3 className="text-[#808080] dark:text-[#dadada]">{post.likes.length}</h3>
 											<Icon position={likesIconPosition} size="18px" />
 										</div>	
 
