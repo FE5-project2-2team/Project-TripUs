@@ -13,15 +13,15 @@ export default function ProfileChannelTab({
 	const [activeTab, setActiveTab] = useState<"review" | "crews">("review");
 
 	return (
-		<div className="w-[1062px] mx-auto mt-[30px]">
+		<div className="w-[1100px] mx-auto mt-[30px]">
 			{/* 탭 버튼 */}
-			<div className="flex bg-[#F3F4F6] rounded-[10px]">
+			<div className="flex bg-[#F3F4F6] rounded-[10px] dark:bg-[#2e2e2e]">
 				<Button
 					onClick={() => setActiveTab("review")}
 					className={`h-[50px] flex-1 py-2 text-center font-semibold select-none ${
 						activeTab === "review"
 							? "text-white m-[5px] font-medium text-[18px] hover:bg-[#06B796]"
-							: "bg-red text-[#333333] m-[5px] font-medium text-[18px] hover:bg-transparent"
+							: "bg-red text-[#333333] m-[5px] font-medium text-[18px] hover:bg-transparent dark:text-[#dadada]"
 					}`}
 				>
 					후기 게시글
@@ -31,7 +31,7 @@ export default function ProfileChannelTab({
 					className={`h-[50px] flex-1 py-2 text-center font-semibold select-none ${
 						activeTab === "crews"
 							? "text-white m-[5px] font-medium text-[18px] hover:bg-[#06B796] "
-							: "bg-red text-[#333333] m-[5px] font-medium text-[18px] hover:bg-transparent"
+							: "bg-red text-[#333333] m-[5px] font-medium text-[18px] hover:bg-transparent dark:text-[#dadada]"
 					}`}
 				>
 					동행 게시글
