@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useController, useFormContext } from "react-hook-form";
 import { useClickAway } from "react-use";
 import { twMerge } from "tailwind-merge";
+import { useAuthStore } from "../../store/authStore";
 import { usePostStore } from "../../store/postStore";
 
 export default function CustomSelect({
@@ -15,7 +16,9 @@ export default function CustomSelect({
 	label: string;
 	options: { label: string | number; value: string | number }[];
 }) {
+	const applicants = usePostStore((state) => state.applicants);
 	const postInfo = usePostStore((state) => state.postInfo);
+	const userId = useAuthStore((state) => state.userId);
 	const { control } = useFormContext();
 	const {
 		field: { value, onChange }
@@ -32,7 +35,11 @@ export default function CustomSelect({
 		setOptionOpen(false);
 	});
 
-	if (!postInfo) return;
+	const actualMembers = postInfo!.memberList.filter(
+		(member) =>
+			applicants.some((applicant) => applicant.author._id === member) ||
+			userId === member
+	);
 
 	return (
 		<div className="relative">
@@ -47,7 +54,10 @@ export default function CustomSelect({
 			</label>
 			<input
 				onClick={toggleOptionHandler}
-				className="input-style focus:outline-0 cursor-pointer disabled:text-[#aaaaaa]"
+				className={twMerge(
+					"input-style focus:outline-0 cursor-pointer disabled:text-[#aaaaaa]",
+					"dark:border-[#616161]"
+				)}
 				type="text"
 				readOnly
 				value={options.find((opt) => opt.value === value)?.label || ""}
@@ -64,7 +74,7 @@ export default function CustomSelect({
 					{options
 						.filter((option) => {
 							if (!isEditing) return true;
-							return postInfo?.memberLimit <= (option.label as number);
+							return actualMembers.length <= (option.label as number);
 						})
 						.map((option) => (
 							<li
