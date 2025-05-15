@@ -26,7 +26,7 @@ export default function AutoComplete() {
 		<ul
 			className={twMerge(
 				"absolute top-[94px] w-full max-h-45 overflow-hidden border-1 border-[#d6d6d6] py-2 px-2 bg-white pb-2 rounded-b-[10px]",
-				"dark:bg-[#333] dark:border-[#000]"
+				"dark:bg-[#333] dark:border-[#000] z-20"
 			)}
 		>
 			{list.length > 0 ? (

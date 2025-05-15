@@ -33,7 +33,7 @@ export default function Comments({ authorId }: { authorId: string }) {
 				<form
 					className="relative"
 					onSubmit={(e) => {
-						addComment(e, value);
+						addComment(e, value, userId);
 						setValue("");
 					}}
 				>
