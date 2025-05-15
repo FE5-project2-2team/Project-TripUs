@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { useAuthStore } from "../store/authStore";
 import { getMessageList, readMessage } from "../apis/message";
-import MessageList from "../components/features/message/MessageList";
 import MessageInput from "../components/features/message/MessageInput";
+import MessageList from "../components/features/message/MessageList";
+import { useAuthStore } from "../store/authStore";
 
 export default function Message() {
 	const { id } = useParams();

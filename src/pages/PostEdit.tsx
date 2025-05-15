@@ -27,7 +27,8 @@ export default function PostEdit() {
 			gender: postInfo.recruitCondition.gender,
 			ageRange: postInfo.recruitCondition.ageRange
 		},
-		images: postInfo.images
+		images: postInfo.images,
+		url: postInfo.url
 	});
 
 	const submitHandler = async (data: FormValues) => {
@@ -44,7 +45,8 @@ export default function PostEdit() {
 				recruitCondition: data.condition,
 				description: editor?.getText() as string,
 				contents: editor?.getContents(),
-				images: imageListRef.current
+				images: imageListRef.current,
+				url: data.url
 			};
 
 			const fullText = editor?.getText().replace(/\n/g, "").trim();

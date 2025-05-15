@@ -9,6 +9,7 @@ import ConditionList from "./ConditionList";
 import Contents from "./Contents";
 import InfoForm from "./InfoForm";
 import InputTitle from "./InputTitle";
+import InputOpenTalk from "./InputUrl";
 import UploadImage from "./UploadImage";
 
 interface PostFormProps {
@@ -50,6 +51,7 @@ export default function PostForm({
 					>
 						<InfoForm isEditing={isEditing} confirmHandler={confirmHandler} />
 						<div className="flex flex-col gap-10 my-13">
+							<InputOpenTalk />
 							<InputTitle />
 							<Contents contentsRef={contentsRef} isConfirmed={isConfirmed} />
 							{methods.watch().channel === CHANNELS.RECRUITMENT && (

@@ -23,7 +23,8 @@ export const postFormSchema = z
 				ageRange: z.array(z.string())
 			})
 			.optional(),
-		images: z.array(z.string())
+		images: z.array(z.string()),
+		url: z.string()
 	})
 	.superRefine((data, ctx) => {
 		if (data.channel !== CHANNELS.REVIEW) {
