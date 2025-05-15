@@ -5,6 +5,7 @@ import { getPosts } from "../apis/post";
 import Icon from "../components/commons/Icon";
 import defaultImage from "../assets/images/primaryImage.png";
 import profileImg from "../assets/images/profileImg_circle.svg";
+import { useThemeStore } from "../store/themeStore";
 //채널 정보 가져오기
 //채널별 게시글 보여주기
 type ContextType = {
@@ -158,6 +159,13 @@ export default function Channel() {
 		const parsedDate = new Date(date);
 		return `${parsedDate.getFullYear().toString().slice(2)}.${(parsedDate.getMonth() + 1).toString().padStart(2, "0")}.${parsedDate.getDate().toString().padStart(2, "0")}`;
 	};
+
+	// darkmode
+	const isDark = useThemeStore((state) => state.isDark);
+	const locationIconPosition = isDark ? "56.034% 20.708%" : "6.466% 20.708%";
+	const memberIconPosition = isDark ? "66.079% 20.765%" : "15.419% 20.765%";
+	const calendarIconPosition = isDark ? "75.983% 20.604%" : "25.764% 20.604%";
+
 	return (
 		<div className="w-full grid grid-cols-3 gap-[40px] mt-[20px] items-center relative">
 			{filteredPosts.map((post: PostHomeData) => (
@@ -165,7 +173,7 @@ export default function Channel() {
 
 				<div
 					key={post._id}
-					className="w-[340px] h-[434px] rounded-[15px] flex flex-col overflow-hidden cursor-pointer shadow"
+					className="w-[340px] h-[434px] rounded-[15px] flex flex-col overflow-hidden cursor-pointer shadow-[0px_1px_4px_rgba(0,0,0,0.16)] dark:border dark:border-[#616161]"
 					onClick={() => navigate(`/post/detail/${post._id}`)}
 				>
 					<div className="relative">
@@ -214,8 +222,8 @@ export default function Channel() {
 							return null;
 						})()}
 					</div>
-					<div className="flex flex-col justify-between flex-grow p-4">
-						<div className="space-y-4">
+					<div className="p-4">
+						<div>
 							{/* 사용자 이미지,이름,닉네임 */}
 							<div className="flex flex-row items-center min-w-[115px] h-[36px]">
 								<img
@@ -223,7 +231,7 @@ export default function Channel() {
 									alt="사용자이미지"
 									className="w-[36px] h-[36px] rounded-full"
 								/>
-								<div className="min-w-[71px] ml-[8px]">
+								<div className="ml-[8px]">
 									<p className="font-normal text-[16px]">
 										{JSON.parse(post.author.fullName as string).nickname}
 									</p>
@@ -233,37 +241,44 @@ export default function Channel() {
 								</div>
 							</div>
 							{/* 게시글 제목, 내용 */}
-							<div className="w-[296px] h-[65px] mt-4 flex flex-col">
-								<p className="text-[16px] font-bold">{post.title.title}</p>
-								<p className="mt-[7px] min-h-[38px] text-[14px] line-clamp-2">
+							<div className="w-[308px] mt-4 mb-2">
+								<p className="text-[16px] font-bold line-clamp-1">
+									{post.title.title}
+								</p>
+								<p className="mt-[8px] min-h-[38px] text-[14px] line-clamp-2">
 									{post.title.description}
 								</p>
 							</div>
 							{/* 여행지, 크루원수,날짜*/}
-							<div className="min-w-[142px] h-[70px] text-[14px] mt-2">
-								<div className="min-w-[61px] h-[18px]">
-									{post.title.location && (
-										<p className="flex gap-1">
-											<Icon position="5.447% 19.352%" size="18px" />
-											{post.title.location}
-										</p>
-									)}
+							<div className="text-[14px] h-[72px]">
+								{/* 비행기 */}
+								{post.title.location && (
+									<div className="flex items-center gap-1.5">
+										<Icon position={locationIconPosition} size="18px" />
+										<h3 className="text-[14px]">{post.title.location}</h3>
+									</div>
+								)}
+								{/* 인원 */}
+								<div className="flex items-center gap-1.5">
+									<Icon position={memberIconPosition} size="18px" />
+									<h3 className="text-[14px]">
+										{post.title.memberList.length} / {post.title.memberLimit}
+									</h3>
 								</div>
-								<p className="flex gap-[4px]">
-									<Icon position="15.52% 19.671%" size="18px" />
-									{post.title.memberList.length} / {post.title.memberLimit}
-								</p>
-								<p className="flex gap-1">
-									<Icon position="25.835% 20.058%" size="18px" />
-									{`${formatDate(post.title.dateRange[0])}`}
-									{post.title.dateRange[1] &&
-										` ~ 
+								{/* 달력 */}
+								<div className="flex items-center gap-1.5">
+									<Icon position={calendarIconPosition} size="18px" />
+									<h3 className="text-[14px]">
+										{`${formatDate(post.title.dateRange[0])}`}
+										{post.title.dateRange[1] &&
+											` - 
 									${formatDate(post.title.dateRange[1])}`}
-								</p>
+									</h3>
+								</div>
 							</div>
 						</div>
 						{/* 나이,성별 */}
-						<div className="text-[14px] flex mt-auto gap-4">
+						<div className="text-[14px] flex mt-[2px] gap-4">
 							{post.title.recruitCondition.gender &&
 								`#${post.title.recruitCondition.gender}`}
 							{post.title.recruitCondition.ageRange &&

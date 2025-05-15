@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { axiosInstance } from "../apis/axios";
 import { getUserInfo } from "../apis/user";
 import { useAuthStore } from "../store/authStore";
@@ -11,20 +11,12 @@ import ProfileEditModal from "../components/features/profile/ProfileEditModal";
 import ProfileChannelTab from "../components/features/profile/ProfileChannelTab";
 
 export default function Profile() {
-	const navigate = useNavigate();
-	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 	const { id: paramsId } = useParams();
 	const myUserId = useAuthStore((state) => state.userId);
 	const viewingUserId = useMemo(
 		() => paramsId || myUserId,
 		[paramsId, myUserId]
 	);
-
-	useEffect(() => {
-		if (!isLoggedIn) {
-			navigate("/login");
-		}
-	}, [isLoggedIn, navigate]);
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [image, setImage] = useState(profileCircle);
@@ -91,8 +83,8 @@ export default function Profile() {
 	};
 
 	return (
-		<div className="flex flex-col items-center min-h-screen py-[40px]">
-			<div className="w-[1062px]">
+		<div className="flex flex-col items-center min-h-screen py-[24px]">
+			<div className="w-[1100px]">
 				<div>
 					{isMyPage && (
 						<ProfileHeader

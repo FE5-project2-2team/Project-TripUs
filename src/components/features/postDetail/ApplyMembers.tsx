@@ -1,19 +1,23 @@
 import { updatePost } from "../../../apis/post";
+import { usePostStore } from "../../../store/postStore";
 import ProfileImage from "../../commons/ProfileImage";
 
 export default function ApplyMembers({
-	applicants,
 	postInfo,
-	postData,
-	deleteApplicant,
-	addMember
+	postData
 }: {
-	applicants: CommentData[];
 	postInfo: PostDetail;
 	postData: PostData;
-	deleteApplicant: (userId: string) => void;
-	addMember: (newMember: string) => void;
 }) {
+	const applicants = usePostStore((state) => state.applicants);
+	const members = usePostStore((state) => state.members);
+	const addMember = usePostStore((state) => state.addMembers);
+	const deleteApplicant = usePostStore((state) => state.deleteApplicant);
+
+	const applyMembers = applicants.filter((applicant) =>
+		members.every((member) => member !== applicant.author._id)
+	);
+
 	const approveHandler = async (applicant: UserData) => {
 		try {
 			const newData: PostDetail = { ...postInfo };
@@ -46,14 +50,14 @@ export default function ApplyMembers({
 	};
 	return (
 		<div className="flex flex-col gap-4">
-			{applicants.length !== 0 && (
+			{applyMembers.length !== 0 && (
 				<div>
 					<span className="post-sub-title inline">승인 대기 멤버</span>
-					<span className="sub_title_number">{applicants.length}</span>
+					<span className="sub_title_number">{applyMembers.length}</span>
 				</div>
 			)}
 
-			{applicants.map((applicant) => {
+			{applyMembers.map((applicant) => {
 				const userInfo: Profile = JSON.parse(applicant.author.fullName);
 				return (
 					<div className="relative text-sm items-center" key={applicant._id}>
@@ -67,7 +71,7 @@ export default function ApplyMembers({
 								<span>{userInfo.name}</span>
 							</div>
 						</div>
-						<div className="absolute left-60 top-3">
+						<div className="absolute left-50 top-3">
 							<button
 								onClick={() => approveHandler(applicant.author)}
 								className="handleApply bg-[#06b796] hover:bg-[#038383] mr-2"

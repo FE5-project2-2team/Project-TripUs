@@ -2,18 +2,17 @@ import { useFormContext } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
 export default function LabelSelect({
-	type,
+	isEditing,
 	name,
 	label,
 	children
 }: {
-	type?: string;
+	isEditing?: boolean;
 	name: string;
 	label: string;
 	children: React.ReactNode;
 }) {
 	const { register } = useFormContext();
-	const isEditing = type === "edit";
 	return (
 		<div>
 			<label
@@ -23,7 +22,10 @@ export default function LabelSelect({
 				{label}
 			</label>
 			<select
-				className="input-style cursor-pointer focus:outline-none disabled:cursor-default disabled:text-[#aaaaaa]"
+				className={twMerge(
+					"input-style cursor-pointer focus:outline-none disabled:cursor-default disabled:text-[#aaaaaa]",
+					"dark:border-[#616161]"
+				)}
 				id={name}
 				{...register(name)}
 				disabled={isEditing}

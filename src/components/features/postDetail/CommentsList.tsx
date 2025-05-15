@@ -1,26 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 import { useAuthStore } from "../../../store/authStore";
+import { usePostStore } from "../../../store/postStore";
 import CommentItem from "./CommentItem";
 
-export default function CommentsList({
-	commentsList,
-	authorId,
-	submitHandler,
-	deleteCommentHandler
-}: {
-	commentsList: CommentData[];
-	authorId: string;
-	submitHandler: (e: React.FormEvent<HTMLFormElement>, value: string) => void;
-	deleteCommentHandler: (commentId: string) => void;
-}) {
+export default function Comments({ authorId }: { authorId: string }) {
 	const [value, setValue] = useState("");
+	const addComment = usePostStore((state) => state.addComment);
+	const comments = usePostStore((state) => state.comments);
 	const userId = useAuthStore((state) => state.userId);
 	return (
 		<div className="mb-10">
 			<span className="post-sub-title inline">댓글</span>
-			<span className="sub_title_number">{commentsList.length}</span>
-			<ul className="border-t border-[#CDCDCD] mt-4">
-				{commentsList
+			<span className="sub_title_number">{comments.length}</span>
+			<ul className="border-t border-[#CDCDCD] mt-4 dark:border-[#616161]">
+				{comments
 					.filter((commentData) => {
 						const parsed: CommentType = JSON.parse(commentData.comment);
 						return parsed.type === "comment";
@@ -31,7 +25,6 @@ export default function CommentsList({
 								key={commentData._id}
 								comment={commentData}
 								authorId={authorId}
-								deleteCommentHandler={deleteCommentHandler}
 							/>
 						);
 					})}
@@ -40,14 +33,15 @@ export default function CommentsList({
 				<form
 					className="relative"
 					onSubmit={(e) => {
-						submitHandler(e, value);
+						addComment(e, value);
 						setValue("");
 					}}
 				>
 					<input
-						className="w-full h-15 mt-[35px] px-4 border border-[#CDCDCD] 
-					rounded-[10px] text-sm placeholder:text-[#CDCDCD] text-black
-					focus: outline-0"
+						className={twMerge(
+							"w-full h-15 mt-[35px] px-4 border border-[#CDCDCD] rounded-[10px] text-sm placeholder:text-[#CDCDCD] text-blac focus:outline-0",
+							"dark:border-[#616161] dark:placeholder:text-[#616161] dark:text-[#dadada]"
+						)}
 						type="text"
 						placeholder="댓글을 입력해주세요"
 						value={value}
@@ -55,9 +49,11 @@ export default function CommentsList({
 					/>
 					<button
 						type="submit"
-						className="absolute top-[42px] right-2 w-20 h-[46px] 
-					bg-[#f3f4f6] text-[#06b796] font-medium rounded-lg hover:bg-[#06b796]
-					hover:text-white cursor-pointer"
+						className={twMerge(
+							"absolute top-[42px] right-2 w-20 h-[46px] bg-[#f3f4f6] text-[#06b796] font-medium rounded-lg hover:bg-[#06b796]",
+							"hover:text-white cursor-pointer",
+							"dark:bg-[#333] dark:border dark:border-[#06b796]"
+						)}
 					>
 						등록
 					</button>

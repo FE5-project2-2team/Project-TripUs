@@ -8,6 +8,8 @@ import RootLayout from "./layouts/RootLayout";
 import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import { useEffect } from "react";
+
 import MessageLayout from "./components/features/message/MessageLayout";
 import NotFound from "./pages/NotFound";
 import PostCreate from "./pages/PostCreate";
@@ -16,7 +18,6 @@ import PostEdit from "./pages/PostEdit";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import { useThemeStore } from "./store/themeStore";
-import { useEffect } from "react";
 
 export default function App() {
 	// darkmode

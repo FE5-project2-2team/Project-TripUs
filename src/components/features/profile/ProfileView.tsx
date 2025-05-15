@@ -14,7 +14,7 @@ export default function ProfileView({ profile, image }: ProfileViewProps) {
 				/>
 				{/* 유저 프로필 정보 */}
 				<p className="text-[18px] font-medium">
-					{profile.nickname}({profile.name})님
+					{profile.name}({profile.nickname})님
 				</p>
 				<div className="flex justify-center gap-x-[3px]">
 					<p className="text-[16px]">{profile.age}</p>
@@ -25,7 +25,7 @@ export default function ProfileView({ profile, image }: ProfileViewProps) {
 					{profile.tagList?.map((tag, index) => (
 						<span
 							key={index}
-							className="inline-flex items-center justify-center w-[auto] h-[35px] bg-[#F3F4F6] text-[#06b796] px-[12px] py-[4px] rounded-[8px]"
+							className="inline-flex items-center justify-center w-[auto] h-[35px] bg-[#F3F4F6] text-[#06b796] px-[12px] py-[4px] rounded-[8px] dark:bg-[#1B1D22] dark:border dark:border-[#06b796]"
 						>
 							{tag}
 						</span>

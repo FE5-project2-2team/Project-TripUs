@@ -7,24 +7,26 @@ export default function UserInfo({
 }: {
 	isRecruitChannel: boolean;
 	image: string;
-	authorInfo: {
-		nickname: string;
-		age: number;
-		gender: string;
-	};
+	authorInfo: Profile;
 	userId: string;
 }) {
-	const { nickname, age, gender } = authorInfo;
+	const { nickname, age, gender, tagList } = authorInfo;
 	return (
 		<div>
 			<span className="post-sub-title">{isRecruitChannel && "캡틴"}</span>
 			<div className="flex gap-[10px]">
 				<ProfileImage userId={userId} image={image} />
 				<div>
-					<span className="block font-medium">{nickname}</span>
-					<div className="flex gap-2 text-[#616161]">
+					<span className="block font-medium mb-[5px]">{nickname}</span>
+					<div className="text-sm flex gap-2 text-[#616161] dark:text-[#dadada]">
 						<span>{Math.floor(age / 10) * 10}대</span>
 						<span>{gender}</span>
+						{tagList &&
+							tagList.map((tag) => (
+								<span key={tag} className="text-[#06B796]">
+									#{tag}
+								</span>
+							))}
 					</div>
 				</div>
 			</div>
