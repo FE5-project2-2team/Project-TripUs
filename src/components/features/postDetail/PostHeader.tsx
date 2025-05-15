@@ -34,7 +34,6 @@ export default function PostHeader({
 	const nextHandler = () => {
 		swiper?.slideNext();
 	};
-
 	return (
 		<>
 			<PostTitle
@@ -45,37 +44,39 @@ export default function PostHeader({
 				title={postInfo.title}
 				postData={postData}
 			/>
-			<div className="relative">
-				<Swiper
-					onActiveIndexChange={(e) => setSwiperIndex(e.realIndex)}
-					onSwiper={(e) => setSwiper(e)}
-					className="w-full cursor-grab"
-				>
-					{postData.channel._id === CHANNELS.RECRUITMENT &&
-						postInfo.images?.map((image, index) => (
-							<SwiperSlide>
-								<img
-									key={index}
-									src={image}
-									className="w-full h-125 object-cover rounded-lg"
-								/>
-							</SwiperSlide>
-						))}
-				</Swiper>
-				<div className="flex absolute bottom-5 w-full justify-center items-center z-50 gap-3">
-					<button onClick={prevHandler} className="cursor-pointer">
-						<Icon position="44.538% 95.109%" size="12px" />
-					</button>
-					<div className="text-[rgba(255,255,255,0.6)] select-none">
-						<span className="text-white">0{swiperIndex + 1} </span>
-						<span>/ </span>
-						<span>0{postInfo.images?.length}</span>
+			{postInfo.images?.length !== 0 && (
+				<div className="relative">
+					<Swiper
+						onActiveIndexChange={(e) => setSwiperIndex(e.realIndex)}
+						onSwiper={(e) => setSwiper(e)}
+						className="w-full cursor-grab"
+					>
+						{postData.channel._id === CHANNELS.RECRUITMENT &&
+							postInfo.images?.map((image, index) => (
+								<SwiperSlide>
+									<img
+										key={index}
+										src={image}
+										className="w-full h-125 object-cover rounded-lg"
+									/>
+								</SwiperSlide>
+							))}
+					</Swiper>
+					<div className="flex absolute bottom-5 w-full justify-center items-center z-50 gap-3">
+						<button onClick={prevHandler} className="cursor-pointer">
+							<Icon position="44.538% 95.109%" size="12px" />
+						</button>
+						<div className="text-[rgba(255,255,255,0.6)] select-none">
+							<span className="text-white">0{swiperIndex + 1} </span>
+							<span>/ </span>
+							<span>0{postInfo.images?.length}</span>
+						</div>
+						<button onClick={nextHandler} className="cursor-pointer">
+							<Icon position="54.622% 95.109%" size="12px" />
+						</button>
 					</div>
-					<button onClick={nextHandler} className="cursor-pointer">
-						<Icon position="54.622% 95.109%" size="12px" />
-					</button>
 				</div>
-			</div>
+			)}
 			<TravelInfo isRecruitChannel={isRecruitChannel} postInfo={postInfo} />
 			<UserInfo
 				isRecruitChannel={isRecruitChannel}

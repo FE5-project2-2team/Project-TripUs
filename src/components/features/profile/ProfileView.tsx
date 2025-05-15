@@ -14,7 +14,7 @@ export default function ProfileView({ profile, image }: ProfileViewProps) {
 				/>
 				{/* 유저 프로필 정보 */}
 				<p className="text-[18px] font-medium">
-					{profile.nickname}({profile.name})님
+					{profile.name}({profile.nickname})님
 				</p>
 				<div className="flex justify-center gap-x-[3px]">
 					<p className="text-[16px]">{profile.age}</p>
