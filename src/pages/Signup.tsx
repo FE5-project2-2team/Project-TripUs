@@ -15,7 +15,7 @@ function getGender(ssno: string) {
 	}
 
 	const genderNum = ssno.charAt(6);
-	const gender = parseInt(genderNum, 10) % 2 === 1 ? "남자" : "여자";
+	const gender = parseInt(genderNum, 10) % 2 === 1 ? "남" : "여";
 
 	return gender;
 }

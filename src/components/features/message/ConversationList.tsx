@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { getConversations } from "../../../apis/message";
 import { useAuthStore } from "../../../store/authStore";
 import Icon from "../../commons/Icon";
+import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
 
 export default function ConversationList() {
 	const [conversations, setConversations] = useState<ConversationData[]>([]);
@@ -84,7 +85,7 @@ export default function ConversationList() {
 					<Icon
 						size="24px"
 						position={
-							hoveredField === "search" ? "-148px -345px" : "-34px -124px"
+							hoveredField === "search" ? "-145px -345px" : "-31px -124px"
 						}
 					/>
 				</div>
@@ -117,7 +118,7 @@ export default function ConversationList() {
 							<div className="flex items-center gap-4 overflow-hidden">
 								<div className="relative w-[56px] h-[56px]">
 									<img
-										src={opponent.image}
+										src={opponent.image?.trim() || defaultProfileImage}
 										alt="프로필"
 										className="w-[56px] h-[56px] rounded-full object-cover"
 									/>
