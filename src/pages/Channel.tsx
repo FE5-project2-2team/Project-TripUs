@@ -162,8 +162,6 @@ export default function Channel() {
 
 	// darkmode
 	const isDark = useThemeStore((state) => state.isDark);
-	// const searchIconPosition = isDark ? "82.969% 27.747%" : "14.847% 35.165%";
-	// const closeIconPosition = isDark ? "72.727% 27.869%" : "28.571% 27.869%";
 	const locationIconPosition = isDark ? "56.034% 20.708%" : "6.466% 20.708%";
 	const memberIconPosition = isDark ? "66.079% 20.765%" : "15.419% 20.765%";
 	const calendarIconPosition = isDark ? "75.983% 20.604%" : "25.764% 20.604%";
@@ -243,7 +241,7 @@ export default function Channel() {
 								</div>
 							</div>
 							{/* 게시글 제목, 내용 */}
-							<div className="w-[308px] mt-4">
+							<div className="w-[308px] mt-4 mb-2">
 								<p className="text-[16px] font-bold line-clamp-1">
 									{post.title.title}
 								</p>
@@ -252,31 +250,30 @@ export default function Channel() {
 								</p>
 							</div>
 							{/* 여행지, 크루원수,날짜*/}
-							<div className="text-[14px] mt-2">
-								<div className="mb-[1px]">
-									{post.title.location && (
-										<p className="flex gap-1">
-											<div className="mt-[1px]">
-												<Icon position={locationIconPosition} size="16px" />
-											</div>
-											{post.title.location}
-										</p>
-									)}
-								</div>
-								<div className="flex gap-1.5 mb-[2px]">
-									<div className="mt-[2px]">
-										<Icon position={memberIconPosition} size="17px" />
+							<div className="text-[14px] h-[72px]">
+								{/* 비행기 */}
+								{post.title.location && (
+									<div className="flex items-center gap-1.5">
+										<Icon position={locationIconPosition} size="18px" />
+										<h3 className="text-[14px]">{post.title.location}</h3>
 									</div>
-									{post.title.memberList.length} / {post.title.memberLimit}
+								)}
+								{/* 인원 */}
+								<div className="flex items-center gap-1.5">
+									<Icon position={memberIconPosition} size="18px" />
+									<h3 className="text-[14px]">
+										{post.title.memberList.length} / {post.title.memberLimit}
+									</h3>
 								</div>
-								<div className="flex gap-1.5">
-									<div className="mt-[1px]">
-										<Icon position={calendarIconPosition} size="16px" />
-									</div>
-									{`${formatDate(post.title.dateRange[0])}`}
-									{post.title.dateRange[1] &&
-										` ~ 
+								{/* 달력 */}
+								<div className="flex items-center gap-1.5">
+									<Icon position={calendarIconPosition} size="18px" />
+									<h3 className="text-[14px]">
+										{`${formatDate(post.title.dateRange[0])}`}
+										{post.title.dateRange[1] &&
+											` - 
 									${formatDate(post.title.dateRange[1])}`}
+									</h3>
 								</div>
 							</div>
 						</div>
