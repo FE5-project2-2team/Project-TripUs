@@ -38,6 +38,7 @@ export default function PostForm({
 	const confirmHandler = () => {
 		setIsConfirmed((state) => (state ? 0 : 1));
 	};
+	const isEditing = type === "edit";
 	return (
 		<div className="flex justify-center items-center">
 			<main className="font-[Noto-Sans]">
@@ -47,14 +48,14 @@ export default function PostForm({
 						action=""
 						onSubmit={methods.handleSubmit(submitHandler, errorHandler)}
 					>
-						<InfoForm type={type} confirmHandler={confirmHandler} />
+						<InfoForm isEditing={isEditing} confirmHandler={confirmHandler} />
 						<div className="flex flex-col gap-10 my-13">
 							<InputTitle />
 							<Contents contentsRef={contentsRef} isConfirmed={isConfirmed} />
 							{methods.watch().channel === CHANNELS.RECRUITMENT && (
 								<UploadImage {...imageProps} />
 							)}
-							<ConditionList />
+							<ConditionList isEditing={isEditing} />
 						</div>
 						<div className="flex items-center justify-between mb-10">
 							<div
