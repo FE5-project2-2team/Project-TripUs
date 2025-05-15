@@ -19,7 +19,7 @@ export default function PostEdit() {
 
 	const methods = usePostForm({
 		channel: postData.channel._id,
-		member: postInfo.memberLimit,
+		member: postInfo.memberLimit.toString(),
 		location: postInfo.location,
 		dateRange: postInfo.dateRange.map((date) => new Date(date)),
 		title: postInfo.title,

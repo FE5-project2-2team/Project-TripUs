@@ -23,7 +23,10 @@ export default function LabelSelect({
 				{label}
 			</label>
 			<select
-				className="input-style cursor-pointer focus:outline-none disabled:cursor-default disabled:text-[#aaaaaa]"
+				className={twMerge(
+					"input-style cursor-pointer focus:outline-none disabled:cursor-default disabled:text-[#aaaaaa]",
+					"dark:border-[#616161]"
+				)}
 				id={name}
 				{...register(name)}
 				disabled={isEditing}
