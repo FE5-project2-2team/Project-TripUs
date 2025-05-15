@@ -1,5 +1,7 @@
-import spriteImage from "../../../assets/images/spriteImages.png";
+// import spriteImage from "../../../assets/images/spriteImages.png";
 import { useNavigate } from "react-router";
+import { useThemeStore } from "../../../store/themeStore";
+import Icon from "../../commons/Icon";
 
 interface ProfileHeaderProps {
 	onEditClick: () => void;
@@ -9,6 +11,10 @@ interface ProfileHeaderProps {
 
 export default function ProfileHeader({ onEditClick, isMyPage, userId }: ProfileHeaderProps) {
 	const navigate = useNavigate();
+
+	// darkmode
+	const isDark = useThemeStore((state) => state.isDark);
+	const backIconPosition = isDark ? "50.218% 27.747%" : "39.301% 27.747%";
 	const buttonText = isMyPage ? "회원정보 수정" : "채팅 보내기";
 	const buttonColor = isMyPage ? "bg-[#06b796]" : "bg-[#1C274C]";
 	const handleButtonClick = () => {
@@ -23,6 +29,7 @@ export default function ProfileHeader({ onEditClick, isMyPage, userId }: Profile
 		<div className="flex items-center justify-between mb-[50px]">
 			<div className="flex">
 				<button
+					className="mr-[12px] mt-[3px] cursor-pointer"
 					className="mr-[8px] w-[30px] h-[30px] cursor-pointer bg-no-repeat"
 					style={{
 						backgroundImage: `url(${spriteImage})`,
@@ -32,8 +39,10 @@ export default function ProfileHeader({ onEditClick, isMyPage, userId }: Profile
 					}}
 					aria-label="Go Back"
 					onClick={() => navigate("/")}
-				/>
-				<h2 className="font-medium text-[20px] text-[#333333]">
+				>
+					<Icon position={backIconPosition} size="16px" />
+				</button>
+				<h2 className="font-medium text-[20px] text-[#333333] dark:text-[#dadada]">
 					마이페이지 & 리뷰
 				</h2>
 			</div>
