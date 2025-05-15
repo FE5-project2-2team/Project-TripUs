@@ -5,6 +5,7 @@ import SignupLogo from "../assets/images/Signup_logo.svg";
 import Button from "../components/commons/Button";
 import Icon from "../components/commons/Icon";
 import { showToast } from "../components/commons/Toast";
+import { useNoti } from "../context/useNoti";
 import { useAuthStore } from "../store/authStore";
 
 export default function Login() {
@@ -16,6 +17,7 @@ export default function Login() {
 	});
 	const [errors, setErrors] = useState<{ email?: string }>({});
 	const [hoveredField, setHoveredField] = useState<string | null>(null);
+	const { refetchNotiList } = useNoti();
 
 	const handleSignupClick = () => {
 		navigate("/signup");
@@ -49,6 +51,7 @@ export default function Login() {
 				login(data.token, data.user);
 				showToast({ type: "success", message: "로그인에 성공했습니다!" });
 				navigate("/");
+				await refetchNotiList(); //알림
 			} else {
 				showToast({
 					type: "error",
