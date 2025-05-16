@@ -2,10 +2,7 @@
 
 @layer components {
 	.post-sub-title {
-		display: block;
-		font-weight: 500;
-		font-size: 18px;
-		margin-bottom: 16px;
+		@apply block font-medium sm:text-lg text-base mb-4;
 	}
 
 	.post-input-title {

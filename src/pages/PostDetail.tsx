@@ -61,8 +61,8 @@ export default function PostDetail() {
 	const fiveDaysLeft = getDiffInDays(new Date(), postInfo.dateRange[0]) < 5;
 
 	return (
-		<main className="flex flex-col justify-center items-center mt-[49px] mb-20">
-			<div className="flex flex-col gap-[30px] w-275 ">
+		<main className="flex flex-col justify-center items-center sm:mt-[49px] mb-20">
+			<div className="flex flex-col sm:gap-[30px] gap-12 sm:w-275 w-full relative px-4">
 				<PostHeader
 					postData={postData}
 					postInfo={postInfo}
@@ -73,7 +73,7 @@ export default function PostDetail() {
 				{isRecruitChannel && (
 					<>
 						<MemberList />
-						<div>
+						<div className="sm:text-base text-sm">
 							<span className="post-sub-title">동행 조건 사항</span>
 							<div>
 								<span className="text-[#616161] mr-[10px] dark:text-[#dadada]">
@@ -104,7 +104,7 @@ export default function PostDetail() {
 						onClick={() =>
 							isApplying ? cancelApplication(userId) : submitApplication()
 						}
-						className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
+						className="w-full disabled:cursor-auto disabled:bg-[#808080]"
 						disabled={
 							!postInfo.isRecruiting || isRejected || !isMatchedCondition
 						}
@@ -125,7 +125,7 @@ export default function PostDetail() {
 						onClick={toggleConfirm}
 						disabled={fiveDaysLeft}
 						reverse={!fiveDaysLeft}
-						className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
+						className="w-full disabled:cursor-auto disabled:bg-[#808080] sm:text-xl text-lg"
 					>
 						{fiveDaysLeft ? "철회 불가능" : "동행 철회"}
 					</Button>
