@@ -1,5 +1,6 @@
 import {
 	faAngleDown,
+	faBars,
 	faBell,
 	faComments
 } from "@fortawesome/free-solid-svg-icons";
@@ -7,11 +8,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useClickAway } from "react-use";
+import { logoutUser } from "../../apis/auth";
 import { getUserInfo } from "../../apis/user";
 import headerLogo from "../../assets/images/logo_header.svg";
 import { useNoti } from "../../context/useNoti";
 import { useAuthStore } from "../../store/authStore";
 import { useThemeStore } from "../../store/themeStore";
+import SideBar from "../features/home/SideBar";
 import NotiList from "../features/notification/NotiList";
 import UserListModal from "../features/user/UserListModal";
 import Button from "./Button";
@@ -31,6 +34,7 @@ export default function Header() {
 
 	const [modalOpen, setModalOpen] = useState(false);
 	const [notiOpen, setNotiOpen] = useState(false);
+	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 	const notiRef = useRef<HTMLDivElement | null>(null);
 	// const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
@@ -50,10 +54,11 @@ export default function Header() {
 		}
 	}, [userId, setImage, setNickname]); // 변경된 부분
 
-	const signOut = () => {
+	const signOut = async () => {
 		navigate("/");
 		logout();
 		setModalOpen(false);
+		await logoutUser();
 	};
 
 	const goToMyPage = () => {
@@ -82,6 +87,10 @@ export default function Header() {
 		setNotiOpen((noti) => !noti);
 	};
 
+	const toggleSidebar = () => {
+		setSidebarOpen((state) => !state);
+	};
+
 	useEffect(() => {
 		if (isLoggedIn && userId) {
 			getUserData();
@@ -96,12 +105,12 @@ export default function Header() {
 		setNotiOpen(false);
 	});
 	return (
-		<div className="w-[1100px] flex justify-between h-[70px] m-auto">
+		<div className="sm:w-[1100px] sm:p-0 p-[14px] w-full flex justify-between h-[70px] m-auto">
 			<Link to={"/"} className="flex items-center">
 				<img src={headerLogo} alt="로고" />
 			</Link>
 			{isLoggedIn ? (
-				<div className="flex items-center gap-[40px] relative">
+				<div className="sm:flex hidden items-center gap-[40px] relative">
 					{/* userList */}
 					<div className="relative inline-block">
 						<button
@@ -181,7 +190,7 @@ export default function Header() {
 					)}
 				</div>
 			) : (
-				<div className="flex items-center gap-[10px]">
+				<div className="sm:flex hidden items-center gap-[10px]">
 					{/* userList */}
 					<div className="relative inline-block">
 						<button
@@ -209,6 +218,20 @@ export default function Header() {
 					</Link>
 				</div>
 			)}
+			<div className="sm:hidden" onClick={() => setSidebarOpen(true)}>
+				<FontAwesomeIcon icon={faBars} className="text-3xl cursor-pointer" />
+			</div>
+			{sidebarOpen && (
+				<div
+					onClick={toggleSidebar}
+					className="fixed inset-0 bg-black opacity-30 z-50"
+				/>
+			)}
+			<SideBar
+				sidebarOpen={sidebarOpen}
+				signOut={signOut}
+				toggleHandler={toggleSidebar}
+			/>
 		</div>
 	);
 }
