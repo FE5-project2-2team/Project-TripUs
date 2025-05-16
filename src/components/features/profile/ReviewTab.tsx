@@ -33,7 +33,6 @@ const ReviewTab = ({
 	// darkmode
 	const isDark = useThemeStore((state) => state.isDark);
 	const locationIconPosition = isDark ? "56.034% 20.708%" : "6.466% 20.708%";
-	const memberIconPosition = isDark ? "66.079% 20.765%" : "15.419% 20.765%";
 	const calendarIconPosition = isDark ? "75.983% 20.604%" : "25.764% 20.604%";
 	const likesIconPosition = isDark ? "83.5% 96.15%" : "74.3% 96.15%";
 
@@ -80,7 +79,7 @@ const ReviewTab = ({
 								{/* 하단 영역 */}
 								<div className="p-[16px]">
 									{/* 하단 영역 -1 */}
-									<div className="flex flex-col gap-y-[8px] mb-3">
+									<div className="flex flex-col gap-y-[8px]">
 										<h1 className="font-bold text-[16px]">
 											{parsedTitle.title}
 										</h1>
@@ -90,17 +89,11 @@ const ReviewTab = ({
 									</div>
 
 									{/* 하단 영역 -2 */}
-									<div className="flex flex-col my-2">
+									<div className="flex flex-col mt-[30px]">
 										{/* 비행기 */}
-										<div className="flex items-center gap-1.5">
+										<div className="flex items-center gap-[8px]">
 											<Icon position={locationIconPosition} size="18px" />
 											<h3 className="text-[14px]">{parsedTitle.location}</h3>
-										</div>
-
-										{/* 인원 */}
-										<div className="flex items-center gap-1.5">
-											<Icon position={memberIconPosition} size="18px" />
-											<h3 className="text-[14px]">{parsedTitle.memberLimit}</h3>
 										</div>
 
 										{/* 달력 */}
@@ -113,7 +106,7 @@ const ReviewTab = ({
 									</div>
 
 									{/* 하단영역 -3*/}
-									<div className="flex items-center justify-end gap-[5px]">
+									<div className="flex items-center justify-end gap-[5px] mt-[13px]">
 										<h3 className="text-[14px] text-[#808080] dark:text-[#cdcdcd]">{post.likes.length}</h3>
 										<Icon position={likesIconPosition} size="18px" />
 									</div>
