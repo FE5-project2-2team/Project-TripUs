@@ -11,7 +11,7 @@ export default function AutoComplete() {
 	});
 	const [list, setList] = useState<string[]>([]);
 	const locationHandler = (location: string) => {
-		setValue("location", location);
+		setValue("location", location, { shouldDirty: true });
 	};
 
 	useEffect(() => {
