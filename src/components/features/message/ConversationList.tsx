@@ -35,12 +35,12 @@ export default function ConversationList() {
 		if (typeof fullName === "string") {
 			try {
 				const parsed = JSON.parse(fullName);
-				return parsed.name || "이름없음";
+				return parsed.nickname || parsed.name || "이름없음";
 			} catch {
 				return fullName;
 			}
 		} else {
-			return fullName.name;
+			return fullName.nickname || fullName.name;
 		}
 	};
 

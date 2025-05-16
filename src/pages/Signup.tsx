@@ -149,8 +149,11 @@ export default function Signup() {
 			const gender = genderResult;
 			const birthstr = ssno.substring(0, 6);
 			const genderCode = ssno.charAt(6);
-			const birthFull =
-				parseInt(genderCode, 10) <= 2 ? `19${birthstr}` : `20${birthstr}`;
+			const birthFull = (() => {
+				if (genderCode === "1" || genderCode === "2") return `19${birthstr}`;
+				if (genderCode === "3" || genderCode === "4") return `20${birthstr}`;
+				throw new Error("올바르지 않은 성별 코드입니다.");
+			})();
 			const age = calculateAge(birthFull);
 			const nickname = `크루${Math.floor(Math.random() * 1000 + 1)}`;
 
