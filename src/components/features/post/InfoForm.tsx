@@ -19,9 +19,18 @@ export default function InfoForm({
 	isEditing: boolean;
 	confirmHandler: () => void;
 }) {
-	const { register, reset, setValue, control } = useFormContext();
 	const { confirmOpen, toggleConfirm } = useConfirm();
 
+	const {
+		register,
+		reset,
+		setValue,
+		control,
+		formState: { dirtyFields }
+	} = useFormContext();
+	const otherFieldChanged = Object.keys(dirtyFields).some(
+		(field) => field !== "channel"
+	);
 	const { field } = useController({
 		name: "dateRange",
 		control: control
@@ -62,8 +71,11 @@ export default function InfoForm({
 	const [isFocused, setIsFocused] = useState(false);
 	useEffect(() => {
 		if (!watchedChannel || isEditing) return;
-		toggleConfirm();
+		if (otherFieldChanged) {
+			toggleConfirm();
+		}
 	}, [watchedChannel, reset, isEditing]);
+
 	return (
 		<>
 			{confirmOpen && (
