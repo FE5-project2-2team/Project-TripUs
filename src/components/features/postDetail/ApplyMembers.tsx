@@ -77,13 +77,13 @@ export default function ApplyMembers({
 						<div className="absolute sm:left-50 right-0 top-3">
 							<button
 								onClick={() => approveHandler(applicant.author)}
-								className="w-18 h-10 handleApply bg-[#06b796] hover:bg-[#038383] mr-2"
+								className="w-18 h-10 handleApply bg-[#06b796] sm:hover:bg-[#038383] active:bg-[#038383] mr-2"
 							>
 								승인
 							</button>
 							<button
 								onClick={() => rejectHandler(applicant.author._id)}
-								className="w-18 h-10 handleApply bg-[#FD346E] hover:bg-[#E11D48]"
+								className="w-18 h-10 handleApply bg-[#FD346E] sm:hover:bg-[#E11D48] active:bg-[#E11D48]"
 							>
 								거절
 							</button>

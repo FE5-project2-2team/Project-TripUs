@@ -57,7 +57,7 @@ export default function PostTitle({
 
 	const isEnded = getDiffInDays(new Date(), postInfo.dateRange[0]) < 0;
 	return (
-		<div className="flex justify-between items-center sm:relative sm:z-1 z-20 w-full fixed left-0 dark:bg-[#1B1D22] bg-[#fff] p-4 sm:mb-2 sm:border-0 border-b dark:border-[#616161]">
+		<div className="flex justify-between items-center sm:relative sm:z-1 z-20 w-full fixed left-0 dark:bg-[#1B1D22] bg-[#fff] p-4 sm:mb-2 sm:border-0 border-b border-[#f3f3f3] dark:border-[#616161] h-20">
 			<Icon
 				position={isDark ? "50.218% 27.747%" : "39.301% 27.747%"}
 				size="16px"

@@ -6,17 +6,13 @@
 	}
 
 	.post-input-title {
-		display: block;
-		font-weight: 500;
-		font-size: 20px;
-		margin-bottom: 10px;
+		@apply block font-medium sm:text-[20px] text-base sm:mb-[10px];
 	}
 
 	.input-style {
-		width: 512px;
-		border-bottom: 1px solid #cdcdcd;
-		padding-inline: 10px;
-		padding-block: 15px;
+		@apply sm:w-128 sm:border-b sm:border-b-[#cdcdcd] 
+		sm:px-[10px] py-[15px] w-73 px-[14px] sm:bg-[#fff]
+		bg-[#f9f9f9] dark:bg-[#1B1D22] sm:text-base text-sm;
 	}
 
 	.input-style::placeholder {

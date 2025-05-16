@@ -42,7 +42,7 @@ export default function PostHeader({
 				isRecruiting={isRecruiting}
 				title={postInfo.title}
 			/>
-			<div className="sm:hidden h-[54px] " />
+			<div className="sm:hidden h-20 " />
 			{postInfo.images?.length !== 0 && isRecruitChannel && (
 				<div className="relative sm:mb-9 sm:mx-0 -mx-4">
 					<Swiper
