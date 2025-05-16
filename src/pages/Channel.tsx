@@ -265,12 +265,14 @@ export default function Channel() {
 									</div>
 								)}
 								{/* 인원 */}
-								<div className="flex items-center gap-1.5">
-									<Icon position={memberIconPosition} size="18px" />
-									<h3 className="text-[14px]">
-										{post.title.memberList.length} / {post.title.memberLimit}
-									</h3>
-								</div>
+								{post.channel.name !== "review" && (
+									<div className="flex items-center gap-1.5">
+										<Icon position={memberIconPosition} size="18px" />
+										<h3 className="text-[14px]">
+											{post.title.memberList.length} / {post.title.memberLimit}
+										</h3>
+									</div>
+								)}
 								{/* 달력 */}
 								<div className="flex items-center gap-1.5">
 									<Icon position={calendarIconPosition} size="18px" />
