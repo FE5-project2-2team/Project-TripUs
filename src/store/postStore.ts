@@ -18,7 +18,11 @@ type PostStore = {
 	addMembers: (newMember: string) => void;
 	submitApplication: () => void;
 	cancelApplication: (userId: string) => void;
-	addComment: (e: React.FormEvent<HTMLFormElement>, value: string) => void;
+	addComment: (
+		e: React.FormEvent<HTMLFormElement>,
+		value: string,
+		userId: string
+	) => void;
 	deleteComment: (commentId: string) => void;
 	deleteApplicant: (userId: string) => void;
 	cancelAccompany: (userId: string) => void;
@@ -78,12 +82,12 @@ export const usePostStore = create<PostStore>((set, get) => ({
 
 	toggleRecruit: async () => {
 		try {
-			const { postData, postInfo } = get();
+			const { postData, postInfo, isRecruiting } = get();
 			if (!postData || !postInfo) return;
 
 			const newData: PostDetail = { ...postInfo };
-			newData.isRecruiting = !newData.isRecruiting;
-			set({ isRecruiting: !newData.isRecruiting });
+			newData.isRecruiting = !isRecruiting;
+			set({ isRecruiting: newData.isRecruiting });
 
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(newData));
@@ -173,12 +177,12 @@ export const usePostStore = create<PostStore>((set, get) => ({
 		}
 	},
 
-	addComment: async (e, value) => {
+	addComment: async (e, value, userId) => {
 		e.preventDefault();
 		const { postData } = get();
 		if (!postData) return;
 
-		if (value.length === 0) {
+		if (value.trim().length === 0) {
 			showToast({ type: "error", message: "댓글을 입력해주세요" });
 			return;
 		}
@@ -189,12 +193,11 @@ export const usePostStore = create<PostStore>((set, get) => ({
 				JSON.stringify(data)
 			);
 			set((state) => ({ comments: [...state.comments, newComment] }));
-
-			const post: PostData = await getPostById(newComment.post);
+			if (userId === postData.author._id) return;
 			await createNoti({
 				notificationType: "COMMENT",
 				notificationTypeId: newComment._id,
-				userId: post.author._id,
+				userId: postData.author._id,
 				postId: newComment.post
 			});
 		} catch (error) {

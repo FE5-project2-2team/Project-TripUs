@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router";
 import { axiosInstance } from "../../../apis/axios";
+import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
 
 interface ChattingComponentProps {
 	message: string;
@@ -56,7 +57,7 @@ export default function ChattingComponent({
 				<div className="flex items-start gap-2 ml-3">
 					{showProfileImage ? (
 						<img
-							src={sender.image}
+							src={sender.image?.trim() || defaultProfileImage}
 							alt="상대 프로필"
 							className="w-[60px] h-[60px] rounded-full object-cover mt-1"
 						/>
@@ -65,14 +66,18 @@ export default function ChattingComponent({
 					)}
 					<div>
 						{showProfileImage && (
-							<p className="text-[16px] text-[#333] mb-1">{nickname}</p>
+							<p className="text-[16px] text-[#333] dark:text-[#FFFFFF] mb-1">
+								{nickname}
+							</p>
 						)}
 						<div className="flex items-baseline gap-1">
-							<div className="p-3 bg-white rounded-md max-w-[300px] break-words">
-								<span className="text-[16px] text-[#333]">{message}</span>
+							<div className="p-3 bg-[#FFFFFF] dark:bg-[#2A2A2A] rounded-md max-w-[300px] break-words">
+								<span className="text-[16px] text-[#333] dark:text-[#E0E0E0]">
+									{message}
+								</span>
 							</div>
 							{showTime && (
-								<div className="text-[14px] text-[#616161] ml-2 self-end">
+								<div className="text-[14px] text-[#616161] dark:text-[#7F7F7F] ml-2 self-end">
 									{time}
 								</div>
 							)}
@@ -85,17 +90,21 @@ export default function ChattingComponent({
 				<div className="flex justify-end items-end gap-2 my-2 mr-3">
 					<div className="flex items-center gap-1">
 						{isMe && !seen && (
-							<span className="text-[16px] text-[#808080] w-[16px] h-[16px] flex items-center justify-center">
+							<span className="text-[16px] text-[#808080] dark:text-[#ACACAC] w-[16px] h-[16px] flex items-center justify-center">
 								1
 							</span>
 						)}
 						{showTime && (
-							<span className="text-[14px] text-[#616161]">{time}</span>
+							<span className="text-[14px] text-[#616161] dark:text-[#7F7F7F]">
+								{time}
+							</span>
 						)}
 					</div>
 
-					<div className="p-3 bg-[#E0F4F2] rounded-md max-w-[300px] break-words">
-						<span className="text-[16px] text-[#333]">{message}</span>
+					<div className="p-3 bg-[#E0F4F2] dark:bg-[#C2CFCE] rounded-md max-w-[300px] break-words">
+						<span className="text-[16px] text-[#333] dark:text-[#1B1B1B]">
+							{message}
+						</span>
 					</div>
 				</div>
 			)}

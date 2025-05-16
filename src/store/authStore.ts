@@ -6,11 +6,10 @@ type AuthStore = {
 	isLoggedIn: boolean;
 	accessToken: string | null;
 	userId: string | null;
+	userData: UserData | null;
+	userInfo: Profile | null;
 
-	image: string;
-	nickname: string | null;
-
-	login: (accessToken: string, userId: string) => void;
+	login: (accessToken: string, userData: UserData) => void;
 	logout: () => void;
 	setImage: (image: string) => void;
 	setNickname: (nickname: string) => void;
@@ -22,21 +21,38 @@ export const useAuthStore = create<AuthStore>()(
 			isLoggedIn: false,
 			accessToken: null,
 			userId: null,
-			image: profileCircle,
-			nickname: null,
+			userData: null,
+			userInfo: null,
 
-			login: (accessToken, userId) =>
-				set({ isLoggedIn: true, accessToken, userId }),
+			login: (accessToken, userData) => {
+				const userInfo = JSON.parse(userData.fullName);
+				set({
+					isLoggedIn: true,
+					accessToken,
+					userId: userData._id,
+					userData: userData.image
+						? userData
+						: { ...userData, image: profileCircle },
+					userInfo
+				});
+			},
+
 			logout: () =>
 				set({
 					isLoggedIn: false,
 					accessToken: null,
 					userId: null,
-					image: profileCircle,
-					nickname: null
+					userData: null,
+					userInfo: null
 				}),
-			setImage: (image) => set({ image }),
-			setNickname: (nickname) => set({ nickname })
+			setImage: (image) =>
+				set((state) => ({
+					userData: state.userData ? { ...state.userData, image } : null
+				})),
+			setNickname: (nickname) =>
+				set((state) => ({
+					userInfo: state.userInfo ? { ...state.userInfo, nickname } : null
+				}))
 		}),
 		{
 			name: "auth-storage",

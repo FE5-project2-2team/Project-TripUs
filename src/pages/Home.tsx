@@ -4,19 +4,17 @@ import ChannelList from "../components/features/home/ChannelList";
 import FilterAndSort from "../components/features/home/FilterAndSort";
 import PostSearch from "../components/features/home/PostSearch";
 import MainVisual from "../components/features/main/MainVisual";
-// import UserList from "../components/features/home/UserList";
 import { useState } from "react";
-// import UserSearch from "../components/features/home/UserSearch";
 
 export default function Home() {
 	const [sort, setSort] = useState("최신순");
 	const [selectFilter, setSelectFilter] = useState<string[]>([]);
 	const [isChecked, setIsChecked] = useState(false);
 	const [search, setSearch] = useState("");
-	// const [userSearch, setUserSearch] = useState("");
+
 	return (
 		<>
-			<div className="w-full flex justify-center mb-[70px]">
+			<div className="w-full flex justify-center pb-[70px]">
 				{/* 본문 */}
 				<div className="flex flex-col items-center w-[1100px] min-h-screen">
 					{/* 슬라이드 이미지 */}

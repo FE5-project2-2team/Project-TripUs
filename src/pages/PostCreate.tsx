@@ -13,7 +13,7 @@ import { formErrorHandler } from "../utils/errorhandle";
 export default function PostCreate() {
 	const navigate = useNavigate();
 	const userId = useAuthStore((state) => state.userId)!;
-	const { imageListRef, ...imageProps } = useImage();
+	const { imageListRef, initImages, ...imageProps } = useImage();
 	const contentsRef = useRef<ReactQuill | null>(null);
 	const methods = usePostForm();
 	const submitHandler = async (data: FormValues) => {
@@ -31,7 +31,8 @@ export default function PostCreate() {
 				recruitCondition: data.condition,
 				description: editor?.getText() as string,
 				contents: editor?.getContents(),
-				images: imageListRef.current
+				images: imageListRef.current,
+				url: data.url
 			};
 
 			const fullText = editor?.getText().replace(/\n/g, "").trim();
@@ -59,13 +60,13 @@ export default function PostCreate() {
 			console.error(error);
 		}
 	};
-
 	return (
 		<PostForm
 			submitHandler={submitHandler}
 			errorHandler={formErrorHandler}
 			contentsRef={contentsRef}
 			imageProps={imageProps}
+			initImages={initImages}
 			methods={methods}
 			type="create"
 		/>

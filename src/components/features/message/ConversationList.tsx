@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { getConversations } from "../../../apis/message";
 import { useAuthStore } from "../../../store/authStore";
 import Icon from "../../commons/Icon";
+import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
 
 export default function ConversationList() {
 	const [conversations, setConversations] = useState<ConversationData[]>([]);
@@ -62,14 +63,14 @@ export default function ConversationList() {
 
 	return (
 		<div className="w-full h-full overflow-y-auto p-2">
-			<div className="pl-2 mb-[25px] text-[20px] font-semibold text-[#333333]">
+			<div className="pl-2 mb-[25px] text-[20px] font-semibold text-[#333333] dark:text-[#FFFFFF]">
 				메시지{" "}
 				{totalUnread > 0 && (
 					<span className="text-[#FD346E] font-bold">{totalUnread}</span>
 				)}
 			</div>
 			<div
-				className="mb-4 w-full h-[50px] bg-white rounded-[10px] shadow-md relative group"
+				className="mb-4 w-full h-[50px] bg-white dark:bg-[#2A2A2A] rounded-[10px] shadow-[0_2px_8px_0_rgba(189,189,189,0.2)] relative group"
 				onMouseEnter={() => setHoveredField("search")}
 				onMouseLeave={() => setHoveredField(null)}
 			>
@@ -78,20 +79,20 @@ export default function ConversationList() {
 					placeholder="검색"
 					value={searchRoom}
 					onChange={(e) => setSearchRoom(e.target.value)}
-					className="w-full h-full pl-11 pr-4 text-[16px] text-[#616161] placeholder-[#616161] bg-transparent focus:outline-none"
+					className="w-full h-full pl-11 pr-4 text-[16px] text-[#616161] dark:text-[#dadada] placeholder-[#616161] bg-transparent focus:outline-none"
 				/>
 				<div className="absolute left-4 top-1/2 -translate-y-1/2 w-[24px] h-[24px]">
 					<Icon
 						size="24px"
 						position={
-							hoveredField === "search" ? "-148px -345px" : "-34px -124px"
+							hoveredField === "search" ? "-145px -345px" : "-31px -124px"
 						}
 					/>
 				</div>
 			</div>
 
 			{filteredConversations.length === 0 ? (
-				<div className="text-[#616161] text-center mt-6">
+				<div className="text-[#616161] dark:text-[#ACACAC] text-center mt-6">
 					검색 결과가 없습니다.
 				</div>
 			) : (
@@ -110,28 +111,28 @@ export default function ConversationList() {
 					return (
 						<div
 							key={opponent._id}
-							className="w-full h-[80px] bg-[#FFFFFF] rounded-[10px] shadow-md 
-							flex items-center px-4 justify-between mt-4 hover:bg-[#CEE6E2] cursor-pointer transition-colors"
+							className="group w-full h-[80px] bg-[#FFFFFF] dark:bg-[#2A2A2A] rounded-[10px] shadow-[0_2px_8px_0_rgba(189,189,189,0.2)]
+							flex items-center px-4 justify-between mt-4 hover:bg-[#CEE6E2] dark:hover:bg-[#686868] cursor-pointer transition-colors "
 							onClick={() => navigate(`/message/${opponent._id}`)}
 						>
 							<div className="flex items-center gap-4 overflow-hidden">
 								<div className="relative w-[56px] h-[56px]">
 									<img
-										src={opponent.image}
+										src={opponent.image?.trim() || defaultProfileImage}
 										alt="프로필"
 										className="w-[56px] h-[56px] rounded-full object-cover"
 									/>
 
 									{conv.receiver._id === myUserId && !conv.seen && (
-										<span className="absolute top-0 right-0 w-[8px] h-[8px] bg-red-500 rounded-full"></span>
+										<span className="absolute top-0 right-0 w-[8px] h-[8px] bg-[#FD346E] rounded-full"></span>
 									)}
 								</div>
 
 								<div className="flex flex-col overflow-hidden">
-									<div className="text-[18px] font-bold text-[#333333] leading-none">
+									<div className="text-[18px] font-bold text-[#333333] dark:text-[#FFFFFF] leading-none">
 										{getDisplayName(opponent.fullName)}
 									</div>
-									<div className="text-[16px] text-[#616161] mt-[9px] truncate max-w-[200px]">
+									<div className="text-[16px] text-[#808080] mt-[9px] truncate max-w-[200px] dark:group-hover:text-[#B1B1B1]">
 										{conv.message}
 									</div>
 								</div>

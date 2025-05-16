@@ -7,19 +7,20 @@ import { twMerge } from "tailwind-merge";
 import { CHANNELS } from "../../../constants/posts";
 import useConfirm from "../../../hooks/useConfirm";
 import Confirm from "../../commons/Confirm";
+import CustomSelect from "../../commons/CustomSelect";
 import AutoComplete from "./AutoComplete";
-import LabelSelect from "./LabelSelect";
 
 export default function InfoForm({
-	type,
+	initImages,
+	isEditing,
 	confirmHandler
 }: {
-	type: string;
+	initImages: (images: string[]) => void;
+	isEditing: boolean;
 	confirmHandler: () => void;
 }) {
 	const { register, reset, setValue, control } = useFormContext();
 	const { confirmOpen, toggleConfirm } = useConfirm();
-	const isEditing = type === "edit";
 
 	const { field } = useController({
 		name: "dateRange",
@@ -45,6 +46,7 @@ export default function InfoForm({
 			},
 			images: []
 		});
+		initImages([]);
 		toggleConfirm();
 		confirmHandler();
 	};
@@ -61,7 +63,7 @@ export default function InfoForm({
 	useEffect(() => {
 		if (!watchedChannel || isEditing) return;
 		toggleConfirm();
-	}, [watchedChannel, reset, type]);
+	}, [watchedChannel, reset, isEditing]);
 	return (
 		<>
 			{confirmOpen && (
@@ -74,18 +76,25 @@ export default function InfoForm({
 				/>
 			)}
 			<div className="grid grid-cols-2 gap-15">
-				<LabelSelect isEditing={isEditing} name="channel" label="게시판 선택">
-					<option value={CHANNELS.RECRUITMENT}>동행원 모집</option>
-					<option value={CHANNELS.REVIEW}>여행 후기글</option>
-				</LabelSelect>
+				<CustomSelect
+					isEditing={isEditing}
+					name="channel"
+					label="게시판 선택"
+					options={[
+						{ label: "동행원 모집", value: "681034285e1cfa1c37000059" },
+						{ label: "여행 후기글", value: "6813881c189ddd72351cd0a4" }
+					]}
+				/>
 				{watchedChannel === CHANNELS.RECRUITMENT ? (
-					<LabelSelect name="member" label="인원">
-						{Array.from({ length: 9 }, (_, idx) => idx + 2).map((num) => (
-							<option key={num} value={num}>
-								{num}
-							</option>
-						))}
-					</LabelSelect>
+					<CustomSelect
+						isEditing={isEditing}
+						name="member"
+						label="모집 인원 선택"
+						options={Array.from({ length: 9 }, (_, idx) => ({
+							label: idx + 2,
+							value: String(idx + 2)
+						}))}
+					/>
 				) : (
 					<div />
 				)}

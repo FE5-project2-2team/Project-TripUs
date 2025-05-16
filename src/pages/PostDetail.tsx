@@ -6,16 +6,19 @@ import ApplyMembers from "../components/features/postDetail/ApplyMembers";
 import CommentsList from "../components/features/postDetail/CommentsList";
 import Likes from "../components/features/postDetail/Likes";
 import MemberList from "../components/features/postDetail/MemberList";
+import OpenTalkLink from "../components/features/postDetail/OpenTalkLink";
 import PostHeader from "../components/features/postDetail/PostHeader";
 import { CHANNELS } from "../constants/posts";
 import useConfirm from "../hooks/useConfirm";
 import { useAuthStore } from "../store/authStore";
 import { usePostStore } from "../store/postStore";
+import { checkAgeMatch } from "../utils/checkCondition";
 import { getDiffInDays } from "../utils/date";
 
 export default function PostDetail() {
 	const { id } = useParams();
 	const userId = useAuthStore((state) => state.userId)!;
+	const userInfo = useAuthStore((state) => state.userInfo)!;
 	const applicants = usePostStore((state) => state.applicants);
 	const { confirmOpen, toggleConfirm } = useConfirm();
 
@@ -47,6 +50,13 @@ export default function PostDetail() {
 	const isCanceledAppication =
 		applicants.every((applicant) => applicant.author._id !== userId) &&
 		!members.includes(userId);
+
+	const isMatchedCondition = userInfo
+		? checkAgeMatch(postInfo.recruitCondition, {
+				gender: userInfo.gender + "성",
+				age: userInfo.age
+			})
+		: false;
 
 	const fiveDaysLeft = getDiffInDays(new Date(), postInfo.dateRange[0]) < 5;
 
@@ -85,26 +95,31 @@ export default function PostDetail() {
 				) : (
 					<div></div>
 				)}
-				<Likes postData={postData} />
+				<OpenTalkLink />
+				<Likes />
 				<CommentsList authorId={postData.author._id} />
-				{!isAuthor && userId && isRecruitChannel && !isMember && (
-					<Button
-						reverse={isApplying}
-						onClick={() =>
-							isApplying ? cancelApplication(userId) : submitApplication()
-						}
-						className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
-						disabled={!postInfo.isRecruiting || isRejected}
-					>
-						{postInfo.isRecruiting
-							? isRejected
-								? "거절 되었습니다"
-								: isApplying
-									? "동행 신청 취소"
-									: "동행 신청하기"
-							: "모집이 마감되었습니다"}
-					</Button>
-				)}
+				{!isAuthor &&
+					userId &&
+					isRecruitChannel &&
+					!isMember &&
+					isMatchedCondition && (
+						<Button
+							reverse={isApplying}
+							onClick={() =>
+								isApplying ? cancelApplication(userId) : submitApplication()
+							}
+							className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
+							disabled={!postInfo.isRecruiting || isRejected}
+						>
+							{postInfo.isRecruiting
+								? isRejected
+									? "거절 되었습니다"
+									: isApplying
+										? "동행 신청 취소"
+										: "동행 신청하기"
+								: "모집이 마감되었습니다"}
+						</Button>
+					)}
 				{!isAuthor && isMember && !isCanceledAppication && (
 					<Button
 						onClick={toggleConfirm}

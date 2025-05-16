@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { useAuthStore } from "../store/authStore";
 import { getMessageList, readMessage } from "../apis/message";
-import MessageList from "../components/features/message/MessageList";
 import MessageInput from "../components/features/message/MessageInput";
+import MessageList from "../components/features/message/MessageList";
+import { useAuthStore } from "../store/authStore";
 
 export default function Message() {
 	const { id } = useParams();
@@ -42,7 +42,7 @@ export default function Message() {
 	return (
 		<div className="flex flex-col h-full relative">
 			{opponent && (
-				<h2 className="px-4 text-[20px] font-semibold text-[#333] mt-[25px] mb-[25px]">
+				<h2 className="px-4 text-[20px] font-semibold text-[#333] dark:text-[#FFFFFF] mt-[25px] mb-[25px]">
 					{typeof opponent.fullName === "string"
 						? JSON.parse(opponent.fullName).name
 						: (opponent.fullName as User).name}

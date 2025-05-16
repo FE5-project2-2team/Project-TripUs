@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router";
 import { updatePost } from "../apis/post";
 import { showToast } from "../components/commons/Toast";
 import PostForm from "../components/features/post/PostForm";
+import { CHANNELS } from "../constants/posts";
 import { useImage } from "../hooks/useImage";
 import { usePostForm } from "../hooks/usePostForm";
 import { formErrorHandler } from "../utils/errorhandle";
@@ -27,14 +28,25 @@ export default function PostEdit() {
 			gender: postInfo.recruitCondition.gender,
 			ageRange: postInfo.recruitCondition.ageRange
 		},
-		images: postInfo.images
+		images: postInfo.images,
+		url: postInfo.url
 	});
 
 	const submitHandler = async (data: FormValues) => {
 		try {
 			if (!data.condition) return;
 			if (!postInfo) return;
+
 			const editor = contentsRef.current?.getEditor();
+			if (data.channel === CHANNELS.REVIEW) {
+				const images = editor
+					?.getContents()
+					.ops.filter(
+						(op) => typeof op.insert === "object" && "image" in op.insert
+					)
+					.map((op) => (op.insert as { image: string }).image);
+				if (images) imageListRef.current = images;
+			}
 			const detailData: PostDetail = {
 				...postInfo,
 				title: data.title,
@@ -44,7 +56,8 @@ export default function PostEdit() {
 				recruitCondition: data.condition,
 				description: editor?.getText() as string,
 				contents: editor?.getContents(),
-				images: imageListRef.current
+				images: imageListRef.current,
+				url: data.url
 			};
 
 			const fullText = editor?.getText().replace(/\n/g, "").trim();
@@ -89,6 +102,7 @@ export default function PostEdit() {
 			errorHandler={formErrorHandler}
 			contentsRef={contentsRef}
 			imageProps={imageProps}
+			initImages={initImages}
 			methods={methods}
 			type="edit"
 		/>

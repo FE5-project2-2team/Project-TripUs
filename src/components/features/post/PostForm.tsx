@@ -9,6 +9,7 @@ import ConditionList from "./ConditionList";
 import Contents from "./Contents";
 import InfoForm from "./InfoForm";
 import InputTitle from "./InputTitle";
+import InputUrl from "./InputUrl";
 import UploadImage from "./UploadImage";
 
 interface PostFormProps {
@@ -20,6 +21,7 @@ interface PostFormProps {
 		addImage: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
 		removeImage: (image: string) => void;
 	};
+	initImages: (images: string[]) => void;
 	methods: UseFormReturn<FormValues>;
 	type: string;
 }
@@ -29,6 +31,7 @@ export default function PostForm({
 	errorHandler,
 	contentsRef,
 	imageProps,
+	initImages,
 	methods,
 	type
 }: PostFormProps) {
@@ -38,6 +41,7 @@ export default function PostForm({
 	const confirmHandler = () => {
 		setIsConfirmed((state) => (state ? 0 : 1));
 	};
+	const isEditing = type === "edit";
 	return (
 		<div className="flex justify-center items-center">
 			<main className="font-[Noto-Sans]">
@@ -47,14 +51,19 @@ export default function PostForm({
 						action=""
 						onSubmit={methods.handleSubmit(submitHandler, errorHandler)}
 					>
-						<InfoForm type={type} confirmHandler={confirmHandler} />
+						<InfoForm
+							initImages={initImages}
+							isEditing={isEditing}
+							confirmHandler={confirmHandler}
+						/>
 						<div className="flex flex-col gap-10 my-13">
+							<InputUrl />
 							<InputTitle />
 							<Contents contentsRef={contentsRef} isConfirmed={isConfirmed} />
 							{methods.watch().channel === CHANNELS.RECRUITMENT && (
 								<UploadImage {...imageProps} />
 							)}
-							<ConditionList />
+							<ConditionList isEditing={isEditing} />
 						</div>
 						<div className="flex items-center justify-between mb-10">
 							<div
