@@ -95,31 +95,31 @@ export default function PostDetail() {
 				) : (
 					<div></div>
 				)}
-				<OpenTalkLink />
+				{isMember && !isCanceledAppication && <OpenTalkLink />}
 				<Likes />
 				<CommentsList authorId={postData.author._id} />
-				{!isAuthor &&
-					userId &&
-					isRecruitChannel &&
-					!isMember &&
-					isMatchedCondition && (
-						<Button
-							reverse={isApplying}
-							onClick={() =>
-								isApplying ? cancelApplication(userId) : submitApplication()
-							}
-							className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
-							disabled={!postInfo.isRecruiting || isRejected}
-						>
-							{postInfo.isRecruiting
-								? isRejected
-									? "거절 되었습니다"
-									: isApplying
-										? "동행 신청 취소"
-										: "동행 신청하기"
-								: "모집이 마감되었습니다"}
-						</Button>
-					)}
+				{!isAuthor && userId && isRecruitChannel && !isMember && (
+					<Button
+						reverse={isApplying}
+						onClick={() =>
+							isApplying ? cancelApplication(userId) : submitApplication()
+						}
+						className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
+						disabled={
+							!postInfo.isRecruiting || isRejected || !isMatchedCondition
+						}
+					>
+						{postInfo.isRecruiting
+							? isRejected
+								? "거절 되었습니다"
+								: isApplying
+									? "동행 신청 취소"
+									: isMatchedCondition
+										? "동행 신청하기"
+										: "동행 조건 불일치"
+							: "모집이 마감되었습니다"}
+					</Button>
+				)}
 				{!isAuthor && isMember && !isCanceledAppication && (
 					<Button
 						onClick={toggleConfirm}
