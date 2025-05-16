@@ -14,7 +14,9 @@ export default function ConditionList({ isEditing }: { isEditing: boolean }) {
 			<div className={twMerge(isEditing && "text-[#aaaaaa]")}>
 				<span className="post-input-title mb-4">동행조건</span>
 				<fieldset className="mb-[30px]">
-					<legend className="mb-[10px]">성별 (단일 선택)</legend>
+					<legend className="mb-[10px] sm:text-base text-sm">
+						성별 (단일 선택)
+					</legend>
 					{CONDITIONS.GENDERS.map((gender) => (
 						<InputBtn
 							disabled={isEditing}
@@ -28,19 +30,23 @@ export default function ConditionList({ isEditing }: { isEditing: boolean }) {
 					))}
 				</fieldset>
 				<fieldset>
-					<legend className="mb-[10px]">나이 (다중 선택 가능)</legend>
-					{CONDITIONS.AGES.map((age, index) => (
-						<InputBtn
-							disabled={isEditing}
-							key={age}
-							value={age}
-							type="checkbox"
-							name="ageRange"
-						>
-							{age}
-							{index === 4 && "+"}
-						</InputBtn>
-					))}
+					<legend className="mb-[10px] sm:text-base text-sm">
+						나이 (다중 선택 가능)
+					</legend>
+					<div className="flex w-full sm:overflow-auto overflow-x-scroll">
+						{CONDITIONS.AGES.map((age, index) => (
+							<InputBtn
+								disabled={isEditing}
+								key={age}
+								value={age}
+								type="checkbox"
+								name="ageRange"
+							>
+								{age}
+								{index === 4 && "+"}
+							</InputBtn>
+						))}
+					</div>
 				</fieldset>
 			</div>
 		);

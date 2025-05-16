@@ -57,21 +57,21 @@ export default function PostTitle({
 
 	const isEnded = getDiffInDays(new Date(), postInfo.dateRange[0]) < 0;
 	return (
-		<div className=" flex justify-between items-center relative">
-			<div className="cursor-pointer" onClick={() => navigate(-1)}>
-				<Icon
-					position={isDark ? "50.218% 27.747%" : "39.301% 27.747%"}
-					size="16px"
-				/>
-			</div>
-			<h2 className="items-center mb-[14px] inline-block">
+		<div className="flex justify-between items-center sm:relative sm:z-1 z-20 w-full fixed left-0 dark:bg-[#1B1D22] bg-[#fff] p-4 sm:mb-2 sm:border-0 border-b border-[#f3f3f3] dark:border-[#616161] h-20">
+			<Icon
+				position={isDark ? "50.218% 27.747%" : "39.301% 27.747%"}
+				size="16px"
+				onClick={() => navigate(-1)}
+				className="cursor-pointer"
+			/>
+			<h2 className="items-center inline-block">
 				<span
 					onClick={() => {
 						if (!isAuthor || !isRecruitChannel) return;
 						toggleRecruit();
 					}}
 					className={twMerge(
-						"mr-4 text-xl px-3 py-[5.5px] rounded-lg",
+						"mr-4 sm:text-xl text-sm px-3 py-[5.5px] rounded-lg",
 						isRecruitChannel
 							? "cursor-pointer text-[#06B796] bg-[#F3F4F6] hover:"
 							: "cursor-default bg-[#06b796] text-white",
@@ -86,25 +86,22 @@ export default function PostTitle({
 								: "모집완료"
 						: "후기"}
 				</span>
-				<span className="text-[28px] font-medium">{title}</span>
+				<span className="sm:text-[28px] text-lg font-medium">{title}</span>
 			</h2>
 			{isAuthor ? (
-				<button
+				<Icon
+					position={isDark ? "61.778% 28.342%" : "36.444% 35.561%"}
+					size="20px"
 					className="cursor-pointer"
 					onClick={() => {
 						if (!modalOpen) setModalOpen(true);
 					}}
-				>
-					<Icon
-						position={isDark ? "61.778% 28.342%" : "36.444% 35.561%"}
-						size="20px"
-					/>
-				</button>
+				/>
 			) : (
 				<div />
 			)}
 			{modalOpen && (
-				<Modal ref={modalRef}>
+				<Modal className="right-2 z-100" ref={modalRef}>
 					<ModalItem noIcon clickHandler={modifyPostHandler}>
 						<span className="inline-block w-full text-center">수정</span>
 					</ModalItem>

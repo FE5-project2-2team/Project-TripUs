@@ -18,8 +18,8 @@ export default function TravelInfo({
 	const { isDark } = useThemeStore();
 
 	return (
-		<>
-			<div>
+		<div className="sm:mb-[30px] mb-12 mt-5">
+			<div className="sm:mb-[30px] mb-12">
 				<span className="post-sub-title">
 					여행 {isRecruitChannel ? "소개" : "후기"}
 				</span>
@@ -29,8 +29,8 @@ export default function TravelInfo({
 				<span className="post-sub-title">여행 일정</span>
 				<div
 					className={twMerge(
-						"flex flex-col gap-4 py-5 px-4 bg-[#F9F9F9] rounded-[15px] text-[#616161]",
-						"dark:bg-[#333333] dark:text-[#dadada]"
+						"flex flex-col sm:gap-4 gap-2 py-5 px-4 bg-[#F9F9F9] rounded-[15px] text-[#616161]",
+						"sm:text-base text-sm dark:bg-[#333333] dark:text-[#dadada]"
 					)}
 				>
 					<span className="flex items-center gap-[10px]">
@@ -63,6 +63,6 @@ export default function TravelInfo({
 					)}
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }

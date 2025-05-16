@@ -52,7 +52,7 @@ export default function ApplyMembers({
 		}
 	};
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4 mb-26">
 			{applyMembers.length !== 0 && (
 				<div>
 					<span className="post-sub-title inline">승인 대기 멤버</span>
@@ -69,21 +69,21 @@ export default function ApplyMembers({
 								userId={applicant.author._id}
 								image={applicant.author.image}
 							/>
-							<div className="flex flex-col">
+							<div className="flex flex-col justify-center">
 								<span>{userInfo.nickname}</span>
-								<span>{userInfo.name}</span>
+								<span className="text-[#616161]">{userInfo.name}</span>
 							</div>
 						</div>
-						<div className="absolute left-50 top-3">
+						<div className="absolute sm:left-50 right-0 top-3">
 							<button
 								onClick={() => approveHandler(applicant.author)}
-								className="handleApply bg-[#06b796] hover:bg-[#038383] mr-2"
+								className="w-18 h-10 handleApply bg-[#06b796] sm:hover:bg-[#038383] active:bg-[#038383] mr-2"
 							>
 								승인
 							</button>
 							<button
 								onClick={() => rejectHandler(applicant.author._id)}
-								className="handleApply bg-[#FD346E] hover:bg-[#E11D48]"
+								className="w-18 h-10 handleApply bg-[#FD346E] sm:hover:bg-[#E11D48] active:bg-[#E11D48]"
 							>
 								거절
 							</button>
