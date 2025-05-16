@@ -106,7 +106,7 @@ export default function UserListModal({ onClose }: { onClose: () => void }) {
 	return (
 		<div
 			ref={modalRef}
-			className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[400px] h-[580px] bg-white z-50 shadow-[0px_2px_8px_rgba(0,0,0,0.20)] px-[30px] py-[40px] rounded-[10px] dark:bg-[#313131]"
+			className="absolute top-[110%] left-1/2 transform -translate-x-1/2 mt-2 w-[400px] h-[580px] bg-white z-50 shadow-[0px_2px_8px_rgba(0,0,0,0.20)] px-[30px] py-[40px] rounded-[10px] dark:bg-[#313131] dark:shadow-[0px_2px_8px_rgba(195,195,195,0.3)]"
 		>
 			<div className="flex justify-between items-center mb-[20px]">
 				<h2 className="text-[20px] font-semibold">사용자 리스트</h2>
