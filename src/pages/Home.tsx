@@ -6,7 +6,6 @@ import PostSearch from "../components/features/home/PostSearch";
 import MainVisual from "../components/features/main/MainVisual";
 import { useState } from "react";
 
-
 export default function Home() {
 	const [sort, setSort] = useState("최신순");
 	const [selectFilter, setSelectFilter] = useState<string[]>([]);

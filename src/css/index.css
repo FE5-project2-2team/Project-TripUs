@@ -33,7 +33,7 @@ button {
     text-[16px] text-[#333333] placeholder-[#616161]
     focus:outline-none focus:border-[#06B796]
     group-hover:border-[#06B796] group-hover:placeholder-[#06B796]
-    placeholder:transition-colors;
+    placeholder:transition-colors dark:text-[#dadada];
 }
 
 .iconProps {
