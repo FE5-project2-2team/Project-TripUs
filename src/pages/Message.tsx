@@ -4,18 +4,20 @@ import { getMessageList, readMessage } from "../apis/message";
 import MessageInput from "../components/features/message/MessageInput";
 import MessageList from "../components/features/message/MessageList";
 import { useAuthStore } from "../store/authStore";
+import { axiosInstance } from "../apis/axios";
 
 export default function Message() {
 	const { id } = useParams();
 	const [messages, setMessages] = useState<MessageData[]>([]);
 	const myUserId = useAuthStore((state) => state.userId);
+	const [fallbackOp, setFallbackOp] = useState<UserData | null>(null);
 
 	const opponent =
 		messages.length > 0
 			? messages[0].sender._id === myUserId
 				? messages[0].receiver
 				: messages[0].sender
-			: null;
+			: fallbackOp;
 
 	useEffect(() => {
 		if (!id) return;
@@ -25,6 +27,11 @@ export default function Message() {
 				const data = await getMessageList(id);
 				setMessages(data);
 				readMessage(id); // 읽음 처리
+
+				if (data.length === 0) {
+					const { data: userData } = await axiosInstance.get(`/users/${id}`);
+					setFallbackOp(userData);
+				}
 			} catch (err) {
 				console.error("메시지 로딩 실패", err);
 			}
