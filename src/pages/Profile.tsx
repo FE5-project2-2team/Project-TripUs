@@ -86,8 +86,8 @@ export default function Profile() {
 	};
 
 	return (
-		<div className="flex flex-col items-center min-h-screen py-[24px]">
-			<div className="w-[1100px]">
+		<div className="flex flex-col items-center min-h-screen sm:py-[24px]">
+			<div className="sm:items-center sm:w-[1100px] sm:p-0 w-[450px] px-[16px] py-[13px] sm:bg-transparent">
 				<div>
 					<ProfileHeader
 						onEditClick={handleEditClick}

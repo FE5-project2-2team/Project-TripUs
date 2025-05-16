@@ -38,18 +38,18 @@ const ReviewTab = ({
 
 	return (
 		<div>
-			<div className="flex my-[30px] text-[18px] font-medium gap-x-[8px]">
+			<div className="sm:flex my-[30px] text-[18px] font-medium gap-x-[8px] hidden">
 				<h1>후기 게시글</h1>
 				<p className="text-[#06B796]">{reviewPosts.length}</p>
 			</div>
-			<div className="grid grid-cols-3 gap-x-[40px] gap-y-[30px]">
+			<div className="grid grid-cols-2 sm:grid-cols-3 mt-[28px] sm:mt-0 gap-x-[18px] gap-y-[14px] sm:gap-x-[58px] sm:gap-y-[30px]">
 				{isMyPage && (
 					<Link to={"/postCreate"}>
-						<div className="group flex flex-col items-center justify-center w-[328px] h-[382px] border border-[#06B796] rounded-[15px] shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] hover:border-[#038383] transition duration-300">
-							<div className="w-[80px] h-[80px] rounded-full flex items-center justify-center cursor-pointer bg-[#06b796] group-hover:bg-[#038383] transition duration-300">
+						<div className="group flex flex-col items-center justify-center sm:w-[328px] sm:h-[382px] w-[200px] h-[252px] border border-[#06B796] rounded-[15px] shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] hover:border-[#038383] transition duration-300">
+							<div className="w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] rounded-full flex items-center justify-center cursor-pointer bg-[#06b796] group-hover:bg-[#038383] transition duration-300">
 								<Icon position="-12px -153px" size="35px" />
 							</div>
-							<p className="font-bold text-[16px] text-[#06B796] mt-[34px] group-hover:text-[#038383] transition duration-300">
+							<p className="font-medium sm:font-bold text-[14px] sm:text-[16px] text-[#06B796] mt-[14px] sm:mt-[34px] group-hover:text-[#038383] transition duration-300">
 								새 후기를 남겨주세요.
 							</p>
 						</div>
@@ -62,51 +62,51 @@ const ReviewTab = ({
 						return (
 							<div
 								key={post._id}
-								className="group w-[328px] h-[382px] overflow-hidden rounded-[10px] bg-white cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition duration-300 dark:bg-transparent dark:border dark:border-[#616161] dark:hover:shadow-[0px_4px_10px_rgba(100,100,100,0.3)]"
+								className="group sm:w-[328px] sm:h-[382px] w-[200px] h-[252px] overflow-hidden rounded-[10px] bg-white cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition duration-300 dark:bg-transparent dark:border dark:border-[#616161] dark:hover:shadow-[0px_4px_10px_rgba(100,100,100,0.3)]"
 								onClick={() => navigate(`/post/detail/${post._id}`)}
 							>
 								{/* 상단 영역 */}
 								<div className="relative block overflow-hidden rounded-t-[10px]">
-									<p className="absolute select-none top-0 right-0 flex items-center justify-center w-[60px] h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#06B796]">
+									<p className="hidden absolute select-none top-0 right-0 sm:flex items-center justify-center w-[60px] h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#06B796]">
 										후기
 									</p>
 									<img
 										src={parsedTitle.images[0] ? parsedTitle.images[0] : postThumbnail}
 										alt="Post Thumbnail"
-										className="rounded-t-[10px] h-[180px] w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+										className="rounded-t-[10px] h-[100px] sm:h-[180px] w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
 									/>
 								</div>
 								{/* 하단 영역 */}
-								<div className="p-[16px]">
+								<div className="p-[10px] sm:p-[16px]">
 									{/* 하단 영역 -1 */}
-									<div className="flex flex-col gap-y-[8px]">
-										<h1 className="font-bold text-[16px]">
+									<div className="flex flex-col gap-y-[5px] sm:gap-y-[8px]">
+										<h1 className="font-bold text-[14px] sm:text-[16px] line-clamp-1 ">
 											{parsedTitle.title}
 										</h1>
-										<h2 className="h-[38px] text-[14px] line-clamp-2">
+										<h2 className="h-[38px] text-[12px] sm:text-[14px] line-clamp-2">
 											{parsedTitle.description}
 										</h2>
 									</div>
 
 									{/* 하단 영역 -2 */}
-									<div className="flex flex-col mt-[30px]">
+									<div className="flex flex-col mt-[15px] sm:mt-[30px]">
 										{/* 비행기 */}
-										<div className="flex items-center gap-[8px]">
+										<div className="flex items-center gap-[4px] sm:gap-[8px]">
 											<Icon position={locationIconPosition} size="18px" />
-											<h3 className="text-[14px]">{parsedTitle.location}</h3>
+											<h3 className="text-[12px] sm:text-[14px]">{parsedTitle.location}</h3>
 										</div>
 
 										{/* 달력 */}
-										<div className="flex items-center gap-1.5">
+										<div className="flex items-center gap-[4px] sm:gap-[8px]">
 											<Icon position={calendarIconPosition} size="18px" />
-											<h3 className="text-[14px]">
+											<h3 className="text-[12px] sm:text-[14px]">
 												{formatDateRange(parsedTitle.dateRange)}
 											</h3>
 										</div>
 									</div>
 
 									{/* 하단영역 -3*/}
-									<div className="flex items-center justify-end gap-[5px] mt-[13px]">
+									<div className="hidden sm:flex items-center justify-end gap-[5px] mt-[5px] sm:mt-[13px]">
 										<h3 className="text-[14px] text-[#808080] dark:text-[#cdcdcd]">{post.likes.length}</h3>
 										<Icon position={likesIconPosition} size="18px" />
 									</div>

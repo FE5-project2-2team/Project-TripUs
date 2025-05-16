@@ -5,18 +5,18 @@ interface ProfileViewProps {
 
 export default function ProfileView({ profile, image }: ProfileViewProps) {
 	return (
-		<div className="flex flex-col justify-center w-[1062px]">
-			<div className="h-[auto] text-center space-y-[14px]">
+		<div className="flex flex-col items-center justify-center sm:w-[1100px]">
+			<div className="h-[auto] text-center sm:space-y-[14px] space-y-[10px]">
 				<img
 					src={image}
 					alt="프로필 이미지"
-					className="select-none w-[160px] h-[160px] rounded-full mx-auto mb-[20px] object-cover"
+					className="select-none w-[100px] h-[100px] sm:w-[160px] sm:h-[160px] rounded-full mx-auto mb-[20px] object-cover"
 				/>
 				{/* 유저 프로필 정보 */}
-				<p className="text-[18px] font-medium">
+				<p className="sm:text-[18px] sm:font-medium text-[16px] font-bold">
 					{profile.name}({profile.nickname})님
 				</p>
-				<div className="flex justify-center gap-x-[3px]">
+				<div className="flex justify-center sm:gap-x-[3px] gap-x-[4px]">
 					<p className="text-[16px]">{profile.age}</p>
 					<p className="text-[16px]">{profile.gender}</p>
 				</div>
@@ -25,7 +25,7 @@ export default function ProfileView({ profile, image }: ProfileViewProps) {
 					{profile.tagList?.map((tag, index) => (
 						<span
 							key={index}
-							className="inline-flex items-center justify-center w-[auto] h-[35px] bg-[#F3F4F6] text-[#06b796] px-[12px] py-[4px] rounded-[8px] dark:bg-[#1B1D22] dark:border dark:border-[#06b796]"
+							className="inline-flex items-center justify-center w-[auto] sm:h-[35px] h-[27px] bg-[#F3F4F6] text-[#06b796] text-[16px] px-[12px] py-[4px] rounded-[8px] dark:bg-[#1B1D22] dark:border dark:border-[#06b796]"
 						>
 							{tag}
 						</span>
