@@ -42,7 +42,7 @@ export default function Message() {
 	return (
 		<div className="flex flex-col h-full relative">
 			{opponent && (
-				<h2 className="px-4 text-[20px] font-semibold text-[#333] mt-[25px] mb-[25px]">
+				<h2 className="px-4 text-[20px] font-semibold text-[#333] dark:text-[#FFFFFF] mt-[25px] mb-[25px]">
 					{typeof opponent.fullName === "string"
 						? JSON.parse(opponent.fullName).name
 						: (opponent.fullName as User).name}
