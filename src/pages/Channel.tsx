@@ -6,6 +6,7 @@ import Icon from "../components/commons/Icon";
 import defaultImage from "../assets/images/primaryImage.png";
 import profileImg from "../assets/images/profileImg_circle.svg";
 import { useThemeStore } from "../store/themeStore";
+import { getDiffInDays } from "../utils/date";
 //채널 정보 가져오기
 //채널별 게시글 보여주기
 type ContextType = {
@@ -27,8 +28,14 @@ export default function Channel() {
 				(a, b) =>
 					new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
 			);
-		} else {
+		} else if (sort === "인기순") {
 			return [...targetPosts].sort((a, b) => b.likes.length - a.likes.length);
+		} else {
+			return [...targetPosts].sort(
+				(a, b) =>
+					new Date(a.title.dateRange[0]).getTime() -
+					new Date(b.title.dateRange[0]).getTime()
+			);
 		}
 	}, []);
 
@@ -49,7 +56,9 @@ export default function Channel() {
 			}
 			if (isChecked) {
 				filtered = filtered.filter(
-					(post) => (post.title as PostTitleData).isRecruiting
+					(post) =>
+						(post.title as PostTitleData).isRecruiting &&
+						post.channel.name !== "review"
 				);
 			}
 			return filtered;
@@ -98,9 +107,7 @@ export default function Channel() {
 						postData = await getPosts(channelCrews._id);
 					} else {
 						const channelData = await getChannelInfo(channelName); //url에 나와있는 채널이름가지고 데이터 불러오기(URL속 채널이름 바뀔때마다)
-						// console.log(channelData);
 						const channelId = channelData._id;
-						//console.log(channelId);
 						postData = await getPosts(channelId);
 					}
 					let parsedPosts = postData.map((post: PostHomeData) => {
@@ -159,7 +166,11 @@ export default function Channel() {
 		const parsedDate = new Date(date);
 		return `${parsedDate.getFullYear().toString().slice(2)}.${(parsedDate.getMonth() + 1).toString().padStart(2, "0")}.${parsedDate.getDate().toString().padStart(2, "0")}`;
 	};
-
+	const stripTime = (date: Date) => {
+		const d = new Date(date);
+		d.setHours(0, 0, 0, 0);
+		return d;
+	};
 	// darkmode
 	const isDark = useThemeStore((state) => state.isDark);
 	const locationIconPosition = isDark ? "56.034% 20.708%" : "6.466% 20.708%";
@@ -190,7 +201,15 @@ export default function Channel() {
 						{(() => {
 							if (channelName === "crews" || channelName === "전체글") {
 								return post.channel.name === "crews" ? (
-									post.title.isRecruiting === true ? (
+									//삭제
+									getDiffInDays(
+										stripTime(post.title.dateRange[0]),
+										stripTime(new Date())
+									) >= 0 ? (
+										<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#1C274C] text-[#fff] text-[14px] z-20">
+											여정완료
+										</div>
+									) : post.title.isRecruiting === true ? (
 										<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#FD346E] text-[#fff] text-[14px] z-20">
 											모집중
 										</div>
