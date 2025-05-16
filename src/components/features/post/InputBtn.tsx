@@ -19,7 +19,7 @@ export default function InputBtn(props: InputProps) {
 			<span
 				className={twMerge(
 					"cond-btn peer-checked:text-[#06b796] border-2 peer-checked:border-[#06b796]",
-					"dark:bg-[#333]"
+					"dark:bg-[#333] sm:text-base text-sm"
 				)}
 			>
 				{children}

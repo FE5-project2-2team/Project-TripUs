@@ -60,7 +60,7 @@ export default function Contents({
 				ref={contentsRef}
 				theme="snow"
 				placeholder="내용을 입력해 주세요 (1000자 이내)"
-				className="h-125 overflow-y mb-[30px] font-noto"
+				className="sm:h-125 h-60 overflow-y mb-[30px] font-noto sm:mt-0 mt-[10px]"
 				modules={{
 					toolbar: {
 						container: [
