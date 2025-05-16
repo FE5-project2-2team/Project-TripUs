@@ -84,3 +84,18 @@ button {
 	background-color: #999999;
 	border-radius: 10px;
 }
+
+/* 반응형 640px 이하일 때  */
+@media (max-width: 639px) {
+	.custom-bullet {
+		background-color: #ffffff;
+		width: 8px;
+		height: 8px;
+		margin-left: 2px;
+	}
+
+	.custom-bullet-active {
+		background-color: #06b796;
+		width: 20px;
+	}
+}

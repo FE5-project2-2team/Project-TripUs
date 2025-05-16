@@ -75,7 +75,7 @@ export default function MainVisual() {
 
 	return (
 		<div
-			className="sm:w-[1100px] w-[418px] relative group"
+			className="w-full sm:w-[1100px] relative group"
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handelMouseLeave}
 		>
@@ -106,8 +106,8 @@ export default function MainVisual() {
 								alt={slide.alt}
 								className="w-full h-full object-cover"
 							/>
-							<div className="absolute sm:bottom-10 sm:left-10 bottom-6 left-4 text-white">
-								<h2 className="sm:text-[40px] text-[16px] font-bold">
+							<div className="absolute sm:bottom-10 sm:left-10 bottom-8 left-[22px] text-white">
+								<h2 className="sm:text-[40px] text-[20px] font-bold">
 									{slide.description}
 								</h2>
 								<p className="sm:text-[28px] text-[16px] font-bold">
@@ -119,23 +119,27 @@ export default function MainVisual() {
 				))}
 
 				{/* swiper navi */}
-				<div className="swiper-button-prev opacity-0 group-hover:opacity-100 transition-opacity">
+				<div className="hidden sm:block swiper-button-prev opacity-0 group-hover:opacity-100 transition-opacity">
 					<Icon position="47.465% 49.39%" size="95px" />
 				</div>
-				<div className="swiper-button-next opacity-0 group-hover:opacity-100 transition-opacity">
+				<div className="hidden sm:block swiper-button-next opacity-0 group-hover:opacity-100 transition-opacity">
 					<Icon position="89.401% 49.39%" size="95px" />
 				</div>
 			</Swiper>
 			{/* pagination + autoplay control */}
-			<div className="flex sm:justify-center items-center gap-[4px] sm:mt-[10px] sm:h-[24px] mt-[-20px] h-[12px]">
+			<div
+				className="flex items-center gap-[4px]
+             absolute bottom-[14px] left-[22px] sm:bottom-auto
+             sm:left-1/2 sm:-translate-x-1/2 translate-x-0
+             sm:mt-[10px] sm:h-[24px] h-[12px] z-10"
+			>
 				<div className="flex items-center">
 					<div className="custom-pagination" />
 				</div>
 				<button
 					onClick={toggleAutoplay}
-					className="w-[22px] h-[22px] bg-[#cdcdcd] rounded-full flex items-center justify-center hover:bg-[#06B796] transition-colors duration-300 ml-[4px]"
+					className="hidden sm:flex w-[22px] h-[22px] bg-[#cdcdcd] rounded-full items-center justify-center hover:bg-[#06B796] transition-colors duration-300 ml-[4px]"
 				>
-					{/* ..? */}
 					<Icon
 						position={autoplaying ? "-6px -11px" : "-21px -11px"}
 						size="20px"
