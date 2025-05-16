@@ -22,7 +22,6 @@ const ReviewTab = ({
 		const fetchData = async () => {
 			try {
 				const result = await getPostsByAuthor(authorId);
-				// console.log('서버 응답 결과:', result);
 				setPosts(result);
 			} catch (error) {
 				console.error("포스트 불러오기 실패:", error);
@@ -36,6 +35,7 @@ const ReviewTab = ({
 	const locationIconPosition = isDark ? "56.034% 20.708%" : "6.466% 20.708%";
 	const memberIconPosition = isDark ? "66.079% 20.765%" : "15.419% 20.765%";
 	const calendarIconPosition = isDark ? "75.983% 20.604%" : "25.764% 20.604%";
+	const likesIconPosition = isDark ? "83.5% 96.15%" : "74.3% 96.15%";
 
 	return (
 		<div>
@@ -63,18 +63,18 @@ const ReviewTab = ({
 						return (
 							<div
 								key={post._id}
-								className="relative z-10 w-[328px] h-[382px] rounded-[10px] bg-white cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition duration-300 dark:bg-transparent dark:border dark:border-[#616161]"
+								className="group w-[328px] h-[382px] overflow-hidden rounded-[10px] bg-white cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition duration-300 dark:bg-transparent dark:border dark:border-[#616161] dark:hover:shadow-[0px_4px_10px_rgba(100,100,100,0.3)]"
 								onClick={() => navigate(`/post/detail/${post._id}`)}
 							>
 								{/* 상단 영역 */}
-								<div className="relative block">
+								<div className="relative block overflow-hidden rounded-t-[10px]">
 									<p className="absolute select-none top-0 right-0 flex items-center justify-center w-[60px] h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#06B796]">
 										후기
 									</p>
 									<img
 										src={parsedTitle.images[0] ? parsedTitle.images[0] : postThumbnail}
 										alt="Post Thumbnail"
-										className="rounded-t-[10px] h-[180px] w-full object-cover]"
+										className="rounded-t-[10px] h-[180px] w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
 									/>
 								</div>
 								{/* 하단 영역 */}
@@ -112,19 +112,10 @@ const ReviewTab = ({
 										</div>
 									</div>
 
-									{/* 하단영역 -3 여기는 나중에 좋아요 영역으로 바꾸기 */}
-									<div className="flex gap-[16px]">
-										{Array.isArray(parsedTitle.recruitCondition.ageRange) &&
-											parsedTitle.recruitCondition.ageRange.length > 0 && (
-												<p className="text-[14px]">
-													#{parsedTitle.recruitCondition.ageRange}
-												</p>
-											)}
-										{parsedTitle.recruitCondition.gender && (
-											<p className="text-[14px]">
-												#{parsedTitle.recruitCondition.gender}
-											</p>
-										)}
+									{/* 하단영역 -3*/}
+									<div className="flex items-center justify-end gap-[5px]">
+										<h3 className="text-[14px] text-[#808080] dark:text-[#cdcdcd]">{post.likes.length}</h3>
+										<Icon position={likesIconPosition} size="18px" />
 									</div>
 								</div>
 							</div>
