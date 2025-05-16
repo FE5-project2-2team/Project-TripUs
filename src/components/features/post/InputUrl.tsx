@@ -1,8 +1,14 @@
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
+import { CHANNELS } from "../../../constants/posts";
 
 export default function InputUrl() {
-	const { register } = useFormContext();
+	const { register, control } = useFormContext();
+	const watchedChannel = useWatch({
+		name: "channel",
+		control
+	});
+	if (watchedChannel === CHANNELS.REVIEW) return;
 	return (
 		<div className="relative flex flex-col items-start">
 			<label htmlFor="location" className={twMerge("post-input-title")}>
