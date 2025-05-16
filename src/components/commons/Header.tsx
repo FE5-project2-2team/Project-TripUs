@@ -96,7 +96,7 @@ export default function Header() {
 		setNotiOpen(false);
 	});
 	return (
-		<div className="w-[1100px] flex justify-between h-[70px] m-auto">
+		<div className="sm:w-[1100px] w-[418px] flex justify-between h-[70px] m-auto">
 			<Link to={"/"} className="flex items-center">
 				<img src={headerLogo} alt="로고" />
 			</Link>
