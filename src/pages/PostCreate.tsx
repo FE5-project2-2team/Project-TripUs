@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { createPost } from "../apis/post";
 import { showToast } from "../components/commons/Toast";
 import PostForm from "../components/features/post/PostForm";
+import { CHANNELS } from "../constants/posts";
 import { useImage } from "../hooks/useImage";
 import { usePostForm } from "../hooks/usePostForm";
 import { useAuthStore } from "../store/authStore";
@@ -18,8 +19,17 @@ export default function PostCreate() {
 	const methods = usePostForm();
 	const submitHandler = async (data: FormValues) => {
 		try {
-			if (!data.condition) return;
 			const editor = contentsRef.current?.getEditor();
+			if (data.channel === CHANNELS.REVIEW) {
+				const images = editor
+					?.getContents()
+					.ops.filter(
+						(op) => typeof op.insert === "object" && "image" in op.insert
+					)
+					.map((op) => (op.insert as { image: string }).image);
+				if (images) imageListRef.current = images;
+			}
+			if (!data.condition) return;
 			const detailData: PostDetail = {
 				title: data.title,
 				memberLimit: Number(data.member),
@@ -53,7 +63,6 @@ export default function PostCreate() {
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(detailData));
 			formData.append("channelId", data.channel);
-
 			const postId = await createPost(formData);
 			navigate(`/post/detail/${postId}`);
 		} catch (error) {
