@@ -44,8 +44,10 @@ export default function Message() {
 			{opponent && (
 				<h2 className="px-4 text-[20px] font-semibold text-[#333] dark:text-[#FFFFFF] mt-[25px] mb-[25px]">
 					{typeof opponent.fullName === "string"
-						? JSON.parse(opponent.fullName).name
-						: (opponent.fullName as User).name}
+						? JSON.parse(opponent.fullName).nickname ||
+							JSON.parse(opponent.fullName).name
+						: (opponent.fullName as User).nickname ||
+							(opponent.fullName as User).name}
 				</h2>
 			)}
 

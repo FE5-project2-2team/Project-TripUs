@@ -27,8 +27,8 @@ export default function ChattingComponent({
 	const nickname = isMe
 		? "나"
 		: typeof sender.fullName === "string"
-			? JSON.parse(sender.fullName).name
-			: (sender.fullName as User).name;
+			? JSON.parse(sender.fullName).nickname || JSON.parse(sender.fullName).name
+			: (sender.fullName as User).nickname || (sender.fullName as User).name;
 	const time = new Date(createdAt).toLocaleTimeString([], {
 		hour: "2-digit",
 		minute: "2-digit"
