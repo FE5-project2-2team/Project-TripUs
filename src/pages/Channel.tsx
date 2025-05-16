@@ -256,7 +256,9 @@ export default function Channel() {
 								</p>
 							</div>
 							{/* 여행지, 크루원수,날짜*/}
-							<div className="text-[14px] h-[72px] mt-4">
+							<div
+								className={`text-[14px] h-[70px] mt-4 flex flex-col ${post.channel.name === "review" ? "justify-center" : null}`}
+							>
 								{/* 비행기 */}
 								{post.title.location && (
 									<div className="flex items-center gap-1.5">
@@ -286,7 +288,7 @@ export default function Channel() {
 							</div>
 						</div>
 
-						<div className="flex justify-between mt-[2px] text-[14px]">
+						<div className="flex justify-between text-[14px] mt-[2px]">
 							{/* 나이,성별 */}
 							<div className="flex gap-4">
 								{post.title.recruitCondition.gender &&
