@@ -5,6 +5,7 @@ import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
 import { useAuthStore } from "../../../store/authStore";
 import { useThemeStore } from "../../../store/themeStore";
 import Icon from "../../commons/Icon";
+import UserListModal from "../user/UserListModal";
 
 export default function ConversationList() {
 	const isDark = useThemeStore((state) => state.isDark);
@@ -13,6 +14,7 @@ export default function ConversationList() {
 	const myUserId = useAuthStore((state) => state.userId);
 	const [hoveredField, setHoveredField] = useState<string | null>(null);
 	const [searchRoom, setSearchRoom] = useState("");
+	const [openModal, setOpenModal] = useState(false);
 
 	const totalUnread = conversations.filter(
 		(conv) => conv.receiver._id === myUserId && !conv.seen
@@ -156,6 +158,25 @@ export default function ConversationList() {
 						</div>
 					);
 				})
+			)}
+			<div className="sm:hidden fixed bottom-25 right-8">
+				<button
+					className="w-[70px] h-[70px]
+						   rounded-full bg-[#06B796] px-5 cursor-pointer
+						   flex items-center justify-center"
+					onClick={() => setOpenModal(true)}
+				>
+					<Icon position="-19px -161px" size="21px" />
+				</button>
+			</div>
+			{openModal && (
+				<UserListModal
+					className="top-[calc(50%-290px)] left-1/2"
+					onClose={() => setOpenModal(false)}
+					navHandler={(opponentId: string) =>
+						navigate(`/message/${opponentId}`)
+					}
+				/>
 			)}
 		</div>
 	);

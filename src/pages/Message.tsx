@@ -60,7 +60,7 @@ export default function Message() {
 						size="16px"
 						className="sm:hidden block cursor-pointer"
 					/>
-					<h2 className="px-4 text-[20px] font-semibold text-[#333] dark:text-[#FFFFFF] mt-[25px] mb-[25px]">
+					<h2 className="px-4 sm:text-[20px] font-semibold text-[#333] dark:text-[#FFFFFF] mt-[25px] mb-[25px]">
 						{typeof opponent.fullName === "string"
 							? JSON.parse(opponent.fullName).nickname ||
 								JSON.parse(opponent.fullName).name
