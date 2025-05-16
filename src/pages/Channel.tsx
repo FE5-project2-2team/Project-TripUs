@@ -28,8 +28,14 @@ export default function Channel() {
 				(a, b) =>
 					new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
 			);
-		} else {
+		} else if (sort === "인기순") {
 			return [...targetPosts].sort((a, b) => b.likes.length - a.likes.length);
+		} else {
+			return [...targetPosts].sort(
+				(a, b) =>
+					new Date(a.title.dateRange[0]).getTime() -
+					new Date(b.title.dateRange[0]).getTime()
+			);
 		}
 	}, []);
 
@@ -50,7 +56,9 @@ export default function Channel() {
 			}
 			if (isChecked) {
 				filtered = filtered.filter(
-					(post) => (post.title as PostTitleData).isRecruiting
+					(post) =>
+						(post.title as PostTitleData).isRecruiting &&
+						post.channel.name !== "review"
 				);
 			}
 			return filtered;
@@ -155,7 +163,6 @@ export default function Channel() {
 		const parsedDate = new Date(date);
 		return `${parsedDate.getFullYear().toString().slice(2)}.${(parsedDate.getMonth() + 1).toString().padStart(2, "0")}.${parsedDate.getDate().toString().padStart(2, "0")}`;
 	};
-
 	// darkmode
 	const isDark = useThemeStore((state) => state.isDark);
 	const locationIconPosition = isDark ? "56.034% 20.708%" : "6.466% 20.708%";
@@ -249,7 +256,9 @@ export default function Channel() {
 								</p>
 							</div>
 							{/* 여행지, 크루원수,날짜*/}
-							<div className="text-[14px] h-[72px] mt-4">
+							<div
+								className={`text-[14px] h-[70px] mt-4 flex flex-col ${post.channel.name === "review" ? "justify-center" : null}`}
+							>
 								{/* 비행기 */}
 								{post.title.location && (
 									<div className="flex items-center gap-1.5">
@@ -258,12 +267,14 @@ export default function Channel() {
 									</div>
 								)}
 								{/* 인원 */}
-								<div className="flex items-center gap-1.5">
-									<Icon position={memberIconPosition} size="18px" />
-									<h3 className="text-[14px]">
-										{post.title.memberList.length} / {post.title.memberLimit}
-									</h3>
-								</div>
+								{post.channel.name !== "review" && (
+									<div className="flex items-center gap-1.5">
+										<Icon position={memberIconPosition} size="18px" />
+										<h3 className="text-[14px]">
+											{post.title.memberList.length} / {post.title.memberLimit}
+										</h3>
+									</div>
+								)}
 								{/* 달력 */}
 								<div className="flex items-center gap-1.5">
 									<Icon position={calendarIconPosition} size="18px" />
@@ -276,8 +287,8 @@ export default function Channel() {
 								</div>
 							</div>
 						</div>
-						
-						<div className="flex justify-between mt-[2px] text-[14px]">
+
+						<div className="flex justify-between text-[14px] mt-[2px]">
 							{/* 나이,성별 */}
 							<div className="flex gap-4">
 								{post.title.recruitCondition.gender &&
@@ -291,9 +302,11 @@ export default function Channel() {
 							</div>
 							{/* 좋아요 */}
 							<div className="flex items-center gap-[5px]">
-								<h3 className="text-[#808080] dark:text-[#cdcdcd]">{post.likes.length}</h3>
+								<h3 className="text-[#808080] dark:text-[#cdcdcd]">
+									{post.likes.length}
+								</h3>
 								<Icon position={likesIconPosition} size="18px" />
-							</div>	
+							</div>
 						</div>
 					</div>
 				</div>
