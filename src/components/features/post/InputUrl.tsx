@@ -10,7 +10,7 @@ export default function InputUrl() {
 			</label>
 			<input
 				id="location"
-				type="url"
+				type="text"
 				placeholder="주소 입력 (필요 시 입력)"
 				autoComplete="off"
 				className={twMerge(

@@ -22,6 +22,9 @@ export default function ApplyMembers({
 		try {
 			const newData: PostDetail = { ...postInfo };
 			newData.memberList.push(applicant._id);
+			if (newData.memberList.length > postInfo.memberLimit) {
+				newData.memberLimit = newData.memberList.length;
+			}
 			const formData = new FormData();
 			formData.append("title", JSON.stringify(newData));
 			formData.append("channelId", postData.channel._id);

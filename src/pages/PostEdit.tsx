@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router";
 import { updatePost } from "../apis/post";
 import { showToast } from "../components/commons/Toast";
 import PostForm from "../components/features/post/PostForm";
+import { CHANNELS } from "../constants/posts";
 import { useImage } from "../hooks/useImage";
 import { usePostForm } from "../hooks/usePostForm";
 import { formErrorHandler } from "../utils/errorhandle";
@@ -35,7 +36,17 @@ export default function PostEdit() {
 		try {
 			if (!data.condition) return;
 			if (!postInfo) return;
+
 			const editor = contentsRef.current?.getEditor();
+			if (data.channel === CHANNELS.REVIEW) {
+				const images = editor
+					?.getContents()
+					.ops.filter(
+						(op) => typeof op.insert === "object" && "image" in op.insert
+					)
+					.map((op) => (op.insert as { image: string }).image);
+				if (images) imageListRef.current = images;
+			}
 			const detailData: PostDetail = {
 				...postInfo,
 				title: data.title,
@@ -91,6 +102,7 @@ export default function PostEdit() {
 			errorHandler={formErrorHandler}
 			contentsRef={contentsRef}
 			imageProps={imageProps}
+			initImages={initImages}
 			methods={methods}
 			type="edit"
 		/>

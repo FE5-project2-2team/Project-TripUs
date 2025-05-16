@@ -9,7 +9,7 @@ import ConditionList from "./ConditionList";
 import Contents from "./Contents";
 import InfoForm from "./InfoForm";
 import InputTitle from "./InputTitle";
-import InputOpenTalk from "./InputUrl";
+import InputUrl from "./InputUrl";
 import UploadImage from "./UploadImage";
 
 interface PostFormProps {
@@ -21,6 +21,7 @@ interface PostFormProps {
 		addImage: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
 		removeImage: (image: string) => void;
 	};
+	initImages: (images: string[]) => void;
 	methods: UseFormReturn<FormValues>;
 	type: string;
 }
@@ -30,6 +31,7 @@ export default function PostForm({
 	errorHandler,
 	contentsRef,
 	imageProps,
+	initImages,
 	methods,
 	type
 }: PostFormProps) {
@@ -49,9 +51,13 @@ export default function PostForm({
 						action=""
 						onSubmit={methods.handleSubmit(submitHandler, errorHandler)}
 					>
-						<InfoForm isEditing={isEditing} confirmHandler={confirmHandler} />
+						<InfoForm
+							initImages={initImages}
+							isEditing={isEditing}
+							confirmHandler={confirmHandler}
+						/>
 						<div className="flex flex-col gap-10 my-13">
-							<InputOpenTalk />
+							<InputUrl />
 							<InputTitle />
 							<Contents contentsRef={contentsRef} isConfirmed={isConfirmed} />
 							{methods.watch().channel === CHANNELS.RECRUITMENT && (

@@ -2,8 +2,7 @@ import { usePostStore } from "../../../store/postStore";
 
 export default function OpenTalkLink() {
 	const postInfo = usePostStore((state) => state.postInfo);
-	if (!postInfo) return;
-
+	if (!postInfo || !postInfo.url) return;
 	return (
 		<button
 			className="cursor-pointer hover:text-[#06B796] underline font-bold self-center"

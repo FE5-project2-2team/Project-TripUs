@@ -18,7 +18,11 @@ type PostStore = {
 	addMembers: (newMember: string) => void;
 	submitApplication: () => void;
 	cancelApplication: (userId: string) => void;
-	addComment: (e: React.FormEvent<HTMLFormElement>, value: string) => void;
+	addComment: (
+		e: React.FormEvent<HTMLFormElement>,
+		value: string,
+		userId: string
+	) => void;
 	deleteComment: (commentId: string) => void;
 	deleteApplicant: (userId: string) => void;
 	cancelAccompany: (userId: string) => void;
@@ -173,7 +177,7 @@ export const usePostStore = create<PostStore>((set, get) => ({
 		}
 	},
 
-	addComment: async (e, value) => {
+	addComment: async (e, value, userId) => {
 		e.preventDefault();
 		const { postData } = get();
 		if (!postData) return;
@@ -189,12 +193,11 @@ export const usePostStore = create<PostStore>((set, get) => ({
 				JSON.stringify(data)
 			);
 			set((state) => ({ comments: [...state.comments, newComment] }));
-
-			const post: PostData = await getPostById(newComment.post);
+			if (userId === postData.author._id) return;
 			await createNoti({
 				notificationType: "COMMENT",
 				notificationTypeId: newComment._id,
-				userId: post.author._id,
+				userId: postData.author._id,
 				postId: newComment.post
 			});
 		} catch (error) {
