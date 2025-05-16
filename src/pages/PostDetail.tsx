@@ -6,6 +6,7 @@ import ApplyMembers from "../components/features/postDetail/ApplyMembers";
 import CommentsList from "../components/features/postDetail/CommentsList";
 import Likes from "../components/features/postDetail/Likes";
 import MemberList from "../components/features/postDetail/MemberList";
+import OpenTalkLink from "../components/features/postDetail/OpenTalkLink";
 import PostHeader from "../components/features/postDetail/PostHeader";
 import { CHANNELS } from "../constants/posts";
 import useConfirm from "../hooks/useConfirm";
@@ -60,8 +61,8 @@ export default function PostDetail() {
 	const fiveDaysLeft = getDiffInDays(new Date(), postInfo.dateRange[0]) < 5;
 
 	return (
-		<main className="flex flex-col justify-center items-center mt-[49px] mb-20">
-			<div className="flex flex-col gap-[30px] w-275 ">
+		<main className="flex flex-col justify-center items-center sm:mt-[49px] mb-20">
+			<div className="flex flex-col sm:gap-[30px] gap-12 sm:w-275 w-full relative px-4">
 				<PostHeader
 					postData={postData}
 					postInfo={postInfo}
@@ -72,7 +73,7 @@ export default function PostDetail() {
 				{isRecruitChannel && (
 					<>
 						<MemberList />
-						<div>
+						<div className="sm:text-base text-sm">
 							<span className="post-sub-title">동행 조건 사항</span>
 							<div>
 								<span className="text-[#616161] mr-[10px] dark:text-[#dadada]">
@@ -94,36 +95,37 @@ export default function PostDetail() {
 				) : (
 					<div></div>
 				)}
+				{isMember && !isCanceledAppication && <OpenTalkLink />}
 				<Likes />
 				<CommentsList authorId={postData.author._id} />
-				{!isAuthor &&
-					userId &&
-					isRecruitChannel &&
-					!isMember &&
-					isMatchedCondition && (
-						<Button
-							reverse={isApplying}
-							onClick={() =>
-								isApplying ? cancelApplication(userId) : submitApplication()
-							}
-							className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
-							disabled={!postInfo.isRecruiting || isRejected}
-						>
-							{postInfo.isRecruiting
-								? isRejected
-									? "거절 되었습니다"
-									: isApplying
-										? "동행 신청 취소"
-										: "동행 신청하기"
-								: "모집이 마감되었습니다"}
-						</Button>
-					)}
+				{!isAuthor && userId && isRecruitChannel && !isMember && (
+					<Button
+						reverse={isApplying}
+						onClick={() =>
+							isApplying ? cancelApplication(userId) : submitApplication()
+						}
+						className="w-full disabled:cursor-auto disabled:bg-[#808080]"
+						disabled={
+							!postInfo.isRecruiting || isRejected || !isMatchedCondition
+						}
+					>
+						{postInfo.isRecruiting
+							? isRejected
+								? "거절 되었습니다"
+								: isApplying
+									? "동행 신청 취소"
+									: isMatchedCondition
+										? "동행 신청하기"
+										: "동행 조건 불일치"
+							: "모집이 마감되었습니다"}
+					</Button>
+				)}
 				{!isAuthor && isMember && !isCanceledAppication && (
 					<Button
 						onClick={toggleConfirm}
 						disabled={fiveDaysLeft}
 						reverse={!fiveDaysLeft}
-						className="w-full mb-8 disabled:cursor-auto disabled:bg-[#808080]"
+						className="w-full disabled:cursor-auto disabled:bg-[#808080] sm:text-xl text-lg"
 					>
 						{fiveDaysLeft ? "철회 불가능" : "동행 철회"}
 					</Button>

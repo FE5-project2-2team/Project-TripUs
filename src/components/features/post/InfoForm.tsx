@@ -7,19 +7,30 @@ import { twMerge } from "tailwind-merge";
 import { CHANNELS } from "../../../constants/posts";
 import useConfirm from "../../../hooks/useConfirm";
 import Confirm from "../../commons/Confirm";
+import CustomSelect from "../../commons/CustomSelect";
 import AutoComplete from "./AutoComplete";
-import LabelSelect from "./LabelSelect";
 
 export default function InfoForm({
+	initImages,
 	isEditing,
 	confirmHandler
 }: {
+	initImages: (images: string[]) => void;
 	isEditing: boolean;
 	confirmHandler: () => void;
 }) {
-	const { register, reset, setValue, control } = useFormContext();
 	const { confirmOpen, toggleConfirm } = useConfirm();
 
+	const {
+		register,
+		reset,
+		setValue,
+		control,
+		formState: { dirtyFields }
+	} = useFormContext();
+	const otherFieldChanged = Object.keys(dirtyFields).some(
+		(field) => field !== "channel"
+	);
 	const { field } = useController({
 		name: "dateRange",
 		control: control
@@ -44,6 +55,7 @@ export default function InfoForm({
 			},
 			images: []
 		});
+		initImages([]);
 		toggleConfirm();
 		confirmHandler();
 	};
@@ -59,8 +71,11 @@ export default function InfoForm({
 	const [isFocused, setIsFocused] = useState(false);
 	useEffect(() => {
 		if (!watchedChannel || isEditing) return;
-		toggleConfirm();
+		if (otherFieldChanged) {
+			toggleConfirm();
+		}
 	}, [watchedChannel, reset, isEditing]);
+
 	return (
 		<>
 			{confirmOpen && (
@@ -72,23 +87,30 @@ export default function InfoForm({
 					confirmBtn="변경"
 				/>
 			)}
-			<div className="grid grid-cols-2 gap-15">
-				<LabelSelect isEditing={isEditing} name="channel" label="게시판 선택">
-					<option value={CHANNELS.RECRUITMENT}>동행원 모집</option>
-					<option value={CHANNELS.REVIEW}>여행 후기글</option>
-				</LabelSelect>
+			<div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-15 gap-[30px]">
+				<CustomSelect
+					isEditing={isEditing}
+					name="channel"
+					label="게시판 선택"
+					options={[
+						{ label: "동행원 모집", value: "681034285e1cfa1c37000059" },
+						{ label: "여행 후기글", value: "6813881c189ddd72351cd0a4" }
+					]}
+				/>
 				{watchedChannel === CHANNELS.RECRUITMENT ? (
-					<LabelSelect name="member" label="인원">
-						{Array.from({ length: 9 }, (_, idx) => idx + 2).map((num) => (
-							<option key={num} value={num}>
-								{num}
-							</option>
-						))}
-					</LabelSelect>
+					<CustomSelect
+						isEditing={isEditing}
+						name="member"
+						label="모집 인원 선택"
+						options={Array.from({ length: 9 }, (_, idx) => ({
+							label: idx + 2,
+							value: String(idx + 2)
+						}))}
+					/>
 				) : (
-					<div />
+					<div className="sm:block hidden" />
 				)}
-				<div className="relative flex flex-col items-start">
+				<div className="relative flex sm:flex-col sm:items-start items-center justify-between">
 					<label
 						htmlFor="location"
 						className={twMerge(
@@ -115,7 +137,7 @@ export default function InfoForm({
 					/>
 					{isFocused && <AutoComplete />}
 				</div>
-				<div className="flex flex-col items-start">
+				<div className="flex sm:flex-col sm:items-start items-center justify-between">
 					<label
 						htmlFor="date"
 						className={twMerge(

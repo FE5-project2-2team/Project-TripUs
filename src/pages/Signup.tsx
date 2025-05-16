@@ -59,6 +59,8 @@ export default function Signup() {
 	const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
 	const [hoveredField, setHoveredField] = useState<string | null>(null);
+	// 추가
+	const [focusedField, setFocusedField] = useState<string | null>(null);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -147,8 +149,11 @@ export default function Signup() {
 			const gender = genderResult;
 			const birthstr = ssno.substring(0, 6);
 			const genderCode = ssno.charAt(6);
-			const birthFull =
-				parseInt(genderCode, 10) <= 2 ? `19${birthstr}` : `20${birthstr}`;
+			const birthFull = (() => {
+				if (genderCode === "1" || genderCode === "2") return `19${birthstr}`;
+				if (genderCode === "3" || genderCode === "4") return `20${birthstr}`;
+				throw new Error("올바르지 않은 성별 코드입니다.");
+			})();
 			const age = calculateAge(birthFull);
 			const nickname = `크루${Math.floor(Math.random() * 1000 + 1)}`;
 
@@ -190,10 +195,7 @@ export default function Signup() {
 
 	return (
 		<>
-			<form
-				onSubmit={handleSubmit}
-				className="w-[460px] mx-auto flex flex-col text-[#333333]"
-			>
+			<form onSubmit={handleSubmit} className="w-[460px] mx-auto flex flex-col">
 				<img
 					src={SignupLogo}
 					alt="TripUs 로고"
@@ -210,7 +212,9 @@ export default function Signup() {
 							<Icon
 								size="24px"
 								position={
-									hoveredField === "name" ? "-21px -265px" : "-21px -239px"
+									hoveredField === "name" || focusedField === "name"
+										? "-21px -265px"
+										: "-21px -239px"
 								}
 							/>
 						</div>
@@ -219,6 +223,8 @@ export default function Signup() {
 							placeholder="이름"
 							value={form.fullName.name}
 							onChange={handleChange}
+							onFocus={() => setFocusedField("name")}
+							onBlur={() => setFocusedField(null)}
 							className="inputProps"
 						/>
 					</div>
@@ -234,7 +240,9 @@ export default function Signup() {
 							<Icon
 								size="24px"
 								position={
-									hoveredField === "birth" ? "-53px -264px" : "-53px -238px"
+									hoveredField === "birth" || focusedField === "birth"
+										? "-53px -264px"
+										: "-53px -238px"
 								}
 							/>
 						</div>
@@ -244,6 +252,8 @@ export default function Signup() {
 							maxLength={6}
 							value={form.fullName.birth}
 							onChange={handleChange}
+							onFocus={() => setFocusedField("birth")}
+							onBlur={() => setFocusedField(null)}
 							className="inputBirth"
 						/>
 
@@ -262,11 +272,11 @@ export default function Signup() {
 								key={i}
 								className={`w-[16px] h-[16px] bg-[#616161] rounded-full inline-block ${
 									i === 0 ? "ml-[10px]" : "ml-[5px]"
-								} translate-y-[1px]`}
+								} translate-y-[1px] dark:bg-[#808080]`}
 							/>
 						))}
 					</div>
-					<p className="text-red-500 text-xs font-bold mt-[1px] h-[14px] leading-tight">
+					<p className="text-[#DB1F5A] text-xs font-bold mt-[1px] h-[14px] leading-tight">
 						{errors.birth ?? ""}
 					</p>
 				</div>
@@ -280,7 +290,9 @@ export default function Signup() {
 							<Icon
 								size="24px"
 								position={
-									hoveredField === "tel" ? "-85px -266px" : "-85px -240px"
+									hoveredField === "tel" || focusedField === "tel"
+										? "-85px -266px"
+										: "-85px -240px"
 								}
 							/>
 						</div>
@@ -289,10 +301,12 @@ export default function Signup() {
 							placeholder="전화번호"
 							value={form.fullName.tel}
 							onChange={handleChange}
+							onFocus={() => setFocusedField("tel")}
+							onBlur={() => setFocusedField(null)}
 							className="inputProps"
 						/>
 					</div>
-					<p className="text-red-500 text-xs font-bold mt-[1px] h-[14px] leading-tight">
+					<p className="text-[#DB1F5A] text-xs font-bold mt-[1px] h-[14px] leading-tight">
 						{errors.tel ?? ""}
 					</p>
 				</div>
@@ -306,7 +320,9 @@ export default function Signup() {
 							<Icon
 								size="24px"
 								position={
-									hoveredField === "email" ? "-117px -265px" : "-117px -239px"
+									hoveredField === "email" || focusedField === "email"
+										? "-117px -265px"
+										: "-117px -239px"
 								}
 							/>
 						</div>
@@ -315,10 +331,12 @@ export default function Signup() {
 							placeholder="이메일"
 							value={form.email}
 							onChange={handleChange}
+							onFocus={() => setFocusedField("email")}
+							onBlur={() => setFocusedField(null)}
 							className="inputProps"
 						/>
 					</div>
-					<p className="text-red-500 text-xs font-bold mt-[1px] h-[14px] leading-tight">
+					<p className="text-[#DB1F5A] text-xs font-bold mt-[1px] h-[14px] leading-tight">
 						{errors.email ?? ""}
 					</p>
 				</div>
@@ -332,7 +350,7 @@ export default function Signup() {
 							<Icon
 								size="24px"
 								position={
-									hoveredField === "password"
+									hoveredField === "password" || focusedField === "password"
 										? "-150px -264px"
 										: "-150px -238px"
 								}
@@ -344,6 +362,8 @@ export default function Signup() {
 							placeholder="비밀번호"
 							value={form.password}
 							onChange={handleChange}
+							onFocus={() => setFocusedField("password")}
+							onBlur={() => setFocusedField(null)}
 							className="inputProps"
 						/>
 					</div>
@@ -358,7 +378,8 @@ export default function Signup() {
 							<Icon
 								size="24px"
 								position={
-									hoveredField === "passwordConfirm"
+									hoveredField === "passwordConfirm" ||
+									focusedField === "passwordConfirm"
 										? "-150px -264px"
 										: "-150px -238px"
 								}
@@ -370,10 +391,12 @@ export default function Signup() {
 							placeholder="비밀번호 확인"
 							value={form.passwordConfirm}
 							onChange={handleChange}
+							onFocus={() => setFocusedField("passwordConfirm")}
+							onBlur={() => setFocusedField(null)}
 							className="inputProps"
 						/>
 					</div>
-					<p className="text-red-500 text-xs font-bold mt-[1px] h-[14px] leading-tight">
+					<p className="text-[#DB1F5A] text-xs font-bold mt-[1px] h-[14px] leading-tight">
 						{errors.passwordConfirm ?? ""}
 					</p>
 				</div>
@@ -387,7 +410,7 @@ export default function Signup() {
 						type="button"
 						onClick={() => navigate("/")}
 						reverse
-						className="w-full border-[1px]"
+						className="w-full border-[1px] dark:bg-transparent dark:hover:bg-[#333]"
 					>
 						취소
 					</Button>

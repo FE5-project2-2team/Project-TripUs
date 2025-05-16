@@ -33,13 +33,13 @@ export default function Comments({ authorId }: { authorId: string }) {
 				<form
 					className="relative"
 					onSubmit={(e) => {
-						addComment(e, value);
+						addComment(e, value, userId);
 						setValue("");
 					}}
 				>
 					<input
 						className={twMerge(
-							"w-full h-15 mt-[35px] px-4 border border-[#CDCDCD] rounded-[10px] text-sm placeholder:text-[#CDCDCD] text-blac focus:outline-0",
+							"w-full sm:h-15 h-11 mt-[35px] px-4 border border-[#CDCDCD] rounded-[10px] text-sm placeholder:text-[#CDCDCD] text-black focus:outline-0",
 							"dark:border-[#616161] dark:placeholder:text-[#616161] dark:text-[#dadada]"
 						)}
 						type="text"
@@ -50,8 +50,8 @@ export default function Comments({ authorId }: { authorId: string }) {
 					<button
 						type="submit"
 						className={twMerge(
-							"absolute top-[42px] right-2 w-20 h-[46px] bg-[#f3f4f6] text-[#06b796] font-medium rounded-lg hover:bg-[#06b796]",
-							"hover:text-white cursor-pointer",
+							"absolute sm:top-[42px] top-[41px] sm:right-2 right-1  w-20 sm:h-[46px] h-8 bg-[#f3f4f6] text-[#06b796] font-medium rounded-lg hover:bg-[#06b796]",
+							"hover:text-white cursor-pointer sm:text-base text-sm",
 							"dark:bg-[#333] dark:border dark:border-[#06b796]"
 						)}
 					>

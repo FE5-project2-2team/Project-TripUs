@@ -1,10 +1,7 @@
-// import spriteImage from "../../../assets/images/spriteImages.png";
 import { useNavigate } from "react-router";
 import { useThemeStore } from "../../../store/themeStore";
 import Icon from "../../commons/Icon";
-// import Button from "./Button";
 
-// 상단 "마이페이지 & 리뷰" 및 "회원정보 수정" 버튼
 export default function ProfileHeader({
 	onEditClick,
 	isMyPage,

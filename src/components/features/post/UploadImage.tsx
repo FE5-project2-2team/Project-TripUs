@@ -14,11 +14,11 @@ export default function UploadImage({
 	const [value, setValue] = useState("");
 	return (
 		<div>
-			<span className="post-input-title">사진</span>
+			<span className="post-input-title ">사진</span>
 			<div
 				className={twMerge(
 					"flex bg-[#F9F9F9] py-2 px-[10px] gap-5 rounded-[10px]",
-					"dark:bg-[#333]"
+					"dark:bg-[#333] sm:mt-0 mt-[10px]"
 				)}
 			>
 				{showImages &&

@@ -24,7 +24,7 @@ export const postFormSchema = z
 			})
 			.optional(),
 		images: z.array(z.string()),
-		url: z.string()
+		url: z.string().optional()
 	})
 	.superRefine((data, ctx) => {
 		if (data.channel !== CHANNELS.REVIEW) {
@@ -41,6 +41,16 @@ export const postFormSchema = z
 					path: ["condition", "ageRange"],
 					code: "custom",
 					message: "나이를 선택해 주세요(다중 선택 가능)"
+				});
+			}
+		}
+		if (data.url) {
+			const regex = /https:\/\/open.kakao.com\/o\/[A-Za-z0-9]{8}/;
+			if (!regex.test(data.url)) {
+				ctx.addIssue({
+					path: ["url"],
+					code: "custom",
+					message: "오픈 카톡 주소 형식이 틀렸습니다"
 				});
 			}
 		}

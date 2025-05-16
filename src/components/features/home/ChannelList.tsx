@@ -12,6 +12,14 @@ export default function ChannelList() {
 		navigate(`/channel/${channelName}`); //
 	};
 
+	const getDisplayName = (name: string) => {
+		if (name === "crews") return "⛵ 크루모집";
+		if (name === "review") return "📜 항해일지";
+		if (name === "전체글") return "🌊 전체 항해 보기";
+		if (name === "긴급 모집") return "🚨 지금 탑승 가능!";
+		return name;
+	};
+
 	useEffect(() => {
 		const fetchChannels = async () => {
 			try {
@@ -58,7 +66,7 @@ export default function ChannelList() {
 							: "text-[#333333] dark:text-[#dadada]"
 					}`}
 				>
-					{channel.name}
+					{getDisplayName(channel.name)}
 				</button>
 			))}
 		</div>
