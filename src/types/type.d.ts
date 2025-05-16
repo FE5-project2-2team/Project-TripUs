@@ -25,6 +25,7 @@ type ProfilePost = {
 	_id: string;
 	image: string;
 	title: string;
+	likes: string[];
 	channel: {
 		_id: string;
 		name: string;
@@ -64,7 +65,7 @@ interface PostDetail {
 	description: string;
 	contents: Delta | undefined;
 	images?: string[];
-	url: string;
+	url?: string;
 }
 
 interface FormValues {
@@ -78,7 +79,7 @@ interface FormValues {
 		ageRange: string[];
 	};
 	images: string[];
-	url: string;
+	url?: string;
 }
 
 interface NotiType {
@@ -210,6 +211,7 @@ interface PostHomeData {
 	author: UserHomeData;
 	createdAt: string;
 	updatedAt: string;
+	images: string[];
 }
 
 interface PostTitleData {
@@ -222,4 +224,5 @@ interface PostTitleData {
 	recruitCondition: Condition;
 	description: string;
 	contents: string;
+	images: string[];
 }

@@ -41,13 +41,13 @@ export default function MessageInput({
 
 	return (
 		<div className="p-4 flex justify-center">
-			<div className="w-[680px] h-[60px] bg-white rounded-[8px] flex items-center px-4">
+			<div className="w-[680px] h-[60px] bg-white dark:bg-[#2A2A2A] rounded-[8px] flex items-center px-4 shadow-[0_2px_8px_0_rgba(189,189,189,0.2)]">
 				<input
 					value={text}
 					onChange={(e) => setText(e.target.value)}
 					onKeyDown={handleKeyDown}
 					placeholder="메시지를 입력하세요"
-					className="flex-1 h-full bg-transparent focus:outline-none text-[16px] placeholder:text-gray-400"
+					className="flex-1 h-full bg-transparent focus:outline-none text-[16px] placeholder:text-[#DADADA] "
 				/>
 				<button
 					onClick={handleSend}
