@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router";
 import { axiosInstance } from "../../../apis/axios";
+import { Link } from "react-router-dom";
 import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
 
 interface ChattingComponentProps {
@@ -27,8 +28,8 @@ export default function ChattingComponent({
 	const nickname = isMe
 		? "나"
 		: typeof sender.fullName === "string"
-			? JSON.parse(sender.fullName).name
-			: (sender.fullName as User).name;
+			? JSON.parse(sender.fullName).nickname || JSON.parse(sender.fullName).name
+			: (sender.fullName as User).nickname || (sender.fullName as User).name;
 	const time = new Date(createdAt).toLocaleTimeString([], {
 		hour: "2-digit",
 		minute: "2-digit"
@@ -56,11 +57,13 @@ export default function ChattingComponent({
 			{!isMe && (
 				<div className="flex items-start gap-2 ml-3">
 					{showProfileImage ? (
-						<img
-							src={sender.image?.trim() || defaultProfileImage}
-							alt="상대 프로필"
-							className="w-[60px] h-[60px] rounded-full object-cover mt-1"
-						/>
+						<Link to={`/profile/${sender._id}`}>
+							<img
+								src={sender.image?.trim() || defaultProfileImage}
+								alt="상대 프로필"
+								className="w-[60px] h-[60px] rounded-full object-cover mt-1 cursor-pointer"
+							/>
+						</Link>
 					) : (
 						<div className="w-[60px] h-[60px]" /> // 자리 유지를 위한 빈 박스 (선택)
 					)}

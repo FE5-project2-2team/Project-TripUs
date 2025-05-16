@@ -20,7 +20,8 @@ export default function NotiPosts({
 					.filter(
 						(notice) =>
 							(notice.like || notice.comment) &&
-							(notice.user as UserData)._id === userId
+							(notice.user as UserData)._id === userId &&
+							notice.author._id !== userId
 					)
 					.map((notice) => (
 						<NotiPostItem
