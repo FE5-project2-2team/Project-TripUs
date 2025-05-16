@@ -35,7 +35,7 @@ export default function CustomSelect({
 		setOptionOpen(false);
 	});
 
-	const actualMembers = postInfo!.memberList.filter(
+	const actualMembers = postInfo?.memberList.filter(
 		(member) =>
 			applicants.some((applicant) => applicant.author._id === member) ||
 			userId === member
@@ -73,7 +73,7 @@ export default function CustomSelect({
 				>
 					{options
 						.filter((option) => {
-							if (!isEditing) return true;
+							if (!isEditing || !actualMembers) return true;
 							return actualMembers.length <= (option.label as number);
 						})
 						.map((option) => (
