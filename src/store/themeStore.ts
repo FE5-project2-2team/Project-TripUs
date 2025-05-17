@@ -19,7 +19,7 @@ export const useThemeStore = create<ThemeState>()(
 			initializeTheme: () => {
 				let isDark = false;
 				try {
-					const stored = localStorage.getItem("theme-storage");
+					const stored = sessionStorage.getItem("theme-storage");
 					isDark = stored ? JSON.parse(stored).state?.isDark : false;
 				} catch (e) {
 					console.error("다크모드 상태 초기화 실패", e);

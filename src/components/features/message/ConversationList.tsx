@@ -154,7 +154,7 @@ export default function ConversationList() {
 									{formattedTime}
 								</div>
 							</div>
-							<div className="sm:hidden inline-block w-[76%] border-b-1 sm:border-[#FAFAFA] border-[#2f3033] z-10"></div>
+							<div className="sm:hidden inline-block w-[76%] border-b-1 border-[#FAFAFA] dark:border-[#2f3033] z-10"></div>
 						</div>
 					);
 				})
@@ -170,13 +170,16 @@ export default function ConversationList() {
 				</button>
 			</div>
 			{openModal && (
-				<UserListModal
-					className="top-[calc(50%-290px)] left-1/2"
-					onClose={() => setOpenModal(false)}
-					navHandler={(opponentId: string) =>
-						navigate(`/message/${opponentId}`)
-					}
-				/>
+				<>
+					<div className="fixed inset-0 bg-black opacity-30 z-50" />
+					<UserListModal
+						className="top-[calc(50%-290px)] left-1/2"
+						onClose={() => setOpenModal(false)}
+						navHandler={(opponentId: string) =>
+							navigate(`/message/${opponentId}`)
+						}
+					/>
+				</>
 			)}
 		</div>
 	);
