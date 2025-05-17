@@ -78,7 +78,7 @@ export default function Login() {
 					className="w-[300px] sm:w-[278px] h-[106px] mx-auto mt-[210px] sm:mt-[223px] mb-[26px] cursor-pointer"
 					onClick={() => navigate("/")}
 				/>
-				<div className="flex flex-col mb-[11px] w-[320px] sm:w-full mx-auto">
+				<div className="flex flex-col mb-[11px] w-[360px] sm:w-full mx-auto">
 					<div
 						className="relative group"
 						onMouseEnter={() => setHoveredField("email")}
@@ -109,7 +109,7 @@ export default function Login() {
 					</p>
 				</div>
 				<div
-					className="relative group w-[320px] sm:w-full mx-auto mb-[26px]"
+					className="relative group w-[360px] sm:w-full mx-auto mb-[26px]"
 					onMouseEnter={() => setHoveredField("password")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
@@ -137,7 +137,7 @@ export default function Login() {
 
 				<Button
 					type="submit"
-					className="w-[320px] sm:w-full mx-auto h-[60px] mb-[26px]"
+					className="w-[360px] sm:w-full mx-auto h-[60px] mb-[26px]"
 				>
 					로그인
 				</Button>
@@ -145,7 +145,7 @@ export default function Login() {
 					type="button"
 					onClick={handleSignupClick}
 					reverse
-					className="w-[320px] sm:w-full h-[60px] mx-auto border-[1px] dark:bg-transparent dark:hover:bg-[#333]"
+					className="w-[360px] sm:w-full h-[60px] mx-auto border-[1px] dark:bg-transparent dark:hover:bg-[#333]"
 				>
 					회원가입
 				</Button>
