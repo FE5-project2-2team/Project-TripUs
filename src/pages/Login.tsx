@@ -70,15 +70,15 @@ export default function Login() {
 		<>
 			<form
 				onSubmit={handleSubmit}
-				className="w-[460px] mx-auto flex flex-col gap-[26px] text-[#333333]"
+				className="w-[460px] mx-auto flex flex-col text-[#333333]"
 			>
 				<img
 					src={SignupLogo}
 					alt="TripUs 로고"
-					className="w-[278px] h-[106px] mx-auto mt-[223px] mb-[26px] cursor-pointer"
+					className="w-[300px] sm:w-[278px] h-[106px] mx-auto mt-[210px] sm:mt-[223px] mb-[26px] cursor-pointer"
 					onClick={() => navigate("/")}
 				/>
-				<div className="flex flex-col">
+				<div className="flex flex-col mb-[11px] w-[320px] sm:w-full mx-auto">
 					<div
 						className="relative group"
 						onMouseEnter={() => setHoveredField("email")}
@@ -104,12 +104,12 @@ export default function Login() {
 							className="inputProps"
 						/>
 					</div>
-					<p className="text-[#DB1F5A] text-xs font-normal mt-[1px] h-[1px] leading-tight">
+					<p className="text-[#DB1F5A] text-xs font-bold mt-[1px] h-[14px] leading-tight">
 						{errors.email ?? ""}
 					</p>
 				</div>
 				<div
-					className="relative group"
+					className="relative group w-[320px] sm:w-full mx-auto mb-[26px]"
 					onMouseEnter={() => setHoveredField("password")}
 					onMouseLeave={() => setHoveredField(null)}
 				>
@@ -135,14 +135,17 @@ export default function Login() {
 					/>
 				</div>
 
-				<Button type="submit" className="w-full">
+				<Button
+					type="submit"
+					className="w-[320px] sm:w-full mx-auto h-[60px] mb-[26px]"
+				>
 					로그인
 				</Button>
 				<Button
 					type="button"
 					onClick={handleSignupClick}
 					reverse
-					className="w-full border-[1px] dark:bg-transparent dark:hover:bg-[#333]"
+					className="w-[320px] sm:w-full h-[60px] mx-auto border-[1px] dark:bg-transparent dark:hover:bg-[#333]"
 				>
 					회원가입
 				</Button>

@@ -50,8 +50,9 @@ export default function Comments({ authorId }: { authorId: string }) {
 					<button
 						type="submit"
 						className={twMerge(
-							"absolute sm:top-[42px] top-[41px] sm:right-2 right-1  w-20 sm:h-[46px] h-8 bg-[#f3f4f6] text-[#06b796] font-medium rounded-lg hover:bg-[#06b796]",
-							"hover:text-white cursor-pointer sm:text-base text-sm",
+							"absolute sm:top-[42px] top-[41px] sm:right-2 right-1  w-20 sm:h-[46px] h-8 bg-[#f3f4f6] text-[#06b796] font-medium rounded-lg",
+							"sm:hover:text-white sm:hover:bg-[#06b796] cursor-pointer sm:text-base text-sm",
+							"active:text-white active:bg-[#06b796]",
 							"dark:bg-[#333] dark:border dark:border-[#06b796]"
 						)}
 					>

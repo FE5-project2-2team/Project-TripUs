@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { twMerge } from "tailwind-merge";
 
 export default function Confirm({
@@ -13,10 +14,10 @@ export default function Confirm({
 	description: string;
 	confirmBtn: string;
 }) {
-	return (
+	return createPortal(
 		<>
 			<div className="fixed inset-0 bg-black opacity-30 z-50" />
-			<div className="w-120 h-[150px] p-5 border-b-3 border-[#db1f5a] bg-white rounded-lg shadow-lg fixed top-4 left-[calc(50%-240px)] z-51">
+			<div className="max-w-120 w-3/4 h-[150px] p-5 border-b-3 border-[#db1f5a] bg-white rounded-lg shadow-lg fixed top-4 left-1/2 -translate-x-1/2 z-51">
 				<h3 className="font-medium mb-[13px] text-[#333]">{title}</h3>
 				<span className="text-sm text-[#616161]">{description}</span>
 				<div className="flex gap-[10px] justify-end mt-4">
@@ -25,7 +26,8 @@ export default function Confirm({
 						onClick={confirmHandler}
 						className={twMerge(
 							"w-[110px] h-[33px] border-1 border-transparent text-[#db1f5a] rounded-[10px]",
-							"hover:bg-[#FDF4F3] hover:border-[#db1f5a] cursor-pointer"
+							"sm:hover:bg-[#FDF4F3] sm:hover:border-[#db1f5a] cursor-pointer",
+							"active:bg-[#FDF4F3] active:border-[#db1f5a]"
 						)}
 					>
 						{confirmBtn}
@@ -35,13 +37,15 @@ export default function Confirm({
 						onClick={cancelHandler}
 						className={twMerge(
 							"w-[110px] h-[33px] border border-[#db1f5a] text-white bg-[#db1f5a] rounded-[10px]",
-							"hover:bg-white hover:text-[#db1f5a] cursor-pointer"
+							"sm:hover:bg-white sm:hover:text-[#db1f5a] cursor-pointer",
+							"active:bg-white active:text-[#db1f5a]"
 						)}
 					>
 						취소
 					</button>
 				</div>
 			</div>
-		</>
+		</>,
+		document.body
 	);
 }

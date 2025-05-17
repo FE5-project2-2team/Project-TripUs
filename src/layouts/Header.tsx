@@ -6,22 +6,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useNavigate } from "react-router";
 import { useClickAway } from "react-use";
 import { twMerge } from "tailwind-merge";
-import { logoutUser } from "../../apis/auth";
-import { getUserInfo } from "../../apis/user";
-import headerLogo from "../../assets/images/logo_header.svg";
-import { useNoti } from "../../context/useNoti";
-import { useAuthStore } from "../../store/authStore";
-import { useThemeStore } from "../../store/themeStore";
-import SideBar from "../features/home/SideBar";
-import NotiList from "../features/notification/NotiList";
-import UserListModal from "../features/user/UserListModal";
-import Button from "./Button";
-import Icon from "./Icon";
-import Modal from "./Modal";
-import ModalItem from "./ModalItem";
+import { logoutUser } from "../apis/auth";
+import { getUserInfo } from "../apis/user";
+import headerLogo from "../assets/images/logo_header.svg";
+import Button from "../components/commons/Button";
+import Icon from "../components/commons/Icon";
+import Modal from "../components/commons/Modal";
+import ModalItem from "../components/commons/ModalItem";
+import SideBar from "../components/features/home/SideBar";
+import NotiList from "../components/features/notification/NotiList";
+import UserListModal from "../components/features/user/UserListModal";
+import { useNoti } from "../context/useNoti";
+import { useAuthStore } from "../store/authStore";
+import { useThemeStore } from "../store/themeStore";
 
 export default function Header() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -42,6 +43,7 @@ export default function Header() {
 	const { notiInfo } = useNoti();
 	const unRead = notiInfo.some((n) => !n.seen);
 	const [isUserListOpen, setIsUserListOpen] = useState(false);
+	const [isMobileUserListOpen, setIsMobileUserListOpen] = useState(false);
 
 	const getUserData = useCallback(async () => {
 		if (!userId) return;
@@ -92,6 +94,10 @@ export default function Header() {
 		setSidebarOpen((state) => !state);
 	};
 
+	const toggleUserList = () => {
+		setIsMobileUserListOpen((state) => !state);
+	};
+
 	useEffect(() => {
 		if (isLoggedIn && userId) {
 			getUserData();
@@ -128,7 +134,7 @@ export default function Header() {
 							</button>
 							{isUserListOpen && (
 								<UserListModal
-									className="top-[110%] left-1/2"
+									className="absolute top-[110%] left-1/2"
 									onClose={() => setIsUserListOpen(false)}
 								/>
 							)}
@@ -211,7 +217,7 @@ export default function Header() {
 							</button>
 							{isUserListOpen && (
 								<UserListModal
-									className="top-[110%] left-1/2"
+									className="absolute top-[110%] left-1/2"
 									onClose={() => setIsUserListOpen(false)}
 								/>
 							)}
@@ -234,19 +240,25 @@ export default function Header() {
 				<div className="sm:hidden" onClick={() => setSidebarOpen(true)}>
 					<FontAwesomeIcon icon={faBars} className="text-3xl cursor-pointer" />
 				</div>
-				{sidebarOpen && (
-					<div
-						onClick={toggleSidebar}
-						className="fixed inset-0 bg-black opacity-30 z-50"
-					/>
-				)}
 				<SideBar
 					sidebarOpen={sidebarOpen}
 					signOut={signOut}
 					toggleHandler={toggleSidebar}
+					toggleUserList={toggleUserList}
 				/>
 			</div>
 			<div className="sm:hidden w-full h-[70px]" />
+			{isMobileUserListOpen &&
+				createPortal(
+					<div className="sm:hidden">
+						<div className="sm:hidden fixed inset-0 bg-black opacity-30 z-50" />
+						<UserListModal
+							className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+							onClose={() => toggleUserList()}
+						/>
+					</div>,
+					document.body
+				)}
 		</>
 	);
 }

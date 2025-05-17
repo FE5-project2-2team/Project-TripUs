@@ -3,11 +3,11 @@ import { APIUrl } from "../constants/apis";
 import { useAuthStore } from "../store/authStore";
 
 export const axiosInstance = axios.create({
-	baseURL: APIUrl
+	baseURL: window.location.hostname === "localhost" ? APIUrl : "/api"
 });
 
 export const formDataInstance = axios.create({
-	baseURL: APIUrl,
+	baseURL: window.location.hostname === "localhost" ? APIUrl : "/api",
 	headers: { "Content-Type": "multipart/form-data" }
 });
 

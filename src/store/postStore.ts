@@ -12,6 +12,7 @@ type PostStore = {
 	members: string[];
 	isRecruiting: boolean;
 	isApplying: boolean;
+	isLoading: boolean;
 
 	getData: (id: string, userId: string) => Promise<void>;
 	toggleRecruit: () => void;
@@ -36,9 +37,11 @@ export const usePostStore = create<PostStore>((set, get) => ({
 	members: [],
 	isRecruiting: false,
 	isApplying: false,
+	isLoading: false,
 
 	getData: async (id: string, userId: string) => {
 		try {
+			set({ isLoading: true });
 			const postData: PostData = await getPostById(id!);
 			const postInfo: PostDetail = JSON.parse(postData.title);
 
@@ -73,7 +76,8 @@ export const usePostStore = create<PostStore>((set, get) => ({
 					(member) =>
 						applicants.some((apply) => apply.author._id === member) ||
 						member === postData.author._id
-				)
+				),
+				isLoading: false
 			});
 		} catch (error) {
 			console.error(error);
