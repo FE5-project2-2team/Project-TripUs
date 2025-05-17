@@ -36,8 +36,10 @@ export default function SideBar({
 		<div
 			className={twMerge(
 				"sm:hidden fixed flex flex-col gap-8 right-0 top-0 bottom-0 w-68 bg-white z-100 rounded-l-[10px]",
-				"p-6 dark:bg-[#333333] border-l border-[#F3F3F3] dark:border-transparent",
-				"transform transition-transform duration-300 ease-in-out",
+				"p-6 dark:bg-[#333333] transform transition-transform duration-300 ease-in-out",
+				userListOpen
+					? "border-0"
+					: "border-l border-[#F3F3F3] dark:border-transparent",
 				sidebarOpen ? "translate-x-0" : "translate-x-full"
 			)}
 		>
@@ -80,7 +82,15 @@ export default function SideBar({
 				<Icon size="24px" position={userListIconPosition} />
 				<span>사용자 리스트</span>
 			</button>
-			{userListOpen && <UserListModal onClose={() => setUserListOpen(false)} />}
+			{userListOpen && (
+				<>
+					<div className="fixed inset-0 bg-black opacity-30 z-50" />
+					<UserListModal
+						className="top-[calc(50%-290px)] left-[calc(50%-130px)]"
+						onClose={() => setUserListOpen(false)}
+					/>
+				</>
+			)}
 			<button
 				onClick={setDarkMode}
 				className="flex items-center gap-4 cursor-pointer"
