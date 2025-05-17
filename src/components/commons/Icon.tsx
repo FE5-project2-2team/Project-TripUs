@@ -18,7 +18,7 @@ export default function Icon({
 	return (
 		<span
 			className={twMerge(
-				`group-hover:[] inline-block bg-no-repeat bg-[url('/images/spriteImages1.png')]`,
+				`group-hover:[] inline-block bg-no-repeat bg-[url('/images/spriteImages.png')]`,
 				className
 			)}
 			style={{
