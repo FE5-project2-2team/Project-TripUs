@@ -7,7 +7,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 html {
-	@apply bg-white text-[#333];
+	@apply bg-white text-[#333] sm:overflow-y-scroll;
 }
 
 html.dark {

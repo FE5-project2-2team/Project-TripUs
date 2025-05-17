@@ -71,9 +71,10 @@ export default function PostTitle({
 						toggleRecruit();
 					}}
 					className={twMerge(
-						"mr-4 sm:text-xl text-sm px-3 py-[5.5px] rounded-lg",
+						"mr-4 sm:text-xl text-sm px-3 py-[5.5px] rounded-lg border border-transparent sm:hover:border-[#06b796] sm:hover:text-[#038383]",
+						"active:border-[#06b796] active:text-[#038383]",
 						isRecruitChannel
-							? "cursor-pointer text-[#06B796] bg-[#F3F4F6] hover:"
+							? "cursor-pointer text-[#06B796] bg-[#F3F4F6]"
 							: "cursor-default bg-[#06b796] text-white",
 						"dark:bg-[#1B1D22] dark:border-1 dark:border-[#06b796]"
 					)}
@@ -105,7 +106,13 @@ export default function PostTitle({
 					<ModalItem noIcon clickHandler={modifyPostHandler}>
 						<span className="inline-block w-full text-center">수정</span>
 					</ModalItem>
-					<ModalItem noIcon clickHandler={toggleConfirm}>
+					<ModalItem
+						noIcon
+						clickHandler={() => {
+							setModalOpen(false);
+							toggleConfirm();
+						}}
+					>
 						<span className="inline-block w-full text-center">삭제</span>
 					</ModalItem>
 				</Modal>

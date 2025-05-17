@@ -10,6 +10,7 @@ import Channel from "./pages/Channel";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 
+import ScrollToTop from "./components/commons/ScrollToTop";
 import MessageLayout from "./components/features/message/MessageLayout";
 import { NotiProvider } from "./context/NotiProvider";
 import NotFound from "./pages/NotFound";
@@ -28,6 +29,7 @@ export default function App() {
 
 	return (
 		<>
+			<ScrollToTop />
 			<NotiProvider>
 				<Routes>
 					<Route element={<RootLayout />}>
