@@ -1,11 +1,10 @@
-import { Link } from "react-router";
-import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { getPostsByAuthor } from "../../../apis/post";
-import { formatDateRange } from "../../../utils/date";
-import Icon from "../../../components/commons/Icon";
 import postThumbnail from "../../../assets/images/primaryImage.png";
+import Icon from "../../../components/commons/Icon";
 import { useThemeStore } from "../../../store/themeStore";
+import { formatDateRange } from "../../../utils/date";
 
 const ReviewTab = ({
 	authorId,
@@ -45,7 +44,7 @@ const ReviewTab = ({
 			{!isMyPage && reviewPosts.length === 0 ? (
 				<div className="w-[418px] flex sm:w-[1100px] h-auto justify-center py-[120px] text-[#808080] text-[16px] sm:text-[18px] font-medium">
 					<p>아직 작성한 게시글이 없습니다.</p>
-			  	</div>
+				</div>
 			) : (
 				<div className="w-[418px] sm:w-auto grid grid-cols-2 sm:grid-cols-3 mt-[26px] sm:mt-0 gap-x-[18px] gap-y-[18px] sm:gap-x-[59px] sm:gap-y-[30px]">
 					{isMyPage && (
@@ -76,7 +75,11 @@ const ReviewTab = ({
 											후기
 										</p>
 										<img
-											src={parsedTitle.images[0] ? parsedTitle.images[0] : postThumbnail}
+											src={
+												parsedTitle.images[0]
+													? parsedTitle.images[0]
+													: postThumbnail
+											}
 											alt="Post Thumbnail"
 											className="z-0 rounded-t-[10px] h-[100px] sm:h-[180px] w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
 										/>
@@ -98,7 +101,9 @@ const ReviewTab = ({
 											{/* 비행기 */}
 											<div className="flex items-center gap-[4px] sm:gap-[8px]">
 												<Icon position={locationIconPosition} size="18px" />
-												<h3 className="text-[12px] sm:text-[14px]">{parsedTitle.location}</h3>
+												<h3 className="text-[12px] sm:text-[14px]">
+													{parsedTitle.location}
+												</h3>
 											</div>
 
 											{/* 달력 */}
@@ -112,7 +117,9 @@ const ReviewTab = ({
 
 										{/* 하단영역 -3*/}
 										<div className="hidden sm:flex items-center justify-end gap-[5px] mt-[5px] sm:mt-[13px]">
-											<h3 className="text-[14px] text-[#808080] dark:text-[#cdcdcd]">{post.likes.length}</h3>
+											<h3 className="text-[14px] text-[#808080] dark:text-[#cdcdcd]">
+												{post.likes.length}
+											</h3>
 											<Icon position={likesIconPosition} size="18px" />
 										</div>
 									</div>

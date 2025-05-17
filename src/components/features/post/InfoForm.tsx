@@ -93,8 +93,8 @@ export default function InfoForm({
 					name="channel"
 					label="게시판 선택"
 					options={[
-						{ label: "동행원 모집", value: "681034285e1cfa1c37000059" },
-						{ label: "여행 후기글", value: "6813881c189ddd72351cd0a4" }
+						{ label: "크루 모집", value: CHANNELS.RECRUITMENT },
+						{ label: "항해 일지", value: CHANNELS.REVIEW }
 					]}
 				/>
 				{watchedChannel === CHANNELS.RECRUITMENT ? (
@@ -160,10 +160,10 @@ export default function InfoForm({
 							dateFormat: "Y-m-d",
 							closeOnSelect: false,
 							locale: Korean,
-							position: "below right",
-							...(watchedChannel === CHANNELS.RECRUITMENT
-								? { minDate: "today" }
-								: { maxDate: "today" })
+							position: "below right"
+							// ...(watchedChannel === CHANNELS.RECRUITMENT
+							// 	? { minDate: "today" }
+							// 	: { maxDate: "today" })
 						}}
 						placeholder="일정 선택"
 						onChange={(selectedDates) => {
