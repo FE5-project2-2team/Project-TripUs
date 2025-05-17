@@ -85,6 +85,14 @@ button {
 	border-radius: 10px;
 }
 
+.custom-scrollbar.main-color::-webkit-scrollbar-thumb {
+	background-color: #06b796;
+}
+
+.none-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
 .Toastify__toast-container--top-center {
 	display: flex;
 	flex-direction: column;

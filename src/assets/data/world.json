@@ -1,4 +1,8 @@
 [
+	{ "id": 392, "alpha2": "jp", "alpha3": "jpn", "name": "일본" },
+	{ "id": 840, "alpha2": "us", "alpha3": "usa", "name": "미국" },
+	{ "id": 764, "alpha2": "th", "alpha3": "tha", "name": "태국" },
+	{ "id": 344, "alpha2": "hk", "alpha3": "hkg", "name": "홍콩" },
 	{ "id": 288, "alpha2": "gh", "alpha3": "gha", "name": "가나" },
 	{ "id": 266, "alpha2": "ga", "alpha3": "gab", "name": "가봉" },
 	{ "id": 328, "alpha2": "gy", "alpha3": "guy", "name": "가이아나" },
@@ -68,7 +72,6 @@
 	{ "id": 462, "alpha2": "mv", "alpha3": "mdv", "name": "몰디브" },
 	{ "id": 470, "alpha2": "mt", "alpha3": "mlt", "name": "몰타" },
 	{ "id": 496, "alpha2": "mn", "alpha3": "mng", "name": "몽골" },
-	{ "id": 840, "alpha2": "us", "alpha3": "usa", "name": "미국" },
 	{ "id": 581, "alpha2": "um", "alpha3": "umi", "name": "미국령 군소 제도" },
 	{ "id": 850, "alpha2": "vi", "alpha3": "vir", "name": "미국령 버진아일랜드" },
 	{ "id": 104, "alpha2": "mm", "alpha3": "mmr", "name": "미얀마" },
@@ -188,7 +191,6 @@
 	{ "id": 380, "alpha2": "it", "alpha3": "ita", "name": "이탈리아" },
 	{ "id": 356, "alpha2": "in", "alpha3": "ind", "name": "인도" },
 	{ "id": 360, "alpha2": "id", "alpha3": "idn", "name": "인도네시아" },
-	{ "id": 392, "alpha2": "jp", "alpha3": "jpn", "name": "일본" },
 	{ "id": 388, "alpha2": "jm", "alpha3": "jam", "name": "자메이카" },
 	{ "id": 894, "alpha2": "zm", "alpha3": "zmb", "name": "잠비아" },
 	{ "id": 832, "alpha2": "je", "alpha3": "jey", "name": "저지섬" },
@@ -235,7 +237,6 @@
 	{ "id": 158, "alpha2": "tw", "alpha3": "twn", "name": "대만" },
 	{ "id": 762, "alpha2": "tj", "alpha3": "tjk", "name": "타지키스탄" },
 	{ "id": 834, "alpha2": "tz", "alpha3": "tza", "name": "탄자니아" },
-	{ "id": 764, "alpha2": "th", "alpha3": "tha", "name": "태국" },
 	{
 		"id": 796,
 		"alpha2": "tc",
@@ -276,6 +277,5 @@
 	{ "id": 608, "alpha2": "ph", "alpha3": "phl", "name": "필리핀" },
 	{ "id": 612, "alpha2": "pn", "alpha3": "pcn", "name": "핏케언 제도" },
 	{ "id": 334, "alpha2": "hm", "alpha3": "hmd", "name": "허드 맥도널드 제도" },
-	{ "id": 348, "alpha2": "hu", "alpha3": "hun", "name": "헝가리" },
-	{ "id": 344, "alpha2": "hk", "alpha3": "hkg", "name": "홍콩" }
+	{ "id": 348, "alpha2": "hu", "alpha3": "hun", "name": "헝가리" }
 ]
