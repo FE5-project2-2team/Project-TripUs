@@ -127,7 +127,7 @@ export default function MainVisual() {
 				</div>
 			</Swiper>
 			{/* pagination + autoplay control */}
-			<div className="flex sm:justify-center items-center gap-[4px] sm:mt-[10px] sm:h-[24px] mt-[-20px] h-[12px]">
+			<div className="flex sm:justify-center items-center gap-[4px] sm:mt-[10px] sm:h-[24px] mt-[-10px] h-[12px]">
 				<div className="flex items-center">
 					<div className="custom-pagination" />
 				</div>
@@ -135,7 +135,6 @@ export default function MainVisual() {
 					onClick={toggleAutoplay}
 					className="w-[22px] h-[22px] bg-[#cdcdcd] rounded-full flex items-center justify-center hover:bg-[#06B796] transition-colors duration-300 ml-[4px]"
 				>
-					{/* ..? */}
 					<Icon
 						position={autoplaying ? "-6px -11px" : "-21px -11px"}
 						size="20px"

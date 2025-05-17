@@ -19,7 +19,13 @@ export default function ChannelList() {
 		if (name === "긴급 모집") return "🚨 지금 탑승 가능!";
 		return name;
 	};
-
+	const mobDisplayName = (name: string) => {
+		if (name === "crews") return "⛵ 크루모집";
+		if (name === "review") return "📜 항해일지";
+		if (name === "전체글") return "🌊 전체보기";
+		if (name === "긴급 모집") return "🚨 긴급탑승!";
+		return name;
+	};
 	useEffect(() => {
 		const fetchChannels = async () => {
 			try {
@@ -60,13 +66,16 @@ export default function ChannelList() {
 				<button
 					key={channel._id}
 					onClick={() => handleChannelClick(channel.name)}
-					className={` flex-1 sm:flex-none text-center sm:px-4 px-[1px] py-2 sm:rounded-[12px] sm:text-[20px] text-[12px] cursor-pointer ${
+					className={` flex-1 sm:flex-none text-center sm:px-4 px-[1px] py-2 sm:rounded-[12px] sm:text-[20px] text-[16px] cursor-pointer ${
 						selected === channel.name
 							? "sm:bg-[#06B796] sm:text-white text-[#06B796] border-b border-b-[#06B796]"
 							: "text-[#333333] dark:text-[#dadada]"
 					}`}
 				>
-					{getDisplayName(channel.name)}
+					<span className="sm:hidden">{mobDisplayName(channel.name)}</span>
+					<span className="hidden sm:inline">
+						{getDisplayName(channel.name)}
+					</span>
 				</button>
 			))}
 		</div>
