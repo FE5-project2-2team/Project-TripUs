@@ -14,11 +14,11 @@ export default function Home() {
 
 	return (
 		<>
-			<div className="w-full flex justify-center pb-[70px]">
+			<div className="w-full flex justify-center pb-[70px] px-4 sm:px-0">
 				{/* 본문 */}
-				<div className="flex flex-col items-center w-[1100px] min-h-screen">
+				<div className="flex flex-col items-center max-w-[418px] sm:max-w-[1100px] min-h-screen">
 					{/* 슬라이드 이미지 */}
-					<div className="flex items-center mt-[20px] w-full">
+					<div className="flex items-center sm:mt-[20px] mt-[13px] w-full">
 						<MainVisual />
 					</div>
 					{/* 배너+검색 */}
@@ -26,7 +26,9 @@ export default function Home() {
 						{/* 배너 */}
 						<ChannelList />
 						{/* 동행글 검색창*/}
-						<PostSearch search={search} setSearch={setSearch} />
+						<div className="hidden sm:block">
+							<PostSearch search={search} setSearch={setSearch} />
+						</div>
 					</div>
 					{/* 필터,정렬 */}
 					<FilterAndSort

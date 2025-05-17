@@ -55,14 +55,14 @@ export default function ChannelList() {
 	}, [channelName]);
 
 	return (
-		<div className="w-auto flex gap-[6px] flex-wrap bg-[#F3F4F6] rounded-[12px] dark:bg-[#333]">
+		<div className="sm:w-auto w-full flex gap-[6px] flex-wrap sm:bg-[#F3F4F6] rounded-[12px] dark:bg-[#333]">
 			{channels.map((channel) => (
 				<button
 					key={channel._id}
 					onClick={() => handleChannelClick(channel.name)}
-					className={`px-4 py-2 rounded-[12px] text-[20px] cursor-pointer ${
+					className={` flex-1 sm:flex-none text-center sm:px-4 px-[1px] py-2 sm:rounded-[12px] sm:text-[20px] text-[12px] cursor-pointer ${
 						selected === channel.name
-							? "bg-[#06B796] text-white"
+							? "sm:bg-[#06B796] sm:text-white text-[#06B796] border-b border-b-[#06B796]"
 							: "text-[#333333] dark:text-[#dadada]"
 					}`}
 				>

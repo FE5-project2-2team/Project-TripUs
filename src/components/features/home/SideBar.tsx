@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 import logoCircle from "../../../assets/images/logo_circle.png";
 import { useAuthStore } from "../../../store/authStore";
 import { useThemeStore } from "../../../store/themeStore";
 import Icon from "../../commons/Icon";
+import UserListModal from "../user/UserListModal";
 
 export default function SideBar({
 	sidebarOpen,
@@ -18,6 +20,9 @@ export default function SideBar({
 	const userInfo = useAuthStore((state) => state.userInfo);
 	const userData = useAuthStore((state) => state.userData);
 	const { isDark, toggleTheme } = useThemeStore();
+
+	const [userListOpen, setUserListOpen] = useState(false);
+
 	const userListIconPosition = isDark ? "90.135% 3.073%" : "90.135% 11.732%";
 	const darkModeIconPosition = isDark ? "52.036% 81.18%" : "23.318% 81.006%";
 	const logoutIconPosition = isDark ? "64.889% 88.056%" : "37.778% 80.833%";
@@ -68,10 +73,14 @@ export default function SideBar({
 				</div>
 			</div>
 
-			<button className="flex items-center gap-4 cursor-pointer">
+			<button
+				onClick={() => setUserListOpen(true)}
+				className="flex items-center gap-4 cursor-pointer"
+			>
 				<Icon size="24px" position={userListIconPosition} />
 				<span>사용자 리스트</span>
 			</button>
+			{userListOpen && <UserListModal onClose={() => setUserListOpen(false)} />}
 			<button
 				onClick={setDarkMode}
 				className="flex items-center gap-4 cursor-pointer"
@@ -82,7 +91,6 @@ export default function SideBar({
 			{userData && (
 				<button
 					onClick={async () => {
-						toggleHandler();
 						signOut();
 					}}
 					className="flex items-center gap-4 cursor-pointer absolute bottom-17"
