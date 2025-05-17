@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { twMerge } from "tailwind-merge";
 
 export default function Confirm({
@@ -13,7 +14,7 @@ export default function Confirm({
 	description: string;
 	confirmBtn: string;
 }) {
-	return (
+	return createPortal(
 		<>
 			<div className="fixed inset-0 bg-black opacity-30 z-50" />
 			<div className="max-w-120 w-3/4 h-[150px] p-5 border-b-3 border-[#db1f5a] bg-white rounded-lg shadow-lg fixed top-4 left-1/2 -translate-x-1/2 z-51">
@@ -36,7 +37,7 @@ export default function Confirm({
 						onClick={cancelHandler}
 						className={twMerge(
 							"w-[110px] h-[33px] border border-[#db1f5a] text-white bg-[#db1f5a] rounded-[10px]",
-							"hover:bg-white hover:text-[#db1f5a] cursor-pointer",
+							"sm:hover:bg-white sm:hover:text-[#db1f5a] cursor-pointer",
 							"active:bg-white active:text-[#db1f5a]"
 						)}
 					>
@@ -44,6 +45,7 @@ export default function Confirm({
 					</button>
 				</div>
 			</div>
-		</>
+		</>,
+		document.body
 	);
 }

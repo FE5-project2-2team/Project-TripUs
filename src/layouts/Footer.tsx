@@ -11,7 +11,7 @@ export default function Footer() {
 	return (
 		<div
 			className={twMerge(
-				"sm:hidden text-sm fixed flex justify-around items-center text-[#616161] bottom-0 w-full h-[70px] bg-white border-t border-[#F3F3F3] z-50",
+				"sm:hidden text-sm fixed flex justify-around items-center text-[#616161] bottom-0 w-full h-[70px] bg-white border-t border-[#F3F3F3] z-[50]",
 				"dark:bg-[#333333] dark:border-[#161616] dark:text-[#fff]"
 			)}
 		>

@@ -6,6 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useNavigate } from "react-router";
 import { useClickAway } from "react-use";
 import { twMerge } from "tailwind-merge";
@@ -42,6 +43,7 @@ export default function Header() {
 	const { notiInfo } = useNoti();
 	const unRead = notiInfo.some((n) => !n.seen);
 	const [isUserListOpen, setIsUserListOpen] = useState(false);
+	const [isMobileUserListOpen, setIsMobileUserListOpen] = useState(false);
 
 	const getUserData = useCallback(async () => {
 		if (!userId) return;
@@ -93,7 +95,7 @@ export default function Header() {
 	};
 
 	const toggleUserList = () => {
-		setIsUserListOpen((state) => !state);
+		setIsMobileUserListOpen((state) => !state);
 	};
 
 	useEffect(() => {
@@ -238,12 +240,6 @@ export default function Header() {
 				<div className="sm:hidden" onClick={() => setSidebarOpen(true)}>
 					<FontAwesomeIcon icon={faBars} className="text-3xl cursor-pointer" />
 				</div>
-				{sidebarOpen && (
-					<div
-						onClick={toggleSidebar}
-						className="fixed inset-0 bg-black opacity-30 z-50"
-					/>
-				)}
 				<SideBar
 					sidebarOpen={sidebarOpen}
 					signOut={signOut}
@@ -252,15 +248,17 @@ export default function Header() {
 				/>
 			</div>
 			<div className="sm:hidden w-full h-[70px]" />
-			{isUserListOpen && (
-				<>
-					<div className="fixed inset-0 bg-black opacity-30 z-50" />
-					<UserListModal
-						className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-						onClose={() => toggleUserList()}
-					/>
-				</>
-			)}
+			{isMobileUserListOpen &&
+				createPortal(
+					<div className="sm:hidden">
+						<div className="sm:hidden fixed inset-0 bg-black opacity-30 z-50" />
+						<UserListModal
+							className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+							onClose={() => toggleUserList()}
+						/>
+					</div>,
+					document.body
+				)}
 		</>
 	);
 }
