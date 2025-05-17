@@ -32,8 +32,9 @@ export default function ConditionList({ isEditing }: { isEditing: boolean }) {
 				<fieldset>
 					<legend className="mb-[10px] sm:text-base text-sm">
 						나이 (다중 선택 가능)
-					</legend>
+          </legend>
 					<div className="flex w-screen sm:overflow-auto overflow-x-scroll none-scrollbar">
+
 						{CONDITIONS.AGES.map((age, index) => (
 							<InputBtn
 								disabled={isEditing}
