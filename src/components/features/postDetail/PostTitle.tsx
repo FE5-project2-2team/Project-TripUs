@@ -11,6 +11,7 @@ import Confirm from "../../commons/Confirm";
 import Icon from "../../commons/Icon";
 import Modal from "../../commons/Modal";
 import ModalItem from "../../commons/ModalItem";
+import { showToast } from "../../commons/Toast";
 
 export default function PostTitle({
 	isRecruitChannel,
@@ -68,6 +69,10 @@ export default function PostTitle({
 				<span
 					onClick={() => {
 						if (!isAuthor || !isRecruitChannel) return;
+						showToast({
+							type: "warning",
+							message: `${isRecruiting ? "모집완료" : "모집중으"}로 변경되었습니다`
+						});
 						toggleRecruit();
 					}}
 					className={twMerge(
