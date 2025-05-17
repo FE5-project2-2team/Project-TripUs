@@ -11,7 +11,7 @@ interface ToastProps {
 }
 
 const toastBase =
-	"w-full h-[56px] flex items-center justify-between px-[15px] py-[18px] rounded-[6px] border shadow-sm gap-3";
+	"w-full h-[56px] flex items-center justify-between px-[10px] py-[10px] sm:px-[15px] sm:py-[18px] rounded-[6px] border shadow-sm gap-3";
 
 const toastStyles = {
 	warning: "bg-[#FFFDEB] border-[#E6A316] text-[#763C0C]",
@@ -60,7 +60,7 @@ export function showToast({ type, message }: ToastProps) {
 		closeOnClick: false,
 		pauseOnHover: true,
 		draggable: true,
-		closeButton: false
+		closeButton: false,
 	});
 }
 

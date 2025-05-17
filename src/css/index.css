@@ -84,3 +84,10 @@ button {
 	background-color: #999999;
 	border-radius: 10px;
 }
+
+.Toastify__toast-container--top-center {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: center;
+}
