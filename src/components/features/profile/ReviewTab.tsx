@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { getPostsByAuthor } from "../../../apis/post";
 import postThumbnail from "../../../assets/images/primaryImage.png";
 import Icon from "../../../components/commons/Icon";
+import { CHANNELS } from "../../../constants/posts";
 import { useThemeStore } from "../../../store/themeStore";
 import { formatDateRange } from "../../../utils/date";
 
@@ -48,7 +49,7 @@ const ReviewTab = ({
 			) : (
 				<div className="w-[418px] sm:w-auto grid grid-cols-2 sm:grid-cols-3 mt-[26px] sm:mt-0 gap-x-[18px] gap-y-[18px] sm:gap-x-[59px] sm:gap-y-[30px]">
 					{isMyPage && (
-						<Link to={"/postCreate"}>
+						<Link to={"/postCreate"} state={{ channel: CHANNELS.REVIEW }}>
 							<div className="group flex flex-col items-center justify-center sm:w-[328px] sm:h-[382px] w-[200px] h-[252px] border border-[#06B796] rounded-[15px] shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] hover:border-[#038383] transition duration-300">
 								<div className="w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] rounded-full flex items-center justify-center cursor-pointer bg-[#06b796] group-hover:bg-[#038383] transition duration-300">
 									<Icon position="-12px -153px" size="35px" />

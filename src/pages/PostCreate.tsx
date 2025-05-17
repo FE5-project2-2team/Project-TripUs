@@ -1,7 +1,7 @@
 import "flatpickr/dist/themes/material_blue.css";
 import { useRef } from "react";
 import ReactQuill from "react-quill-new";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { createPost } from "../apis/post";
 import { showToast } from "../components/commons/Toast";
 import PostForm from "../components/features/post/PostForm";
@@ -12,11 +12,16 @@ import { useAuthStore } from "../store/authStore";
 import { formErrorHandler } from "../utils/errorhandle";
 
 export default function PostCreate() {
+	const location = useLocation();
 	const navigate = useNavigate();
+	let channel = CHANNELS.RECRUITMENT;
+	if (location.state) {
+		channel = location.state.channel;
+	}
 	const userId = useAuthStore((state) => state.userId)!;
 	const { imageListRef, initImages, ...imageProps } = useImage();
 	const contentsRef = useRef<ReactQuill | null>(null);
-	const methods = usePostForm();
+	const methods = usePostForm({ channel });
 	const submitHandler = async (data: FormValues) => {
 		try {
 			const editor = contentsRef.current?.getEditor();

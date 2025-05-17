@@ -1,5 +1,5 @@
 .ql-container {
-	@apply rounded-b-[10px] bg-[#F9F9F9] border-0! sm:w-275 w-full dark:bg-[#333];
+	@apply rounded-b-[10px] bg-[#F9F9F9] border-0! w-full dark:bg-[#333];
 }
 
 .ql-toolbar {

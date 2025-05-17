@@ -25,7 +25,7 @@ export default function AutoComplete() {
 	return (
 		<ul
 			className={twMerge(
-				"absolute sm:top-[94px] top-12 right-0 sm:w-full w-73 max-h-45 overflow-hidden border-1 border-[#d6d6d6] py-2 px-2 bg-white pb-2 rounded-b-[10px]",
+				"absolute sm:top-[54px] top-12 right-0 w-full max-h-45 overflow-hidden border-1 border-[#d6d6d6] p-2 bg-white rounded-b-[10px]",
 				"dark:bg-[#333] dark:border-[#000] z-20"
 			)}
 		>
@@ -40,7 +40,9 @@ export default function AutoComplete() {
 					</li>
 				))
 			) : (
-				<li className="px-3 py-2 text-gray-400">결과 없음</li>
+				<li className="px-3 py-2 text-gray-400 dark:text-[#dadada]">
+					결과 없음
+				</li>
 			)}
 		</ul>
 	);
