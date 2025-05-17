@@ -1,5 +1,6 @@
 import {
 	faAngleDown,
+	faBars,
 	faBell,
 	faComments
 } from "@fortawesome/free-solid-svg-icons";
@@ -7,11 +8,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useClickAway } from "react-use";
+import { twMerge } from "tailwind-merge";
+import { logoutUser } from "../../apis/auth";
 import { getUserInfo } from "../../apis/user";
 import headerLogo from "../../assets/images/logo_header.svg";
 import { useNoti } from "../../context/useNoti";
 import { useAuthStore } from "../../store/authStore";
 import { useThemeStore } from "../../store/themeStore";
+import SideBar from "../features/home/SideBar";
 import NotiList from "../features/notification/NotiList";
 import UserListModal from "../features/user/UserListModal";
 import Button from "./Button";
@@ -31,6 +35,7 @@ export default function Header() {
 
 	const [modalOpen, setModalOpen] = useState(false);
 	const [notiOpen, setNotiOpen] = useState(false);
+	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const modalRef = useRef<HTMLDivElement | null>(null);
 	const notiRef = useRef<HTMLDivElement | null>(null);
 	// const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
@@ -50,10 +55,11 @@ export default function Header() {
 		}
 	}, [userId, setImage, setNickname]); // 변경된 부분
 
-	const signOut = () => {
+	const signOut = async () => {
 		navigate("/");
 		logout();
 		setModalOpen(false);
+		await logoutUser();
 	};
 
 	const goToMyPage = () => {
@@ -82,6 +88,10 @@ export default function Header() {
 		setNotiOpen((noti) => !noti);
 	};
 
+	const toggleSidebar = () => {
+		setSidebarOpen((state) => !state);
+	};
+
 	useEffect(() => {
 		if (isLoggedIn && userId) {
 			getUserData();
@@ -96,125 +106,147 @@ export default function Header() {
 		setNotiOpen(false);
 	});
 	return (
-		<div className="sm:w-[1100px] w-[418px] flex justify-between h-[70px] m-auto">
-			<Link to={"/"} className="flex items-center">
-				<img src={headerLogo} alt="로고" />
-			</Link>
-			{isLoggedIn ? (
-				<div className="flex items-center gap-[40px] relative">
-					{/* userList */}
-					<div className="relative inline-block">
-						<button
-							className="mt-[7px] relative cursor-pointer"
-							onClick={() => setIsUserListOpen((prev) => !prev)}
-						>
-							<Icon size="24px" position={userListIconPosition} />
-						</button>
-						{isUserListOpen && (
-							<UserListModal
-								className="top-[110%] left-1/2"
-								onClose={() => setIsUserListOpen(false)}
-							/>
-						)}
-					</div>
-					{/* 알림 */}
-					<div ref={notiRef} className="relative inline-block">
-						<button onClick={toggleNoti} className="cursor-pointer">
-							<FontAwesomeIcon icon={faBell} className="text-xl" />
-							{unRead && (
-								<div className="absolute w-[10px] h-[10px] rounded-full top-[-5px] right-[-5px] bg-[#FD346E]" />
-							)}
-						</button>
-						{notiOpen && (
-							<div className="absolute top-[44px] left-[55%] transform -translate-x-1/2 z-60">
-								<NotiList
-									notiOpen={notiOpen}
-									setNotiOpen={setNotiOpen}
-									// notiInfo={notiInfo}
-									// setNotiInfo={setNotiInfo}
+		<>
+			<div
+				className={twMerge(
+					"sm:relative fixed sm:w-[1100px] sm:p-0 p-[14px] w-full flex justify-between h-[70px] m-auto",
+					"bg-white dark:bg-[#1B1D22] z-50 sm:border-0 border-b border-[#F3F3F3] dark:border-[#161616]"
+				)}
+			>
+				<Link to={"/"} className="flex items-center">
+					<img src={headerLogo} alt="로고" />
+				</Link>
+				{isLoggedIn ? (
+					<div className="sm:flex hidden items-center gap-[40px] relative">
+						{/* userList */}
+						<div className="relative inline-block">
+							<button
+								className="mt-[7px] relative cursor-pointer"
+								onClick={() => setIsUserListOpen((prev) => !prev)}
+							>
+								<Icon size="24px" position={userListIconPosition} />
+							</button>
+							{isUserListOpen && (
+								<UserListModal
+									className="top-[110%] left-1/2"
+									onClose={() => setIsUserListOpen(false)}
 								/>
-							</div>
-						)}
-					</div>
-					<Link to={"/message"}>
-						<FontAwesomeIcon icon={faComments} className="text-xl" />
-					</Link>
-					<button
-						onClick={() => {
-							if (!modalOpen) setModalOpen(true);
-						}}
-						className="flex items-center cursor-pointer"
-					>
-						<img
-							className="w-[50px] h-[50px] mr-[10px] rounded-full object-cover"
-							src={userData?.image}
-							alt="프로필 이미지"
-						/>
-						<span>{userInfo?.nickname}</span>
-						<FontAwesomeIcon icon={faAngleDown} className="ml-[5px]" />
-					</button>
-
-					{modalOpen && (
-						<Modal ref={modalRef}>
-							<ModalItem
-								clickHandler={goToMyPage}
-								position={myPageIconPosition}
-								hoverPosition="8.969% 88.268%"
-								size="22px"
-							>
-								마이페이지
-							</ModalItem>
-							<ModalItem
-								clickHandler={setDarkMode}
-								position={darkModeIconPosition}
-								hoverPosition={hoverDarkModeIconPosition}
-								size="23px"
-							>
-								{isDark ? "라이트모드" : "다크모드"}
-							</ModalItem>
-							<ModalItem
-								clickHandler={signOut}
-								position={logoutIconPosition}
-								hoverPosition="37.778% 88.056%"
-								size="22px"
-							>
-								로그아웃
-							</ModalItem>
-						</Modal>
-					)}
-				</div>
-			) : (
-				<div className="flex items-center gap-[10px]">
-					{/* userList */}
-					<div className="relative inline-block">
+							)}
+						</div>
+						{/* 알림 */}
+						<div ref={notiRef} className="relative inline-block">
+							<button onClick={toggleNoti} className="cursor-pointer">
+								<FontAwesomeIcon icon={faBell} className="text-xl" />
+								{unRead && (
+									<div className="absolute w-[10px] h-[10px] rounded-full top-[-5px] right-[-5px] bg-[#FD346E]" />
+								)}
+							</button>
+							{notiOpen && (
+								<div className="absolute top-[44px] left-[55%] transform -translate-x-1/2 z-60">
+									<NotiList
+										notiOpen={notiOpen}
+										setNotiOpen={setNotiOpen}
+										// notiInfo={notiInfo}
+										// setNotiInfo={setNotiInfo}
+									/>
+								</div>
+							)}
+						</div>
+						<Link to={"/message"}>
+							<FontAwesomeIcon icon={faComments} className="text-xl" />
+						</Link>
 						<button
-							className="mt-[7px] relative cursor-pointer"
-							onClick={() => setIsUserListOpen((prev) => !prev)}
+							onClick={() => {
+								if (!modalOpen) setModalOpen(true);
+							}}
+							className="flex items-center cursor-pointer"
 						>
-							<Icon size="24px" position={userListIconPosition} />
-						</button>
-						{isUserListOpen && (
-							<UserListModal
-								className="top-[110%] left-1/2"
-								onClose={() => setIsUserListOpen(false)}
+							<img
+								className="w-[50px] h-[50px] mr-[10px] rounded-full object-cover"
+								src={userData?.image}
+								alt="프로필 이미지"
 							/>
+							<span>{userInfo?.nickname}</span>
+							<FontAwesomeIcon icon={faAngleDown} className="ml-[5px]" />
+						</button>
+
+						{modalOpen && (
+							<Modal ref={modalRef}>
+								<ModalItem
+									clickHandler={goToMyPage}
+									position={myPageIconPosition}
+									hoverPosition="8.969% 88.268%"
+									size="22px"
+								>
+									마이페이지
+								</ModalItem>
+								<ModalItem
+									clickHandler={setDarkMode}
+									position={darkModeIconPosition}
+									hoverPosition={hoverDarkModeIconPosition}
+									size="23px"
+								>
+									{isDark ? "라이트모드" : "다크모드"}
+								</ModalItem>
+								<ModalItem
+									clickHandler={signOut}
+									position={logoutIconPosition}
+									hoverPosition="37.778% 88.056%"
+									size="22px"
+								>
+									로그아웃
+								</ModalItem>
+							</Modal>
 						)}
 					</div>
-					<Link to={"/login"}>
-						<Button
-							reverse
-							className="w-[120px] h-[45px] text-[18px] border-transparent hover:border-[#06B796] hover:bg-[#E0F4F2] hover:text-[#06b796] dark:bg-transparent"
-						>
-							로그인
-						</Button>
-					</Link>
-					<Link to={"/signup"}>
-						<Button className="w-[120px] h-[45px] text-[18px]">
-							회원 가입
-						</Button>
-					</Link>
+				) : (
+					<div className="sm:flex hidden items-center gap-[10px]">
+						{/* userList */}
+						<div className="relative inline-block">
+							<button
+								className="mt-[7px] relative cursor-pointer"
+								onClick={() => setIsUserListOpen((prev) => !prev)}
+							>
+								<Icon size="24px" position={userListIconPosition} />
+							</button>
+							{isUserListOpen && (
+								<UserListModal
+									className="top-[110%] left-1/2"
+									onClose={() => setIsUserListOpen(false)}
+								/>
+							)}
+						</div>
+						<Link to={"/login"}>
+							<Button
+								reverse
+								className="w-[120px] h-[45px] text-[18px] border-transparent hover:border-[#06B796] hover:bg-[#E0F4F2] hover:text-[#06b796] dark:bg-transparent"
+							>
+								로그인
+							</Button>
+						</Link>
+						<Link to={"/signup"}>
+							<Button className="w-[120px] h-[45px] text-[18px]">
+								회원 가입
+							</Button>
+						</Link>
+					</div>
+				)}
+				<div className="sm:hidden" onClick={() => setSidebarOpen(true)}>
+					<FontAwesomeIcon icon={faBars} className="text-3xl cursor-pointer" />
 				</div>
-			)}
-		</div>
+				{sidebarOpen && (
+					<div
+						onClick={toggleSidebar}
+						className="fixed inset-0 bg-black opacity-30 z-50"
+					/>
+				)}
+				<SideBar
+					sidebarOpen={sidebarOpen}
+					signOut={signOut}
+					toggleHandler={toggleSidebar}
+				/>
+			</div>
+			<div className="sm:hidden w-full h-[70px]" />
+		</>
 	);
 }
