@@ -85,6 +85,21 @@ button {
 	border-radius: 10px;
 }
 
+.custom-scrollbar.main-color::-webkit-scrollbar-thumb {
+	background-color: #06b796;
+}
+
+.none-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+.Toastify__toast-container--top-center {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: center;
+}
+
 /* 반응형 640px 이하일 때  */
 @media (max-width: 639px) {
 	.custom-bullet {

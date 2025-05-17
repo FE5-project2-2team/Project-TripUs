@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import ChattingComponent from "./ChattingComponent";
 import { useParams } from "react-router";
+import ChattingComponent from "./ChattingComponent";
 
 interface MessageListProps {
 	messages: MessageData[];

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router";
-import { axiosInstance } from "../../../apis/axios";
 import { Link } from "react-router-dom";
+import { axiosInstance } from "../../../apis/axios";
 import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
 
 interface ChattingComponentProps {
@@ -61,26 +61,26 @@ export default function ChattingComponent({
 							<img
 								src={sender.image?.trim() || defaultProfileImage}
 								alt="상대 프로필"
-								className="w-[60px] h-[60px] rounded-full object-cover mt-1 cursor-pointer"
+								className="sm:w-[60px] sm:h-[60px] w-13 h-13 rounded-full object-cover mt-1 cursor-pointer"
 							/>
 						</Link>
 					) : (
-						<div className="w-[60px] h-[60px]" /> // 자리 유지를 위한 빈 박스 (선택)
+						<div className="sm:w-[60px] sm:h-[60px] w-13 h-13" /> // 자리 유지를 위한 빈 박스 (선택)
 					)}
 					<div>
 						{showProfileImage && (
-							<p className="text-[16px] text-[#333] dark:text-[#FFFFFF] mb-1">
+							<p className="sm:text-[16px] text-sm text-[#333] dark:text-[#FFFFFF] mb-1">
 								{nickname}
 							</p>
 						)}
 						<div className="flex items-baseline gap-1">
 							<div className="p-3 bg-[#FFFFFF] dark:bg-[#2A2A2A] rounded-md max-w-[300px] break-words">
-								<span className="text-[16px] text-[#333] dark:text-[#E0E0E0]">
+								<span className="sm:text-[16px] text-[15px] text-[#333] dark:text-[#E0E0E0]">
 									{message}
 								</span>
 							</div>
 							{showTime && (
-								<div className="text-[14px] text-[#616161] dark:text-[#7F7F7F] ml-2 self-end">
+								<div className="sm:text-[14px] text-[13px] text-[#616161] dark:text-[#7F7F7F] ml-2 self-end">
 									{time}
 								</div>
 							)}

@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { getUsers, searchUsers } from "../../../apis/user";
 import { useNavigate } from "react-router";
-import Icon from "../../commons/Icon";
-import UserListItem from "./UserListItem";
 import { useClickAway } from "react-use";
+import { twMerge } from "tailwind-merge";
+import { getUsers, searchUsers } from "../../../apis/user";
 import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
 import { useThemeStore } from "../../../store/themeStore";
+import Icon from "../../commons/Icon";
+import UserListItem from "./UserListItem";
 
 function normalizeUsers(raw: UserHomeData[]): UserHomeData[] {
 	return raw.map((u) => {
@@ -44,7 +45,15 @@ function normalizeUsers(raw: UserHomeData[]): UserHomeData[] {
 	});
 }
 
-export default function UserListModal({ onClose }: { onClose: () => void }) {
+export default function UserListModal({
+	onClose,
+	className,
+	navHandler
+}: {
+	onClose: () => void;
+	className: string;
+	navHandler?: (opponentId: string) => void;
+}) {
 	const [userList, setUserList] = useState<UserHomeData[]>([]);
 	const [filteredUser, setFilteredUser] = useState<UserHomeData[]>([]);
 	const [search, setSearch] = useState("");
@@ -102,11 +111,13 @@ export default function UserListModal({ onClose }: { onClose: () => void }) {
 	const isDark = useThemeStore((state) => state.isDark);
 	const searchIconPosition = isDark ? "82.969% 27.747%" : "14.847% 35.165%";
 	const closeIconPosition = isDark ? "72.727% 27.869%" : "28.571% 27.869%";
-
 	return (
 		<div
 			ref={modalRef}
-			className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-[400px] h-[580px] bg-white z-50 shadow-[0px_2px_8px_rgba(0,0,0,0.20)] px-[30px] py-[40px] rounded-[10px] dark:bg-[#313131]"
+			className={twMerge(
+				"absolute transform -translate-x-1/2 mt-2 w-[400px] h-[580px] bg-white z-50 shadow-[0px_2px_8px_rgba(0,0,0,0.20)] px-[30px] py-[40px] rounded-[10px] dark:bg-[#313131] dark:shadow-[0px_2px_8px_rgba(195,195,195,0.3)]",
+				className
+			)}
 		>
 			<div className="flex justify-between items-center mb-[20px]">
 				<h2 className="text-[20px] font-semibold">사용자 리스트</h2>
@@ -135,7 +146,7 @@ export default function UserListModal({ onClose }: { onClose: () => void }) {
 
 			{/* 결과 리스트 */}
 			<div
-				className="h-[382px] overflow-y-auto p-[5px]
+				className="h-[382px] overflow-y-auto custom-scrollbar main-color p-[5px]
                       border border-[#e4e4e4] rounded-[8px] dark:border-[#cdcdcd]"
 			>
 				{isSearching ? (
@@ -146,6 +157,10 @@ export default function UserListModal({ onClose }: { onClose: () => void }) {
 							key={user._id}
 							user={user}
 							onClick={() => {
+								if (navHandler) {
+									navHandler(user._id);
+									return;
+								}
 								navigate(`/profile/${user._id}`);
 								onClose();
 							}}
