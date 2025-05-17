@@ -1,12 +1,12 @@
 import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
 
 interface UserListItemProps {
-	user: UserHomeData;
+	user: UserData;
 	onClick: () => void;
 }
 
 export default function UserListItem({ user, onClick }: UserListItemProps) {
-	const { nickname, gender, age } = user.fullName as User;
+	const { nickname, gender, age } = JSON.parse(user.fullName);
 	const ageGroup = Math.floor(age / 10) * 10;
 	const isOnline = user.isOnline;
 

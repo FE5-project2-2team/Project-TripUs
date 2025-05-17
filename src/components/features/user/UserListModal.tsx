@@ -8,7 +8,7 @@ import { useThemeStore } from "../../../store/themeStore";
 import Icon from "../../commons/Icon";
 import UserListItem from "./UserListItem";
 
-function normalizeUsers(raw: UserHomeData[]): UserHomeData[] {
+function normalizeUsers(raw: UserData[]): UserData[] {
 	return raw.map((u) => {
 		// fullName 파싱
 		let parsed: Partial<User> = {};
@@ -39,7 +39,7 @@ function normalizeUsers(raw: UserHomeData[]): UserHomeData[] {
 
 		return {
 			...u,
-			fullName: fullNameObj,
+			fullName: JSON.stringify(fullNameObj),
 			image: profileImage
 		};
 	});
@@ -54,8 +54,8 @@ export default function UserListModal({
 	className: string;
 	navHandler?: (opponentId: string) => void;
 }) {
-	const [userList, setUserList] = useState<UserHomeData[]>([]);
-	const [filteredUser, setFilteredUser] = useState<UserHomeData[]>([]);
+	const [userList, setUserList] = useState<UserData[]>([]);
+	const [filteredUser, setFilteredUser] = useState<UserData[]>([]);
 	const [search, setSearch] = useState("");
 	const [isSearching, setIsSearching] = useState(false);
 	const navigate = useNavigate();
