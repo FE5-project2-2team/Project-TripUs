@@ -92,3 +92,10 @@ button {
 .none-scrollbar::-webkit-scrollbar {
 	display: none;
 }
+
+.Toastify__toast-container--top-center {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: center;
+}

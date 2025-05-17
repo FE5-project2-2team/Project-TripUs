@@ -4,12 +4,7 @@ import Header from "../components/commons/Header";
 export default function RootLayout() {
 	const location = useLocation();
 
-	const hideHeaderPaths = [
-		"/post/detail",
-		"/postCreate",
-		"/post/edit",
-		"/message"
-	];
+	const hideHeaderPaths = ["/post/detail", "/postCreate", "/post/edit", "/profile", "/message"];
 
 	const hideHeader = hideHeaderPaths.some((path) =>
 		location.pathname.startsWith(path)
