@@ -16,9 +16,9 @@ export default function Home() {
 		<>
 			<div className="w-full flex justify-center pb-[70px] px-4 sm:px-0">
 				{/* 본문 */}
-				<div className="flex flex-col items-center max-w-[418px] sm:max-w-[1100px] min-h-screen">
+				<div className="flex flex-col items-center w-full sm:max-w-[1100px] min-h-screen sm:px-0">
 					{/* 슬라이드 이미지 */}
-					<div className="flex items-center sm:mt-[20px] mt-[13px] w-full">
+					<div className="flex items-center sm:mt-[20px] mt-[13px] w-full sm:pb-[46px] pb-0 min-w-0">
 						<MainVisual />
 					</div>
 					{/* 배너+검색 */}
