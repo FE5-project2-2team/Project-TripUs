@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { getNotiList, readNoti } from "../apis/notification";
-import { NotiContext } from "./NotiContext";
 import { useAuthStore } from "../store/authStore";
+import { NotiContext } from "./NotiContext";
 
 export function NotiProvider({ children }: { children: React.ReactNode }) {
 	const [notiInfo, setNotiInfo] = useState<NotiData[]>([]);
@@ -10,14 +10,11 @@ export function NotiProvider({ children }: { children: React.ReactNode }) {
 	const refetchNotiList = useCallback(async () => {
 		try {
 			const res: NotiData[] = await getNotiList();
-			console.log("알림목록res:", res);
-			// setNotiInfo(res);
 			setNotiInfo((prev) => {
 				if (prev.length === 0) return res;
 				const prevIdSet = new Set(prev.map((noti) => noti._id));
 				const newNotis = res.filter((noti) => !prevIdSet.has(noti._id));
 				const combined = [...newNotis, ...prev];
-				// console.log("중복처리전:", combined);
 				const mergedMap = new Map<string, NotiData>();
 
 				for (const noti of combined) {
@@ -32,7 +29,6 @@ export function NotiProvider({ children }: { children: React.ReactNode }) {
 					}
 				}
 				const after = Array.from(mergedMap.values());
-				// console.log("중복처리후:", after);
 				return after;
 			});
 		} catch (err) {
