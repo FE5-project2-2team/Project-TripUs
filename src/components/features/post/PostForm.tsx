@@ -77,7 +77,7 @@ export default function PostForm({
 							)}
 							<ConditionList isEditing={isEditing} />
 						</div>
-						<div className="flex items-center justify-between sm:mt-0 mt-[66px] mb-20">
+						<div className="flex items-center justify-between sm:mt-0 mt-[66px] sm:mb-20 mb-25">
 							<div
 								onClick={() => navigate(-1)}
 								className="sm:flex hidden justify-center items-center gap-4 cursor-pointer "

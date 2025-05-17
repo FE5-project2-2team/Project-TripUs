@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router";
 import { getConversations } from "../../../apis/message";
 import defaultProfileImage from "../../../assets/images/profileImg_circle.svg";
@@ -66,15 +67,15 @@ export default function ConversationList() {
 	});
 
 	return (
-		<div className="w-full h-full p-2">
-			<div className="flex items-center gap-[10px]">
+		<div className="flex flex-col w-full sm:h-full h-screen p-2">
+			<div className="shrink-0 flex items-center gap-[10px]">
 				<Icon
 					onClick={() => navigate(-1)}
 					position={isDark ? "50.218% 27.747%" : "39.301% 27.747%"}
 					size="16px"
 					className="sm:hidden block cursor-pointer"
 				/>
-				<div className="pl-2 sm:text-[20px] font-semibold text-[#333333] dark:text-[#FFFFFF]">
+				<div className="pl-2 sm:py-0 py-3 sm:text-[20px] font-semibold text-[#333333] dark:text-[#FFFFFF]">
 					메시지{" "}
 					{totalUnread > 0 && (
 						<span className="text-[#FD346E] font-bold">{totalUnread}</span>
@@ -82,7 +83,7 @@ export default function ConversationList() {
 				</div>
 			</div>
 			<div
-				className="mt-[25px] sm:mb-0 mb-16 w-full h-[50px] bg-white dark:bg-[#2A2A2A] rounded-[10px] shadow-[0_2px_8px_0_rgba(189,189,189,0.2)] relative group"
+				className="sm:mt-[25px] mt-4 sm:mb-0 mb-25 w-full h-[50px] bg-white dark:bg-[#2A2A2A] rounded-[10px] shadow-[0_2px_8px_0_rgba(189,189,189,0.2)] relative group"
 				onMouseEnter={() => setHoveredField("search")}
 				onMouseLeave={() => setHoveredField(null)}
 			>
@@ -102,7 +103,7 @@ export default function ConversationList() {
 					/>
 				</div>
 			</div>
-			<div className="mt-4 h-[calc(100vh-250px)] overflow-y-auto none-scrollbar">
+			<div className="flex-1 mt-4 overflow-y-auto none-scrollbar">
 				{filteredConversations.length === 0 ? (
 					<div className="text-[#616161] dark:text-[#ACACAC] text-center mt-6">
 						검색 결과가 없습니다.
@@ -155,7 +156,7 @@ export default function ConversationList() {
 										{formattedTime}
 									</div>
 								</div>
-								<div className="sm:hidden inline-block w-[76%] border-b-1 border-[#FAFAFA] dark:border-[#2f3033] z-10"></div>
+								<div className="sm:hidden inline-block w-[76%] border-b-1 border-[#FAFAFA] dark:border-[#2f3033] z-0"></div>
 							</div>
 						);
 					})
@@ -171,18 +172,21 @@ export default function ConversationList() {
 					<Icon position="-19px -161px" size="21px" />
 				</button>
 			</div>
-			{openModal && (
-				<>
-					<div className="fixed inset-0 bg-black opacity-30 z-50" />
-					<UserListModal
-						className="top-[calc(50%-290px)] left-1/2"
-						onClose={() => setOpenModal(false)}
-						navHandler={(opponentId: string) =>
-							navigate(`/message/${opponentId}`)
-						}
-					/>
-				</>
-			)}
+			{openModal &&
+				createPortal(
+					<>
+						<div className="fixed inset-0 bg-black opacity-30 z-50" />
+						<UserListModal
+							className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+							onClose={() => setOpenModal(false)}
+							navHandler={(opponentId: string) => {
+								setOpenModal(false);
+								navigate(`/message/${opponentId}`);
+							}}
+						/>
+					</>,
+					document.body
+				)}
 		</div>
 	);
 }

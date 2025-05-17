@@ -119,7 +119,10 @@ export default function Signup() {
 			!fullName.gender.trim() ||
 			!fullName.tel.trim()
 		) {
-			alert("모든 항목을 입력해주세요.");
+			showToast({
+				type: "warning",
+				message: "모든 항목을 입력해주세요."
+			});
 			return;
 		}
 
@@ -195,14 +198,17 @@ export default function Signup() {
 
 	return (
 		<>
-			<form onSubmit={handleSubmit} className="w-[460px] mx-auto flex flex-col">
+			<form
+				onSubmit={handleSubmit}
+				className="w-full px-4 sm:w-[460px] sm:px-0 mx-auto flex flex-col"
+			>
 				<img
 					src={SignupLogo}
 					alt="TripUs 로고"
-					className="w-[278px] h-[106px] mx-auto mt-[60px] mb-[26px] cursor-pointer"
+					className="w-[278px] h-[106px] mt-[100px] sm:mt-[60px] mx-auto cursor-pointer mb-[26px]"
 					onClick={() => navigate("/")}
 				/>
-				<div className="mb-[26px]">
+				<div className="w-[320px] sm:w-full mx-auto mb-[26px]">
 					<div
 						className="relative group"
 						onMouseEnter={() => setHoveredField("name")}
@@ -230,9 +236,9 @@ export default function Signup() {
 					</div>
 				</div>
 
-				<div className="flex flex-col mb-[11px]">
+				<div className="flex flex-col mb-[11px] w-[320px] sm:w-full mx-auto">
 					<div
-						className="relative group"
+						className="relative group w-[320px] sm:w-full mx-auto"
 						onMouseEnter={() => setHoveredField("birth")}
 						onMouseLeave={() => setHoveredField(null)}
 					>
@@ -270,8 +276,8 @@ export default function Signup() {
 						{Array.from({ length: 6 }).map((_, i) => (
 							<span
 								key={i}
-								className={`w-[16px] h-[16px] bg-[#616161] rounded-full inline-block ${
-									i === 0 ? "ml-[10px]" : "ml-[5px]"
+								className={`w-[12px] h-[12px] sm:w-[16px] sm:h-[16px] bg-[#616161] rounded-full inline-block ${
+									i === 0 ? "ml-[5px] sm:ml-[10px]" : "ml-[5px]"
 								} translate-y-[1px] dark:bg-[#808080]`}
 							/>
 						))}
@@ -280,9 +286,9 @@ export default function Signup() {
 						{errors.birth ?? ""}
 					</p>
 				</div>
-				<div className="flex flex-col mb-[11px]">
+				<div className="flex flex-col mb-[11px] w-[320px] sm:w-full mx-auto">
 					<div
-						className="relative group"
+						className="relative group w-[320px] sm:w-full mx-auto"
 						onMouseEnter={() => setHoveredField("tel")}
 						onMouseLeave={() => setHoveredField(null)}
 					>
@@ -310,9 +316,9 @@ export default function Signup() {
 						{errors.tel ?? ""}
 					</p>
 				</div>
-				<div className="flex flex-col mb-[11px]">
+				<div className="flex flex-col mb-[11px] w-[320px] sm:w-full mx-auto">
 					<div
-						className="relative group"
+						className="relative group w-[320px] sm:w-full mx-auto"
 						onMouseEnter={() => setHoveredField("email")}
 						onMouseLeave={() => setHoveredField(null)}
 					>
@@ -342,7 +348,7 @@ export default function Signup() {
 				</div>
 				<div className="mb-[26px]">
 					<div
-						className="relative group"
+						className="relative group w-[320px] sm:w-full mx-auto"
 						onMouseEnter={() => setHoveredField("password")}
 						onMouseLeave={() => setHoveredField(null)}
 					>
@@ -368,9 +374,9 @@ export default function Signup() {
 						/>
 					</div>
 				</div>
-				<div className="flex flex-col mb-[11px]">
+				<div className="flex flex-col mb-[11px] w-[320px] sm:w-full mx-auto">
 					<div
-						className="relative group"
+						className="relative group w-[320px] sm:w-full mx-auto"
 						onMouseEnter={() => setHoveredField("passwordConfirm")}
 						onMouseLeave={() => setHoveredField(null)}
 					>
@@ -401,7 +407,10 @@ export default function Signup() {
 					</p>
 				</div>
 				<div className="mb-[26px]">
-					<Button type="submit" className="w-full">
+					<Button
+						type="submit"
+						className="w-[320px] sm:w-full mx-auto h-[60px]"
+					>
 						회원가입
 					</Button>
 				</div>
@@ -410,7 +419,7 @@ export default function Signup() {
 						type="button"
 						onClick={() => navigate("/")}
 						reverse
-						className="w-full border-[1px] dark:bg-transparent dark:hover:bg-[#333]"
+						className="w-[320px] sm:w-full h-[60px] mx-auto border-[1px] dark:bg-transparent dark:hover:bg-[#333]"
 					>
 						취소
 					</Button>

@@ -31,11 +31,15 @@ export default function Channel() {
 		} else if (sort === "인기순") {
 			return [...targetPosts].sort((a, b) => b.likes.length - a.likes.length);
 		} else {
-			return [...targetPosts].sort(
-				(a, b) =>
-					new Date(a.title.dateRange[0]).getTime() -
-					new Date(b.title.dateRange[0]).getTime()
-			);
+			return [...targetPosts]
+				.sort(
+					(a, b) =>
+						new Date(a.title.dateRange[0]).getTime() -
+						new Date(b.title.dateRange[0]).getTime()
+				)
+				.filter(
+					(target) => getDiffInDays(target.title.dateRange[0], new Date()) < 0
+				);
 		}
 	}, []);
 
@@ -171,39 +175,39 @@ export default function Channel() {
 	const likesIconPosition = isDark ? "83.5% 96.15%" : "74.3% 96.15%";
 
 	return (
-		<div className="w-full grid sm:grid-cols-3 grid-cols-2 sm:gap-[40px] gap-[18px] sm:mt-[20px] mt-[26px] items-center relative">
+		<div className="w-full grid sm:grid-cols-3 grid-cols-2 sm:gap-[40px] gap-[18px] sm:mt-[20px] mt-[24px] items-center relative">
 			{filteredPosts.map((post: PostHomeData) => (
 				//포스트 카드
 
 				<div
 					key={post._id}
-					className="group sm:w-[340px] w-[200px] sm:h-[434px] h-[263px] sm:rounded-[15px] rounded-[8px] flex flex-col overflow-hidden cursor-pointer sm:shadow-[0px_2px_4px_rgba(0,0,0,0.16) shadow-[0px_1px_4px_rgba(0,0,0,0.16)]] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition duration-300 dark:bg-transparent dark:border dark:border-[#616161] dark:hover:shadow-[0px_4px_10px_rgba(100,100,100,0.3)]"
+					className="group w-full sm:h-[434px] h-[263px] sm:rounded-[15px] rounded-[8px] flex flex-col overflow-hidden cursor-pointer sm:shadow-[0px_2px_4px_rgba(0,0,0,0.16)] shadow-[0px_1px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition duration-300 dark:bg-transparent dark:border dark:border-[#616161] dark:hover:shadow-[0px_4px_10px_rgba(100,100,100,0.3)]"
 					onClick={() => navigate(`/post/detail/${post._id}`)}
 				>
 					<div className="relative">
 						<img
 							src={post.title.images[0] ? post.title.images[0] : defaultImage}
 							alt="Post Thumbnail"
-							className="w-full h-[180px] rounded-t-[15px] object-cover z-10 transition-transform duration-300 ease-in-out group-hover:scale-105"
+							className="w-full sm:h-[180px] h-[100px] sm:rounded-t-[15px] rounded-t-[8px] object-cover z-10 transition-transform duration-300 ease-in-out group-hover:scale-105"
 						/>
 						{(() => {
 							if (channelName === "crews" || channelName === "전체글") {
 								return post.channel.name === "crews" ? (
 									getDiffInDays(new Date(), post.title.dateRange[0]) < 0 ? (
-										<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#808080] text-[#fff] text-[14px] z-20">
+										<div className="hidden sm:flex absolute items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#808080] text-[#fff] text-[14px] z-20">
 											여정완료
 										</div>
 									) : post.title.isRecruiting === true ? (
-										<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#FD346E] text-[#fff] text-[14px] z-20">
+										<div className="hidden sm:flex absolute items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#FD346E] text-[#fff] text-[14px] z-20">
 											모집중
 										</div>
 									) : (
-										<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#1C274C] text-[#fff] text-[14px] z-20">
+										<div className="hidden sm:flex absolute items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#1C274C] text-[#fff] text-[14px] z-20">
 											모집완료
 										</div>
 									)
 								) : (
-									<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#06B796] text-[#fff] text-[14px] z-20">
+									<div className="hidden sm:flex absolute items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#06B796] text-[#fff] text-[14px] z-20">
 										후기
 									</div>
 								);
@@ -211,7 +215,7 @@ export default function Channel() {
 
 							if (channelName === "review") {
 								return (
-									<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#06B796] text-[#fff] text-[14px] z-20">
+									<div className="hidden sm:flex absolute items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#06B796] text-[#fff] text-[14px] z-20">
 										후기
 									</div>
 								);
@@ -219,7 +223,7 @@ export default function Channel() {
 
 							if (channelName === "긴급 모집") {
 								return (
-									<div className="absolute flex items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#FF2929] text-[#fff] text-[14px] z-20">
+									<div className="hidden sm:flex absolute items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#FF2929] text-[#fff] text-[14px] z-20">
 										긴급
 									</div>
 								);
@@ -228,94 +232,98 @@ export default function Channel() {
 							return null;
 						})()}
 					</div>
-					<div className="p-4">
-						<div>
-							{/* 사용자 이미지,이름,닉네임 */}
-							<div className="flex flex-row items-center min-w-[115px] h-[36px]">
-								<img
-									src={post.author.image ? post.author.image : profileImg}
-									alt="사용자이미지"
-									className="w-[36px] h-[36px] rounded-full"
-								/>
-								<div className="ml-[8px]">
-									<p className="font-normal text-[16px]">
-										{JSON.parse(post.author.fullName as string).nickname}
-									</p>
-									<p className="text-[14px]">
-										{JSON.parse(post.author.fullName as string).name}
-									</p>
-								</div>
-							</div>
-							{/* 게시글 제목, 내용 */}
-							<div className="w-[308px] h-[65px] mt-[16px]">
-								<p className="text-[16px] font-bold line-clamp-2">
-									{post.title.title}
+					<div className="sm:p-4 px-[10px]">
+						{/* <div className="sm:h-[143px] h-[119px]"> */}
+						{/* 사용자 이미지,이름,닉네임 */}
+						<div className="hidden sm:flex sm:flex-row items-center min-w-[115px] h-[36px]">
+							<img
+								src={post.author.image ? post.author.image : profileImg}
+								alt="사용자이미지"
+								className="w-[36px] h-[36px] rounded-full"
+							/>
+							<div className="ml-[8px]">
+								<p className="font-normal text-[16px]">
+									{JSON.parse(post.author.fullName as string).nickname}
 								</p>
-								<p className="mt-[8px] min-h-[38px] text-[14px] line-clamp-2">
-									{post.title.description}
+								<p className="text-[14px]">
+									{JSON.parse(post.author.fullName as string).name}
 								</p>
-							</div>
-							{/* 여행지, 크루원수,날짜*/}
-							<div
-								className={`text-[14px] h-[70px] mt-4 flex flex-col ${post.channel.name === "review" ? "justify-center" : null}`}
-							>
-								{/* 비행기 */}
-								{post.title.location && (
-									<div className="flex items-center gap-1.5">
-										<Icon position={locationIconPosition} size="18px" />
-										<h3 className="text-[14px]">{post.title.location}</h3>
-									</div>
-								)}
-								{/* 인원 */}
-								{post.channel.name !== "review" && (
-									<div className="flex items-center gap-1.5">
-										<Icon position={memberIconPosition} size="18px" />
-										<h3 className="text-[14px]">
-											{(() => {
-												const applyComments = post.comments.filter((com) => {
-													return JSON.parse(com.comment).type === "apply";
-												});
-
-												const memberCount = post.title.memberList.filter(
-													(mem) =>
-														applyComments.some(
-															(comment) => comment.author._id === mem
-														)
-												).length;
-
-												return `${memberCount + 1} / ${post.title.memberLimit}`;
-											})()}
-										</h3>
-									</div>
-								)}
-								{/* 달력 */}
-								<div className="flex items-center gap-1.5">
-									<Icon position={calendarIconPosition} size="18px" />
-									<h3 className="text-[14px]">
-										{`${formatDate(post.title.dateRange[0])}`}
-										{post.title.dateRange[1] &&
-											` - 
-									${formatDate(post.title.dateRange[1])}`}
-									</h3>
-								</div>
 							</div>
 						</div>
+						{/* 게시글 제목, 내용 */}
+						<div className="sm:w-[308px] w-[180px] sm:h-[65px] h-[54px] sm:mt-[16px] mt-[10px]">
+							<p className="sm:text-[16px] text-[14px] font-bold sm:line-clamp-2 line-clamp-1">
+								{post.title.title}
+							</p>
+							<p className="sm:mt-[8px] mt-[5px] sm:min-h-[38px] min-h-[32px] sm:text-[14px] text-[12px] line-clamp-2">
+								{post.title.description}
+							</p>
+						</div>
+						{/* 여행지, 크루원수,날짜*/}
+						<div
+							className={`sm:text-[14px] text-[12px] sm:h-[70px] h-[60px] sm:mt-4 mt-[12px] flex flex-col ${post.channel.name === "review" ? "justify-center" : null}`}
+						>
+							{/* 비행기 */}
+							{post.title.location && (
+								<div className="flex items-center sm:gap-1.5 gap-1">
+									<Icon position={locationIconPosition} size="18px" />
+									<h3 className="sm:text-[14px] text-[12px]">
+										{post.title.location}
+									</h3>
+								</div>
+							)}
+							{/* 인원 */}
+							{post.channel.name !== "review" && (
+								<div className="flex items-center sm:gap-1.5 gap-1">
+									<Icon position={memberIconPosition} size="18px" />
+									<h3 className="sm:text-[14px] text-[12px]">
+										{(() => {
+											const applyComments = post.comments.filter((com) => {
+												return JSON.parse(com.comment).type === "apply";
+											});
 
-						<div className="flex justify-between text-[14px] mt-[2px]">
+											const memberCount = post.title.memberList.filter((mem) =>
+												applyComments.some(
+													(comment) => comment.author._id === mem
+												)
+											).length;
+
+											return `${memberCount + 1} / ${post.title.memberLimit}`;
+										})()}
+									</h3>
+								</div>
+							)}
+							{/* 달력 */}
+							<div className="flex items-center sm:gap-1.5 gap-1">
+								<Icon position={calendarIconPosition} size="18px" />
+								<h3 className="sm:text-[14px] text-[12px]">
+									{`${formatDate(post.title.dateRange[0])}`}
+									{post.title.dateRange[1] &&
+										` - 
+									${formatDate(post.title.dateRange[1])}`}
+								</h3>
+							</div>
+						</div>
+						{/* </div> */}
+
+						<div className="flex justify-between items-end sm:text-[14px] text-[12px]">
 							{/* 나이,성별 */}
-							<div className="flex gap-4">
+							<div className="flex sm:gap-4 gap-[10px] sm:text-[#333] text-[#06B796]">
 								{post.title.recruitCondition.gender &&
 									`#${post.title.recruitCondition.gender}`}
 								{post.title.recruitCondition.ageRange &&
 									post.title.recruitCondition.ageRange.map((age) => (
-										<span key={age} className="min-w-[35px] h-[19px]">
+										<span
+											key={age}
+											className="min-w-[35px] h-[19px] sm:text-[#333] text-[#06B796]"
+										>
 											#{age}
 										</span>
 									))}
 							</div>
 							{/* 좋아요 */}
 							<div className="flex items-center gap-[5px]">
-								<h3 className="text-[#808080] dark:text-[#cdcdcd]">
+								<h3 className="sm:text-[14px] text-[12px] text-[#808080] dark:text-[#cdcdcd]">
 									{post.likes.length}
 								</h3>
 								<Icon position={likesIconPosition} size="18px" />
