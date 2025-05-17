@@ -39,7 +39,7 @@ const ReviewTab = ({
 	return (
 		<div>
 			<div className="sm:flex my-[30px] text-[18px] font-medium gap-x-[8px] hidden">
-				<h1>후기 게시글</h1>
+				<h1>항해일지</h1>
 				<p className="text-[#06B796]">{reviewPosts.length}</p>
 			</div>
 			{!isMyPage && reviewPosts.length === 0 ? (
@@ -72,7 +72,7 @@ const ReviewTab = ({
 								>
 									{/* 상단 영역 */}
 									<div className="relative block overflow-hidden rounded-t-[10px]">
-										<p className="z-10 hidden absolute select-none top-0 right-0 sm:flex items-center justify-center w-[60px] h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#06B796]">
+										<p className="z-10 absolute select-none top-0 right-0 flex items-center justify-center w-[40px] h-[20px] sm:w-[60px] sm:h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[12px] sm:text-[14px] bg-[#06B796]">
 											후기
 										</p>
 										<img
