@@ -6,12 +6,12 @@
 	}
 
 	.post-input-title {
-		@apply block font-medium sm:text-[20px] text-base sm:mb-[10px];
+		@apply block font-medium sm:text-[20px] text-base sm:mb-[10px] w-40;
 	}
 
 	.input-style {
 		@apply sm:w-128 sm:border-b sm:border-b-[#cdcdcd] 
-		sm:px-[10px] py-[15px] w-73 px-[14px] sm:bg-[#fff]
+		sm:px-[10px] py-[15px] w-full px-[14px] sm:bg-[#fff]
 		bg-[#f9f9f9] dark:bg-[#1B1D22] sm:text-base text-sm;
 	}
 
