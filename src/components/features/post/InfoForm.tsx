@@ -87,7 +87,7 @@ export default function InfoForm({
 					confirmBtn="변경"
 				/>
 			)}
-			<div className="grid grid-cols-2 gap-15">
+			<div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-15 gap-[30px]">
 				<CustomSelect
 					isEditing={isEditing}
 					name="channel"
@@ -108,9 +108,9 @@ export default function InfoForm({
 						}))}
 					/>
 				) : (
-					<div />
+					<div className="sm:block hidden" />
 				)}
-				<div className="relative flex flex-col items-start">
+				<div className="relative flex sm:flex-col sm:items-start items-center justify-between">
 					<label
 						htmlFor="location"
 						className={twMerge(
@@ -137,7 +137,7 @@ export default function InfoForm({
 					/>
 					{isFocused && <AutoComplete />}
 				</div>
-				<div className="flex flex-col items-start">
+				<div className="flex sm:flex-col sm:items-start items-center justify-between">
 					<label
 						htmlFor="date"
 						className={twMerge(

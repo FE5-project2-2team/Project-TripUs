@@ -14,7 +14,7 @@ export default function InputTitle() {
 				placeholder="제목을 입력해 주세요"
 				className={twMerge(
 					"bg-[#F9F9F9] w-full p-5 rounded-[10px] placeholder:text-[#CDCDCD] focus:outline-0",
-					"dark:bg-[#333] dark:placeholder:text-[#616161]"
+					"dark:bg-[#333] dark:placeholder:text-[#616161] sm:mt-0 mt-[10px] sm:text-base text-sm"
 				)}
 				{...register("title")}
 			/>
