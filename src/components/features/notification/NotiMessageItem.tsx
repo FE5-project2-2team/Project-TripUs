@@ -66,7 +66,7 @@ export default function NotiMessageItem({
 	};
 	return (
 		<div
-			className="flex items-center w-full h-[100px] border-b border-[#CDCDCD] cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150"
+			className="flex items-center w-full h-[100px] border-b border-[#ececec]  cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150 dark:hover:bg-[#6B6B6B] dark:border-[#7F7F7F]"
 			onClick={handleClick}
 		>
 			<div className="relative flex items-center">
