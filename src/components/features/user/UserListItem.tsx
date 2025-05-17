@@ -36,7 +36,7 @@ export default function UserListItem({ user, onClick }: UserListItemProps) {
 				<div className="text-[16px] font-medium">{nickname}</div>
 				<ul className="text-[14px] text-gray-500 flex gap-[12px] dark:text-gray-300">
 					<li>{ageGroup}대</li>
-					<li>{gender}</li>
+					<li>{gender}자</li>
 				</ul>
 			</div>
 		</div>
