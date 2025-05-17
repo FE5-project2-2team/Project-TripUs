@@ -6,6 +6,7 @@ import NotiMessage from "./NotiMessage";
 import NotiRequest from "./NotiRequest";
 import { readNoti } from "../../../apis/notification";
 import { useNoti } from "../../../context/useNoti";
+import { useThemeStore } from "../../../store/themeStore";
 
 export default function NotiList({
 	notiOpen,
@@ -83,24 +84,27 @@ export default function NotiList({
 		}
 	};
 
+	// darkmode
+	const isDark = useThemeStore((state) => state.isDark);
+	const closeIconPosition = isDark ? "72.727% 27.869%" : "28.571% 27.869%";
 	return (
 		<>
-			<div className="w-[560px] min-h-[664px] rounded-[10px] bg-[#fff] border border-[#D9D9D9] shadow-[0_2px_8px_0_rgba(99,99,99,0.20)]">
+			<div className="w-[560px] min-h-[664px] rounded-[10px] bg-[#fff] border border-[#D9D9D9] shadow-[0px_2px_8px_rgba(0,0,0,0.20)] dark:bg-[#313131] dark:shadow-[0px_2px_8px_rgba(195,195,195,0.3)] dark:border-[#1f1f1f]">
 				{/* 상단-알림,x버튼*/}
-				<div className="w-[500px] h-[29px] flex items-center justify-between mt-5 mx-6">
-					<div className="mt-5 text-[24px] font-bold">알림</div>
+				<div className="w-[500px] flex items-center justify-between mt-6 mx-6">
+					<div className="text-[24px] font-bold">알림</div>
 					{notiOpen && (
 						<button
 							onClick={() => setNotiOpen(!notiOpen)}
 							className="cursor-pointer"
 						>
-							<Icon position="28.571% 25.869%" size="24px" />
+							<Icon position={closeIconPosition} size="22px" />
 						</button>
 					)}
 				</div>
 
 				{/* 배너 */}
-				<div className="w-full h-[37px] border-b-[1px] border-b-[#7F7F7F]">
+				<div className="w-full h-[37px] border-b-[1px] border-[#ececec] dark:border-b-[#7F7F7F]">
 					<div className="flex flex-row w-[416px] h-[37px] ml-[30px] mt-5 gap-[6px]">
 						{bannerArr.map((banner) => (
 							<button
@@ -113,7 +117,7 @@ export default function NotiList({
 								}}
 							>
 								<span
-									className={`z-10 ${notiContents === banner ? "text-[#06B796]" : "text-[#333333]"}`}
+									className={`z-10 ${notiContents === banner ? "text-[#06B796]" : "text-[#333333] dark:text-[#dadada]"}`}
 								>
 									{banner}
 								</span>
@@ -130,9 +134,9 @@ export default function NotiList({
 					{filteredBannerNoti()}
 				</div>
 				{/* 모두읽음 */}
-				<div className="flex justify-end items-center border-t border-t-[#CDCDCD]">
+				<div className="flex justify-end items-center border-t border-t-[#ececec] dark:border-t-[#7F7F7F] h-[58px]">
 					<button
-						className="flex items-center h-[22px] text-[18px] mt-[18px] mr-[30px] text-[#333333] cursor-pointer"
+						className="flex items-center h-[22px] text-[18px] mr-[30px] cursor-pointer"
 						onClick={handleRead}
 					>
 						모두 읽음

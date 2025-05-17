@@ -1,25 +1,8 @@
-import { useEffect, useState } from "react";
 import Icon from "../../commons/Icon";
 
 export default function AddPostButt() {
-	const [isFixed, setIsFixed] = useState(false);
-
-	useEffect(() => {
-		const handScroll = () => {
-			const targetY = 250;
-			setIsFixed(window.scrollY >= targetY);
-		};
-		window.addEventListener("scroll", handScroll);
-		return () => window.removeEventListener("scroll", handScroll);
-	}, []);
 	return (
-		<div
-			className={`fixed sm:right-[50px] right-[20px]  bottom-[42px] z-30 sm:transition-all sm:duration-500 ${
-				isFixed
-					? "sm:bottom-[30px] sm:translate-y-0 sm:opacity-100"
-					: "sm:bottom-[-100px] sm:translate-y-[200px] sm:opacity-0"
-			}`}
-		>
+		<div className="fixed right-[50px] bottom-[30px] z-40">
 			<button
 				className="group relative sm:w-[70px] w-[60px] hover:w-[177px] sm:h-[70px] h-[60px]
                rounded-full bg-[#06B796] text-white

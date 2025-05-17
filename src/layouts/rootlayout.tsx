@@ -1,10 +1,17 @@
 import { Outlet, useLocation } from "react-router";
-import Header from "../components/commons/Header";
+import Footer from "./Footer";
+import Header from "./Header";
 
 export default function RootLayout() {
 	const location = useLocation();
 
-	const hideHeaderPaths = ["/post/detail", "/postCreate", "/post/edit"];
+	const hideHeaderPaths = [
+		"/post/detail",
+		"/postCreate",
+		"/post/edit",
+		"/profile",
+		"/message"
+	];
 
 	const hideHeader = hideHeaderPaths.some((path) =>
 		location.pathname.startsWith(path)
@@ -16,6 +23,7 @@ export default function RootLayout() {
 				<Header />
 			</div>
 			<Outlet />
+			<Footer />
 		</>
 	);
 }

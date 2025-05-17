@@ -59,7 +59,7 @@ export default function PostForm({
 				<div className="sm:hidden h-20" />
 				<FormProvider {...methods}>
 					<form
-						className="mt-10 px-6"
+						className="sm:mt-10 px-6"
 						action=""
 						onSubmit={methods.handleSubmit(submitHandler, errorHandler)}
 					>
