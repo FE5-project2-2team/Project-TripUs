@@ -171,13 +171,13 @@ export default function Channel() {
 	const likesIconPosition = isDark ? "83.5% 96.15%" : "74.3% 96.15%";
 
 	return (
-		<div className="w-full grid grid-cols-3 gap-[40px] mt-[20px] items-center relative">
+		<div className="w-full grid sm:grid-cols-3 grid-cols-2 sm:gap-[40px] gap-[18px] sm:mt-[20px] mt-[26px] items-center relative">
 			{filteredPosts.map((post: PostHomeData) => (
 				//포스트 카드
 
 				<div
 					key={post._id}
-					className="group w-[340px] h-[434px] rounded-[15px] flex flex-col overflow-hidden cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition duration-300 dark:bg-transparent dark:border dark:border-[#616161] dark:hover:shadow-[0px_4px_10px_rgba(100,100,100,0.3)]"
+					className="group sm:w-[340px] w-[200px] sm:h-[434px] h-[263px] sm:rounded-[15px] rounded-[8px] flex flex-col overflow-hidden cursor-pointer sm:shadow-[0px_2px_4px_rgba(0,0,0,0.16) shadow-[0px_1px_4px_rgba(0,0,0,0.16)]] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] transition duration-300 dark:bg-transparent dark:border dark:border-[#616161] dark:hover:shadow-[0px_4px_10px_rgba(100,100,100,0.3)]"
 					onClick={() => navigate(`/post/detail/${post._id}`)}
 				>
 					<div className="relative">
@@ -271,7 +271,20 @@ export default function Channel() {
 									<div className="flex items-center gap-1.5">
 										<Icon position={memberIconPosition} size="18px" />
 										<h3 className="text-[14px]">
-											{post.title.memberList.length} / {post.title.memberLimit}
+											{(() => {
+												const applyComments = post.comments.filter((com) => {
+													return JSON.parse(com.comment).type === "apply";
+												});
+
+												const memberCount = post.title.memberList.filter(
+													(mem) =>
+														applyComments.some(
+															(comment) => comment.author._id === mem
+														)
+												).length;
+
+												return `${memberCount + 1} / ${post.title.memberLimit}`;
+											})()}
 										</h3>
 									</div>
 								)}

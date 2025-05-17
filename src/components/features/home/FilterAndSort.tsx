@@ -51,15 +51,15 @@ export default function FilterAndSort({
 		setIsFilterOpen(false);
 	});
 	return (
-		<div className="w-full h-[76px] mt-7">
+		<div className="w-full h-[76px] sm:mt-7 mt-[19px]">
 			<div className="w-full h-[24px] flex items-end justify-between relative">
 				{/* 왼쪽: 필터 버튼 */}
 				<button
-					className="flex items-center gap-[4px] h-[24px] relative cursor-pointer"
+					className="flex items-center gap-[4px] sm:h-[24px] h-[19px] relative cursor-pointer"
 					onClick={() => setIsFilterOpen(true)}
 				>
 					<Icon position={filterIconPosition} size="22px" />
-					<span className="text-[20px]">필터</span>
+					<span className="sm:text-[20px] text-[16px]">필터</span>
 				</button>
 				{/* 필터모달 */}
 				{isFilterOpen && (
@@ -173,16 +173,18 @@ export default function FilterAndSort({
 				<div className="flex items-center relative">
 					<button
 						onClick={() => setSortToggle((sort) => !sort)}
-						className="flex items-center gap-[4px] h-[24px] cursor-pointer relative"
+						className="flex items-center gap-[4px] sm:h-[24px] h-[19px] cursor-pointer relative"
 					>
-						<span className="text-[20px] leading-[24px]">{sort}</span>
+						<span className="sm:text-[20px] text-[16px] sm:leading-[24px] leading-[19px]">
+							{sort}
+						</span>
 						<div className="pt-[4px]">
 							<Icon position={sortIconPosition} size="14px" />
 						</div>
 					</button>
 					{/* 정렬 툴팁 */}
 					{sortToggle && (
-						<div className="absolute top-[30px] left-[-50px] w-[142px] h-[147px] drop-shadow bg-white rounded-[10px] z-50 dark:bg-[#313131]">
+						<div className="absolute top-[30px] sm:left-[-50px] left-[-50px] sm:w-[142px] w-[120px] sm:h-[147px] h-[120px] drop-shadow bg-white rounded-[10px] z-50 dark:bg-[#313131]">
 							{["최신순", "인기순", "날짜순"].map((option) => (
 								<button
 									key={option}
@@ -190,7 +192,7 @@ export default function FilterAndSort({
 										setSort(option);
 										setSortToggle(false);
 									}}
-									className="w-[130px] h-[40px] m-[6px] px-[42.5px] py-[10.5px] text-[#333333] text-[16px] rounded-[8px] hover:bg-[#E0F4F2] hover:text-[#06B796] cursor-pointer whitespace-nowrap flex items-center justify-center dark:text-[#dadada] dark:hover:bg-[#B8E1E1]"
+									className="sm:w-[130px] w-[114px] sm:h-[40px] h-[30px] m-[6px] px-[42.5px] py-[10.5px] text-[#333333] sm:text-[16px] text-[14px] rounded-[8px] hover:bg-[#E0F4F2] hover:text-[#06B796] cursor-pointer whitespace-nowrap flex items-center justify-center dark:text-[#dadada] dark:hover:bg-[#B8E1E1]"
 								>
 									{option}
 								</button>
@@ -201,16 +203,16 @@ export default function FilterAndSort({
 				</div>
 			</div>
 			{/* 필터링 박스들 */}
-			<div className="w-full h-[36px] mt-[16px] flex items-center gap-[16px]">
+			<div className="w-full sm:h-[36px] h-[31px] mt-[16px] flex items-center gap-[16px]">
 				{selectFilter.map((filt) => (
 					<button
 						key={filt}
-						className="px-[16px] py-[5px] bg-[#F3F4F6] border border-[#06B796] rounded-[14px] flex items-center justify-center gap-[10px] cursor-pointer dark:bg-[#1B1D22]"
+						className="sm:px-[16px] px-[12px] py-[5px] bg-[#F3F4F6] border border-[#06B796] sm:rounded-[14px] rounded-[8px] flex items-center justify-center gap-[10px] cursor-pointer dark:bg-[#1B1D22]"
 						onClick={() => {
 							setSelectFilter(selectFilter.filter((item) => item !== filt));
 						}}
 					>
-						<span className=" flex items-center justify-center text-[18px] text-[#06B796]">
+						<span className=" flex items-center justify-center sm:text-[18px] text-[16px] text-[#06B796]">
 							{filt}
 						</span>
 						<Icon position="25.751% 35.326%" size="12px" />
