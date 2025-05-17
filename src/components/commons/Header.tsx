@@ -96,7 +96,7 @@ export default function Header() {
 		setNotiOpen(false);
 	});
 	return (
-		<div className="w-[1100px] flex justify-between h-[70px] m-auto">
+		<div className="sm:w-[1100px] w-[418px] flex justify-between h-[70px] m-auto">
 			<Link to={"/"} className="flex items-center">
 				<img src={headerLogo} alt="로고" />
 			</Link>
@@ -112,21 +112,21 @@ export default function Header() {
 						</button>
 						{isUserListOpen && (
 							<UserListModal
-								className="top-full left-1/2"
+								className="top-[110%] left-1/2"
 								onClose={() => setIsUserListOpen(false)}
 							/>
 						)}
 					</div>
 					{/* 알림 */}
-					<div ref={notiRef}>
-						<button onClick={toggleNoti} className="cursor-pointer relative">
+					<div ref={notiRef} className="relative inline-block">
+						<button onClick={toggleNoti} className="cursor-pointer">
 							<FontAwesomeIcon icon={faBell} className="text-xl" />
 							{unRead && (
 								<div className="absolute w-[10px] h-[10px] rounded-full top-[-5px] right-[-5px] bg-[#FD346E]" />
 							)}
 						</button>
 						{notiOpen && (
-							<div className="absolute top-[60px] right-[210px] z-60">
+							<div className="absolute top-[44px] left-[55%] transform -translate-x-1/2 z-60">
 								<NotiList
 									notiOpen={notiOpen}
 									setNotiOpen={setNotiOpen}
@@ -195,7 +195,7 @@ export default function Header() {
 						</button>
 						{isUserListOpen && (
 							<UserListModal
-								className="top-full left-1/2"
+								className="top-[110%] left-1/2"
 								onClose={() => setIsUserListOpen(false)}
 							/>
 						)}

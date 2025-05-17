@@ -115,7 +115,7 @@ export default function UserListModal({
 		<div
 			ref={modalRef}
 			className={twMerge(
-				"absolute transform -translate-x-1/2 mt-2 w-[400px] h-[580px] bg-white z-50 shadow-[0px_2px_8px_rgba(0,0,0,0.20)] px-[30px] py-[40px] rounded-[10px] dark:bg-[#313131]",
+				"absolute transform -translate-x-1/2 mt-2 w-[400px] h-[580px] bg-white z-50 shadow-[0px_2px_8px_rgba(0,0,0,0.20)] px-[30px] py-[40px] rounded-[10px] dark:bg-[#313131] dark:shadow-[0px_2px_8px_rgba(195,195,195,0.3)]",
 				className
 			)}
 		>

@@ -75,7 +75,7 @@ export default function MainVisual() {
 
 	return (
 		<div
-			className="w-[1100px] relative group"
+			className="sm:w-[1100px] w-[418px] relative group"
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handelMouseLeave}
 		>
@@ -96,19 +96,23 @@ export default function MainVisual() {
 					bulletClass: "custom-bullet",
 					bulletActiveClass: "custom-bullet-active"
 				}}
-				className="rounded-[10px]"
+				className="sm:rounded-[10px] rounded-[8px]"
 			>
 				{slides.map((slide, i) => (
 					<SwiperSlide key={i}>
-						<div className="relative w-full h-[400px]">
+						<div className="relative w-full sm:h-[400px] h-[190px]">
 							<img
 								src={slide.image}
 								alt={slide.alt}
 								className="w-full h-full object-cover"
 							/>
-							<div className="absolute bottom-10 left-10 text-white">
-								<h2 className="text-[40px] font-bold">{slide.description}</h2>
-								<p className="text-[28px] font-bold">{slide.title}</p>
+							<div className="absolute sm:bottom-10 sm:left-10 bottom-6 left-4 text-white">
+								<h2 className="sm:text-[40px] text-[16px] font-bold">
+									{slide.description}
+								</h2>
+								<p className="sm:text-[28px] text-[16px] font-bold">
+									{slide.title}
+								</p>
 							</div>
 						</div>
 					</SwiperSlide>
@@ -123,7 +127,7 @@ export default function MainVisual() {
 				</div>
 			</Swiper>
 			{/* pagination + autoplay control */}
-			<div className="flex justify-center items-center gap-[4px] mt-[10px] h-[24px] ">
+			<div className="flex sm:justify-center items-center gap-[4px] sm:mt-[10px] sm:h-[24px] mt-[-20px] h-[12px]">
 				<div className="flex items-center">
 					<div className="custom-pagination" />
 				</div>
@@ -131,6 +135,7 @@ export default function MainVisual() {
 					onClick={toggleAutoplay}
 					className="w-[22px] h-[22px] bg-[#cdcdcd] rounded-full flex items-center justify-center hover:bg-[#06B796] transition-colors duration-300 ml-[4px]"
 				>
+					{/* ..? */}
 					<Icon
 						position={autoplaying ? "-6px -11px" : "-21px -11px"}
 						size="20px"
