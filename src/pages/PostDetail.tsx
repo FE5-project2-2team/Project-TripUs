@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import LoadingSpinner from "../assets/images/LoadingSpinner.gif";
 import Button from "../components/commons/Button";
 import Confirm from "../components/commons/Confirm";
 import ApplyMembers from "../components/features/postDetail/ApplyMembers";
@@ -19,8 +20,10 @@ export default function PostDetail() {
 	const { id } = useParams();
 	const userId = useAuthStore((state) => state.userId)!;
 	const userInfo = useAuthStore((state) => state.userInfo)!;
+	const isLoading = usePostStore((state) => state.isLoading);
 	const applicants = usePostStore((state) => state.applicants);
 	const { confirmOpen, toggleConfirm } = useConfirm();
+	const [isReady, setIsReady] = useState(false);
 
 	const {
 		postData,
@@ -36,10 +39,23 @@ export default function PostDetail() {
 
 	useEffect(() => {
 		if (!id) return;
-		getData(id, userId);
+		const fetchData = async () => {
+			try {
+				await getData(id, userId);
+				setIsReady(true);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		fetchData();
 	}, [id, userId, getData]);
 
-	if (!postData || !postInfo) return <div></div>;
+	if (!postData || !postInfo || isLoading || !isReady)
+		return (
+			<div className="flex h-screen justify-center items-center">
+				<img src={LoadingSpinner} alt="로딩 중" />
+			</div>
+		);
 
 	const authorInfo: Profile = JSON.parse(postData.author.fullName);
 
@@ -50,13 +66,15 @@ export default function PostDetail() {
 	const isCanceledAppication =
 		applicants.every((applicant) => applicant.author._id !== userId) &&
 		!members.includes(userId);
-
 	const isMatchedCondition = userInfo
 		? checkAgeMatch(postInfo.recruitCondition, {
 				gender: userInfo.gender + "성",
 				age: userInfo.age
 			})
 		: false;
+	const hasApplicants = applicants.some(
+		(applicant) => !members.includes(applicant.author._id)
+	);
 
 	const fiveDaysLeft = getDiffInDays(new Date(), postInfo.dateRange[0]) < 5;
 
@@ -90,10 +108,8 @@ export default function PostDetail() {
 						</div>
 					</>
 				)}
-				{isAuthor && isRecruiting ? (
+				{isAuthor && isRecruiting && hasApplicants && (
 					<ApplyMembers postInfo={postInfo} postData={postData} />
-				) : (
-					<div></div>
 				)}
 				{isMember && !isCanceledAppication && <OpenTalkLink />}
 				<Likes />

@@ -2,7 +2,7 @@ import Icon from "../../commons/Icon";
 
 export default function AddPostButt() {
 	return (
-		<div className="fixed right-[50px] bottom-[30px] z-50">
+		<div className="fixed right-[50px] bottom-[30px] z-40">
 			<button
 				className="group relative w-[70px] hover:w-[177px] h-[70px]
                rounded-full bg-[#06B796] text-white

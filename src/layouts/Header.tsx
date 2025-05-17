@@ -92,6 +92,10 @@ export default function Header() {
 		setSidebarOpen((state) => !state);
 	};
 
+	const toggleUserList = () => {
+		setIsUserListOpen((state) => !state);
+	};
+
 	useEffect(() => {
 		if (isLoggedIn && userId) {
 			getUserData();
@@ -128,7 +132,7 @@ export default function Header() {
 							</button>
 							{isUserListOpen && (
 								<UserListModal
-									className="top-[110%] left-1/2"
+									className="absolute top-[110%] left-1/2"
 									onClose={() => setIsUserListOpen(false)}
 								/>
 							)}
@@ -211,7 +215,7 @@ export default function Header() {
 							</button>
 							{isUserListOpen && (
 								<UserListModal
-									className="top-[110%] left-1/2"
+									className="absolute top-[110%] left-1/2"
 									onClose={() => setIsUserListOpen(false)}
 								/>
 							)}
@@ -244,9 +248,19 @@ export default function Header() {
 					sidebarOpen={sidebarOpen}
 					signOut={signOut}
 					toggleHandler={toggleSidebar}
+					toggleUserList={toggleUserList}
 				/>
 			</div>
 			<div className="sm:hidden w-full h-[70px]" />
+			{isUserListOpen && (
+				<>
+					<div className="fixed inset-0 bg-black opacity-30 z-50" />
+					<UserListModal
+						className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+						onClose={() => toggleUserList()}
+					/>
+				</>
+			)}
 		</>
 	);
 }
