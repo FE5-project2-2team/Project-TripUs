@@ -65,7 +65,7 @@ export default function ChattingComponent({
 							/>
 						</Link>
 					) : (
-						<div className="w-[60px] h-[60px]" /> // 자리 유지를 위한 빈 박스 (선택)
+						<div className="sm:w-[60px] sm:h-[60px] w-13 h-13" /> // 자리 유지를 위한 빈 박스 (선택)
 					)}
 					<div>
 						{showProfileImage && (

@@ -146,7 +146,7 @@ export default function UserListModal({
 
 			{/* 결과 리스트 */}
 			<div
-				className="h-[382px] overflow-y-auto p-[5px]
+				className="h-[382px] overflow-y-auto custom-scrollbar main-color p-[5px]
                       border border-[#e4e4e4] rounded-[8px] dark:border-[#cdcdcd]"
 			>
 				{isSearching ? (
