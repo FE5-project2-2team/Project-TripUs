@@ -66,13 +66,15 @@ export default function PostDetail() {
 	const isCanceledAppication =
 		applicants.every((applicant) => applicant.author._id !== userId) &&
 		!members.includes(userId);
-
 	const isMatchedCondition = userInfo
 		? checkAgeMatch(postInfo.recruitCondition, {
 				gender: userInfo.gender + "성",
 				age: userInfo.age
 			})
 		: false;
+	const hasApplicants = applicants.some(
+		(applicant) => !members.includes(applicant.author._id)
+	);
 
 	const fiveDaysLeft = getDiffInDays(new Date(), postInfo.dateRange[0]) < 5;
 
@@ -106,10 +108,8 @@ export default function PostDetail() {
 						</div>
 					</>
 				)}
-				{isAuthor && isRecruiting ? (
+				{isAuthor && isRecruiting && hasApplicants && (
 					<ApplyMembers postInfo={postInfo} postData={postData} />
-				) : (
-					<div></div>
 				)}
 				{isMember && !isCanceledAppication && <OpenTalkLink />}
 				<Likes />
