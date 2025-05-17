@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { axiosInstance } from "../apis/axios";
 import { getMessageList, readMessage } from "../apis/message";
+import Icon from "../components/commons/Icon";
 import MessageInput from "../components/features/message/MessageInput";
 import MessageList from "../components/features/message/MessageList";
 import { useAuthStore } from "../store/authStore";
-import { axiosInstance } from "../apis/axios";
+import { useThemeStore } from "../store/themeStore";
 
 export default function Message() {
 	const { id } = useParams();
+	const navigate = useNavigate();
 	const [messages, setMessages] = useState<MessageData[]>([]);
 	const myUserId = useAuthStore((state) => state.userId);
+	const isDark = useThemeStore((state) => state.isDark);
 	const [fallbackOp, setFallbackOp] = useState<UserData | null>(null);
 
 	const opponent =
@@ -49,16 +53,25 @@ export default function Message() {
 	return (
 		<div className="flex flex-col h-full relative">
 			{opponent && (
-				<h2 className="px-4 text-[20px] font-semibold text-[#333] dark:text-[#FFFFFF] mt-[25px] mb-[25px]">
-					{typeof opponent.fullName === "string"
-						? JSON.parse(opponent.fullName).nickname ||
-							JSON.parse(opponent.fullName).name
-						: (opponent.fullName as User).nickname ||
-							(opponent.fullName as User).name}
-				</h2>
+				<div className="sm:bg-[#f6faf9] bg-white dark:bg-[#1B1D22] flex items-center sm:px-0 px-6 border-[#f3f3f3]">
+					<Icon
+						onClick={() => navigate(-1)}
+						position={isDark ? "50.218% 27.747%" : "39.301% 27.747%"}
+						size="16px"
+						className="sm:hidden block cursor-pointer"
+					/>
+					<h2 className="px-4 sm:text-[20px] font-semibold text-[#333] dark:text-[#FFFFFF] mt-[25px] mb-[25px]">
+						{typeof opponent.fullName === "string"
+							? JSON.parse(opponent.fullName).nickname ||
+								JSON.parse(opponent.fullName).name
+							: (opponent.fullName as User).nickname ||
+								(opponent.fullName as User).name}
+					</h2>
+				</div>
 			)}
 
 			<MessageList key={id} messages={messages} myUserId={myUserId!} />
+
 			<MessageInput receiverId={id!} onMessageSent={handleNewMessage} />
 		</div>
 	);

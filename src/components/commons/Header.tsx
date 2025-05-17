@@ -120,7 +120,10 @@ export default function Header() {
 							<Icon size="24px" position={userListIconPosition} />
 						</button>
 						{isUserListOpen && (
-							<UserListModal onClose={() => setIsUserListOpen(false)} />
+							<UserListModal
+								className="top-[110%] left-1/2"
+								onClose={() => setIsUserListOpen(false)}
+							/>
 						)}
 					</div>
 					{/* 알림 */}
@@ -200,7 +203,10 @@ export default function Header() {
 							<Icon size="24px" position={userListIconPosition} />
 						</button>
 						{isUserListOpen && (
-							<UserListModal onClose={() => setIsUserListOpen(false)} />
+							<UserListModal
+								className="top-[110%] left-1/2"
+								onClose={() => setIsUserListOpen(false)}
+							/>
 						)}
 					</div>
 					<Link to={"/login"}>
