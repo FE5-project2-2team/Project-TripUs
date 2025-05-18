@@ -23,6 +23,11 @@ export default function Channel() {
 	const [filteredPosts, setFilteredPosts] = useState<PostData[]>(posts);
 	const navigate = useNavigate();
 	const SortPosts = useCallback((sort: string, targetPosts: PostData[]) => {
+		const parseTitle = (post: PostData) => {
+			return typeof post.title === "string"
+				? JSON.parse(post.title)
+				: post.title;
+		};
 		if (sort === "최신순") {
 			return [...targetPosts].sort(
 				(a, b) =>
@@ -34,12 +39,12 @@ export default function Channel() {
 			return [...targetPosts]
 				.sort(
 					(a, b) =>
-						new Date(JSON.parse(a.title).dateRange[0]).getTime() -
-						new Date(JSON.parse(b.title).dateRange[0]).getTime()
+						new Date(parseTitle(a).dateRange[0]).getTime() -
+						new Date(parseTitle(b).dateRange[0]).getTime()
 				)
 				.filter(
 					(target) =>
-						getDiffInDays(JSON.parse(target.title).dateRange[0], new Date()) < 0
+						getDiffInDays(parseTitle(target).dateRange[0], new Date()) < 0
 				);
 		}
 	}, []);
@@ -132,9 +137,11 @@ export default function Channel() {
 
 					if (channelName === "긴급 모집") {
 						parsedPosts = parsedPosts.filter((post) => {
-							const startDate = new Date(
-								JSON.parse(post.title).dateRange[0]
-							).getTime();
+							const parsedTitle =
+								typeof post.title === "string"
+									? JSON.parse(post.title)
+									: post.title;
+							const startDate = new Date(parsedTitle.dateRange[0]).getTime();
 							const now = new Date().getTime();
 							const diff = (startDate - now) / (1000 * 60 * 60);
 							return diff <= 72 && diff >= 0;
@@ -222,7 +229,7 @@ export default function Channel() {
 
 								if (channelName === "review") {
 									return (
-										<div className="hidden sm:flex absolute items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#06B796] text-[#fff] text-[14px] z-20">
+										<div className="flex absolute items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#06B796] text-[#fff] text-[14px] z-20">
 											후기
 										</div>
 									);
@@ -230,7 +237,7 @@ export default function Channel() {
 
 								if (channelName === "긴급 모집") {
 									return (
-										<div className="hidden sm:flex absolute items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#FF2929] text-[#fff] text-[14px] z-20">
+										<div className="flex absolute items-center justify-center top-[8px] right-[8px] w-[60px] h-[26px] rounded-[8px] bg-[#FF2929] text-[#fff] text-[14px] z-20">
 											긴급
 										</div>
 									);
