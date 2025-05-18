@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import LoadingSpinner from "../assets/images/LoadingSpinner.gif";
+import LoadingSpinner from "../assets/images/SailLoadingSpinner.gif";
 import Button from "../components/commons/Button";
 import Confirm from "../components/commons/Confirm";
 import ApplyMembers from "../components/features/postDetail/ApplyMembers";
