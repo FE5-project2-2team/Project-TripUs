@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router";
-import profileImg from "../../../assets/images/profileImg_circle.svg";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { getMessageList } from "../../../apis/message";
+import profileImg from "../../../assets/images/profileImg_circle.svg";
 import { useNoti } from "../../../context/useNoti";
 // import { useEffect } from "react";
 
@@ -66,7 +66,7 @@ export default function NotiMessageItem({
 	};
 	return (
 		<div
-			className="flex items-center w-full h-[100px] border-b border-[#ececec]  cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150 dark:hover:bg-[#6B6B6B] dark:border-[#7F7F7F]"
+			className="flex items-center w-full sm:h-[100px] sm:py-0 py-4 border-b border-[#CDCDCD]  cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150 dark:hover:bg-[#6B6B6B] dark:border-[#7F7F7F]"
 			onClick={handleClick}
 		>
 			<div className="relative flex items-center">
@@ -80,15 +80,17 @@ export default function NotiMessageItem({
 				)}
 			</div>
 
-			<div className="flex flex-col ml-[14px] w-[426px]">
+			<div className="flex flex-col ml-[14px] w-[426px] sm:px-0 px-2">
 				<div className="w-full">
 					<div className="flex justify-between items-center w-full">
-						<div className="text-[16px]">
+						<div className="text-sm sm:text-[16px]">
 							{nickname}님이 메시지를 보내셨습니다.
 						</div>
-						<div className="text-[14px] whitespace-nowrap">{time}</div>
+						<div className="text-[13px] sm:text-[14px] whitespace-nowrap">
+							{time}
+						</div>
 					</div>
-					<div className="text-[14px]">{mess?.message}</div>
+					<div className="text-[13px] sm:text-[14px]">{mess?.message}</div>
 				</div>
 			</div>
 		</div>

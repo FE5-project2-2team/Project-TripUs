@@ -11,13 +11,13 @@ export default function Footer() {
 	return (
 		<div
 			className={twMerge(
-				"sm:hidden text-sm fixed flex justify-around items-center text-[#616161] bottom-0 w-full h-[70px] bg-white border-t border-[#F3F3F3] z-[50]",
+				"sm:hidden text-sm fixed flex items-center text-[#616161] bottom-0 w-full h-[70px] bg-white border-t border-[#F3F3F3] z-[50]",
 				"dark:bg-[#333333] dark:border-[#161616] dark:text-[#fff]"
 			)}
 		>
 			<NavLink
 				to={"/channel/전체글"}
-				className={"flex flex-col items-center gap-[2px]"}
+				className={"flex flex-1 flex-col items-center gap-[2px]"}
 				children={({ isActive }) => (
 					<>
 						<Icon
@@ -31,7 +31,7 @@ export default function Footer() {
 			/>
 			<NavLink
 				to={"/notification"}
-				className={"flex flex-col items-center gap-[2px]"}
+				className={"flex flex-1 flex-col items-center gap-[2px]"}
 				children={({ isActive }) => (
 					<>
 						<Icon
@@ -45,7 +45,7 @@ export default function Footer() {
 			/>
 			<NavLink
 				to={"/message"}
-				className={"flex flex-col items-center gap-[2px]"}
+				className={"flex flex-1 flex-col items-center gap-[2px]"}
 				children={({ isActive }) => (
 					<>
 						<Icon
@@ -59,7 +59,7 @@ export default function Footer() {
 			/>
 			<NavLink
 				to={userId ? `/profile/${userId}` : "/login"}
-				className={"flex flex-col items-center gap-[2px]"}
+				className={"flex flex-1 flex-col items-center gap-[2px]"}
 				children={({ isActive }) => (
 					<>
 						<Icon

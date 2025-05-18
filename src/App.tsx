@@ -14,6 +14,7 @@ import ScrollToTop from "./components/commons/ScrollToTop";
 import MessageLayout from "./components/features/message/MessageLayout";
 import { NotiProvider } from "./context/NotiProvider";
 import NotFound from "./pages/NotFound";
+import NotiLayout from "./pages/NotiLayout";
 import PostCreate from "./pages/PostCreate";
 import PostDetail from "./pages/PostDetail";
 import PostEdit from "./pages/PostEdit";
@@ -45,6 +46,7 @@ export default function App() {
 							<Route path="/post/edit/:id" element={<PostEdit />} />
 							<Route path="/message" element={<MessageLayout />} />
 							<Route path="/message/:id" element={<MessageLayout />} />
+							<Route path="/notification" element={<NotiLayout />} />
 						</Route>
 					</Route>
 					<Route element={<PublicOnlyRoute />}>
