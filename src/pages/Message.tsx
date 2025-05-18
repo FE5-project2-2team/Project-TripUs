@@ -53,7 +53,7 @@ export default function Message() {
 	return (
 		<div className="flex flex-col h-full">
 			{opponent && (
-				<div className="sm:bg-[#f6faf9] bg-white dark:bg-[#1B1D22] flex items-center sm:px-0 px-6 border-[#f3f3f3]">
+				<div className="dark:border-[#4a4b4d] h-[70px] sm:bg-[#f6faf9] bg-white dark:bg-[#1B1D22] flex items-center sm:px-0 px-6 border-[#f3f3f3] z-50">
 					<Icon
 						onClick={() => navigate(-1)}
 						position={isDark ? "50.218% 27.747%" : "39.301% 27.747%"}

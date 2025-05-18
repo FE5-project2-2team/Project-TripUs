@@ -1,6 +1,7 @@
 // import { useEffect } from "react";
 // import { getPostById } from "../../../apis/post";
 import { useNavigate } from "react-router";
+import { twMerge } from "tailwind-merge";
 import profileImg from "../../../assets/images/profileImg_circle.svg";
 import { useNoti } from "../../../context/useNoti";
 
@@ -67,7 +68,10 @@ export default function NotiRequestItem({
 
 	return (
 		<div
-			className="flex items-center w-full sm:h-[100px] sm:py-0 py-4 border-b border-[#CDCDCD] cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150"
+			className={twMerge(
+				"flex items-center w-full sm:h-[100px] sm:py-0 py-4 border-b border-[#CDCDCD] cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150",
+				notice.seen && "bg-[#F3F4F6] text-[#c2c2c2]"
+			)}
 			onClick={handleClick}
 		>
 			<div className="relative flex items-center">

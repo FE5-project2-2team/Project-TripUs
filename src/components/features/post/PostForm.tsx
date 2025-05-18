@@ -46,7 +46,7 @@ export default function PostForm({
 	return (
 		<div className="flex justify-center">
 			<main className="font-[Noto-Sans] sm:w-275 w-full">
-				<div className="sm:hidden flex items-center fixed w-full bg-white dark:bg-[#1B1D22] z-10 border-[#f3f3f3] h-20">
+				<div className="sm:hidden flex items-center fixed w-full bg-white dark:bg-[#1B1D22] border-b dark:border-[#4a4b4d] z-10 border-[#f3f3f3] h-[70px]">
 					<div className="flex items-center gap-4 p-4 fixed">
 						<Icon
 							onClick={() => navigate(-1)}
@@ -56,7 +56,7 @@ export default function PostForm({
 						<h2 className="text-lg font-medium">게시글 등록</h2>
 					</div>
 				</div>
-				<div className="sm:hidden h-20" />
+				<div className="sm:hidden h-[100px]" />
 				<FormProvider {...methods}>
 					<form
 						className="sm:mt-10 px-6"

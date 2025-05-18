@@ -67,7 +67,7 @@ export default function PostTitle({
 	};
 
 	return (
-		<div className="flex justify-between items-center sm:relative sm:z-1 z-20 w-full fixed left-0 dark:bg-[#1B1D22] bg-[#fff] p-4 sm:mb-2 sm:border-0 border-b border-[#f3f3f3] dark:border-[#161616] h-20">
+		<div className="flex justify-between items-center sm:relative sm:z-1 z-20 w-full fixed left-0 dark:bg-[#1B1D22] bg-[#fff] p-4 sm:mb-2 sm:border-0 border-b border-[#f3f3f3] dark:border-[#4a4b4d] h-[70px]">
 			<Icon
 				position={isDark ? "50.218% 27.747%" : "39.301% 27.747%"}
 				size="16px"
