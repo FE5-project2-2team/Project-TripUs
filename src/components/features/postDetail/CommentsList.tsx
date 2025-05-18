@@ -45,7 +45,7 @@ export default function Comments({ authorId }: { authorId: string }) {
 			>
 				<input
 					className={twMerge(
-						"w-full sm:h-15 h-11 mt-[35px] px-4 border border-[#CDCDCD] rounded-[10px] text-sm placeholder:text-[#CDCDCD] text-black focus:outline-0",
+						"w-full sm:h-15 h-13 mt-[35px] px-4 border border-[#CDCDCD] rounded-[10px] text-sm placeholder:text-[#CDCDCD] text-black focus:outline-0",
 						"dark:border-[#616161] dark:placeholder:text-[#616161] dark:text-[#dadada]"
 					)}
 					type="text"
@@ -56,7 +56,7 @@ export default function Comments({ authorId }: { authorId: string }) {
 				<button
 					type="submit"
 					className={twMerge(
-						"absolute sm:top-[42px] top-[41px] sm:right-2 right-1  w-20 sm:h-[46px] h-8 bg-[#f3f4f6] text-[#06b796] font-medium rounded-lg",
+						"absolute sm:top-[42px] top-[41px] sm:right-2 right-1 w-20 sm:h-[46px] h-10 bg-[#f3f4f6] text-[#06b796] font-medium rounded-lg",
 						"sm:hover:text-white sm:hover:bg-[#06b796] cursor-pointer sm:text-base text-sm",
 						"active:text-white active:bg-[#06b796]",
 						"dark:bg-[#333] dark:border dark:border-[#06b796]"
