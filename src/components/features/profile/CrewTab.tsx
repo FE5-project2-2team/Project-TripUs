@@ -39,7 +39,7 @@ const CrewTab = ({
 	return (
 		<div>
 			<div className="sm:flex my-[30px] text-[18px] font-medium gap-x-[8px] hidden">
-				<h1>동행 게시글</h1>
+				<h1>크루모집</h1>
 				<p className="text-[#06B796]">{crewPosts.length}</p>
 			</div>
 			{!isMyPage && crewPosts.length === 0 ? (
@@ -47,7 +47,7 @@ const CrewTab = ({
 					<p>아직 작성한 게시글이 없습니다.</p>
 			  	</div>
 			) : (
-				<div className="w-[418] sm:w-auto grid grid-cols-2 sm:grid-cols-3 mt-[26px] sm:mt-0 gap-x-[18px] gap-y-[14px] sm:gap-x-[58px] sm:gap-y-[30px]">
+				<div className="w-[418] sm:w-auto grid grid-cols-2 sm:grid-cols-3 mt-[26px] sm:mt-0 gap-x-[18px] gap-y-[18px] sm:gap-x-[58px] sm:gap-y-[30px]">
 					{isMyPage && (
 						<Link to={"/postCreate"}>
 							<div className="group flex flex-col items-center justify-center sm:w-[328px] sm:h-[382px] w-[200px] h-[252px] border border-[#06B796] rounded-[15px] shadow-[0px_2px_4px_rgba(0,0,0,0.16)] hover:shadow-[0px_4px_10px_rgba(0,0,0,0.3)] hover:border-[#038383] transition duration-300">
@@ -73,15 +73,15 @@ const CrewTab = ({
 									{/* 상단 영역 */}
 									<div className="relative block">
 										{getDiffInDays(new Date(), parsedTitle.dateRange[0]) < 0 ? (
-											<p className="z-10 hidden absolute select-none top-0 right-0 sm:flex items-center justify-center w-[60px] h-[26px] px-[4px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#808080]">
+											<p className="z-10 absolute select-none top-0 right-0 flex items-center justify-center w-[50px] h-[20px] sm:w-[60px] sm:h-[26px] px-[2px] sm:px-[4px] py-[3px] m-[8px] rounded-[8px] text-white text-[12px] sm:text-[14px] bg-[#808080]">
 												여정완료
 											</p>
 										) : parsedTitle.isRecruiting === true ? (
-											<p className="z-10 hidden absolute select-none top-0 right-0 sm:flex items-center justify-center w-[60px] h-[26px] px-[8px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#06B796]">
+											<p className="z-10 absolute select-none top-0 right-0 flex items-center justify-center w-[50px] h-[20px] sm:w-[60px] sm:h-[26px] px-[2px] sm:px-[4px] py-[3px] m-[8px] rounded-[8px] text-white text-[12px] sm:text-[14px] bg-[#FD346E]">
 												모집중
 											</p>
 										) : (
-											<p className="z-10 hidden absolute select-none top-0 right-0 sm:flex items-center justify-center w-[60px] h-[26px] px-[3px] py-[3px] m-[8px] rounded-[8px] text-white text-[14px] bg-[#1C274C]">
+											<p className="z-10 absolute select-none top-0 right-0 flex items-center justify-center w-[50px] h-[20px] sm:w-[60px] sm:h-[26px] px-[2px] sm:px-[4px] py-[3px] m-[8px] rounded-[8px] text-white text-[12px] sm:text-[14px] bg-[#1C274C]">
 												모집완료
 											</p>
 										)}
