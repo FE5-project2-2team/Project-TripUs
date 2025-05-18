@@ -44,7 +44,7 @@ export const updateUserPwd = async (newPwd: string) => {
 export const searchUsers = async (query: string) => {
 	const encoded = encodeURIComponent(query);
 	const { data } = await axiosInstance.get(`/search/users/${encoded}`);
-	return data as UserHomeData[];
+	return data as UserData[];
 };
 
 // export const updateUserInfo = async ({ profile }: UpdatedUserData) => {
