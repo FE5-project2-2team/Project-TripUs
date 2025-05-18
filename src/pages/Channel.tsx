@@ -29,10 +29,20 @@ export default function Channel() {
 				: post.title;
 		};
 		if (sort === "최신순") {
-			return [...targetPosts].sort(
-				(a, b) =>
+			return [...targetPosts].sort((a, b) => {
+				const aExpired =
+					a.channel.name === "crews" &&
+					getDiffInDays(parseTitle(a).dateRange[0], new Date()) > 0;
+				const bExpired =
+					b.channel.name === "crews" &&
+					getDiffInDays(parseTitle(b).dateRange[0], new Date()) > 0;
+				if (aExpired !== bExpired) {
+					return aExpired ? 1 : -1;
+				}
+				return (
 					new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-			);
+				);
+			});
 		} else if (sort === "인기순") {
 			return [...targetPosts].sort((a, b) => b.likes.length - a.likes.length);
 		} else {
