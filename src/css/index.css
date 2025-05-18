@@ -28,7 +28,7 @@ button {
 }
 
 .inputProps {
-	@apply pl-[54px] w-[320px] sm:w-full h-[60px] border border-[#616161] rounded-[10px]
+	@apply pl-[48px] sm:pl-[54px] w-[360px] sm:w-full h-[60px] border border-[#616161] rounded-[10px]
     text-[16px] text-[#333333] placeholder-[#616161]
     focus:outline-none focus:border-[#06B796]
     group-hover:border-[#06B796] group-hover:placeholder-[#06B796]
@@ -40,7 +40,7 @@ button {
 }
 
 .inputBirth {
-	@apply pl-[54px] w-[154px] sm:w-[226px] h-[60px] mr-[10px] sm:mr-[18px] border border-[#616161] rounded-[10px] 
+	@apply pl-[48px] sm:pl-[54px] w-[185px] sm:w-[226px] h-[60px] mr-[10px] sm:mr-[18px] border border-[#616161] rounded-[10px] 
     text-[16px] placeholder-[#616161] 
     focus:outline-none focus:border-[#06B796] 
     group-hover:border-[#06B796] group-hover:placeholder-[#06B796]
@@ -48,7 +48,7 @@ button {
 }
 
 .inputGender {
-	@apply w-[35px] sm:w-[50px] h-[60px] ml-[10px] sm:ml-[18px] border border-[#616161] rounded-[10px] 
+	@apply w-[40px] sm:w-[50px] h-[60px] ml-[10px] sm:ml-[18px] border border-[#616161] rounded-[10px] 
     text-center text-[16px] focus:outline-none focus:border-[#06B796];
 }
 

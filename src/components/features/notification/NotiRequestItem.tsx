@@ -1,7 +1,7 @@
 // import { useEffect } from "react";
 // import { getPostById } from "../../../apis/post";
-import profileImg from "../../../assets/images/profileImg_circle.svg";
 import { useNavigate } from "react-router";
+import profileImg from "../../../assets/images/profileImg_circle.svg";
 import { useNoti } from "../../../context/useNoti";
 
 export default function NotiRequestItem({
@@ -67,7 +67,7 @@ export default function NotiRequestItem({
 
 	return (
 		<div
-			className="flex items-center w-full h-[100px] border-b border-[#CDCDCD] cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150"
+			className="flex items-center w-full sm:h-[100px] sm:py-0 py-4 border-b border-[#CDCDCD] cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150"
 			onClick={handleClick}
 		>
 			<div className="relative flex items-center">
@@ -81,13 +81,15 @@ export default function NotiRequestItem({
 				)}
 			</div>
 
-			<div className="flex flex-col ml-[14px] w-[426px]">
+			<div className="flex flex-col ml-[14px] w-[426px] sm:px-0 px-2">
 				<div className="w-full">
 					<div className="flex justify-between items-center w-full">
-						<div className="text-[16px]">
+						<div className="text-sm sm:text-[16px]">
 							{nickname}님이 동행요청을 보내셨습니다.
 						</div>
-						<div className="text-[14px] whitespace-nowrap">{time}</div>
+						<div className="text-[13px] sm:text-[14px] whitespace-nowrap">
+							{time}
+						</div>
 					</div>
 					{/* <div className="text-[14px]">
 						{parsedTitle ? `게시글: ${parsedTitle}` : "게시글:   "}

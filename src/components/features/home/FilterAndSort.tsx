@@ -70,7 +70,7 @@ export default function FilterAndSort({
 					<>
 						<div className="fixed inset-0 bg-[#000] opacity-[40%] z-40" />
 						<div ref={filterRef}>
-							<div className="sm:p-[30px] px-[24px] py-[30px] fixed sm:rounded-[15px] rounded-t-[20px] sm:top-1/2 bottom-0 left-1/2 transform -translate-x-1/2 sm:-translate-y-1/2 sm:w-[524px] w-full sm:h-[414px] h-[390px] sm:drop-shadow bg-[#fff] border border-[#616161] z-50 dark:bg-[#313131]">
+							<div className="sm:p-[30px] px-[24px] py-[30px] fixed sm:rounded-[15px] rounded-t-[20px] sm:top-1/2 bottom-[70px] left-1/2 transform -translate-x-1/2 sm:-translate-y-1/2 sm:w-[524px] w-full sm:h-[414px] h-[390px] sm:drop-shadow bg-[#fff] border border-[#616161] z-50 dark:bg-[#313131]">
 								<div className="sm:w-[464px] w-full sm:h-[29px] h-[24px] flex items-center justify-between">
 									<span className="sm:text-[24px] text-[18px] font-bold">
 										필터
@@ -199,19 +199,21 @@ export default function FilterAndSort({
 						<>
 							<div className="fixed inset-0 bg-[#000] opacity-[40%] z-40  block sm:hidden" />
 							<div ref={sortRef}>
-								<div className="sm:absolute fixed sm:top-[30px] bottom-0 left-1/2 transform -translate-x-1/2 sm:left-[10px] sm:w-[142px] w-full sm:h-[147px] h-[226px] drop-shadow bg-white sm:rounded-[10px] rounded-t-[20px] z-40 dark:bg-[#313131]">
-									{["최신순", "인기순", "날짜순"].map((option) => (
-										<button
-											key={option}
-											onClick={() => {
-												setSort(option);
-												setSortToggle(false);
-											}}
-											className="sm:w-[130px] w-[418px] sm:h-[40px] h-[50px] sm:m-[6px] mx-auto my-[14px] text-[#333333] sm:text-[16px] text-[14px] sm:rounded-[8px] sm:hover:bg-[#E0F4F2] hover:text-[#06B796] cursor-pointer whitespace-nowrap flex items-center justify-center dark:text-[#dadada] dark:hover:bg-[#B8E1E1]"
-										>
-											{option}
-										</button>
-									))}
+								<div className="sm:absolute fixed sm:top-[30px] bottom-[70px] left-1/2 transform -translate-x-1/2 sm:left-[10px] sm:w-[142px] w-full sm:h-[147px] h-[226px] drop-shadow bg-white sm:rounded-[10px] rounded-t-[20px] z-40 dark:bg-[#313131]">
+									<div className="pt-[24px] sm:pt-0">
+										{["최신순", "인기순", "날짜순"].map((option) => (
+											<button
+												key={option}
+												onClick={() => {
+													setSort(option);
+													setSortToggle(false);
+												}}
+												className="sm:w-[130px] w-[418px] sm:h-[40px] h-[50px] sm:m-[6px] mx-auto my-[14px] text-[#333333] sm:text-[16px] text-[14px] sm:rounded-[8px] sm:hover:bg-[#E0F4F2] hover:text-[#06B796] cursor-pointer whitespace-nowrap flex items-center justify-center dark:text-[#dadada] dark:hover:bg-[#B8E1E1]"
+											>
+												{option}
+											</button>
+										))}
+									</div>
 									{/* {sort} */}
 								</div>
 							</div>

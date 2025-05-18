@@ -110,39 +110,41 @@ export default function InfoForm({
 				) : (
 					<div className="sm:block hidden" />
 				)}
-				<div className="relative flex sm:flex-col sm:items-start items-center justify-between">
+				<div className="relative flex sm:flex-col w-full sm:items-start items-center justify-between">
 					<label
 						htmlFor="location"
 						className={twMerge(
 							"post-input-title",
-							isEditing && "text-[#aaaaaa]"
+							isEditing && "text-[#aaaaaa] dark:text-[#666]"
 						)}
 					>
 						지역 입력
 					</label>
-					<input
-						disabled={isEditing}
-						id="location"
-						type="text"
-						placeholder="지역 입력"
-						autoComplete="off"
-						className={twMerge(
-							"input-style placeholder:text-[#CDCDCD] focus:outline-0",
-							"dark:placeholder:text-[#616161] dark:border-[#616161]",
-							"disabled:text-[#aaaaaa]"
-						)}
-						{...register("location")}
-						onFocus={() => setIsFocused(true)}
-						onBlur={() => setIsFocused(false)}
-					/>
-					{isFocused && <AutoComplete />}
+					<div className="relative flex flex-col flex-1 w-full">
+						<input
+							disabled={isEditing}
+							id="location"
+							type="text"
+							placeholder="지역 입력"
+							autoComplete="off"
+							className={twMerge(
+								"input-style placeholder:text-[#CDCDCD] focus:outline-0",
+								"dark:placeholder:text-[#616161] dark:border-[#616161]",
+								"disabled:text-[#aaaaaa]"
+							)}
+							{...register("location")}
+							onFocus={() => setIsFocused(true)}
+							onBlur={() => setIsFocused(false)}
+						/>
+						{isFocused && <AutoComplete />}
+					</div>
 				</div>
 				<div className="flex sm:flex-col sm:items-start items-center justify-between">
 					<label
 						htmlFor="date"
 						className={twMerge(
 							"post-input-title",
-							isEditing && "text-[#aaaaaa]"
+							isEditing && "text-[#aaaaaa] dark:text-[#666]"
 						)}
 					>
 						일정 선택
@@ -151,7 +153,7 @@ export default function InfoForm({
 						disabled={isEditing}
 						id="date"
 						className={twMerge(
-							"input-style placeholder:text-[#CDCDCD] focus:outline-0",
+							"flex-1 input-style placeholder:text-[#CDCDCD] focus:outline-0",
 							"dark:placeholder:text-[#616161] dark:border-[#616161]",
 							"disabled:cursor-default! disabled:text-[#aaaaaa]"
 						)}

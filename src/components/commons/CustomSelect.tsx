@@ -42,54 +42,56 @@ export default function CustomSelect({
 	);
 
 	return (
-		<div className="relative sm:block flex justify-between items-center">
+		<div className="sm:block flex justify-between items-center">
 			<label
 				htmlFor={name}
 				className={twMerge(
 					"post-input-title",
-					name === "channel" && isEditing && "text-[#aaaaaa]"
+					name === "channel" && isEditing && "text-[#aaaaaa] dark:text-[#666]"
 				)}
 			>
 				{label}
 			</label>
-			<input
-				onClick={toggleOptionHandler}
-				className={twMerge(
-					"input-style focus:outline-0 cursor-pointer disabled:text-[#aaaaaa]",
-					"dark:border-[#616161]"
-				)}
-				type="text"
-				readOnly
-				value={options.find((opt) => opt.value === value)?.label || ""}
-				disabled={name === "channel" && isEditing}
-			/>
-			{optionOepn && (
-				<ul
-					ref={optionsRef}
+			<div className="relative flex flex-col flex-1">
+				<input
+					onClick={toggleOptionHandler}
 					className={twMerge(
-						"absolute sm:top-[94px] top-12 right-0 sm:w-full w-73 overflow-hidden border-1 border-[#d6d6d6] py-2 px-2 bg-white pb-2 rounded-b-[10px]",
-						"dark:bg-[#333] dark:border-[#000] z-20"
+						"input-style focus:outline-0 cursor-pointer disabled:text-[#aaaaaa]",
+						"dark:border-[#616161] w-full"
 					)}
-				>
-					{options
-						.filter((option) => {
-							if (!isEditing || !actualMembers) return true;
-							return actualMembers.length <= (option.label as number);
-						})
-						.map((option) => (
-							<li
-								onClick={() => {
-									toggleOptionHandler();
-									onChange(option.value);
-								}}
-								key={option.value}
-								className="px-5 py-2 rounded-sm hover:bg-[#E0F4F2] hover:text-[#06b796] cursor-pointer dark:hover:text-[#333]"
-							>
-								{option.label}
-							</li>
-						))}
-				</ul>
-			)}
+					type="text"
+					readOnly
+					value={options.find((opt) => opt.value === value)?.label || ""}
+					disabled={name === "channel" && isEditing}
+				/>
+				{optionOepn && (
+					<ul
+						ref={optionsRef}
+						className={twMerge(
+							"absolute sm:top-[54px] top-12 right-0 w-full overflow-hidden border-1 border-[#d6d6d6] py-2 px-2 bg-white pb-2 rounded-b-[10px]",
+							"dark:bg-[#444] sm:dark:bg-[#333] dark:border-[#000] z-20"
+						)}
+					>
+						{options
+							.filter((option) => {
+								if (!isEditing || !actualMembers) return true;
+								return actualMembers.length <= (option.label as number);
+							})
+							.map((option) => (
+								<li
+									onClick={() => {
+										toggleOptionHandler();
+										onChange(option.value);
+									}}
+									key={option.value}
+									className="sm:w-full px-5 py-2 rounded-sm hover:bg-[#E0F4F2] hover:text-[#06b796] cursor-pointer dark:hover:text-[#333]"
+								>
+									{option.label}
+								</li>
+							))}
+					</ul>
+				)}
+			</div>
 		</div>
 	);
 }
