@@ -34,29 +34,38 @@ export default function MessageList({ messages, myUserId }: MessageListProps) {
 
 	useEffect(() => {
 		if (!initScroll && id && messageBoxRef.current && messages.length > 0) {
-			setTimeout(() => {
-				const box = messageBoxRef.current;
-				if (box) {
-					box.scrollTop = box.scrollHeight;
-					setInitScroll(true);
-				}
-			}, 50);
+			requestAnimationFrame(() => {
+				setTimeout(() => {
+					const box = messageBoxRef.current;
+					if (box) {
+						box.scrollTop = box.scrollHeight;
+						setInitScroll(true);
+					}
+				}, 0);
+			});
 		}
 	}, [messages.length, initScroll, id]);
 
 	useEffect(() => {
 		if (messageBoxRef.current && messages.length > 0) {
 			const box = messageBoxRef.current;
-			const isNearBottom =
-				box.scrollTop + box.clientHeight >= box.scrollHeight - 100;
 
-			if (isNearBottom) {
-				setTimeout(() => {
-					box.scrollTop = box.scrollHeight;
-				}, 0);
+			const scrollTop = box.scrollTop;
+			const scrollHeight = box.scrollHeight;
+			const clientHeight = box.clientHeight;
+
+			const isNearBottom = scrollTop + clientHeight >= scrollHeight - 10;
+			const isWayTooHigh = scrollTop < clientHeight * 0.6;
+
+			if (isNearBottom || isWayTooHigh) {
+				requestAnimationFrame(() => {
+					setTimeout(() => {
+						box.scrollTop = box.scrollHeight;
+					}, 0);
+				});
 			}
 		}
-	}, [messages]);
+	}, [messages, id]);
 
 	const scrollToBottom = () => {
 		const box = messageBoxRef.current;
