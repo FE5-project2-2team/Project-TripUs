@@ -122,9 +122,11 @@ export default function ConversationList() {
 						);
 
 						return (
-							<div className="flex flex-col items-center">
+							<div
+								key={conv._id?.toString()}
+								className="flex flex-col items-center"
+							>
 								<div
-									key={opponent._id}
 									className="group w-full h-[80px] bg-[#FFFFFF] dark:bg-[#2A2A2A] sm:rounded-[10px] sm:shadow-[0_2px_8px_0_rgba(189,189,189,0.2)]
 								flex items-center px-4 justify-between sm:mt-4 hover:bg-[#CEE6E2] dark:hover:bg-[#686868] cursor-pointer transition-colors "
 									onClick={() => navigate(`/message/${opponent._id}`)}
