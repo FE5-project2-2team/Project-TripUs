@@ -5,7 +5,7 @@ export default function NotiLayout() {
 	const [notiOpen, setNotiOpen] = useState(false);
 
 	return (
-		<div className="px-5 py-5">
+		<div className="w-full">
 			<NotiList notiOpen={notiOpen} setNotiOpen={setNotiOpen} />
 		</div>
 	);

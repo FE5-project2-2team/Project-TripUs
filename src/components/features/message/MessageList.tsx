@@ -77,7 +77,7 @@ export default function MessageList({ messages, myUserId }: MessageListProps) {
 	return (
 		<div
 			ref={messageBoxRef}
-			className="flex flex-col px-4 py-2 overflow-y-auto h-full custom-scrollbar"
+			className="flex flex-col px-4 pt-2 sm:mb-0 mb-[30%] overflow-y-auto h-full custom-scrollbar"
 		>
 			{messages.map((msg, idx) => {
 				const isMe = msg.sender._id === myUserId;

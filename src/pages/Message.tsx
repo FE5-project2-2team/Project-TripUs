@@ -51,7 +51,7 @@ export default function Message() {
 	};
 
 	return (
-		<div className="flex flex-col h-full relative">
+		<div className="flex flex-col h-full">
 			{opponent && (
 				<div className="sm:bg-[#f6faf9] bg-white dark:bg-[#1B1D22] flex items-center sm:px-0 px-6 border-[#f3f3f3]">
 					<Icon
