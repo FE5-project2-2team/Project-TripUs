@@ -17,7 +17,7 @@ export default function ProfileHeader({
 	const backIconPosition = isDark ? "50.218% 27.747%" : "39.301% 27.747%";
 
 	return (
-		<div className="dark:bg-[#1B1D22] border-b border-[#F3F3F3] sm:border-0 px-[16px] sm:p-0 fixed top-0 left-0 w-full z-50 bg-white h-[70px] flex items-center justify-between mb-[36px] sm:static">
+		<div className="dark:bg-[#1B1D22] border-b border-[#4a4b4d] sm:border-0 px-[16px] sm:p-0 fixed top-0 left-0 w-full z-50 bg-white h-[70px] flex items-center justify-between mb-[36px] sm:static">
 			<div className="flex">
 				<button
 					className="mr-[10px] sm:mr-[12px] mt-[1.6px] sm:mt-[3px] cursor-pointer"
