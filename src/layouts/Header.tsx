@@ -23,6 +23,7 @@ import UserListModal from "../components/features/user/UserListModal";
 import { useNoti } from "../context/useNoti";
 import { useAuthStore } from "../store/authStore";
 import { useThemeStore } from "../store/themeStore";
+// import useNotiMob from "../hooks/useNotiMob";
 
 export default function Header() {
 	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -33,7 +34,7 @@ export default function Header() {
 	const setImage = useAuthStore((state) => state.setImage);
 	const setNickname = useAuthStore((state) => state.setNickname);
 	const navigate = useNavigate();
-
+	// const isMobile = useNotiMob();
 	const [modalOpen, setModalOpen] = useState(false);
 	const [notiOpen, setNotiOpen] = useState(false);
 	const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -87,7 +88,11 @@ export default function Header() {
 	const myPageIconPosition = isDark ? "65.022% 81.006%" : "8.969% 81.006%";
 
 	const toggleNoti = () => {
+		// if (isMobile) {
+		// 	navigate("/notification");
+		// } else {
 		setNotiOpen((noti) => !noti);
+		// }
 	};
 
 	const toggleSidebar = () => {
