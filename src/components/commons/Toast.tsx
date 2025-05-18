@@ -39,7 +39,9 @@ export function showToast({ type, message }: ToastProps) {
 	const isMobile = window.innerWidth <= 640;
 
 	const content = (
-		<div className={`${toastBase} ${colorStyle}`}>
+		<div
+			className={`${toastBase} ${colorStyle} relative sm:top-0 top-[-100px] left-[30px]`}
+		>
 			<div className="flex items-center gap-2">
 				<img src={icon} alt={`${type} icon`} className="w-[19Px] h-[19px]" />
 				<p className="font-medium text-[16px]">
@@ -56,7 +58,7 @@ export function showToast({ type, message }: ToastProps) {
 	);
 
 	toast(content, {
-		position: isMobile ? "top-right" : "top-center",
+		position: isMobile ? "bottom-center" : "top-center",
 		autoClose: 2500,
 		hideProgressBar: true,
 		closeOnClick: false,
