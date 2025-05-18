@@ -162,10 +162,10 @@ export default function InfoForm({
 							dateFormat: "Y-m-d",
 							closeOnSelect: false,
 							locale: Korean,
-							position: "below right"
-							// ...(watchedChannel === CHANNELS.RECRUITMENT
-							// 	? { minDate: "today" }
-							// 	: { maxDate: "today" })
+							position: "below right",
+							...(watchedChannel === CHANNELS.RECRUITMENT
+								? { minDate: "today" }
+								: { maxDate: "today" })
 						}}
 						placeholder="일정 선택"
 						onChange={(selectedDates) => {
