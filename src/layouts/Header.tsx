@@ -121,7 +121,7 @@ export default function Header() {
 			<div
 				className={twMerge(
 					"sm:relative fixed sm:w-[1100px] sm:p-0 p-[14px] w-full flex justify-between h-[70px] m-auto",
-					"bg-white dark:bg-[#1B1D22] z-50 sm:border-0 border-b border-[#F3F3F3] dark:border-[#161616]"
+					"bg-white dark:bg-[#1B1D22] z-50 sm:border-0 border-b border-[#F3F3F3] dark:border-[#4a4b4d]"
 				)}
 			>
 				<Link to={"/"} className="flex items-center">
@@ -242,7 +242,10 @@ export default function Header() {
 						</Link>
 					</div>
 				)}
-				<div className="sm:hidden" onClick={() => setSidebarOpen(true)}>
+				<div
+					className="flex flex-col justify-center sm:hidden"
+					onClick={() => setSidebarOpen(true)}
+				>
 					<FontAwesomeIcon icon={faBars} className="text-3xl cursor-pointer" />
 				</div>
 				<SideBar

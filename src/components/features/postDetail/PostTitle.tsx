@@ -11,6 +11,7 @@ import Confirm from "../../commons/Confirm";
 import Icon from "../../commons/Icon";
 import Modal from "../../commons/Modal";
 import ModalItem from "../../commons/ModalItem";
+import { showToast } from "../../commons/Toast";
 
 export default function PostTitle({
 	isRecruitChannel,
@@ -37,7 +38,17 @@ export default function PostTitle({
 
 	if (!postData || !postInfo) return;
 
+	const isEnded = getDiffInDays(new Date(), postInfo.dateRange[0]) < 0;
+
 	const modifyPostHandler = () => {
+		if (isEnded) {
+			setModalOpen(false);
+			showToast({
+				type: "warning",
+				message: "이미 완료된 여정은 수정이 불가능합니다"
+			});
+			return;
+		}
 		navigate(`/post/edit/${postData._id}`, {
 			state: {
 				postData
@@ -55,9 +66,8 @@ export default function PostTitle({
 		}
 	};
 
-	const isEnded = getDiffInDays(new Date(), postInfo.dateRange[0]) < 0;
 	return (
-		<div className="flex justify-between items-center sm:relative sm:z-1 z-20 w-full fixed left-0 dark:bg-[#1B1D22] bg-[#fff] p-4 sm:mb-2 sm:border-0 border-b border-[#f3f3f3] dark:border-[#161616] h-20">
+		<div className="flex justify-between items-center sm:relative sm:z-1 z-20 w-full fixed left-0 dark:bg-[#1B1D22] bg-[#fff] p-4 sm:mb-2 sm:border-0 border-b border-[#f3f3f3] dark:border-[#4a4b4d] h-[70px]">
 			<Icon
 				position={isDark ? "50.218% 27.747%" : "39.301% 27.747%"}
 				size="16px"
@@ -67,7 +77,11 @@ export default function PostTitle({
 			<h2 className="items-center inline-block">
 				<span
 					onClick={() => {
-						if (!isAuthor || !isRecruitChannel) return;
+						if (!isAuthor || !isRecruitChannel || isEnded) return;
+						showToast({
+							type: "warning",
+							message: `${isRecruiting ? "모집완료" : "모집중으"}로 변경되었습니다`
+						});
 						toggleRecruit();
 					}}
 					className={twMerge(

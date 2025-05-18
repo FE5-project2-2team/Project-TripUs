@@ -72,6 +72,7 @@ export default function PostDetail() {
 				age: userInfo.age
 			})
 		: false;
+	const isEnded = getDiffInDays(new Date(), postInfo.dateRange[0]) < 0;
 	const hasApplicants = applicants.some(
 		(applicant) => !members.includes(applicant.author._id)
 	);
@@ -114,7 +115,7 @@ export default function PostDetail() {
 				{isMember && !isCanceledAppication && <OpenTalkLink />}
 				<Likes />
 				<CommentsList authorId={postData.author._id} />
-				{!isAuthor && userId && isRecruitChannel && !isMember && (
+				{!isAuthor && userId && isRecruitChannel && !isMember && !isEnded && (
 					<Button
 						reverse={isApplying}
 						onClick={() =>
@@ -136,7 +137,7 @@ export default function PostDetail() {
 							: "모집이 마감되었습니다"}
 					</Button>
 				)}
-				{!isAuthor && isMember && !isCanceledAppication && (
+				{!isAuthor && isMember && !isCanceledAppication && !isEnded && (
 					<Button
 						onClick={toggleConfirm}
 						disabled={fiveDaysLeft}
@@ -146,7 +147,7 @@ export default function PostDetail() {
 						{fiveDaysLeft ? "철회 불가능" : "동행 철회"}
 					</Button>
 				)}
-				{confirmOpen && (
+				{confirmOpen && !isEnded && (
 					<Confirm
 						confirmHandler={() => {
 							toggleConfirm();
