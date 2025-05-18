@@ -28,7 +28,7 @@ function normalizeUsers(raw: UserData[]): UserData[] {
 		const fullNameObj: User = {
 			name: parsed.name || "알 수 없음",
 			tel: parsed.tel || "",
-			gender: parsed.gender || "남자",
+			gender: parsed.gender || "남",
 			age: typeof parsed.age === "number" && parsed.age > 0 ? parsed.age : 20,
 			nickname:
 				parsed.nickname || `크루${Math.floor(Math.random() * 900) + 100}`
