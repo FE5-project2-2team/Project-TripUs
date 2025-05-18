@@ -89,9 +89,9 @@ export default function NotiList({
 	const closeIconPosition = isDark ? "72.727% 27.869%" : "28.571% 27.869%";
 	return (
 		<>
-			<div className="sm:w-[560px] w-full sm:min-h-[664px] rounded-[10px] bg-[#fff] border border-[#D9D9D9] shadow-[0px_2px_8px_rgba(0,0,0,0.20)] dark:bg-[#313131] dark:shadow-[0px_2px_8px_rgba(195,195,195,0.3)] dark:border-[#1f1f1f]">
+			<div className="sm:w-[560px] w-full sm:min-h-[664px] sm:rounded-[10px] bg-[#fff] border border-[#D9D9D9] shadow-[0px_2px_8px_rgba(0,0,0,0.20)] dark:bg-[#313131] dark:shadow-[0px_2px_8px_rgba(195,195,195,0.3)] dark:border-[#1f1f1f]">
 				{/* 상단-알림,x버튼*/}
-				<div className="w-[500px] flex items-center justify-between mt-6 mx-6">
+				<div className="sm:w-[500px] flex items-center justify-between mt-6 mx-6">
 					<div className="sm:text-[24px] text-xl  font-bold">알림</div>
 					{notiOpen && (
 						<button
@@ -105,7 +105,7 @@ export default function NotiList({
 
 				{/* 배너 */}
 				<div className="w-full h-[37px] border-b-[1px] border-[#ececec] dark:border-b-[#7F7F7F]">
-					<div className="flex flex-row w-[416px] h-[37px] ml-[30px] mt-5 gap-[6px]">
+					<div className="flex flex-row w-[416px] h-[37px] mt-5 gap-[2px]">
 						{bannerArr.map((banner) => (
 							<button
 								key={banner}

@@ -40,7 +40,7 @@ export default function MessageInput({
 	};
 
 	return (
-		<div className="p-4 flex justify-center">
+		<div className="p-4 flex justify-center w-full sm:relative absolute sm:bottom-0 bottom-1/12">
 			<div className="w-[680px] h-[66px] bg-white dark:bg-[#2A2A2A] rounded-[8px] flex items-center px-4 shadow-[0_2px_8px_0_rgba(189,189,189,0.2)]">
 				<input
 					value={text}
