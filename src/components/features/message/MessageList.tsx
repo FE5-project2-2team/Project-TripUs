@@ -123,7 +123,7 @@ export default function MessageList({ messages, myUserId }: MessageListProps) {
 			{showScrollButton && (
 				<button
 					onClick={scrollToBottom}
-					className={`absolute bottom-[82px] left-1/2 transform -translate-x-1/2 
+					className={`absolute sm:bottom-[82px] bottom-[30%] left-1/2 transform -translate-x-1/2 
 						w-[40px] h-[40px] rounded-full bg-white border border-gray-300 
 						flex items-center justify-center cursor-pointer text-black text-xl transition-all duration-300 hover:opacity-80 hover:ring hover:ring-gray-200 
 						${showScrollButton ? "opacity-100" : "opacity-0 pointer-events-none"}`}
