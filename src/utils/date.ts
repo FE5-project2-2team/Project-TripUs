@@ -9,7 +9,7 @@ export const formatDate = (date: Date) => {
 export const formatTime = (date: Date) => {
 	const hours = date.getHours().toString();
 	const minutes = date.getMinutes().toString();
-	return `${hours.length === 1 ? `0${hours}` : hours}-${minutes.length === 1 ? `0${minutes}` : minutes}`;
+	return `${hours.length === 1 ? `0${hours}` : hours}:${minutes.length === 1 ? `0${minutes}` : minutes}`;
 };
 
 export const getDiffInDays = (date1: Date, date2: Date) => {
