@@ -47,7 +47,7 @@ export default function CustomSelect({
 				htmlFor={name}
 				className={twMerge(
 					"post-input-title",
-					name === "channel" && isEditing && "text-[#aaaaaa]"
+					name === "channel" && isEditing && "text-[#aaaaaa] dark:text-[#666]"
 				)}
 			>
 				{label}

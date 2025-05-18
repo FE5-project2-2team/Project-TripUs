@@ -12,7 +12,9 @@
 	.input-style {
 		@apply w-full sm:border-b sm:border-b-[#cdcdcd] 
 		sm:px-[10px] py-[15px] sm:max-w-none px-[14px] sm:bg-[#fff]
-		bg-[#f9f9f9] sm:dark:bg-[#1B1D22] dark:bg-[#333] sm:text-base text-sm;
+		bg-[#f9f9f9] sm:dark:bg-[#1B1D22] dark:bg-[#333] sm:text-base text-sm
+		sm:dark:disabled:bg-[#1B1D22] sm:dark:disabled:opacity-60
+		dark:disabled:bg-[#242424] dark:disabled:opacity-60 sm:rounded-none rounded-[10px];
 	}
 
 	.input-style::placeholder {

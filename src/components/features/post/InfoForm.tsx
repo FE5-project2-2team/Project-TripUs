@@ -115,7 +115,7 @@ export default function InfoForm({
 						htmlFor="location"
 						className={twMerge(
 							"post-input-title",
-							isEditing && "text-[#aaaaaa]"
+							isEditing && "text-[#aaaaaa] dark:text-[#666]"
 						)}
 					>
 						지역 입력
@@ -144,7 +144,7 @@ export default function InfoForm({
 						htmlFor="date"
 						className={twMerge(
 							"post-input-title",
-							isEditing && "text-[#aaaaaa]"
+							isEditing && "text-[#aaaaaa] dark:text-[#666]"
 						)}
 					>
 						일정 선택
