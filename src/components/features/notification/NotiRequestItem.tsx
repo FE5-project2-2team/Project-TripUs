@@ -69,8 +69,7 @@ export default function NotiRequestItem({
 	return (
 		<div
 			className={twMerge(
-				"flex items-center w-full sm:h-[100px] sm:py-0 py-4 border-b border-[#CDCDCD] cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150",
-				notice.seen && "bg-[#F3F4F6] text-[#c2c2c2]"
+				"flex items-center w-full sm:h-[100px] sm:py-0 py-4 border-b border-[#CDCDCD] cursor-pointer hover:bg-[#F3F4F6] transition-colors duration-150"
 			)}
 			onClick={handleClick}
 		>
