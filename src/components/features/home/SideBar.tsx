@@ -100,7 +100,6 @@ export default function SideBar({
 
 				<button
 					onClick={() => {
-						toggleHandler();
 						setDarkMode();
 					}}
 					className="flex items-center gap-4 cursor-pointer"

@@ -36,6 +36,8 @@ export function showToast({ type, message }: ToastProps) {
 	const colorStyle = toastStyles[type];
 	const closeIcon = closeIconStyles[type];
 
+	const isMobile = window.innerWidth <= 640;
+
 	const content = (
 		<div className={`${toastBase} ${colorStyle}`}>
 			<div className="flex items-center gap-2">
@@ -54,13 +56,13 @@ export function showToast({ type, message }: ToastProps) {
 	);
 
 	toast(content, {
-		position: "top-center",
+		position: isMobile ? "top-right" : "top-center",
 		autoClose: 2500,
 		hideProgressBar: true,
 		closeOnClick: false,
 		pauseOnHover: true,
 		draggable: true,
-		closeButton: false,
+		closeButton: false
 	});
 }
 
