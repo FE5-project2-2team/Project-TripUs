@@ -20,7 +20,7 @@ export default function InputUrl() {
 				placeholder="주소 입력 (필요 시 입력)"
 				autoComplete="off"
 				className={twMerge(
-					"input-style placeholder:text-[#CDCDCD] focus:outline-0 sm:w-full",
+					"flex-1 input-style placeholder:text-[#CDCDCD] focus:outline-0 sm:w-full",
 					"dark:placeholder:text-[#616161] dark:border-[#616161]",
 					"disabled:text-[#aaaaaa]"
 				)}

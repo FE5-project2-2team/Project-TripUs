@@ -51,11 +51,38 @@ export default function ConversationList() {
 
 	if (conversations.length === 0) {
 		return (
-			<div className="text-gray-400 text-center mt-10">
-				아직 대화한 사람이 없습니다.
-				<br />
-				사람들과 대화를 시작해보세요!
-			</div>
+			<>
+				<div className="text-gray-400 text-center mt-10">
+					아직 대화한 사람이 없습니다.
+					<br />
+					사람들과 대화를 시작해보세요!
+				</div>
+				<div className="sm:hidden fixed bottom-25 right-8">
+					<button
+						className="w-[70px] h-[70px]
+						   rounded-full bg-[#06B796] px-5 cursor-pointer
+						   flex items-center justify-center"
+						onClick={() => setOpenModal(true)}
+					>
+						<Icon position="-19px -161px" size="21px" />
+					</button>
+				</div>
+				{openModal &&
+					createPortal(
+						<>
+							<div className="fixed inset-0 bg-black opacity-30 z-50" />
+							<UserListModal
+								className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+								onClose={() => setOpenModal(false)}
+								navHandler={(opponentId: string) => {
+									setOpenModal(false);
+									navigate(`/message/${opponentId}`);
+								}}
+							/>
+						</>,
+						document.body
+					)}
+			</>
 		);
 	}
 
@@ -122,9 +149,11 @@ export default function ConversationList() {
 						);
 
 						return (
-							<div className="flex flex-col items-center">
+							<div
+								key={conv._id?.toString()}
+								className="flex flex-col items-center"
+							>
 								<div
-									key={opponent._id}
 									className="group w-full h-[80px] bg-[#FFFFFF] dark:bg-[#2A2A2A] sm:rounded-[10px] sm:shadow-[0_2px_8px_0_rgba(189,189,189,0.2)]
 								flex items-center px-4 justify-between sm:mt-4 hover:bg-[#CEE6E2] dark:hover:bg-[#686868] cursor-pointer transition-colors "
 									onClick={() => navigate(`/message/${opponent._id}`)}

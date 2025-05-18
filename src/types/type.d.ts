@@ -57,7 +57,7 @@ interface PostDetail {
 	title: string;
 	memberLimit: number;
 	memberList: string[];
-	rejectList?: string[];
+	rejectList: string[];
 	location: string;
 	dateRange: Date[];
 	isRecruiting: boolean;

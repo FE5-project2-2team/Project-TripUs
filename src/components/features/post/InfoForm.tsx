@@ -93,8 +93,8 @@ export default function InfoForm({
 					name="channel"
 					label="게시판 선택"
 					options={[
-						{ label: "동행원 모집", value: "681034285e1cfa1c37000059" },
-						{ label: "여행 후기글", value: "6813881c189ddd72351cd0a4" }
+						{ label: "크루 모집", value: CHANNELS.RECRUITMENT },
+						{ label: "항해 일지", value: CHANNELS.REVIEW }
 					]}
 				/>
 				{watchedChannel === CHANNELS.RECRUITMENT ? (
@@ -110,39 +110,41 @@ export default function InfoForm({
 				) : (
 					<div className="sm:block hidden" />
 				)}
-				<div className="relative flex sm:flex-col sm:items-start items-center justify-between">
+				<div className="relative flex sm:flex-col w-full sm:items-start items-center justify-between">
 					<label
 						htmlFor="location"
 						className={twMerge(
 							"post-input-title",
-							isEditing && "text-[#aaaaaa]"
+							isEditing && "text-[#aaaaaa] dark:text-[#666]"
 						)}
 					>
 						지역 입력
 					</label>
-					<input
-						disabled={isEditing}
-						id="location"
-						type="text"
-						placeholder="지역 입력"
-						autoComplete="off"
-						className={twMerge(
-							"input-style placeholder:text-[#CDCDCD] focus:outline-0",
-							"dark:placeholder:text-[#616161] dark:border-[#616161]",
-							"disabled:text-[#aaaaaa]"
-						)}
-						{...register("location")}
-						onFocus={() => setIsFocused(true)}
-						onBlur={() => setIsFocused(false)}
-					/>
-					{isFocused && <AutoComplete />}
+					<div className="relative flex flex-col flex-1 w-full">
+						<input
+							disabled={isEditing}
+							id="location"
+							type="text"
+							placeholder="지역 입력"
+							autoComplete="off"
+							className={twMerge(
+								"input-style placeholder:text-[#CDCDCD] focus:outline-0",
+								"dark:placeholder:text-[#616161] dark:border-[#616161]",
+								"disabled:text-[#aaaaaa]"
+							)}
+							{...register("location")}
+							onFocus={() => setIsFocused(true)}
+							onBlur={() => setIsFocused(false)}
+						/>
+						{isFocused && <AutoComplete />}
+					</div>
 				</div>
 				<div className="flex sm:flex-col sm:items-start items-center justify-between">
 					<label
 						htmlFor="date"
 						className={twMerge(
 							"post-input-title",
-							isEditing && "text-[#aaaaaa]"
+							isEditing && "text-[#aaaaaa] dark:text-[#666]"
 						)}
 					>
 						일정 선택
@@ -151,7 +153,7 @@ export default function InfoForm({
 						disabled={isEditing}
 						id="date"
 						className={twMerge(
-							"input-style placeholder:text-[#CDCDCD] focus:outline-0",
+							"flex-1 input-style placeholder:text-[#CDCDCD] focus:outline-0",
 							"dark:placeholder:text-[#616161] dark:border-[#616161]",
 							"disabled:cursor-default! disabled:text-[#aaaaaa]"
 						)}
@@ -160,10 +162,10 @@ export default function InfoForm({
 							dateFormat: "Y-m-d",
 							closeOnSelect: false,
 							locale: Korean,
-							position: "below right",
-							...(watchedChannel === CHANNELS.RECRUITMENT
-								? { minDate: "today" }
-								: { maxDate: "today" })
+							position: "below right"
+							// ...(watchedChannel === CHANNELS.RECRUITMENT
+							// 	? { minDate: "today" }
+							// 	: { maxDate: "today" })
 						}}
 						placeholder="일정 선택"
 						onChange={(selectedDates) => {
