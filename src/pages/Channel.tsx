@@ -55,7 +55,9 @@ export default function Channel() {
 
 			if (filterArr?.length) {
 				filtered = filtered.filter((post) => {
-					const condition = JSON.parse(post.title).recruitCondition;
+					const parsedTitle =
+						typeof post.title == "string" ? JSON.parse(post.title) : post.title;
+					const condition = parsedTitle.recruitCondition;
 					if (!condition) return false;
 					return filterArr.every(
 						(filt) =>
@@ -67,8 +69,10 @@ export default function Channel() {
 			if (isChecked) {
 				filtered = filtered.filter(
 					(post) =>
-						JSON.parse(post.title).isRecruiting &&
-						post.channel.name !== "review"
+						(typeof post.title === "string"
+							? JSON.parse(post.title)
+							: post.title
+						).isRecruiting && post.channel.name !== "review"
 				);
 			}
 			return filtered;
@@ -79,8 +83,10 @@ export default function Channel() {
 	const SearchPosts = useCallback((word: string, posts: PostData[]) => {
 		if (!word.trim()) return posts; //검색어 없는경우
 		return posts.filter((post) => {
-			const title = JSON.parse(post.title).title;
-			const content = JSON.parse(post.title).description;
+			const parsedTitle =
+				post.title === "string" ? JSON.parse(post.title) : post.title;
+			const title = parsedTitle.title;
+			const content = parsedTitle.description;
 			const auth = JSON.parse(post.author.fullName);
 			let author = "";
 			if (typeof auth === "object" && auth !== null) {
@@ -88,7 +94,7 @@ export default function Channel() {
 			} else if (typeof auth === "string") {
 				author = auth;
 			}
-			const location = JSON.parse(post.title).location;
+			const location = parsedTitle.location;
 			return (
 				title.toLowerCase().includes(word.toLowerCase()) ||
 				content.toLowerCase().includes(word.toLowerCase()) ||
@@ -257,10 +263,10 @@ export default function Channel() {
 								/>
 								<div className="ml-[8px]">
 									<p className="font-normal text-[16px]">
-										{JSON.parse(post.author.fullName as string).nickname}
+										{JSON.parse(post.author.fullName).nickname}
 									</p>
 									<p className="text-[14px]">
-										{JSON.parse(post.author.fullName as string).name}
+										{JSON.parse(post.author.fullName).name}
 									</p>
 								</div>
 							</div>
