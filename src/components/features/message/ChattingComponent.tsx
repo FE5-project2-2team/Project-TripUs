@@ -34,6 +34,7 @@ export default function ChattingComponent({
 		hour: "2-digit",
 		minute: "2-digit"
 	});
+	console.log(new Date(createdAt));
 
 	const { id: opponentId } = useParams();
 
