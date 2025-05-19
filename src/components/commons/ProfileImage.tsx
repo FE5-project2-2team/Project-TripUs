@@ -11,7 +11,7 @@ export default function ProfileImage({
 	return (
 		<Link to={`/profile/${userId}`}>
 			<img
-				className="w-[50px] h-[50px] object-cover rounded-full"
+				className="w-[50px] h-[50px] object-cover rounded-full active:brightness-75 transition"
 				src={image || profileCircle}
 				alt="프로필 이미지"
 			/>

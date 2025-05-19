@@ -4,13 +4,13 @@ import mainvisual3 from "../../../assets/images/mainvisual3.png";
 import mainvisual4 from "../../../assets/images/mainvisual4.png";
 import mainvisual5 from "../../../assets/images/mainvisual5.png";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 import { useRef, useState } from "react";
 import Icon from "../../commons/Icon";
