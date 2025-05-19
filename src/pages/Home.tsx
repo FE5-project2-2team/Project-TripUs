@@ -1,10 +1,10 @@
+import { useState } from "react";
 import { Link, Outlet } from "react-router";
 import AddPostButt from "../components/features/home/AddPostButt";
 import ChannelList from "../components/features/home/ChannelList";
 import FilterAndSort from "../components/features/home/FilterAndSort";
+import MainVisual from "../components/features/home/MainVisual";
 import PostSearch from "../components/features/home/PostSearch";
-import MainVisual from "../components/features/main/MainVisual";
-import { useState } from "react";
 
 export default function Home() {
 	const [sort, setSort] = useState("최신순");

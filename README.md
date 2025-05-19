@@ -1,54 +1,98 @@
-# React + TypeScript + Vite
+# TripUs (여행 동행 / 정보 공유를 위한 커뮤니티 서비스)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img src="/src//assets/images/image.png"
 
-Currently, two official plugins are available:
+## 프로젝트 개요
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+혼자 여행을 준비하고 떠나는 일이 부담스럽게 느껴지는 사용자들에게 여행 동행자를 쉽게 찾고, 함께한 여정의 추억을 나눌 수 있는 공간이 필요하다 생각했습니다.
+TripUs는 여행 동행자를 구하는 사람들에게 여행 취향이나 일정이 맞는 사람을 쉽게 찾을 수 있는 커뮤니티입니다. 동행원 모집 게시글을 통해 동행 조건에 맞는 크루를 모집할 수 있습니다.
+댓글, 좋아요, 채팅을 통해 사용자들 간에 실시간으로 소통할 수 있는 플랫폼을 제공합니다.
 
-## Expanding the ESLint configuration
+## 프로젝트 기간
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2025.4.25 ~ 2025.5.19
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 기술 스택
+
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+<img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
+<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+<img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
+<img src="https://img.shields.io/badge/vite-646CFF?style=for-the-badge&logo=vite&logoColor=white">
+
+## 디렉토리 구조
+
+```bash
+📦public                    # 정적 파일
+📦src
+ ┣ 📂apis                   # API 호출 관련 함수
+ ┣ 📂assets                 # 정적 리소스 (이미지, JSON 등)
+ ┃ ┣ 📂data
+ ┃ ┣ 📂images
+ ┣ 📂components             # 공통 및 기능별 UI 컴포넌트
+ ┃ ┣ 📂commons              # 공용 컴포넌트
+ ┃ ┗ 📂features
+ ┃ ┃ ┣ 📂home                   # 메인 홈페이지
+ ┃ ┃ ┣ 📂message                # 메시지
+ ┃ ┃ ┣ 📂notification           # 알림
+ ┃ ┃ ┣ 📂post                   # 게시글 작성 및 수정
+ ┃ ┃ ┣ 📂postDetail             # 게시글 상세 페이지
+ ┃ ┃ ┣ 📂profile                # 유저 프로필
+ ┃ ┗ ┗ 📂user                   # 유저 목록
+ ┃
+ ┣ 📂constants              # 상수 정의
+ ┣ 📂context                # React Context
+ ┣ 📂css                    # CSS 파일
+ ┣ 📂hooks                  # 커스텀 훅
+ ┣ 📂layouts                # 레이아웃 컴포넌트
+ ┣ 📂pages                  # 라우트 페이지
+ ┣ 📂store                  # zustand 전역 상태 관리
+ ┣ 📂types                  # 타입 정의
+ ┣ 📂utils                  # 유틸 함수
+ ┣ 📜App.tsx
+ ┣ 📜main.tsx
+ ┗ 📜vite-env.d.ts
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 팀원 소개
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+<div align="center">
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+  <table>
+    <tr>
+      <td align="center" style="border:1px solid #ccc; border-radius:10px; padding:10px; width:140px;">
+        <img src="https://github.com/run3go.png" width="100px;" style="border-radius:50%;" alt="run3go"/><br />
+        <b>박정수</b><br />
+        <a href="https://github.com/run3go">@run3go</a>
+        <span>Frontend</span>
+      </td>
+      <td align="center" style="border:1px solid #ccc; border-radius:10px; padding:10px; width:140px;">
+        <img src="https://github.com/amykoomj.png" width="100px;" style="border-radius:50%;" alt="amykoomj"/><br />
+        <b>구민지</b><br />
+        <a href="https://github.com/amykoomj">@amykoomj</a>
+        <span>Frontend</span>
+      </td>
+      <td align="center" style="border:1px solid #ccc; border-radius:10px; padding:10px; width:140px;">
+        <img src="https://github.com/jieun22222.png" width="100px;" style="border-radius:50%;" alt="jieun22222"/><br />
+        <b>송지은</b><br />
+        <a href="https://github.com/jieun22222">@jieun22222</a>
+        <span>Frontend</span>
+      </td>
+      <td align="center" style="border:1px solid #ccc; border-radius:10px; padding:10px; width:140px;">
+        <img src="https://github.com/KwonTaeHun00.png" width="100px;" style="border-radius:50%;" alt="KwonTaeHun00"/><br />
+        <b>권태훈</b><br />
+        <a href="https://github.com/KwonTaeHun00">@KwonTaeHun00</a>
+        <span>Frontend</span>
+      </td>
+      <td align="center" style="border:1px solid #ccc; border-radius:10px; padding:10px; width:140px;">
+        <img src="https://github.com/seoyeoxxlee.png" width="100px;" style="border-radius:50%;" alt="seoyeoxxlee"/><br />
+        <b>이서영</b><br />
+        <a href="https://github.com/seoyeoxxlee">@seoyeoxxlee</a>
+        <span>Frontend</span>
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+##

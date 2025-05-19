@@ -78,7 +78,7 @@ export default function SideBar({
 						<div
 							className={twMerge(
 								"flex gap-2 bg-[#06B796] px-2 py-[2px] rounded-[12px] text-white font-medium",
-								"select-none"
+								"select-none active:bg-[#038383]"
 							)}
 						>
 							{userData ? <span>MY</span> : <span>LOGIN</span>}
