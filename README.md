@@ -1,6 +1,7 @@
 # TripUs (여행 동행 / 정보 공유를 위한 커뮤니티 서비스)
 
-<img src="/src//assets/images/image.png"
+![image](https://github.com/user-attachments/assets/0b2fc27d-9337-4302-9cf6-f62a72b8c406)
+
 
 ## 프로젝트 개요
 
