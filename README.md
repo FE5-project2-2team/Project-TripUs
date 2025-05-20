@@ -9,6 +9,11 @@
 TripUs는 여행 동행자를 구하는 사람들에게 여행 취향이나 일정이 맞는 사람을 쉽게 찾을 수 있는 커뮤니티입니다. 동행원 모집 게시글을 통해 동행 조건에 맞는 크루를 모집할 수 있습니다.
 댓글, 좋아요, 채팅을 통해 사용자들 간에 실시간으로 소통할 수 있는 플랫폼을 제공합니다.
 
+## 프로젝트 소개
+<img src="https://github.com/user-attachments/assets/150fe16a-eaf0-4b2e-aa04-0e62ef4856e3" >
+<img src="https://github.com/user-attachments/assets/bff2bc5b-56b7-463b-8954-f0441a64e37b" >
+
+
 ## 프로젝트 기간
 
 2025.4.25 ~ 2025.5.19
@@ -20,6 +25,21 @@ TripUs는 여행 동행자를 구하는 사람들에게 여행 취향이나 일�
 <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
 <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
 <img src="https://img.shields.io/badge/vite-646CFF?style=for-the-badge&logo=vite&logoColor=white">
+
+## 화면 구성
+
+| 메인 페이지 | 게시글 페이지 |
+| :-------------------------------------------: | :------------: |
+|  <img width="329" src="https://github.com/user-attachments/assets/fb184b85-50ca-4cb0-b3e0-ecc2d1144f47"/> |  <img width="329" src="https://github.com/user-attachments/assets/6862d682-1ed9-4993-9876-92fa262ca62e"/>|  
+| 게시글 작성 페이지 | 프로필 페이지 |  
+| <img width="329" src="https://github.com/user-attachments/assets/3653b33f-4e1c-4151-a3ff-05d9bde1bec1"/>   |  <img width="329" src="https://github.com/user-attachments/assets/385cae88-dab1-4f56-9e95-1a179606aab7"/>     |
+| 메시지 페이지 | 404 페이지 |
+| <img width="329" src="https://github.com/user-attachments/assets/fae7e351-41d8-4cb1-8ea1-23050122e81c"/> |  <img width="329" src="https://github.com/user-attachments/assets/02ca112a-0cfc-4c58-bf0f-d703aeda61ef"/> |
+
+
+
+
+
 
 ## 디렉토리 구조
 
