@@ -37,8 +37,31 @@ TripUs는 여행 동행자를 구하는 사람들에게 여행 취향이나 일�
 | <img width="329" src="https://github.com/user-attachments/assets/fae7e351-41d8-4cb1-8ea1-23050122e81c"/> |  <img width="329" src="https://github.com/user-attachments/assets/02ca112a-0cfc-4c58-bf0f-d703aeda61ef"/> |
 
 
+## 기능 소개
 
+### 게시글
+<img width="329" src="https://github.com/user-attachments/assets/a1a917fd-55d5-40e4-8fb2-b673f6880278">
+<img width="329" src="https://github.com/user-attachments/assets/443d8a58-7514-40cf-9b78-b725deb6dc1c">
+<img width="329" src="https://github.com/user-attachments/assets/a5a2cf5a-4b65-4df7-8d8d-44c51e39c4b6">
+<hr>
 
+- 하단의 댓글 입력 창을 통해 댓글을 등록할 수 있고, 댓글의 삭제 버튼을 통해 삭제가 가능합니다.
+- 댓글 위의 좋아요 버튼을 통해, 게시글에 좋아요를 등록하거나 취소할 수 있습니다.
+- 동행 신청하기 버튼을 통해 사용자는 해당 동행 모집 게시글에 동행을 신청할 수 있습니다.
+- 한 번 더 클릭할 경우, 동행을 취소할 수 있습니다.
+- 게시글 작성자는 승인/거절 버튼을 통해 신청자의 동행 신청을 승인 또는 거절할 수 있습니다. 
+
+### 게시글 작성
+<img width="500" src="https://github.com/user-attachments/assets/9a05a5b7-7c0a-4bbf-8aee-ae502c89e64f">
+<hr>
+
+- 게시판 선택을 통해, 게시판 종류에 따른 다른 양식을 제공합니다.
+- 크루원을 모집할 경우, 2명에서 10명까지 모집 인원을 선택할 수 있습니다.
+- 지역 입력은 200여객국을 자동 완성 기능으로 제공하며, 그 외의 도시나 나라도 입력할 수 있습니다.
+- 일정 선택은 크루 모집의 경우 오늘 이후의 날짜만 선택이 가능하고, 항해 일지를 선택할 경우 오늘 이전의 날짜만 선택이 가능합니다.
+- 오픈 카톡 주소를 입력하여 크루와의 서비스 외의 소통이 가능합니다.
+- 사진을 추가할 경우 게시글 최상단에 슬라이드의 형태로 나타납니다.
+- 동행조건은 성별과 나이로 선택할 수 있으며, 조건에 해당하지 않는 사용자는 동행 신청을 할 수 없습니다.
 
 
 ## 디렉토리 구조
