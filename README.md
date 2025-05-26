@@ -47,8 +47,8 @@ TripUs는 여행 동행자를 구하는 사람들에게 여행 취향이나 일�
 ## 기능 소개
 
 ### 회원 가입
-<img width="500" src = "https://github.com/user-attachments/assets/a7f72c64-43ba-4bcb-9782-de0bbae5c451">
-<img width="500" src = "https://github.com/user-attachments/assets/ef693ab4-a140-42df-84fc-a0926f3dcda8">
+<img width="400" src = "https://github.com/user-attachments/assets/a7f72c64-43ba-4bcb-9782-de0bbae5c451">
+<img width="400" src = "https://github.com/user-attachments/assets/ef693ab4-a140-42df-84fc-a0926f3dcda8">
 <img width="800" src = "https://github.com/user-attachments/assets/440d594f-ebda-4a5b-a1ac-256b119ad080">
 <hr>
 
@@ -59,8 +59,8 @@ TripUs는 여행 동행자를 구하는 사람들에게 여행 취향이나 일�
 - 회원가입 성공 시 로그인 화면으로 이동합니다.
 
 ## 로그인
-<img width="500" src = "https://github.com/user-attachments/assets/77cd6cc5-d9eb-473a-8a5d-60ba637af066">
-<img width="500" src = "https://github.com/user-attachments/assets/ddc72b27-4469-4c4a-b640-14328d79a937">
+<img width="400" src = "https://github.com/user-attachments/assets/77cd6cc5-d9eb-473a-8a5d-60ba637af066">
+<img width="400" src = "https://github.com/user-attachments/assets/ddc72b27-4469-4c4a-b640-14328d79a937">
 <img width="1000" src = "https://github.com/user-attachments/assets/7b556793-ad43-4237-92a5-4e6b193b96c7">
 <hr>
 
