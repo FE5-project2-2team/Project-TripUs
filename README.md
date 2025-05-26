@@ -45,9 +45,9 @@ TripUs는 여행 동행자를 구하는 사람들에게 여행 취향이나 일�
 ## 기능 소개
 
 ### 게시글
-<img width="300" src="https://github.com/user-attachments/assets/a1a917fd-55d5-40e4-8fb2-b673f6880278">
-<img width="300" src="https://github.com/user-attachments/assets/443d8a58-7514-40cf-9b78-b725deb6dc1c">
-<img width="300" src="https://github.com/user-attachments/assets/a5a2cf5a-4b65-4df7-8d8d-44c51e39c4b6">
+<img width="500" src="https://github.com/user-attachments/assets/a1a917fd-55d5-40e4-8fb2-b673f6880278">
+<img width="500" src="https://github.com/user-attachments/assets/443d8a58-7514-40cf-9b78-b725deb6dc1c">
+<img width="500" src="https://github.com/user-attachments/assets/a5a2cf5a-4b65-4df7-8d8d-44c51e39c4b6">
 <hr>
 
 - 하단의 댓글 입력 창을 통해 댓글을 등록할 수 있고, 댓글의 삭제 버튼을 통해 삭제가 가능합니다.
