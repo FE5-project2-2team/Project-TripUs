@@ -16,7 +16,9 @@ TripUs는 여행 동행자를 구하는 사람들에게 여행 취향이나 일�
 
 ## 프로젝트 소개
 <img src="https://github.com/user-attachments/assets/150fe16a-eaf0-4b2e-aa04-0e62ef4856e3" >
-<img src="https://github.com/user-attachments/assets/bff2bc5b-56b7-463b-8954-f0441a64e37b" >
+<img width="1020" alt="스크린샷 2025-05-26 오후 10 15 03" src="https://github.com/user-attachments/assets/72817eed-be65-4ec4-8116-0aaf6ae87b91" />
+
+
 
 
 ## 프로젝트 기간
