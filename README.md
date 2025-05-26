@@ -46,6 +46,29 @@ TripUs는 여행 동행자를 구하는 사람들에게 여행 취향이나 일�
 
 ## 기능 소개
 
+### 회원 가입
+<img width="500" src = "https://github.com/user-attachments/assets/a7f72c64-43ba-4bcb-9782-de0bbae5c451">
+<img width="500" src = "https://github.com/user-attachments/assets/ef693ab4-a140-42df-84fc-a0926f3dcda8">
+<img width="800" src = "https://github.com/user-attachments/assets/440d594f-ebda-4a5b-a1ac-256b119ad080">
+<hr>
+
+- 회원가입 시 이름, 생년월일 및 성별 숫자, 이메일, 전화번호, 비밀번호를 입력받습니다.
+- 이때 입력받은 성별 숫자를 통해 가입자의 성별을 판별합니다.
+- 회원 정보를 전부 입력하지 않고 회원가입 버튼을 클릭했을 경우, 전부 입력해달라는 토스트 메시지를 출력합니다.
+- 이메일과 전화번호 입력이 양식에 맞지 않고 비밀번호가 일치하지 않을 경우, 입력칸 하단에 경고 메시지를 출력합니다.
+- 회원가입 성공 시 로그인 화면으로 이동합니다.
+
+## 로그인
+<img width="500" src = "https://github.com/user-attachments/assets/77cd6cc5-d9eb-473a-8a5d-60ba637af066">
+<img width="500" src = "https://github.com/user-attachments/assets/ddc72b27-4469-4c4a-b640-14328d79a937">
+<img width="1000" src = "https://github.com/user-attachments/assets/7b556793-ad43-4237-92a5-4e6b193b96c7">
+<hr>
+
+- 회원가입 시 입력한 이메일, 비밀번호로 로그인할 수 있습니다.
+- 이메일 양식이 올바르지 않을 경우, 입력칸 하단에 경고 메시지가 출력됩니다.
+- 이메일 또는 비밀번호가 틀릴 경우, 토스트 메시지가 출력됩니다.
+- 로그인 성공 시 성공했음을 알리는 토스트 메시지와 함께 홈 화면으로 이동합니다.
+
 ### 게시글
 <img width="1020" src="https://github.com/user-attachments/assets/a1a917fd-55d5-40e4-8fb2-b673f6880278">
 <img width="400" src="https://github.com/user-attachments/assets/443d8a58-7514-40cf-9b78-b725deb6dc1c">
