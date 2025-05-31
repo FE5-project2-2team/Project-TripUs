@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
 import LoadingSpinner from "../assets/images/SailLoadingSpinner.gif";
 import Button from "../components/commons/Button";
 import Confirm from "../components/commons/Confirm";
@@ -17,13 +15,11 @@ import { checkAgeMatch } from "../utils/checkCondition";
 import { getDiffInDays } from "../utils/date";
 
 export default function PostDetail() {
-	const { id } = useParams();
 	const userId = useAuthStore((state) => state.userId)!;
 	const userInfo = useAuthStore((state) => state.userInfo)!;
 	const isLoading = usePostStore((state) => state.isLoading);
 	const applicants = usePostStore((state) => state.applicants);
 	const { confirmOpen, toggleConfirm } = useConfirm();
-	const [isReady, setIsReady] = useState(false);
 
 	const {
 		postData,
@@ -31,26 +27,12 @@ export default function PostDetail() {
 		isRecruiting,
 		isApplying,
 		members,
-		getData,
 		submitApplication,
 		cancelApplication,
 		cancelAccompany
 	} = usePostStore();
 
-	useEffect(() => {
-		if (!id) return;
-		const fetchData = async () => {
-			try {
-				await getData(id, userId);
-				setIsReady(true);
-			} catch (error) {
-				console.error(error);
-			}
-		};
-		fetchData();
-	}, [id, userId, getData]);
-
-	if (!postData || !postInfo || isLoading || !isReady)
+	if (!postData || !postInfo || isLoading)
 		return (
 			<div className="flex h-screen justify-center items-center">
 				<img src={LoadingSpinner} alt="로딩 중" />
